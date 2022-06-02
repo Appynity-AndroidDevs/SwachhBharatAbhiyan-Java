@@ -716,6 +716,24 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
         });
 
+        /*mOfflineAttendanceAdapter.setSyncOfflineListener(new OfflineAttendanceAdapterClass.OfflineAttendanceListener() {
+            @Override
+            public void onSuccessCallback(String messageMar) {
+                *//*if (!messageMar.isEmpty())
+                    AUtils.success(mContext, messageMar);*//*
+            }
+
+            @Override
+            public void onFailureCallback() {
+
+            }
+
+            @Override
+            public void onErrorCallback() {
+
+            }
+        });*/
+
     }
 
     private void playsound() {

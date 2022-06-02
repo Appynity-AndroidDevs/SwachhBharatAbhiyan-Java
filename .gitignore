@@ -47,3 +47,9 @@ SBA_Library/
 .Trashes
 ehthumbs.db
 Thumbs.db
+.idea/modules.xml
+.idea/modules/app/SBA_Library.app.iml
+.idea/modules/retrofitconnectionlibrary/SBA_Library.retrofitconnectionlibrary.iml
+.idea/modules/riaylibrary/SBA_Library.riaylibrary.iml
+.idea/modules/SBA_Library.iml
+.idea/modules/swachbharatabhiyanlibrary/SBA_Library.swachbharatabhiyanlibrary.iml

@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SBA_Library.iml" filepath="$PROJECT_DIR$/.idea/modules/SBA_Library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SBA_Library.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SBA_Library.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/retrofitconnectionlibrary/SBA_Library.retrofitconnectionlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/retrofitconnectionlibrary/SBA_Library.retrofitconnectionlibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/riaylibrary/SBA_Library.riaylibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/riaylibrary/SBA_Library.riaylibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/swachbharatabhiyanlibrary/SBA_Library.swachbharatabhiyanlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/swachbharatabhiyanlibrary/SBA_Library.swachbharatabhiyanlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Swachh-Bharat-Abhiyan.iml" filepath="$PROJECT_DIR$/.idea/modules/Swachh-Bharat-Abhiyan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Swachh-Bharat-Abhiyan.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Swachh-Bharat-Abhiyan.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/retrofitconnectionlibrary/Swachh-Bharat-Abhiyan.retrofitconnectionlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/retrofitconnectionlibrary/Swachh-Bharat-Abhiyan.retrofitconnectionlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/riaylibrary/Swachh-Bharat-Abhiyan.riaylibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/riaylibrary/Swachh-Bharat-Abhiyan.riaylibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/swachbharatabhiyanlibrary/Swachh-Bharat-Abhiyan.swachbharatabhiyanlibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/swachbharatabhiyanlibrary/Swachh-Bharat-Abhiyan.swachbharatabhiyanlibrary.iml" />
     </modules>
   </component>
 </project>

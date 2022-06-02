@@ -98,7 +98,7 @@ public class SyncOfflineAdapterClass {
 
             for (OfflineGcResultPojo result : results) {
 
-                if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                if (result.getStatus().equals(AUtils.STATUS_SUCCESS) || result.getStatus().equals(AUtils.STATUS_ERROR)) {
 
                     if (Integer.parseInt(result.getID()) != 0) {
                         int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());

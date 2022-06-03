@@ -236,6 +236,7 @@
     <string name="app_notification_description" translatable="false">Please don\'t kill the app from background.</string>
     <string name="turning_on_the_gps_n_please_wait">Turning on the GPS\nPlease wait...</string>
     <string name="please_wait">Please wait!</string>
+    <string name="colectnStatus">Garbage Weight Registration Complete</string>
 
 
 </resources>

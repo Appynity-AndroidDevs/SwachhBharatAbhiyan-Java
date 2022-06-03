@@ -172,4 +172,5 @@
     <string name="waste_collection_radio">"वेस्ट कलेक्शन "</string>
     <string name="turning_on_the_gps_n_please_wait">GPS चालू हो रहा है\nकृपया प्रतीक्षा करें...</string>
     <string name="please_wait">कृपया थांबा...</string>
+    <string name="colectnStatus">कचरा वजन पंजीकरण पूर्ण</string>
 </resources>

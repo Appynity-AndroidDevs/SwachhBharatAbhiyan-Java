@@ -1235,6 +1235,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
 
         TextView ownerName = view.findViewById(R.id.house_owner_name);
         TextView houseTitle = view.findViewById(R.id.lbl_title);
+        TextView collectionStatus = view.findViewById(R.id.collection_status);
         Button doneBtn = view.findViewById(R.id.done_btn);
 
         ownerName.setText(pojo);
@@ -1250,6 +1251,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
                 break;
             case "3":
                 value = "Dump yard Id  ";
+                collectionStatus.setText(R.string.colectnStatus);
                 break;
             case "-1":                              //added by Swapnil
                 if (EmpType.matches("L"))

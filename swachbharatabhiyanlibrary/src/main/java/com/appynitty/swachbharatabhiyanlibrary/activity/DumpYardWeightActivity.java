@@ -450,6 +450,7 @@ public class DumpYardWeightActivity extends AppCompatActivity {
 
                 finalPath = getRealPathFromURI(tempUri);
                 dryImageFilePath = finalPath; //setting image1 path that will be set in imagePojo. swapnil
+                Prefs.putString(AUtils.BEFORE_IMAGE, dryImageFilePath);
                 Log.e("Image1 Path: ", dryImageFilePath);
                 break;
             case 2:
@@ -510,8 +511,8 @@ public class DumpYardWeightActivity extends AppCompatActivity {
 
         if (!AUtils.isNull(imagePojo)) {
 
-            if (!AUtils.isNullString(imagePojo.getImage1())) {
-                btnTakeDryPhoto.setImageURI(Uri.parse(imagePojo.getImage1()));
+            if (!AUtils.isNullString(Prefs.getString(AUtils.BEFORE_IMAGE, null))) {
+                btnTakeDryPhoto.setImageURI(Uri.parse(Prefs.getString(AUtils.BEFORE_IMAGE, null)));
                 Log.e("Image1 from imagePojo: ", imagePojo.getImage1());
                 dryImageFilePath = imagePojo.getImage1();
             } else if (!AUtils.isNullString(imagePojo.getImage2())) {

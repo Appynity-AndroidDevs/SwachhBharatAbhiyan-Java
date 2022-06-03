@@ -94,11 +94,16 @@ public class SyncOfflineAdapterClass {
     private void onResponseReceived(List<OfflineGcResultPojo> results) {
 
         Log.e(SyncOfflineAdapterClass.class.getSimpleName(), results.get(0).getMessage());
+
         if (!AUtils.isNull(results) && results.size() > 0) {
 
             for (OfflineGcResultPojo result : results) {
 
                 if (result.getStatus().equals(AUtils.STATUS_SUCCESS) || result.getStatus().equals(AUtils.STATUS_ERROR)) {
+
+                    if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_ERROR)) {
+                        AUtils.warning(mContext, results.get(0).getMessage());
+                    }
 
                     if (Integer.parseInt(result.getID()) != 0) {
                         int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());

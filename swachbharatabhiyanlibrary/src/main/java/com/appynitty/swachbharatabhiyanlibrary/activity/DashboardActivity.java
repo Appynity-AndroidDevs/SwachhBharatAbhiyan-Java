@@ -43,9 +43,11 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncOfflineAd
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.UserDetailAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
+import com.appynitty.swachbharatabhiyanlibrary.connection.SyncServer;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.CheckAttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -57,6 +59,7 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
+import com.appynitty.swachbharatabhiyanlibrary.webservices.CheckAttendanceWebService;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.IMEIWebService;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.LocationSettingsStates;
@@ -137,6 +140,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     MediaPlayer mp = null;
     FrameLayout pb;
 
+    /*newly added code here*/
+    CheckAttendancePojo checkAttendancePojo;
+    SyncServer server;
+    /*end of the newly added code here*/
+
     @Override
     protected void attachBaseContext(Context newBase) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -153,6 +161,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         AUtils.gpsStatusCheck(DashboardActivity.this);
         onSwitchStatus(AUtils.isIsOnduty());
 //        Log.e(TAG, "Location Coordinates:- " + Prefs.getString(AUtils.LAT, null) + ", " + Prefs.getString(AUtils.LONG, null));
+        getDutyStatus();
 
     }
 
@@ -552,6 +561,30 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     }
 
+    private void getDutyStatus() {
+        final String[] status1 = {""};
+        CheckAttendanceWebService checkAttendanceWebService = Connection.createService(CheckAttendanceWebService.class, AUtils.SERVER_URL);
+        Call<CheckAttendancePojo> checkDutyStatus = checkAttendanceWebService.CheckAttendance(Prefs.getString(AUtils.APP_ID, ""),
+                Prefs.getString(AUtils.PREFS.USER_ID, ""),
+                Prefs.getString(AUtils.PREFS.USER_TYPE_ID, ""));
+        checkDutyStatus.enqueue(new Callback<CheckAttendancePojo>() {
+            @Override
+            public void onResponse(Call<CheckAttendancePojo> call, Response<CheckAttendancePojo> response) {
+                if (response.body().isAttendenceOff()) {
+                    status1[0] = "No";
+                } else {
+                    status1[0] = "Yes";
+                }
+                Log.e(TAG, "onResponse: isAttendanceOff? Ans:" + status1[0]);
+            }
+
+            @Override
+            public void onFailure(Call<CheckAttendancePojo> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
     private void generateId() {
 
         setContentView(R.layout.activity_dashboard);
@@ -794,6 +827,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mUserDetailAdapter.getUserDetail();
 
         List<MenuListPojo> menuPojoList = new ArrayList<MenuListPojo>();
+
+        /*
+         Here we're setting menu items and also setting if user attendance check is required on the particular module e.g: checking attendance is required
+         for QRScanner and takePhoto activities*/
 
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerActivity.class, true));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));

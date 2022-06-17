@@ -77,6 +77,8 @@ public class AUtils extends CommonUtils {
     //    Staging URL
 //    public static final String SERVER_URL = "http://115.115.153.117:4044/";
 //    public static final String SERVER_URL = "http://202.65.157.254:6560";
+//    public static final String SERVER_URL = "http://202.65.157.254:5049";   //Important note: Ballarpur port = 5047, Wanadongri = 5048, Shrirampur = 5049
+
 //    public static final String SERVER_URL = "http://183.177.126.33:6560/";
 
     //Relese URL
@@ -188,11 +190,11 @@ public class AUtils extends CommonUtils {
 
     public static boolean DutyOffFromService = false;
 
-    public static boolean isIsOnduty() {
+    public static boolean isIsOnduty() {       // important function to get the status of the employee's duty
         return Prefs.getBoolean(PREFS.IS_ON_DUTY, false);
     }
 
-    public static void setIsOnduty(boolean isOnduty) {
+    public static void setIsOnduty(boolean isOnduty) {   // important function to set the status of the employee's duty
         Prefs.putBoolean(PREFS.IS_ON_DUTY, isOnduty);
     }
 

@@ -453,7 +453,7 @@ public class SyncServer {
         }
     }
 
-    public CheckAttendancePojo checkAttendance() {
+    public CheckAttendancePojo checkAttendance() {  // check the status of duty i.e on or off on the server
 
         CheckAttendancePojo checkAttendancePojo = null;
 

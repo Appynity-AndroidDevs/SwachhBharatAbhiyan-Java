@@ -16,3 +16,4 @@ public interface CheckAttendanceWebService {
                                               @Header("UserId") String userId,
                                               @Header("typeId") String typeId);
 }
+/*this service is used for checking the employee's attendance*/

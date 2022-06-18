@@ -1046,7 +1046,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             .placeholder(R.drawable.ic_user)
                             .error(R.drawable.ic_user)
                             .centerCrop()
-                            .bitmapTransform(new GlideCircleTransformation(getApplicationContext()))
+                            .transform(new GlideCircleTransformation(getApplicationContext()))
                             .into(profilePic);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -83,7 +83,7 @@ public class IdCardDialog extends Dialog {
                         .placeholder(R.drawable.ic_user_white)
                         .error(R.drawable.ic_user_white)
                         .centerCrop()
-                        .bitmapTransform(new GlideCircleTransformation(mContext.getApplicationContext()))
+                        .transform(new GlideCircleTransformation(mContext.getApplicationContext()))
                         .into(imgProfilePic);
             }catch (Exception e){
                 e.printStackTrace();

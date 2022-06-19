@@ -95,6 +95,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private static final int REQUEST_CAMERA = 22;
     private static final int SELECT_FILE = 33;
+    public static final int InAttendanceId = 1;
+    public static final int OutAttendanceId = 2;
 
     private Context mContext;
     private FabSpeedDial fab;
@@ -718,6 +720,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 } else {
                     /*Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_SHORT).show();*/
                     markAttendance.setChecked(AUtils.isIsOnduty());
+                    Log.e(TAG, "onCheckedChanged: offSwitch");
                 }
 
             }
@@ -942,7 +945,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onVehicleTypeDialogClose(Object listItemSelected, String vehicleNo) {
-
+        int attendanceType = 0;
         if (!AUtils.isNull(vehicleNo) && !vehicleNo.isEmpty()) {
             VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) listItemSelected;
 
@@ -955,8 +958,19 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
 
             try {
-                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+//                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                 onInPunchSuccess();
+                if (AUtils.isIsOnduty()) {
+                    attendanceType = 1;
+                } else {
+                    attendanceType = 2;
+                }
+                createAttendanceDTO(attendancePojo, attendanceType);
+                if (!AUtils.isNull(attendancePojo)) {
+                    mOfflineAttendanceAdapter.callAttendanceService(attendancePojo);
+                } else {
+                    Log.e(TAG, "onVehicleTypeDialogClose: attendancePojo is null!");
+                }
                 if (AUtils.isInternetAvailable()) {
                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                         mOfflineAttendanceAdapter.SyncOfflineData();
@@ -969,6 +983,37 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         } else {
             markAttendance.setChecked(false);
         }
+    }
+
+    private void createAttendanceDTO(AttendancePojo attendancePojo, int inAttendanceId) {
+        String inOutDateTime = AUtils.getServerDateTimeLocal();
+        attendancePojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
+        attendancePojo.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
+        attendancePojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "0")));
+        attendancePojo.setBatteryStatus(String.valueOf(AUtils.getBatteryStatus()));
+
+        if (inAttendanceId == InAttendanceId) {
+            attendancePojo.setDaDate(AUtils.getServerDate());
+            attendancePojo.setStartTime(AUtils.getServerTime());
+
+            attendancePojo.setStartLat(Prefs.getString(AUtils.LAT, ""));
+            attendancePojo.setStartLong(Prefs.getString(AUtils.LONG, ""));
+
+//            contentValues.put(COLUMN_DATE_IN, inOutDateTime);
+        } else {
+            attendancePojo.setDaEndDate(AUtils.getServerDate());
+            attendancePojo.setEndTime(AUtils.getServerTime());
+
+            attendancePojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
+            attendancePojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
+
+//            contentValues.put(COLUMN_DATE_OUT, inOutDateTime);
+        }
+
+        Type typeNew = new TypeToken<AttendancePojo>() {
+        }.getType();
+        String mData = new Gson().toJson(attendancePojo, typeNew);
+        Log.e(TAG, "createAttendanceDTO: " + mData);
     }
 
     private void onInPunchSuccess() {

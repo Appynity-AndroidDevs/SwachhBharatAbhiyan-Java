@@ -4,9 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bd8e22a7a7544986699ef4a9cd4d5824/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bd8e22a7a7544986699ef4a9cd4d5824/jetified-retrofitconnectionlibrary-release/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bd8e22a7a7544986699ef4a9cd4d5824/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fb0ce51b9549c257982358cd562ef1f6/jetified-retrofitconnectionlibrary-release/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fb0ce51b9549c257982358cd562ef1f6/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fb0ce51b9549c257982358cd562ef1f6/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8cf0850c93765dc1bd3802daacb6a100/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8cf0850c93765dc1bd3802daacb6a100/transformed/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8cf0850c93765dc1bd3802daacb6a100/transformed/jetified-retrofitconnectionlibrary-release/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

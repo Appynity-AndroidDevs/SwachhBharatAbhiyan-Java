@@ -7,8 +7,6 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
         multiDexEnabled true
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         lintOptions {
             abortOnError false
@@ -110,7 +108,7 @@ dependencies {
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
 
-    implementation 'androidx.work:work-runtime:2.0.1'
+    implementation 'androidx.work:work-runtime:2.7.1'
 
     implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
 

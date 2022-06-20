@@ -1,5 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.connection;
 
+import android.util.Log;
+
 import com.appynitty.swachbharatabhiyanlibrary.connection.SyncServer;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleTypePojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -12,7 +14,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class VehicleTypeAdapterClass {
-
+    private static final String TAG = "VehicleTypeAdapterClass";
     private VehicleTypeListener mListener;
 
     private List<VehicleTypePojo> vehicleTypePojoList;
@@ -40,6 +42,7 @@ public class VehicleTypeAdapterClass {
     public static void setVehicleTypePojoList(List<VehicleTypePojo> vehicleTypePojoList) {
         Type type = new TypeToken<List<VehicleTypePojo>>() {
         }.getType();
+        Log.e(TAG, "setVehicleTypePojoList: list of vehicles => " + vehicleTypePojoList);
         Prefs.putString(AUtils.PREFS.VEHICLE_TYPE_POJO_LIST, gson.toJson(vehicleTypePojoList, type));
     }
 
@@ -59,14 +62,11 @@ public class VehicleTypeAdapterClass {
 
                 getVehicleTypePojoList();
 
-                if (!AUtils.isNull(vehicleTypePojoList) && !vehicleTypePojoList.isEmpty())
-                {
-                    if(!AUtils.isNull(mListener))
+                if (!AUtils.isNull(vehicleTypePojoList) && !vehicleTypePojoList.isEmpty()) {
+                    if (!AUtils.isNull(mListener))
                         mListener.onSuccessCallBack();
-                }
-                else
-                {
-                    if(!AUtils.isNull(mListener))
+                } else {
+                    if (!AUtils.isNull(mListener))
                         mListener.onFailureCallBack();
                 }
 
@@ -81,6 +81,7 @@ public class VehicleTypeAdapterClass {
 
     public interface VehicleTypeListener {
         void onSuccessCallBack();
+
         void onFailureCallBack();
     }
 }

@@ -28,7 +28,7 @@ import retrofit2.Response;
  * Created by Ayan Dey on 9/10/19.
  */
 public class OfflineAttendanceAdapterClass {
-
+    private static final String TAG = "OfflineAttendanceAdapte";
     private OfflineAttendanceListener offlineAttendanceListener;
     private final Context mContext;
     private final SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
@@ -48,6 +48,34 @@ public class OfflineAttendanceAdapterClass {
     /**
      * Add CurrentTime
      */
+
+    /**
+     * Call attendance webservice directly instead of offline process!
+     *
+     * @param attendancePojo
+     */
+
+    public void callAttendanceService(AttendancePojo attendancePojo) {
+        //Requires a list of AttendancePojo List<AttendancePojo> attendanceList
+        List<AttendancePojo> attendanceList = new ArrayList<>();
+        attendanceList.add(attendancePojo);
+        PunchWebService service = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
+        service.saveOfflineAttendanceDetails(Prefs.getString(AUtils.APP_ID, ""),
+                AUtils.CONTENT_TYPE, AUtils.getServerDateTimeWithMilliesSecond(),
+                Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null), attendanceList).enqueue(new Callback<List<AttendanceResponsePojo>>() {
+            @Override
+            public void onResponse(Call<List<AttendanceResponsePojo>> call, Response<List<AttendanceResponsePojo>> response) {
+                assert response.body() != null;
+                Log.e(TAG, "callAttendanceService onResponse: " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<AttendanceResponsePojo>> call, Throwable t) {
+                Log.e(TAG, "callAttendanceService onFailure: " + t.getMessage());
+            }
+        });
+    }
+
     public void SyncOfflineData() {
         if (!AUtils.isSyncOfflineDataRequestEnable) {
 

@@ -169,7 +169,8 @@
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped" />
-        <receiver android:name=".receivers.NetworkChangeReceiver">
+        <receiver android:name=".receivers.NetworkChangeReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>

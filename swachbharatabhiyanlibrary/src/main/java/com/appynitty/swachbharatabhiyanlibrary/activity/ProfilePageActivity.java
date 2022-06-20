@@ -145,7 +145,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                         .placeholder(R.drawable.ic_user_white)
                         .error(R.drawable.ic_user_white)
                         .centerCrop()
-                        .bitmapTransform(new GlideCircleTransformation(getApplicationContext()))
+                        .transform(new GlideCircleTransformation(getApplicationContext()))
                         .into(profilePic);
             }catch (Exception e){
                 e.printStackTrace();

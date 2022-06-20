@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.appynitty.swachbharatabhiyanlibrary.entity.UserDailyAttendanceEntity;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
@@ -22,7 +23,7 @@ import java.util.List;
  * It contains CRUD operation methods for offline sync of data from Ghanta Gadi Employee
  */
 public class SyncOfflineAttendanceRepository {
-
+    private static final String TAG = "SyncOfflineAttendanceRe";
     private static final String SYNC_OFFLINE_ATTENDANCE_TABLE = "tableSyncOfflineAttendance";
 
     public static final int InAttendanceId = 1;
@@ -238,6 +239,7 @@ public class SyncOfflineAttendanceRepository {
     public void insertCollection(AttendancePojo pojo, int attendanceType) {
         SQLiteDatabase sqLiteDatabase = AUtils.sqlDBInstance(mContext);
         performCollectionInsert(sqLiteDatabase, pojo, attendanceType);
+        Log.e(TAG, "insertCollection: " + pojo);
         sqLiteDatabase.close();
     }
 
@@ -351,7 +353,7 @@ public class SyncOfflineAttendanceRepository {
         SQLiteDatabase sqLiteDatabase = AUtils.sqlDBInstance(mContext);
 
         String sql = "SELECT * FROM " + SYNC_OFFLINE_ATTENDANCE_TABLE + " WHERE " +
-                COLUMN_IS_IN_SYNC + " = ? OR "+ COLUMN_IS_OUT_SYNC +" = ? ORDER BY " + COLUMN_DATE_IN + " DESC";
+                COLUMN_IS_IN_SYNC + " = ? OR " + COLUMN_IS_OUT_SYNC + " = ? ORDER BY " + COLUMN_DATE_IN + " DESC";
 
         String[] param = new String[]{String.valueOf(NOT_SYNC), String.valueOf(NOT_SYNC)};
 
@@ -375,8 +377,8 @@ public class SyncOfflineAttendanceRepository {
         ContentValues contentValues = new ContentValues();
 
         String outDate = date;
-if(TextUtils.isEmpty(outDate))
-        pojo.setDaEndDate(AUtils.serverDateFromLocal(outDate));
+        if (TextUtils.isEmpty(outDate))
+            pojo.setDaEndDate(AUtils.serverDateFromLocal(outDate));
         pojo.setEndTime(AUtils.serverTimeFromLocal(outDate));
 
         pojo.setEndLat(Prefs.getString(AUtils.LAT, ""));

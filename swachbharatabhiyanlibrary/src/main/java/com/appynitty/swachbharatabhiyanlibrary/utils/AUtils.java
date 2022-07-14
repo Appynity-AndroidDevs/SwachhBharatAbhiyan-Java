@@ -120,6 +120,7 @@ public class AUtils extends CommonUtils {
 
     public static final String LAT = "Lat";
     public static final String LONG = "Long";
+    public static final String HOUSE_ID = "ReferanceId";
 
     public static final int LOCATION_INTERVAL = 5000;
     //    public static final int LOCATION_INTERVAL = 1000 * 60 * 10; //10 Minute

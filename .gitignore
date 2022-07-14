@@ -250,3 +250,4 @@ local.properties
 .idea/gradle.xml
 .idea/dbnavigator.xml
 *.properties
+.idea/misc.xml

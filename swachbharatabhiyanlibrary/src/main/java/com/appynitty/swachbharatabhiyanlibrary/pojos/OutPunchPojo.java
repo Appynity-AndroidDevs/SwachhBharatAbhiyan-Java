@@ -12,6 +12,16 @@ public class OutPunchPojo {
 
     private String endLat;
 
+    private String ReferanceId;
+
+    public String getReferanceId() {
+        return ReferanceId;
+    }
+
+    public void setReferanceId(String referanceId) {
+        ReferanceId = referanceId;
+    }
+
     public String getEndLong() {
         return endLong;
     }

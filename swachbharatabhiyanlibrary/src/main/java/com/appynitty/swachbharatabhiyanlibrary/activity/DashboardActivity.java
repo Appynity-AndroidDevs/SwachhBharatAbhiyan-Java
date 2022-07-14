@@ -108,7 +108,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     String vehicleType = null;
     String vehicle_no = null;
     private AttendancePojo attendancePojo = null;
-
+    String empType;
     private List<VehicleTypePojo> vehicleTypePojoList;
 
     private UserDetailPojo userDetailPojo;
@@ -598,6 +598,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         userName = findViewById(R.id.user_full_name);
         empId = findViewById(R.id.user_emp_id);
         profilePic = findViewById(R.id.user_profile_pic);
+        empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
 
         initToolBar();
 
@@ -947,53 +948,37 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         }
     }
 
-    private void onInPunchSuccessDump() {
-        attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-        attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-        startActivity(new Intent(mContext, QRcodeScannerActivity.class));
-
-        AUtils.setInPunchDate(Calendar.getInstance());
-        Log.i(TAG, AUtils.getInPunchDate());
-        AUtils.setIsOnduty(true);
-    }
-
-    private void onOutPunchSuccessDump() {
-        attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
-        attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
-        
-        stopServiceIfRunning();
-
-        markAttendance.setChecked(false);
-
-        attendancePojo = null;
-        AUtils.removeInPunchDate();
-        AUtils.setIsOnduty(false);
-    }
-
     private void onInPunchSuccess() {
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
 //        String vehicleType = null;
 
-        for (int i = 0; i < vehicleTypePojoList.size(); i++) {
-            if (Prefs.getString(AUtils.VEHICLE_ID, "0").equals(vehicleTypePojoList.get(i).getVtId())) {
+        if (empType.matches("L") || empType.matches("S") || empType.matches("N")){
+
+            for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+                if (Prefs.getString(AUtils.VEHICLE_ID, "0").equals(vehicleTypePojoList.get(i).getVtId())) {
 //                if(Prefs.getString(AUtils.LANGUAGE_NAME,AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
 //                    vehicleType = vehicleTypePojoList.get(i).getDescriptionMar();
 //                else
-                vehicleType = vehicleTypePojoList.get(i).getDescription();
+                    vehicleType = vehicleTypePojoList.get(i).getDescription();
+                }
             }
-        }
 
-        if (!AUtils.isNullString(attendancePojo.getVehicleNumber())) {
+            if (!AUtils.isNullString(attendancePojo.getVehicleNumber())) {
 
-            vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
-                    this.getResources().getString(R.string.hyphen), attendancePojo.getVehicleNumber(),
-                    this.getResources().getString(R.string.closing_round_bracket)));
-            vehicle_no = attendancePojo.getVehicleNumber();
-        } else {
-            vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
-                    vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
+                vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
+                        this.getResources().getString(R.string.hyphen), attendancePojo.getVehicleNumber(),
+                        this.getResources().getString(R.string.closing_round_bracket)));
+                vehicle_no = attendancePojo.getVehicleNumber();
+            } else {
+                vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
+                        vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
+            }
+
+        }else if (empType.matches("D")){
+            String vehicleType = null;
+            startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
         }
 
         AUtils.setInPunchDate(Calendar.getInstance());
@@ -1063,58 +1048,55 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
     }
 
-    private void checkDutyStatusDump() {
-        if (AUtils.isIsOnduty()) {
-            if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
-                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-            }
-            markAttendance.setChecked(true);
-
-            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-
-            String vehicleName = "";
-
-        }
-        else {
-            markAttendance.setChecked(false);
-        }
-    }
-
     private void checkDutyStatus() {
 
         if (AUtils.isIsOnduty()) {
 
-            if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
-                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-            }
-            markAttendance.setChecked(true);
-
-            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-
-            String vehicleName = "";
-
-            if (AUtils.isNull(vehicleTypePojoList)) {
-                vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
-            }
-            for (int i = 0; i < vehicleTypePojoList.size(); i++) {
-
-                if (Prefs.getString(AUtils.VEHICLE_ID, "").equals(vehicleTypePojoList.get(i).getVtId())) {
-                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
-                        vehicleName = vehicleTypePojoList.get(i).getDescriptionMar();
-                    else
-                        vehicleName = vehicleTypePojoList.get(i).getDescription();
+            if (empType.matches("L") || empType.matches("S") || empType.matches("N")){
+                if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
                 }
+                markAttendance.setChecked(true);
+
+                attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+                attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+
+                String vehicleName = "";
+
+                if (AUtils.isNull(vehicleTypePojoList)) {
+                    vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
+                }
+                for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+
+                    if (Prefs.getString(AUtils.VEHICLE_ID, "").equals(vehicleTypePojoList.get(i).getVtId())) {
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                            vehicleName = vehicleTypePojoList.get(i).getDescriptionMar();
+                        else
+                            vehicleName = vehicleTypePojoList.get(i).getDescription();
+                    }
+                }
+
+                if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, ""))) {
+
+                    vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.hyphen), Prefs.getString(AUtils.VEHICLE_NO, ""), this.getResources().getString(R.string.closing_round_bracket)));
+                } else {
+                    vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.closing_round_bracket)));
+                }
+            }else if (empType.matches("D")){
+                if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                }
+                markAttendance.setChecked(true);
+
+                attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+                attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+
+                String vehicleName = "";
+                startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
             }
 
-            if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, ""))) {
-
-                vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.hyphen), Prefs.getString(AUtils.VEHICLE_NO, ""), this.getResources().getString(R.string.closing_round_bracket)));
-            } else {
-                vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.closing_round_bracket)));
-            }
-        } else {
+        }
+        else {
             markAttendance.setChecked(false);
         }
     }
@@ -1150,40 +1132,59 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private void onSwitchOn() {
 
-        if (isLocationPermission) {
+        if (empType.matches("L") || empType.matches("S") || empType.matches("N")){
+            if (isLocationPermission) {
 
-            if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
-                if (!AUtils.DutyOffFromService) {
-                    HashMap<Integer, Object> mLanguage = new HashMap<>();
+                if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
+                    if (!AUtils.DutyOffFromService) {
+                        HashMap<Integer, Object> mLanguage = new HashMap<>();
 
-                    vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
+                        vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
 
-                    if (!AUtils.isNull(vehicleTypePojoList) && !vehicleTypePojoList.isEmpty()) {
-                        for (int i = 0; i < vehicleTypePojoList.size(); i++) {
-                            mLanguage.put(i, vehicleTypePojoList.get(i));
-                        }
+                        if (!AUtils.isNull(vehicleTypePojoList) && !vehicleTypePojoList.isEmpty()) {
+                            for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+                                mLanguage.put(i, vehicleTypePojoList.get(i));
+                            }
 
-                        if (!AUtils.isIsOnduty()) {
-                            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                            if (!AUtils.isIsOnduty()) {
+                                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
 
-                            PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_VEHICLE, mLanguage, this);
-                            dialog.show();
+                                PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_VEHICLE, mLanguage, this);
+                                dialog.show();
+                            }
+                        } else {
+                            mVehicleTypeAdapter.getVehicleType();
+                            markAttendance.setChecked(false);
+                            AUtils.error(mContext, mContext.getString(R.string.vehicle_not_found_error), Toast.LENGTH_SHORT);
                         }
                     } else {
-                        mVehicleTypeAdapter.getVehicleType();
-                        markAttendance.setChecked(false);
-                        AUtils.error(mContext, mContext.getString(R.string.vehicle_not_found_error), Toast.LENGTH_SHORT);
+                        AUtils.DutyOffFromService = false;
                     }
                 } else {
-                    AUtils.DutyOffFromService = false;
-                }
-            } else {
-                markAttendance.setChecked(false);
+                    markAttendance.setChecked(false);
 //                Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_LONG).show();
 //                AUtils.showGPSSettingsAlert(mContext);
+                }
+            } else {
+                isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
             }
-        } else {
-            isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
+        }else if (empType.matches("D")){
+            if (isLocationPermission) {
+
+                if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
+                    if (!AUtils.DutyOffFromService) {
+                        startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+                    } else {
+                        AUtils.DutyOffFromService = false;
+                    }
+                } else {
+                    markAttendance.setChecked(false);
+//                Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_LONG).show();
+//                AUtils.showGPSSettingsAlert(mContext);
+                }
+            } else {
+                isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
+            }
         }
     }
 

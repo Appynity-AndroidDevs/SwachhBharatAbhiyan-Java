@@ -194,6 +194,7 @@ public class SyncServer {
             inPunchPojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "0")));
             inPunchPojo.setStartLat(Prefs.getString(AUtils.LAT, ""));
             inPunchPojo.setStartLong(Prefs.getString(AUtils.LONG, ""));
+            inPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID, ""));
 
             Type type = new TypeToken<InPunchPojo>() {
             }.getType();
@@ -219,6 +220,7 @@ public class SyncServer {
             outPunchPojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
             outPunchPojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
             outPunchPojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
+            outPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID, ""));
 
             resultPojo = service.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
                     AUtils.getBatteryStatus(), outPunchPojo).execute().body();

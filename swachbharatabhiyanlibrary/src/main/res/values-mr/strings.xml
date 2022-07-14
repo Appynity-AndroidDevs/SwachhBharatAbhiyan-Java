@@ -199,5 +199,6 @@
     <string name="turning_on_the_gps_n_please_wait">GPS चालू होत आहे\nकृपया प्रतीक्षा करा...</string>
     <string name="please_wait">कृपया प्रतीक्षा करें...</string>
     <string name="colectnStatus">वजन नोंदणी पूर्ण झाली</string>
+    <string name="dump_yard_supervisor">डंप यार्ड सुपरवाइज़र</string>
 
 </resources>

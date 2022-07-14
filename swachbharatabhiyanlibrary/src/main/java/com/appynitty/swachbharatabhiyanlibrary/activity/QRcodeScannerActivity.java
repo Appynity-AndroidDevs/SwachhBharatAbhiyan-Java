@@ -334,6 +334,10 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
             idAutoComplete.setHint(getResources().getString(R.string.hp_gp_id_hint));
             radioSelection = AUtils.RADIO_SELECTED_HP;
             houseCollectionRadio.setText(R.string.waste_collection_radio);
+        }else if (EmpType.matches("D")) {
+            idAutoComplete.setHint(getResources().getString(R.string.hp_gp_id_hint));
+            radioSelection = AUtils.RADIO_SELECTED_DY;
+            houseCollectionRadio.setText(R.string.dump_collection_radio);
         }
 
 
@@ -426,6 +430,16 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
                 //Street :-
                 if (EmpType.matches("S")) {
                     idIpLayout.setHint(getResources().getString(R.string.street_number_hint));
+
+                    if (!AUtils.isConnectedFast(mContext)) {
+                        AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+                    }
+                    mAreaAdapter.fetchAreaList(getAreaType(), true);
+                }
+
+                //Dump :-
+                if (EmpType.matches("D")) {
+                    idIpLayout.setHint(getResources().getString(R.string.dump_number_hint));
 
                     if (!AUtils.isConnectedFast(mContext)) {
                         AUtils.warning(mContext, getResources().getString(R.string.slow_internet));

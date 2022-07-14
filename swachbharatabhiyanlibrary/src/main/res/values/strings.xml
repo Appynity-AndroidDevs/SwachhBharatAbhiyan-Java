@@ -230,13 +230,16 @@
     <string name="sw_dy_id_hint">Enter Street ID</string>
     <string name="liquid_number_hint">Enter Liquid Waste ID</string>
     <string name="street_number_hint">Enter Street Sweep ID</string>
+    <string name="dump_number_hint">Enter Dump Yard ID</string>
     <string name="liquid_collection_radio">Liquid Collection</string>
     <string name="street_collection_radio">Street Collection</string>
     <string name="waste_collection_radio">Waste Collection</string>
+    <string name="dump_collection_radio">Dump Collection</string>
     <string name="app_notification_description" translatable="false">Please don\'t kill the app from background.</string>
     <string name="turning_on_the_gps_n_please_wait">Turning on the GPS\nPlease wait...</string>
     <string name="please_wait">Please wait!</string>
     <string name="colectnStatus">Garbage Weight Registration Complete</string>
+    <string name="dump_yard_supervisor">Dump Yard Supervisor</string>
 
 
 </resources>

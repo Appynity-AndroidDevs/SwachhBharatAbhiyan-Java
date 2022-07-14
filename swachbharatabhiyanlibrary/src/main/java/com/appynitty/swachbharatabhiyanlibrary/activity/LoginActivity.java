@@ -341,6 +341,9 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         } else if (empType.matches(getResources().getString(R.string.liquid_waste_cleaning))) {
             loginPojo.setEmployeeType("L");
 
+        }else if (empType.matches(getResources().getString(R.string.dump_yard_supervisor))) {
+            loginPojo.setEmployeeType("D");
+
         }
 
 //        Log.d("TAG", "Employee Type: " + loginPojo.getEmployeeType());

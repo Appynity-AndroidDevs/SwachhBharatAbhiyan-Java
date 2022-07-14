@@ -947,6 +947,29 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         }
     }
 
+    private void onInPunchSuccessDump() {
+        attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+        attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+        startActivity(new Intent(mContext, QRcodeScannerActivity.class));
+
+        AUtils.setInPunchDate(Calendar.getInstance());
+        Log.i(TAG, AUtils.getInPunchDate());
+        AUtils.setIsOnduty(true);
+    }
+
+    private void onOutPunchSuccessDump() {
+        attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
+        attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
+        
+        stopServiceIfRunning();
+
+        markAttendance.setChecked(false);
+
+        attendancePojo = null;
+        AUtils.removeInPunchDate();
+        AUtils.setIsOnduty(false);
+    }
+
     private void onInPunchSuccess() {
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
@@ -1038,6 +1061,24 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
+    }
+
+    private void checkDutyStatusDump() {
+        if (AUtils.isIsOnduty()) {
+            if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+            }
+            markAttendance.setChecked(true);
+
+            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+
+            String vehicleName = "";
+
+        }
+        else {
+            markAttendance.setChecked(false);
+        }
     }
 
     private void checkDutyStatus() {

@@ -43,11 +43,9 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncOfflineAd
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.UserDetailAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.connection.SyncServer;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.CheckAttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -59,7 +57,6 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
-import com.appynitty.swachbharatabhiyanlibrary.webservices.CheckAttendanceWebService;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.IMEIWebService;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.LocationSettingsStates;
@@ -95,8 +92,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private static final int REQUEST_CAMERA = 22;
     private static final int SELECT_FILE = 33;
-    public static final int InAttendanceId = 1;
-    public static final int OutAttendanceId = 2;
 
     private Context mContext;
     private FabSpeedDial fab;
@@ -110,7 +105,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private TextView userName;
     private TextView empId, txtEmpId;
     public boolean isSync = true;
-
+    String vehicleType = null;
+    String vehicle_no = null;
     private AttendancePojo attendancePojo = null;
 
     private List<VehicleTypePojo> vehicleTypePojoList;
@@ -142,11 +138,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     MediaPlayer mp = null;
     FrameLayout pb;
 
-    /*newly added code here*/
-    CheckAttendancePojo checkAttendancePojo;
-    SyncServer server;
-    /*end of the newly added code here*/
-
     @Override
     protected void attachBaseContext(Context newBase) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -163,7 +154,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         AUtils.gpsStatusCheck(DashboardActivity.this);
         onSwitchStatus(AUtils.isIsOnduty());
 //        Log.e(TAG, "Location Coordinates:- " + Prefs.getString(AUtils.LAT, null) + ", " + Prefs.getString(AUtils.LONG, null));
-        getDutyStatus();
 
     }
 
@@ -281,6 +271,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     @Override
     protected void onPostResume() {
         super.onPostResume();
+
         try {
             if (AUtils.isInternetAvailable()) {
                 AUtils.hideSnackBar();
@@ -294,7 +285,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             Calendar CurrentTime = AUtils.getCurrentTime();
             Calendar DutyOffTime = AUtils.getDutyEndTime();
 
-            if (inDate.equals(currentDate) && CurrentTime.after(DutyOffTime)) {
+            if (inDate.equals(currentDate) && CurrentTime.after(DutyOffTime)) {  //checking if the duty date is the current day
+                //and duty off-time has elapsed the current time
 
                 isFromAttendanceChecked = true;
 
@@ -334,6 +326,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+
+        if (!AUtils.isNullString(vehicleType) && !AUtils.isNullString(vehicle_no)) {
+
+            vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
+                    this.getResources().getString(R.string.hyphen), vehicle_no,
+                    this.getResources().getString(R.string.closing_round_bracket)));
+        } else {
+            vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
+                    vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
         }
     }
 
@@ -563,30 +565,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     }
 
-    private void getDutyStatus() {
-        final String[] status1 = {""};
-        CheckAttendanceWebService checkAttendanceWebService = Connection.createService(CheckAttendanceWebService.class, AUtils.SERVER_URL);
-        Call<CheckAttendancePojo> checkDutyStatus = checkAttendanceWebService.CheckAttendance(Prefs.getString(AUtils.APP_ID, ""),
-                Prefs.getString(AUtils.PREFS.USER_ID, ""),
-                Prefs.getString(AUtils.PREFS.USER_TYPE_ID, ""));
-        checkDutyStatus.enqueue(new Callback<CheckAttendancePojo>() {
-            @Override
-            public void onResponse(Call<CheckAttendancePojo> call, Response<CheckAttendancePojo> response) {
-                if (response.body().isAttendenceOff()) {
-                    status1[0] = "No";
-                } else {
-                    status1[0] = "Yes";
-                }
-                Log.e(TAG, "onResponse: isAttendanceOff? Ans:" + status1[0]);
-            }
-
-            @Override
-            public void onFailure(Call<CheckAttendancePojo> call, Throwable t) {
-                Log.e(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-    }
-
     private void generateId() {
 
         setContentView(R.layout.activity_dashboard);
@@ -720,7 +698,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 } else {
                     /*Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_SHORT).show();*/
                     markAttendance.setChecked(AUtils.isIsOnduty());
-                    Log.e(TAG, "onCheckedChanged: offSwitch");
                 }
 
             }
@@ -830,10 +807,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mUserDetailAdapter.getUserDetail();
 
         List<MenuListPojo> menuPojoList = new ArrayList<MenuListPojo>();
-
-        /*
-         Here we're setting menu items and also setting if user attendance check is required on the particular module e.g: checking attendance is required
-         for QRScanner and takePhoto activities*/
 
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerActivity.class, true));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
@@ -945,7 +918,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onVehicleTypeDialogClose(Object listItemSelected, String vehicleNo) {
-        int attendanceType = 0;
+
         if (!AUtils.isNull(vehicleNo) && !vehicleNo.isEmpty()) {
             VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) listItemSelected;
 
@@ -958,19 +931,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
 
             try {
-//                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                 onInPunchSuccess();
-                if (AUtils.isIsOnduty()) {
-                    attendanceType = 1;
-                } else {
-                    attendanceType = 2;
-                }
-                createAttendanceDTO(attendancePojo, attendanceType);
-                if (!AUtils.isNull(attendancePojo)) {
-                    mOfflineAttendanceAdapter.callAttendanceService(attendancePojo);
-                } else {
-                    Log.e(TAG, "onVehicleTypeDialogClose: attendancePojo is null!");
-                }
                 if (AUtils.isInternetAvailable()) {
                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                         mOfflineAttendanceAdapter.SyncOfflineData();
@@ -985,42 +947,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         }
     }
 
-    private void createAttendanceDTO(AttendancePojo attendancePojo, int inAttendanceId) {
-        String inOutDateTime = AUtils.getServerDateTimeLocal();
-        attendancePojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
-        attendancePojo.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
-        attendancePojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "0")));
-        attendancePojo.setBatteryStatus(String.valueOf(AUtils.getBatteryStatus()));
-
-        if (inAttendanceId == InAttendanceId) {
-            attendancePojo.setDaDate(AUtils.getServerDate());
-            attendancePojo.setStartTime(AUtils.getServerTime());
-
-            attendancePojo.setStartLat(Prefs.getString(AUtils.LAT, ""));
-            attendancePojo.setStartLong(Prefs.getString(AUtils.LONG, ""));
-
-//            contentValues.put(COLUMN_DATE_IN, inOutDateTime);
-        } else {
-            attendancePojo.setDaEndDate(AUtils.getServerDate());
-            attendancePojo.setEndTime(AUtils.getServerTime());
-
-            attendancePojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
-            attendancePojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
-
-//            contentValues.put(COLUMN_DATE_OUT, inOutDateTime);
-        }
-
-        Type typeNew = new TypeToken<AttendancePojo>() {
-        }.getType();
-        String mData = new Gson().toJson(attendancePojo, typeNew);
-        Log.e(TAG, "createAttendanceDTO: " + mData);
-    }
-
     private void onInPunchSuccess() {
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
-        String vehicleType = null;
+//        String vehicleType = null;
 
         for (int i = 0; i < vehicleTypePojoList.size(); i++) {
             if (Prefs.getString(AUtils.VEHICLE_ID, "0").equals(vehicleTypePojoList.get(i).getVtId())) {
@@ -1036,6 +967,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
                     this.getResources().getString(R.string.hyphen), attendancePojo.getVehicleNumber(),
                     this.getResources().getString(R.string.closing_round_bracket)));
+            vehicle_no = attendancePojo.getVehicleNumber();
         } else {
             vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
                     vehicleType, this.getResources().getString(R.string.closing_round_bracket)));

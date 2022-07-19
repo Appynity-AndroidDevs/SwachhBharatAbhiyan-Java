@@ -334,8 +334,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     this.getResources().getString(R.string.hyphen), vehicle_no,
                     this.getResources().getString(R.string.closing_round_bracket)));
         } else {
-            vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
-                    vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
+            vehicleStatus.setText("");
         }
     }
 

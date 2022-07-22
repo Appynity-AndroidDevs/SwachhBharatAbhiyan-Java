@@ -32,6 +32,15 @@ public class AttendancePojo {
     private String daEndDate;
 
     private String imagePath;
+    private String ReferanceId;
+
+    public String getReferanceId() {
+        return ReferanceId;
+    }
+
+    public void setReferanceId(String referanceId) {
+        ReferanceId = referanceId;
+    }
 
     public String getStartLat() {
         return startLat;
@@ -161,6 +170,7 @@ public class AttendancePojo {
                 + ", startTime='" + startTime + '\''
                 + ", endTime='" + endTime + '\''
                 + ", daEndDate='" + daEndDate + '\''
-                + ", imagePath='" + imagePath + '\'' + '}';
+                + ", imagePath='" + imagePath + '\'' + '}'
+                + ", ReferanceId='" + ReferanceId + '\'' + '}';
     }
 }

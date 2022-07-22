@@ -1070,7 +1070,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         //rahul
         String areaType = getAreaType();
         if (areaType.equals(AUtils.HP_AREA_TYPE_ID)) {
-            mHpAdapter.fetchHpList(areaId);
+            mHpAdapter.fetchHpList(AUtils.HP_AREA_TYPE_ID, areaId);
         }
 
         if (areaType.equals(AUtils.GP_AREA_TYPE_ID)) {

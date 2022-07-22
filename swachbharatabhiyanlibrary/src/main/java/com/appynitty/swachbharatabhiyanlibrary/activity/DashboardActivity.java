@@ -227,7 +227,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 });
             } else {
                 if (isSwitchOn) {
-                    markAttendance.setChecked(false);
+                    markAttendance.setChecked(true);
                 }
             }
 
@@ -308,15 +308,34 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 onOutPunchSuccess();
             }
+            if (empType.matches("l") || empType.matches("S") || empType.matches("N")){
+                if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
+                    attendancePojo = syncOfflineAttendanceRepository.checkAttendance();
 
-            if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
+                    if (!AUtils.isNull(attendancePojo)) {
+                        markAttendance.setChecked(true);
+                        onInPunchSuccess();
+                    }
+                }
+            } else if (empType.matches("D")){
+                if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
+                    attendancePojo = syncOfflineAttendanceRepository.checkAttendance();
+
+                    if (!AUtils.isNull(attendancePojo)) {
+                        markAttendance.setChecked(true);
+                        onInPunchSuccess();
+                    }
+                }
+            }
+
+            /*if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
                 attendancePojo = syncOfflineAttendanceRepository.checkAttendance();
 
                 if (!AUtils.isNull(attendancePojo)) {
                     markAttendance.setChecked(true);
                     onInPunchSuccess();
                 }
-            }
+            }*/
 
             if (!AUtils.isSyncOfflineDataRequestEnable) {
                 verifyDataAdapterClass.verifyOfflineSync();
@@ -695,7 +714,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 AUtils.gpsStatusCheck(DashboardActivity.this);
                 if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                    Log.e(TAG,"check toggle is: "+ isChecked);
                     onSwitchStatus(isChecked);
+
                 } else {
                     /*Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_SHORT).show();*/
                     markAttendance.setChecked(AUtils.isIsOnduty());
@@ -870,6 +891,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.LONG);
         Prefs.remove(AUtils.VEHICLE_NO);
         Prefs.remove(AUtils.VEHICLE_ID);
+        Prefs.remove(AUtils.HOUSE_ID);
+        Prefs.remove(AUtils.PREFS.DUMP_YARD_SUPERVISOR);
 
         startActivity(new Intent(context, providedClass));
     }
@@ -949,12 +972,12 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onInPunchSuccess() {
-        attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-        attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-
-//        String vehicleType = null;
 
         if (empType.matches("L") || empType.matches("S") || empType.matches("N")){
+            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+
+//        String vehicleType = null;
 
             for (int i = 0; i < vehicleTypePojoList.size(); i++) {
                 if (Prefs.getString(AUtils.VEHICLE_ID, "0").equals(vehicleTypePojoList.get(i).getVtId())) {
@@ -976,14 +999,22 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
             }
 
+            AUtils.setInPunchDate(Calendar.getInstance());
+            Log.i(TAG, AUtils.getInPunchDate());
+            AUtils.setIsOnduty(true);
+
         }else if (empType.matches("D")){
-            String vehicleType = null;
-            startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+
+            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+          //  attendancePojo.setReferanceId(Prefs.getString(AUtils.PREFS.DUMP_YARD_SUPERVISOR,""));
+            markAttendance.setChecked(true);
+
+            AUtils.setInPunchDate(Calendar.getInstance());
+            Log.i(TAG, AUtils.getInPunchDate());
+            AUtils.setIsOnduty(true);
         }
 
-        AUtils.setInPunchDate(Calendar.getInstance());
-        Log.i(TAG, AUtils.getInPunchDate());
-        AUtils.setIsOnduty(true);
     }
 
     private void onOutPunchSuccess() {
@@ -1058,8 +1089,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 }
                 markAttendance.setChecked(true);
 
-                attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-                attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+                /*attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+                attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));*/
 
                 String vehicleName = "";
 
@@ -1087,17 +1118,18 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
                 }
                 markAttendance.setChecked(true);
-
                 attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
                 attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+                //attendancePojo.setReferanceId(Prefs.getString(AUtils.PREFS.DUMP_YARD_SUPERVISOR,""));
 
                 String vehicleName = "";
-                startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+                vehicleStatus.setText(" ");
             }
-
         }
         else {
             markAttendance.setChecked(false);
+            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
         }
     }
 
@@ -1148,7 +1180,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                             if (!AUtils.isIsOnduty()) {
                                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-
                                 PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_VEHICLE, mLanguage, this);
                                 dialog.show();
                             }
@@ -1169,11 +1200,46 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
             }
         }else if (empType.matches("D")){
+
             if (isLocationPermission) {
 
                 if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
                     if (!AUtils.DutyOffFromService) {
-                        startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+
+                        if (!AUtils.isIsOnduty()) {
+                            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
+                            startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+
+                            Prefs.putString(AUtils.VEHICLE_ID, null);
+
+                            Prefs.putString(AUtils.VEHICLE_NO, null);
+                            /*//Prefs.putString(AUtils.HOUSE_ID, AUtils.HOUSE_ID);
+
+                            Prefs.getString(AUtils.HOUSE_ID,"");*/
+
+                            if (AUtils.isNull(attendancePojo)) {
+                                attendancePojo = new AttendancePojo();
+                            }
+
+                            try {
+                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+                                onInPunchSuccess();
+                                if (AUtils.isInternetAvailable()) {
+                                    if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
+                                        mOfflineAttendanceAdapter.SyncOfflineData();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                markAttendance.setChecked(true);
+                                AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                            }
+
+
+                        }
+                        else {
+                            markAttendance.setChecked(false);
+                        }
                     } else {
                         AUtils.DutyOffFromService = false;
                     }
@@ -1185,46 +1251,80 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             } else {
                 isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
             }
+
         }
     }
 
     private void onSwitchOff() {
+        if (empType.matches("L") || empType.matches("S") || empType.matches("N")){
+            if (AUtils.isIsOnduty()) {
+                try {
+                    if (!isFromAttendanceChecked) {
+                        AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                if (AUtils.isNull(attendancePojo))
+                                    attendancePojo = new AttendancePojo();
 
-        if (AUtils.isIsOnduty()) {
-            try {
-                if (!isFromAttendanceChecked) {
-                    AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            if (AUtils.isNull(attendancePojo))
-                                attendancePojo = new AttendancePojo();
+                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                                onOutPunchSuccess();
 
-                            syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
-                            onOutPunchSuccess();
-
-                            if (AUtils.isInternetAvailable()) {
-                                mOfflineAttendanceAdapter.SyncOfflineData();
+                                if (AUtils.isInternetAvailable()) {
+                                    mOfflineAttendanceAdapter.SyncOfflineData();
+                                }
                             }
-                        }
-                    }, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            markAttendance.setChecked(true);
-                        }
-                    });
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                markAttendance.setChecked(true);
+                            }
+                        });
 
-                } else {
-                    isFromAttendanceChecked = false;
+                    } else {
+                        isFromAttendanceChecked = false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    markAttendance.setChecked(false);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                markAttendance.setChecked(true);
+            }
+        } else if (empType.matches("D")){
+            if (AUtils.isIsOnduty()) {
+                try {
+                    if (!isFromAttendanceChecked) {
+                        AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                if (AUtils.isNull(attendancePojo))
+                                    attendancePojo = new AttendancePojo();
+
+                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                                onOutPunchSuccess();
+
+                                if (AUtils.isInternetAvailable()) {
+                                    mOfflineAttendanceAdapter.SyncOfflineData();
+                                }
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                markAttendance.setChecked(true);
+                            }
+                        });
+
+                    } else {
+                        isFromAttendanceChecked = false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    markAttendance.setChecked(false);
+                }
             }
         }
-
-
     }
 
     private void onCaptureImageResult(Intent data) {
@@ -1245,7 +1345,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
             attendancePojo.setImagePath(destination.getAbsolutePath());
-
+            attendancePojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
             onSwitchOn();
 
         } catch (Exception e) {

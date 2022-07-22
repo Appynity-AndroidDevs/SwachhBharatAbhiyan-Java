@@ -25,8 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +39,9 @@ import androidx.core.app.ActivityCompat;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.AutocompleteContainSearch;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaHouseAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaPointAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CollectionAreaAdapterClass;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.DumpYardAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.GarbageCollectionAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.dialogs.GarbageTypePopUp;
+import com.appynitty.swachbharatabhiyanlibrary.connection.SyncServer;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaPointPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaPojo;
@@ -57,7 +54,6 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceR
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationMonitoringService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
-import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -70,6 +66,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
@@ -78,35 +75,37 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
 public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler {
 
-    private final static String TAG = "QRcodeScannerActivity";
+    private final static String TAG = "DumpSuperScannerActivity";
     private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 100;
     GarbageCollectionPojo garbageCollectionPojo;
     private Context mContext;
     private Toolbar toolbar;
     private ZBarScannerView scannerView;
     private FabSpeedDial fabSpeedDial;
-    private AutoCompleteTextView dumpAutoComplete;
-    private TextInputLayout idIpLayout, dumpYardIdIpLayout;
+   // private AutoCompleteTextView dumpAutoComplete;
+    private TextInputLayout idIpLayout/*, dumpYardIdIpLayout*/;
     private AutoCompleteTextView idAutoComplete;
-
+    private AreaHouseAdapterClass mHpAdapter;
     private Button submitBtn, permissionBtn;
     private View contentView;
     private boolean isActivityData;
     private ImagePojo imagePojo;
     private Boolean isScanQr;
-    private HashMap<String, String> areaHash;
+
     private HashMap<String, String> idHash;
+    private List<CollectionAreaPointPojo> dumpHouseList;
 
     private DumpYardAdapterClass mDyAdapter;
+    private AttendanceAdapterClass mAttendanceAdapter;
 
 
     private SyncOfflineRepository syncOfflineRepository;
     private SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
-
     private MyProgressDialog myProgressDialog;
     private ArrayList<Integer> mSelectedIndices;
-
+    String selection;
     private String EmpType;
+    private Spinner spinner;
 
     LocationMonitoringService locationMonitoringService;
     Location location;
@@ -277,16 +276,16 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         AUtils.currentContextConstant = mContext;
 
         EmpType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null); //added by Swapnil
-
-        mDyAdapter = new DumpYardAdapterClass();
+        dumpHouseList = new ArrayList<>();
+        mHpAdapter = new AreaHouseAdapterClass();
 
         fabSpeedDial = findViewById(R.id.flash_toggle);
+        mAttendanceAdapter = new AttendanceAdapterClass();
 
-        dumpYardIdIpLayout = findViewById(R.id.txt_dump_yard_id);
+        /*dumpYardIdIpLayout = findViewById(R.id.txt_dump_yard_id);
         dumpAutoComplete = findViewById(R.id.txt_dump_yard);
         dumpAutoComplete.setThreshold(0);
-        dumpAutoComplete.setDropDownBackgroundResource(R.color.white);
-
+        dumpAutoComplete.setDropDownBackgroundResource(R.color.white);*/
 
         idAutoComplete = findViewById(R.id.txt_id_auto);
         idAutoComplete.setThreshold(0);
@@ -294,6 +293,8 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         idAutoComplete.setSingleLine();
 
         idIpLayout = findViewById(R.id.txt_id_layout);
+
+        idAutoComplete.setCursorVisible(false);
 
         /***** Rahul Rokade ****/
 
@@ -326,7 +327,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
     protected void initToolbar() {
         toolbar.setTitle(getResources().getString(R.string.title_activity_qrcode_scanner));
         setSupportActionBar(toolbar);
-        dumpYardIdIpLayout.setVisibility(View.GONE);
+       /* dumpYardIdIpLayout.setVisibility(View.GONE);*/
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
@@ -334,20 +335,32 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         Log.d(TAG, "registerEvents Id : " + idAutoComplete.getText().toString());
 
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
+        /*submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                try {
                     Boolean idValid = isAutoCompleteValid(idAutoComplete, idHash);
 
                     if (idValid) {
                         submitQRcode(idHash.get(idAutoComplete.getText().toString().toLowerCase()));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
+                        finish();
+                        AUtils.success(mContext,"dump yard manually entered "+idAutoComplete.getText().toString() +" successfully", Toast.LENGTH_SHORT);
+                    }
+
+            }
+        });*/
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isValid()){
+                    submitQRcode(idAutoComplete.getText().toString().toUpperCase(Locale.ROOT));
+                    Log.e(TAG, "manually qr code entered is: " +idAutoComplete.getText().toString());
+                    finish();
+                    AUtils.success(mContext,"dump yard manually entered "+idAutoComplete.getText().toString() +" successfully", Toast.LENGTH_SHORT);
+
+                }
             }
         });
 
@@ -366,38 +379,51 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
                     idAutoComplete.clearListSelection();
 
                 }
+            }
+        });
 
+
+        mHpAdapter.setAreaHouseListener(new AreaHouseAdapterClass.AreaHouseListener() {
+            @Override
+            public void onSuccessCallBack() {
+
+                inflateHpAutoComplete(mHpAdapter.getHpPojoList());
+            }
+
+            @Override
+            public void onFailureCallBack() {
+                AUtils.error(mContext, getResources().getString(R.string.serverError));
+            }
+        });
+
+        idAutoComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View arg0) {
+                mHpAdapter.fetchHpList("", "0");
             }
         });
 
         idAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (isAutoCompleteValid(idAutoComplete, idHash))
-                    AUtils.hideKeyboard((Activity) mContext);
+                idAutoComplete.setText(mHpAdapter.getHpPojoList().get(i).getHouseid());
+                //idAutoComplete.setText("");
+
+                inflateAutoComplete("0");
             }
         });
-
 
         idAutoComplete.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    if (isAutoCompleteValid(idAutoComplete, idHash)) {
-                        AUtils.hideKeyboard((Activity) mContext);
-                        return false;
-                    } else {
-                        idAutoComplete.requestFocus();
-
-                        return true;
-                    }
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    inflateAutoComplete("0");
                 }
+
                 return false;
+
             }
         });
-
-
 
         permissionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -419,24 +445,9 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
             }
         });
 
-
-        mDyAdapter.setAreaDyListener(new DumpYardAdapterClass.AreaDyListener() {
-            @Override
-            public void onSuccessCallBack() {
-                inflateDyAutoComplete(mDyAdapter.getDyPojoList());
-            }
-
-            @Override
-            public void onFailureCallBack() {
-                AUtils.error(mContext, getResources().getString(R.string.serverError));
-            }
-        });
-
     }
 
     protected void initData() {
-
-
         checkCameraPermission();
 
         if (!AUtils.isConnectedFast(mContext)) {
@@ -455,6 +466,14 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         }
     }
 
+    private boolean isValid(){
+        if (idAutoComplete.getText().toString().trim().isEmpty()){
+            AUtils.warning(mContext, "Please select dump yard id");
+            return false;
+        }
+        return true;
+    }
+
     private void submitQRcode(String houseid) {
         if (EmpType.matches("D")) {
 
@@ -468,14 +487,20 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.gp_qr_alert), null);
             } else if (houseid.substring(0, 2).matches("^[DdYy]+$")) {
                   // getDumpYardDetails(houseid);
-                Log.e(TAG,"Dumpyard scan Id"+ houseid);
+                Log.e(TAG,"Dumpyard scan Id: "+ houseid);
                 AUtils.success(mContext,"Dump yard id get successfully: "+houseid,Toast.LENGTH_SHORT);
                 //showPopup(houseid,null);
+                Prefs.putString(AUtils.HOUSE_ID, houseid);
+                /*Prefs.getString(AUtils.HOUSE_ID,"");*/
+                finish();
             }
         }
 
     }
 
+    private void dumpIdDropDownList(){
+
+    }
 
     private void showPopup(String id, GcResultPojo pojo) {
 
@@ -578,9 +603,9 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         startCamera();
         contentView.setVisibility(View.VISIBLE);
         submitBtn.setVisibility(View.GONE);
-        dumpYardIdIpLayout.setVisibility(View.GONE);
+        /*dumpYardIdIpLayout.setVisibility(View.GONE);
         dumpAutoComplete.setVisibility(View.GONE);
-        dumpAutoComplete.setText("");
+        dumpAutoComplete.setText("");*/
         idAutoComplete.clearFocus();
         idAutoComplete.setText("");
         scannerView.setAutoFocus(true);
@@ -592,10 +617,10 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         stopCamera();
         contentView.setVisibility(View.GONE);
         submitBtn.setVisibility(View.VISIBLE);
-        dumpYardIdIpLayout.setVisibility(View.VISIBLE);
+        /*dumpYardIdIpLayout.setVisibility(View.VISIBLE);
         dumpAutoComplete.setVisibility(View.VISIBLE);
         dumpAutoComplete.requestFocusFromTouch();
-        dumpAutoComplete.setSelected(true);
+        dumpAutoComplete.setSelected(true);*/
 
     }
 
@@ -689,25 +714,24 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
 //        }
     }
 
-    private void getDumpYardDetails(final String houseNo) {
+    private void inflateAutoComplete(String areaId) {
 
-        Intent intent = new Intent(mContext, DumpYardWeightActivity.class);
-        intent.putExtra(AUtils.dumpYardId, houseNo);
-        startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
+            mHpAdapter.fetchHpList("", areaId);
     }
 
-    private void inflateAreaAutoComplete(List<CollectionAreaPojo> pojoList) {
+
+    /*private void inflateAreaAutoComplete(List<CollectionAreaPojo> pojoList) {
 
         areaHash = new HashMap<>();
         ArrayList<String> keyList = new ArrayList<>();
         for (CollectionAreaPojo pojo : pojoList) {
-            areaHash.put(pojo.getArea().toLowerCase()/**/, pojo.getId());
+            areaHash.put(pojo.getArea().toLowerCase(), pojo.getId());
             keyList.add(pojo.getArea().trim());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
 
-    }
+    }*/
 
     private void inflateHpAutoComplete(List<CollectionAreaHousePojo> pojoList) {
 
@@ -720,26 +744,11 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
 
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
         AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+        idAutoComplete.showDropDown();
         idAutoComplete.setThreshold(0);
         idAutoComplete.setAdapter(adapter);
         idAutoComplete.requestFocus();
-    }
 
-    private void inflateGpAutoComplete(List<CollectionAreaPointPojo> pojoList) {
-
-        idHash = new HashMap<>();
-        ArrayList<String> keyList = new ArrayList<>();
-        for (CollectionAreaPointPojo pojo : pojoList) {
-            idHash.put(pojo.getGpName().toLowerCase(), pojo.getGpId());
-            keyList.add(pojo.getGpName().trim());
-        }
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
-        AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
-
-        idAutoComplete.setThreshold(0);
-        idAutoComplete.setAdapter(adapter);
-        idAutoComplete.requestFocus();
     }
 
     private void inflateDyAutoComplete(List<CollectionDumpYardPointPojo> pojoList) {
@@ -759,14 +768,14 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         idAutoComplete.requestFocus();
     }
 
-    private Boolean isAutoCompleteValid(AutoCompleteTextView autoCompleteTextView, HashMap<String, String> hashMap) {
+    /*private Boolean isAutoCompleteValid(AutoCompleteTextView autoCompleteTextView, HashMap<String, String> hashMap) {
         try {
             return hashMap.containsKey(autoCompleteTextView.getText().toString().toLowerCase());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
-    }
+    }*/
 
     private void setGarbageCollectionPojo(String houseNo, @Nullable final int garbageType, final String gcType, @Nullable final String comment) {
         garbageCollectionPojo = new GarbageCollectionPojo();

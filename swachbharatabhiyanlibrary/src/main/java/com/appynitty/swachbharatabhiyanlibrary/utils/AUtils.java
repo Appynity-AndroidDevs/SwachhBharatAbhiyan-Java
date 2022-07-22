@@ -229,6 +229,7 @@ public class AUtils extends CommonUtils {
         String LANGUAGE_POJO_LIST = "LanguagePullList";
 
         String EMPLOYEE_TYPE = "EmpType";
+        String DUMP_YARD_SUPERVISOR = "ReferanceId";
     }
 
     public interface USER_TYPE {

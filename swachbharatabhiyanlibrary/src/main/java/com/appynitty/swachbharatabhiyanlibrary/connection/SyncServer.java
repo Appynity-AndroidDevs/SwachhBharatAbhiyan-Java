@@ -191,10 +191,10 @@ public class SyncServer {
             PunchWebService service = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
 
             inPunchPojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
-            inPunchPojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "0")));
+            inPunchPojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "1")));
             inPunchPojo.setStartLat(Prefs.getString(AUtils.LAT, ""));
             inPunchPojo.setStartLong(Prefs.getString(AUtils.LONG, ""));
-            inPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID, ""));
+            inPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID, ""));//added by rahul
 
             Type type = new TypeToken<InPunchPojo>() {
             }.getType();
@@ -390,10 +390,9 @@ public class SyncServer {
         List<CollectionAreaHousePojo> areaPojoList = null;
 
         try {
-
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
             areaPojoList = areaHousePointService.fetchCollectionAreaHouse(
-                    Prefs.getString(AUtils.APP_ID, ""), areaType, areaId, Prefs.getString(AUtils.EMP_TYPE, loginPojo.getEmployeeType()))
+                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId, Prefs.getString(AUtils.EMP_TYPE, loginPojo.getEmployeeType()))
                     .execute().body();
 
         } catch (Exception e) {

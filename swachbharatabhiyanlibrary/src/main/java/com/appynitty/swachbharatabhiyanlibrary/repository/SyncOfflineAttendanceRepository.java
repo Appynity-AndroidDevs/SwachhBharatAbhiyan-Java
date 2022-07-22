@@ -96,8 +96,9 @@ public class SyncOfflineAttendanceRepository {
 
         pojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
         pojo.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
-        pojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "0")));
+        pojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "1")));
         pojo.setBatteryStatus(String.valueOf(AUtils.getBatteryStatus()));
+        pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
 
         if (AttendanceType == InAttendanceId) {
             pojo.setDaDate(AUtils.getServerDate());
@@ -381,6 +382,7 @@ if(TextUtils.isEmpty(outDate))
 
         pojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
         pojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
+        pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
 
         pojo.setBatteryStatus(String.valueOf(AUtils.getBatteryStatus()));
 

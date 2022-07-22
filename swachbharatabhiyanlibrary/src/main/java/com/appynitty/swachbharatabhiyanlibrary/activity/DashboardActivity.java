@@ -1007,8 +1007,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
             attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-          //  attendancePojo.setReferanceId(Prefs.getString(AUtils.PREFS.DUMP_YARD_SUPERVISOR,""));
-            markAttendance.setChecked(true);
 
             AUtils.setInPunchDate(Calendar.getInstance());
             Log.i(TAG, AUtils.getInPunchDate());
@@ -1237,9 +1235,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
 
                         }
-                        else {
+                        /*else {
                             markAttendance.setChecked(false);
-                        }
+                        }*/
                     } else {
                         AUtils.DutyOffFromService = false;
                     }

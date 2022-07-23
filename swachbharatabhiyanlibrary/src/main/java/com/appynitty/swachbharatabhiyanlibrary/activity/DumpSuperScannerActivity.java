@@ -269,7 +269,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
     }
 
     protected void generateId() {
-        setContentView(R.layout.activity_dump_super_qr_scanner);
+        setContentView(R.layout.activity_dump_super_scanner);
         toolbar = findViewById(R.id.toolbar);
 
         mContext = DumpSuperScannerActivity.this;

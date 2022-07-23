@@ -253,3 +253,7 @@ local.properties
 .idea/misc.xml
 .idea/misc.xml
 .idea/misc.xml
+.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_solver_2_0_1.xml
+.idea/libraries/Gradle__androidx_multidex_multidex_2_0_1_aar.xml
+.idea/libraries/Gradle__androidx_startup_startup_runtime_1_0_0_aar.xml
+.idea/misc.xml

@@ -491,6 +491,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
                 AUtils.success(mContext,"Dump yard id get successfully: "+houseid,Toast.LENGTH_SHORT);
                 //showPopup(houseid,null);
                 Prefs.putString(AUtils.HOUSE_ID, houseid);
+                Prefs.putString(AUtils.HOUSE_ID_START, houseid);
                 /*Prefs.getString(AUtils.HOUSE_ID,"");*/
                 finish();
             }

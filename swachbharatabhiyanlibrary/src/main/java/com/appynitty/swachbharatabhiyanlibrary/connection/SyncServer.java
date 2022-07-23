@@ -194,7 +194,7 @@ public class SyncServer {
             inPunchPojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "1")));
             inPunchPojo.setStartLat(Prefs.getString(AUtils.LAT, ""));
             inPunchPojo.setStartLong(Prefs.getString(AUtils.LONG, ""));
-            inPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID, ""));//added by rahul
+            inPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START, ""));//added by rahul
 
             Type type = new TypeToken<InPunchPojo>() {
             }.getType();

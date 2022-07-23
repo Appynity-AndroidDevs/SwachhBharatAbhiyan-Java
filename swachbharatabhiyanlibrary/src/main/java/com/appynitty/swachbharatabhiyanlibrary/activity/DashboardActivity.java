@@ -892,7 +892,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.VEHICLE_NO);
         Prefs.remove(AUtils.VEHICLE_ID);
         Prefs.remove(AUtils.HOUSE_ID);
-        Prefs.remove(AUtils.PREFS.DUMP_YARD_SUPERVISOR);
+        Prefs.remove(AUtils.HOUSE_ID_START);
 
         startActivity(new Intent(context, providedClass));
     }
@@ -1343,7 +1343,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
             attendancePojo.setImagePath(destination.getAbsolutePath());
-            attendancePojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
+           // attendancePojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
             onSwitchOn();
 
         } catch (Exception e) {

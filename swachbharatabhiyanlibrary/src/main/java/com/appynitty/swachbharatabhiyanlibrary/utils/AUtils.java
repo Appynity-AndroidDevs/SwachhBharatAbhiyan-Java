@@ -121,6 +121,7 @@ public class AUtils extends CommonUtils {
     public static final String LAT = "Lat";
     public static final String LONG = "Long";
     public static final String HOUSE_ID = "ReferanceId";
+    public static final String HOUSE_ID_START = "ReferanceId";
 
     public static final int LOCATION_INTERVAL = 5000;
     //    public static final int LOCATION_INTERVAL = 1000 * 60 * 10; //10 Minute
@@ -229,7 +230,9 @@ public class AUtils extends CommonUtils {
         String LANGUAGE_POJO_LIST = "LanguagePullList";
 
         String EMPLOYEE_TYPE = "EmpType";
-        String DUMP_YARD_SUPERVISOR = "ReferanceId";
+        /*String DUMP_YARD_SUPERVISOR = "ReferanceId";
+        String HOUSE_ID_START = "ReferanceId";
+        String HOUSE_ID = "ReferanceId";*/
     }
 
     public interface USER_TYPE {

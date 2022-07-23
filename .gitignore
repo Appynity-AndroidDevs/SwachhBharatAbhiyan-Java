@@ -159,7 +159,7 @@ app/release/SBA_Demo0306_Bugfix.apk
 .idea/gradle.xml
 .idea/libraries/Gradle__and.xml
 local.properties
-*.xml
+
 .idea/gradle.xml
 local.properties
 .idea/libraries/Gradle__org_hamcrest_hamcrest_library_1_3.xml
@@ -256,4 +256,6 @@ local.properties
 .idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_solver_2_0_1.xml
 .idea/libraries/Gradle__androidx_multidex_multidex_2_0_1_aar.xml
 .idea/libraries/Gradle__androidx_startup_startup_runtime_1_0_0_aar.xml
+.idea/misc.xml
+.idea/misc.xml
 .idea/misc.xml

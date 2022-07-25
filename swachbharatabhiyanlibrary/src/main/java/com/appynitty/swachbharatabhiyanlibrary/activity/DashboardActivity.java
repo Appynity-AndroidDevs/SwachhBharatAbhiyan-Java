@@ -107,6 +107,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     public boolean isSync = true;
     String vehicleType = null;
     String vehicle_no = null;
+    String dumpId;
+    Bundle bundle = new Bundle();
+
+
     private AttendancePojo attendancePojo = null;
     String empType;
     private List<VehicleTypePojo> vehicleTypePojoList;
@@ -152,7 +156,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         super.onCreate(savedInstanceState);
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
-        onSwitchStatus(AUtils.isIsOnduty());
+      //  onSwitchStatus(AUtils.isIsOnduty());
 //        Log.e(TAG, "Location Coordinates:- " + Prefs.getString(AUtils.LAT, null) + ", " + Prefs.getString(AUtils.LONG, null));
 
     }
@@ -298,7 +302,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 onOutPunchSuccess();
             }
 
-            if (!inDate.equals(currentDate)) {
+            /*if (!inDate.equals(currentDate)) {
                 isFromAttendanceChecked = true;
 
                 String dutyEndTime = AUtils.getPreviousDateDutyOffTime();
@@ -307,7 +311,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         syncOfflineAttendanceRepository.checkAttendance(), dutyEndTime);
 
                 onOutPunchSuccess();
-            }
+            }*/
             if (empType.matches("l") || empType.matches("S") || empType.matches("N")){
                 if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
                     attendancePojo = syncOfflineAttendanceRepository.checkAttendance();
@@ -326,6 +330,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         onInPunchSuccess();
                     }
                 }
+            }else {
+                onOutPunchSuccess();
             }
 
             /*if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
@@ -891,8 +897,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.LONG);
         Prefs.remove(AUtils.VEHICLE_NO);
         Prefs.remove(AUtils.VEHICLE_ID);
-        Prefs.remove(AUtils.HOUSE_ID);
-        Prefs.remove(AUtils.HOUSE_ID_START);
+        /*Prefs.remove(AUtils.HOUSE_ID);
+        Prefs.remove(AUtils.HOUSE_ID_START);*/
 
         startActivity(new Intent(context, providedClass));
     }
@@ -923,10 +929,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onSwitchStatus(boolean isChecked) {
+        bundle = getIntent().getExtras();
+        if (bundle != null) {
+            dumpId = bundle.getString(AUtils.dumpYardSuperId);
+            System.out.println("Dumpster Scan Id: "+dumpId);
+
+        }
 
         isSwitchOn = isChecked;
 
-        if (isChecked) {
+        if (isChecked && dumpId != null) {
             playsound();
             onSwitchOn();
 
@@ -1201,7 +1213,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             if (isLocationPermission) {
 
-                if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
+                if (AUtils.isGPSEnable(AUtils.currentContextConstant) && AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
                     if (!AUtils.DutyOffFromService) {
 
                         if (!AUtils.isIsOnduty()) {
@@ -1212,13 +1224,14 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             Prefs.putString(AUtils.VEHICLE_ID, null);
 
                             Prefs.putString(AUtils.VEHICLE_NO, null);
-                            /*//Prefs.putString(AUtils.HOUSE_ID, AUtils.HOUSE_ID);
 
-                            Prefs.getString(AUtils.HOUSE_ID,"");*/
 
                             if (AUtils.isNull(attendancePojo)) {
                                 attendancePojo = new AttendancePojo();
+                                attendancePojo.setReferanceId(dumpId);
                             }
+
+
 
                             try {
                                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
@@ -1229,11 +1242,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                markAttendance.setChecked(true);
+                                markAttendance.setChecked(false);
                                 AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
                             }
-
-
                         }
                         /*else {
                             markAttendance.setChecked(false);

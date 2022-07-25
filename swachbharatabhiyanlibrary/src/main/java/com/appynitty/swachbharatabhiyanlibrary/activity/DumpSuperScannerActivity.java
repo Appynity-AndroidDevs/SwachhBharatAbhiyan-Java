@@ -76,7 +76,7 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler {
 
     private final static String TAG = "DumpSuperScannerActivity";
-    private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 100;
+    private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 120;
     GarbageCollectionPojo garbageCollectionPojo;
     private Context mContext;
     private Toolbar toolbar;
@@ -490,13 +490,24 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
                 Log.e(TAG,"Dumpyard scan Id: "+ houseid);
                 AUtils.success(mContext,"Dump yard id get successfully: "+houseid,Toast.LENGTH_SHORT);
                 //showPopup(houseid,null);
-                Prefs.putString(AUtils.HOUSE_ID, houseid);
-                Prefs.putString(AUtils.HOUSE_ID_START, houseid);
+                /*Prefs.putString(AUtils.HOUSE_ID, houseid);
+                Prefs.putString(AUtils.HOUSE_ID_START, houseid);*/
+                submitDumpYardSuperAttendance(houseid);
+                stopCamera();
                 /*Prefs.getString(AUtils.HOUSE_ID,"");*/
                 finish();
             }
         }
 
+    }
+
+    private void submitDumpYardSuperAttendance(final String houseNo) {
+        Log.e(TAG,"Dumyard Supervisor : "+houseNo);
+        Intent intent = new Intent(mContext, DashboardActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(AUtils.dumpYardSuperId, houseNo);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
     }
 
     private void dumpIdDropDownList(){

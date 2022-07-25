@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.appynitty.swachbharatabhiyanlibrary.entity.UserDailyAttendanceEntity;
@@ -106,7 +107,9 @@ public class SyncOfflineAttendanceRepository {
 
             pojo.setStartLat(Prefs.getString(AUtils.LAT, ""));
             pojo.setStartLong(Prefs.getString(AUtils.LONG, ""));
-            pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START,""));
+            /*pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START,""));*/
+            // pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START,pojo.getReferanceId().toString()));
+            pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START,pojo.getReferanceId().toString()));
             contentValues.put(COLUMN_DATE_IN, inOutDateTime);
         } else {
             pojo.setDaEndDate(AUtils.getServerDate());
@@ -114,7 +117,8 @@ public class SyncOfflineAttendanceRepository {
 
             pojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
             pojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
-            pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
+   //         pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
+            pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START,pojo.getReferanceId().toString()));
             contentValues.put(COLUMN_DATE_OUT, inOutDateTime);
         }
 
@@ -382,7 +386,8 @@ if(TextUtils.isEmpty(outDate))
 
         pojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
         pojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
-        pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
+//        pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
+        pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START,pojo.getReferanceId().toString()));
 
         pojo.setBatteryStatus(String.valueOf(AUtils.getBatteryStatus()));
 

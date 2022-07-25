@@ -722,7 +722,23 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
 //                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.dy_qr_alert), null);
                 getDumpYardDetails(houseid);
             }
-        } else {
+        } else if (EmpType.matches("D")) {
+
+            gcType = "6";
+
+            if (houseid.substring(0, 2).matches("^[VvQqRr]+$")) {
+                //startSubmitQRAsyncTask(houseid, -1, gcType, null);
+                getDumpYardSuperDetails(houseid, -1, gcType, null);
+            } else if (houseid.substring(0, 2).matches("^[HhPp]+$")) {
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.house_qr_alert), null);
+            } else if (houseid.substring(0, 2).matches("^[GgPp]+$")) {
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.gp_qr_alert), null);
+            } else if (houseid.substring(0, 2).matches("^[DdYy]+$")) {
+               AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.dy_qr_alert), null);
+                //getDumpYardDetails(houseid);
+            }
+        }
+        else {
             if (houseid.substring(0, 2).matches("^[HhPp]+$"))
                 validateTypeOfCollection(houseid);
            /* else if (houseid.substring(0, 2).matches("^[GgPp]+$"))
@@ -997,6 +1013,14 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
     }
 
+    private void getDumpYardSuperDetails(final String houseNo, @Nullable final int garbageType, @Nullable final String gcType, @Nullable final String comment) {
+        String allData = houseNo+","+garbageType+","+gcType+","+comment;
+        Log.e(TAG,"Dumyard Supervisor : "+allData);
+        Intent intent = new Intent(mContext, DumpYardWeightActivity.class);
+        intent.putExtra(AUtils.dumpYardId, allData);
+        startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
+    }
+
     private void inflateAreaAutoComplete(List<CollectionAreaPojo> pojoList) {
 
         areaHash = new HashMap<>();
@@ -1178,6 +1202,8 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
             entity.setGcType("4");
         } else if (garbageCollectionPojo.getId().substring(0, 2).matches("^[SsSs]+$")) {
             entity.setGcType("5");
+        }else if (garbageCollectionPojo.getId().substring(0, 2).matches("^[VvQqRr]+$")) {
+            entity.setGcType("6");
         }
         entity.setNote(garbageCollectionPojo.getComment());
         entity.setGarbageType(String.valueOf(garbageCollectionPojo.getGarbageType()));

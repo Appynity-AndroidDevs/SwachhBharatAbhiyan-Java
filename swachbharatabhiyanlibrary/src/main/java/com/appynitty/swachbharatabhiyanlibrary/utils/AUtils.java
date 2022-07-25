@@ -3,6 +3,7 @@ package com.appynitty.swachbharatabhiyanlibrary.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +16,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -137,6 +139,7 @@ public class AUtils extends CommonUtils {
 
     public static final String isFromLogin = "isFromLogin";
     public static final String dumpYardId = "dumpYardId";
+    public static final String dumpYardSuperId = "dumpYardSuperId";
 
     public static final String SERVER_DATE_FORMATE = "MM-dd-yyyy";
     public static final String SERVER_DATE_FORMATE_LOCAL = "yyyy-MM-dd";
@@ -361,6 +364,20 @@ public class AUtils extends CommonUtils {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static String getDumpSuperId(String dumpId){
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+
+       /* bundle = getIntent().getExtras();*/
+
+        if (bundle != null) {
+            dumpId = bundle.getString(AUtils.dumpYardSuperId);
+            System.out.println("Dumpster Scan Id: "+dumpId);
+
+        }
+        return "";
     }
 
     public static String extractMonth(String date) {

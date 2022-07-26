@@ -1,15 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.valdesekamdem.library:md-toast:0.9.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e822cbb25c951ead842967c71cfb382d/jetified-md-toast-0.9.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e822cbb25c951ead842967c71cfb382d/jetified-md-toast-0.9.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e822cbb25c951ead842967c71cfb382d/jetified-md-toast-0.9.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8f5bc344d47e87497b2712ab260b8ebf/transformed/jetified-md-toast-0.9.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8f5bc344d47e87497b2712ab260b8ebf/transformed/jetified-md-toast-0.9.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8f5bc344d47e87497b2712ab260b8ebf/transformed/jetified-md-toast-0.9.0/jars/classes.jar!/" />
       <root url="jar://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/bba653dce2da623974a5832c9f8e9e00/transformed/jetified-md-toast-0.9.0/jars/classes.jar!/" />
-      <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/bba653dce2da623974a5832c9f8e9e00/transformed/jetified-md-toast-0.9.0/AndroidManifest.xml" />
       <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/bba653dce2da623974a5832c9f8e9e00/transformed/jetified-md-toast-0.9.0/res" />
+      <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/bba653dce2da623974a5832c9f8e9e00/transformed/jetified-md-toast-0.9.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://C:/Program Files/java/jdk-17.0.1/caches/modules-2/files-2.1/com.valdesekamdem.library/md-toast/0.9.0/8f1735b03afa949e52b87763cd8eaffe22fe13c9/md-toast-0.9.0-javadoc.jar!/" />

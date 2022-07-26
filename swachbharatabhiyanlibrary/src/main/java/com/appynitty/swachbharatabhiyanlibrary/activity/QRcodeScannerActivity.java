@@ -1015,9 +1015,15 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
 
     private void getDumpYardSuperDetails(final String houseNo, @Nullable final int garbageType, @Nullable final String gcType, @Nullable final String comment) {
         String allData = houseNo+","+garbageType+","+gcType+","+comment;
-        Log.e(TAG,"Dumyard Supervisor : "+allData);
+        stopCamera();
+        Log.e(TAG, "all data :- " +allData);
+        setGarbageCollectionPojo(houseNo, garbageType, gcType, comment);
+        Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
+        insertToDB(garbageCollectionPojo);
+
+        Log.e(TAG,"Dumyard Supervisor : "+houseNo);
         Intent intent = new Intent(mContext, DumpYardWeightActivity.class);
-        intent.putExtra(AUtils.dumpYardId, allData);
+        intent.putExtra(AUtils.dumpYardId, houseNo);
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
     }
 

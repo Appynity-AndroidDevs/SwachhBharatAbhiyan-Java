@@ -489,11 +489,8 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
                   // getDumpYardDetails(houseid);
                 Log.e(TAG,"Dumpyard scan Id: "+ houseid);
                 AUtils.success(mContext,"Dump yard id get successfully: "+houseid,Toast.LENGTH_SHORT);
-                //showPopup(houseid,null);
-                /*Prefs.putString(AUtils.HOUSE_ID, houseid);
-                Prefs.putString(AUtils.HOUSE_ID_START, houseid);*/
-                submitDumpYardSuperAttendance(houseid);
-                stopCamera();
+                Prefs.putString(AUtils.HOUSE_ID, houseid);
+                Prefs.putString(AUtils.HOUSE_ID_START, houseid);
                 /*Prefs.getString(AUtils.HOUSE_ID,"");*/
                 finish();
             }
@@ -501,14 +498,14 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
 
     }
 
-    private void submitDumpYardSuperAttendance(final String houseNo) {
+    /*private void submitDumpYardSuperAttendance(final String houseNo) {
         Log.e(TAG,"Dumyard Supervisor : "+houseNo);
-        Intent intent = new Intent(mContext, DashboardActivity.class);
+        Intent intent = new Intent(mContext, SyncOfflineAttendanceRepository.class);
         Bundle bundle = new Bundle();
         bundle.putString(AUtils.dumpYardSuperId, houseNo);
         intent.putExtras(bundle);
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
-    }
+    }*/
 
     private void dumpIdDropDownList(){
 

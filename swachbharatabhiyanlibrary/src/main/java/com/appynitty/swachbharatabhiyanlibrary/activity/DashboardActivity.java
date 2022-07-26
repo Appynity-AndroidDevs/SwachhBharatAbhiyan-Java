@@ -156,7 +156,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         super.onCreate(savedInstanceState);
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
-      //  onSwitchStatus(AUtils.isIsOnduty());
+        onSwitchStatus(AUtils.isIsOnduty());
 //        Log.e(TAG, "Location Coordinates:- " + Prefs.getString(AUtils.LAT, null) + ", " + Prefs.getString(AUtils.LONG, null));
 
     }
@@ -929,25 +929,21 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onSwitchStatus(boolean isChecked) {
-        bundle = getIntent().getExtras();
+       /* bundle = getIntent().getExtras();
         if (bundle != null) {
             dumpId = bundle.getString(AUtils.dumpYardSuperId);
             System.out.println("Dumpster Scan Id: "+dumpId);
-
-        }
+        }*/
 
         isSwitchOn = isChecked;
 
-        if (isChecked && dumpId != null) {
+        if (isChecked ) {
             playsound();
             onSwitchOn();
 
-
-//            takePhoto();
         } else {
             playsound();
             onSwitchOff();
-
 
         }
 

@@ -386,7 +386,7 @@ if(TextUtils.isEmpty(outDate))
 
         pojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
         pojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
-       pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
+       //pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
       //  pojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START,pojo.getReferanceId().toString()));
 
         pojo.setBatteryStatus(String.valueOf(AUtils.getBatteryStatus()));

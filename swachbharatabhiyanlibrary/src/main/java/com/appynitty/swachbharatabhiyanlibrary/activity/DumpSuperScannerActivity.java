@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -91,6 +92,8 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
     private boolean isActivityData;
     private ImagePojo imagePojo;
     private Boolean isScanQr;
+    private static final String PREFS_NAME = "preferenceName";
+
 
     private HashMap<String, String> idHash;
     private List<CollectionAreaPointPojo> dumpHouseList;
@@ -489,8 +492,12 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
                   // getDumpYardDetails(houseid);
                 Log.e(TAG,"Dumpyard scan Id: "+ houseid);
                 AUtils.success(mContext,"Dump yard id get successfully: "+houseid,Toast.LENGTH_SHORT);
-                Prefs.putString(AUtils.HOUSE_ID, houseid);
-                Prefs.putString(AUtils.HOUSE_ID_START, houseid);
+                /*Prefs.putString(AUtils.HOUSE_ID, houseid);
+                Prefs.putString(AUtils.HOUSE_ID_START, houseid);*/
+                //editor.commit();
+
+                submitDumpYardSuperAttendance(houseid);
+               // submitDumpyardRepo(houseid);
                 /*Prefs.getString(AUtils.HOUSE_ID,"");*/
                 finish();
             }
@@ -498,14 +505,22 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
 
     }
 
-    /*private void submitDumpYardSuperAttendance(final String houseNo) {
+    private void submitDumpYardSuperAttendance(final String houseNo) {
         Log.e(TAG,"Dumyard Supervisor : "+houseNo);
-        Intent intent = new Intent(mContext, SyncOfflineAttendanceRepository.class);
+        Intent intent = new Intent(mContext, DashboardActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(AUtils.dumpYardSuperId, houseNo);
         intent.putExtras(bundle);
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
-    }*/
+    }
+    private void submitDumpyardRepo(final String houseNo) {
+        Log.e(TAG,"Dumyard Supervisor Repo : "+houseNo);
+        Intent intent = new Intent(mContext, SyncOfflineAttendanceRepository.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(AUtils.HOUSE_ID, houseNo);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
+    }
 
     private void dumpIdDropDownList(){
 

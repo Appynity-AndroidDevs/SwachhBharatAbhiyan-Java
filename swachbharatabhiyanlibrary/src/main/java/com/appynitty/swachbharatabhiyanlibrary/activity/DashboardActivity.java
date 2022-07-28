@@ -625,6 +625,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         profilePic = findViewById(R.id.user_profile_pic);
         empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
 
+        bundle = getIntent().getExtras();
+        if (bundle != null) {
+            Prefs.remove(AUtils.HOUSE_ID_START);
+            Prefs.remove(AUtils.HOUSE_ID);
+            dumpId = bundle.getString(AUtils.dumpYardSuperId);
+            Prefs.putString(AUtils.HOUSE_ID, dumpId);
+            Prefs.putString(AUtils.HOUSE_ID_START, dumpId);
+            Log.e(TAG, "Dumpster Scan Id: " + dumpId);
+        }
+
         initToolBar();
 
 
@@ -897,8 +907,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.LONG);
         Prefs.remove(AUtils.VEHICLE_NO);
         Prefs.remove(AUtils.VEHICLE_ID);
-        /*Prefs.remove(AUtils.HOUSE_ID);
-        Prefs.remove(AUtils.HOUSE_ID_START);*/
+        Prefs.remove(AUtils.HOUSE_ID);
+        Prefs.remove(AUtils.HOUSE_ID_START);
 
         startActivity(new Intent(context, providedClass));
     }
@@ -950,6 +960,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onVehicleTypeDialogClose(Object listItemSelected, String vehicleNo) {
+        Log.e(TAG," api vehicle dialog");
 
         if (!AUtils.isNull(vehicleNo) && !vehicleNo.isEmpty()) {
             VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) listItemSelected;
@@ -963,6 +974,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
 
             try {
+
                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                 onInPunchSuccess();
                 if (AUtils.isInternetAvailable()) {
@@ -1207,6 +1219,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
         }else if (empType.matches("D")){
 
+
             if (isLocationPermission) {
 
                 if (AUtils.isGPSEnable(AUtils.currentContextConstant) && AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
@@ -1214,6 +1227,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                         if (!AUtils.isIsOnduty()) {
                             ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
 
                             startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
 
@@ -1224,17 +1238,20 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                             if (AUtils.isNull(attendancePojo)) {
                                 attendancePojo = new AttendancePojo();
-                                attendancePojo.setReferanceId(dumpId);
+                               // attendancePojo.setReferanceId(dumpId);
                             }
-
-
+                            Log.e(TAG," api switch on emp type D");
 
                             try {
                                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+                                Log.e(TAG,"InAttendanceId : " +SyncOfflineAttendanceRepository.InAttendanceId);
                                 onInPunchSuccess();
-                                if (AUtils.isInternetAvailable()) {
+                                /*if (AUtils.isInternetAvailable()) {
                                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                                         mOfflineAttendanceAdapter.SyncOfflineData();
+                                }*/
+                                if (AUtils.isInternetAvailable()) {
+                                    mOfflineAttendanceAdapter.SyncOfflineData();
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1262,6 +1279,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private void onSwitchOff() {
         if (empType.matches("L") || empType.matches("S") || empType.matches("N")){
+            Log.e(TAG," api switch oFF emp type LNS");
             if (AUtils.isIsOnduty()) {
                 try {
                     if (!isFromAttendanceChecked) {
@@ -1296,6 +1314,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 }
             }
         } else if (empType.matches("D")){
+            Log.e(TAG," api switch oFF emp type D");
             if (AUtils.isIsOnduty()) {
                 try {
                     if (!isFromAttendanceChecked) {
@@ -1358,6 +1377,27 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             e.printStackTrace();
             AUtils.error(mContext, mContext.getResources().getString(R.string.image_add_error), Toast.LENGTH_SHORT);
         }
+    }
+
+    private boolean getStringDump (){
+        if (empType.matches("D")){
+            bundle = getIntent().getExtras();
+            if (bundle != null) {
+                dumpId = bundle.getString(AUtils.dumpYardSuperId);
+                Prefs.remove(AUtils.HOUSE_ID_START);
+                Prefs.remove(AUtils.HOUSE_ID);
+                Prefs.putString(AUtils.HOUSE_ID, dumpId);
+                Prefs.putString(AUtils.HOUSE_ID_START, dumpId);
+                Log.e(TAG,"Dumpster Scan Id: "+dumpId);
+                if (dumpId != null){
+                    Log.e(TAG,"On Create ");
+                    onSwitchStatus(AUtils.isIsOnduty());
+                }
+                return false;
+            }
+
+        }
+        return true;
     }
 
     @Override

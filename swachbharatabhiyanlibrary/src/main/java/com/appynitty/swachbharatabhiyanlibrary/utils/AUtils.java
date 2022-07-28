@@ -552,6 +552,12 @@ public class AUtils extends CommonUtils {
         Prefs.remove(PREFS.IN_PUNCH_DATE);
     }
 
+    public static void removeInDumpHouseId() {
+
+        Prefs.remove(AUtils.HOUSE_ID_START);
+        Prefs.remove(AUtils.HOUSE_ID);
+    }
+
     public static String getServerDate(Calendar calendar) {
 
         SimpleDateFormat format = new SimpleDateFormat(AUtils.SERVER_DATE_FORMATE, Locale.ENGLISH);

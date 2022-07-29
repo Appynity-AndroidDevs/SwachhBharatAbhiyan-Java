@@ -497,6 +497,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
                 //editor.commit();
 
                 submitDumpYardSuperAttendance(houseid);
+                stopCamera();
                // submitDumpyardRepo(houseid);
                 /*Prefs.getString(AUtils.HOUSE_ID,"");*/
                 finish();

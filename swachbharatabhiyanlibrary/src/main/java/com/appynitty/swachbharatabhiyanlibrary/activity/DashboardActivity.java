@@ -325,7 +325,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
                     attendancePojo = syncOfflineAttendanceRepository.checkAttendance();
 
-                    if (!AUtils.isNull(attendancePojo)) {
+                    if (!AUtils.isNull(attendancePojo.getReferanceId())) {
                         markAttendance.setChecked(true);
                         onInPunchSuccess();
                     }
@@ -632,7 +632,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             dumpId = bundle.getString(AUtils.dumpYardSuperId);
             Prefs.putString(AUtils.HOUSE_ID, dumpId);
             Prefs.putString(AUtils.HOUSE_ID_START, dumpId);
-            Log.e(TAG, "Dumpster Scan Id: " + dumpId);
+            Log.e(TAG, "Dump Qr Scan entry Id: " + Prefs.getString(AUtils.HOUSE_ID_START,""));
+            Log.e(TAG, "Dump Qr Scan exit Id: " + Prefs.getString(AUtils.HOUSE_ID,""));
         }
 
         initToolBar();
@@ -1025,12 +1026,15 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         }else if (empType.matches("D")){
 
-            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-
-            AUtils.setInPunchDate(Calendar.getInstance());
-            Log.i(TAG, AUtils.getInPunchDate());
-            AUtils.setIsOnduty(true);
+            if (!AUtils.isNullString(attendancePojo.getReferanceId())) {
+                attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+                attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
+                AUtils.setInPunchDate(Calendar.getInstance());
+                Log.i(TAG, AUtils.getInPunchDate());
+                AUtils.setIsOnduty(true);
+            }
+           /* attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));*/
         }
 
     }
@@ -1044,6 +1048,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
+        Prefs.remove(AUtils.HOUSE_ID_START);
+        Prefs.remove(AUtils.HOUSE_ID);
 
         attendancePojo = null;
         AUtils.removeInPunchDate();
@@ -1296,6 +1302,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                                 if (AUtils.isInternetAvailable()) {
                                     mOfflineAttendanceAdapter.SyncOfflineData();
                                 }
+                                Prefs.remove(AUtils.HOUSE_ID);
+                                Prefs.remove(AUtils.HOUSE_ID_START);
                             }
                         }, new DialogInterface.OnClickListener() {
                             @Override

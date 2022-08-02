@@ -36,7 +36,7 @@
 
             <ImageView
                 android:id="@+id/user_profile_pic"
-                android:layout_width="@dimen/dim_140_dp"
+                android:layout_width="@dimen/dim_120_dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginEnd="@dimen/dim_6_dp"
@@ -61,6 +61,20 @@
                     android:text="@string/hyphen"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dim_25_sp" />
+                <TextView
+                    android:id="@+id/scan_qr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dim_20_dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/user_full_name"
+                    android:background="@color/colorPrimary"
+                    android:text="Scan QR"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="8sp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:paddingHorizontal="@dimen/dim_5_dp"/>
 
                 <TextView
                     android:id="@+id/user_emp_id_lbl"
@@ -102,7 +116,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
-                        android:gravity="end" />
+                        android:gravity="end"
+                        android:visibility="visible"/>
 
                 </LinearLayout>
 
@@ -112,7 +127,16 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/duty_layout"
                     android:gravity="center_vertical|start"
-                    android:textColor="@color/colorDefault" />
+                    android:textColor="@color/colorDefault"
+                    android:visibility="visible"/>
+                <TextView
+                    android:id="@+id/user_dumpyard_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/duty_layout"
+                    android:gravity="center_vertical|start"
+                    android:textColor="@color/colorDefault"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 

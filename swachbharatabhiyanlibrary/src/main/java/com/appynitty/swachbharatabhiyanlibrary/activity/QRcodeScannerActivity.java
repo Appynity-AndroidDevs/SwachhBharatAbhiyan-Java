@@ -1019,7 +1019,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         Log.e(TAG, "all data :- " +allData);
         setGarbageCollectionPojo(houseNo, garbageType, gcType, comment);
         Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
-        insertToDB(garbageCollectionPojo);
+  //      insertToDB(garbageCollectionPojo);
 
         Log.e(TAG,"Dumyard Supervisor : "+houseNo);
         Intent intent = new Intent(mContext, DumpYardWeightActivity.class);

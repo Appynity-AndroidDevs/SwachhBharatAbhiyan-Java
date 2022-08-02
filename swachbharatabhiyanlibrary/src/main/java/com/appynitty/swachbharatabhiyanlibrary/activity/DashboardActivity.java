@@ -98,6 +98,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private RecyclerView menuGridView;
     private Toolbar toolbar;
     private TextView attendanceStatus;
+    private TextView btnScanQr, txtDumpyardId;
     private TextView vehicleStatus;
     private Switch markAttendance;
     private ImageView profilePic;
@@ -109,6 +110,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     String vehicle_no = null;
     String dumpId;
     Bundle bundle = new Bundle();
+    boolean isChanged = true;
 
 
     private AttendancePojo attendancePojo = null;
@@ -619,6 +621,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         toolbar = findViewById(R.id.toolbar);
         attendanceStatus = findViewById(R.id.user_attendance_status);
         vehicleStatus = findViewById(R.id.user_vehicle_type);
+        btnScanQr = findViewById(R.id.scan_qr);
+        txtDumpyardId = findViewById(R.id.user_dumpyard_id);
         markAttendance = findViewById(R.id.user_attendance_toggle);
         userName = findViewById(R.id.user_full_name);
         empId = findViewById(R.id.user_emp_id);
@@ -648,6 +652,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void registerEvents() {
+
+        btnScanQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+                markAttendance.setVisibility(View.VISIBLE);
+                txtDumpyardId.setVisibility(View.VISIBLE);
+                txtDumpyardId.setText(Prefs.getString(AUtils.HOUSE_ID_START,""));
+            }
+        });
 
         mCheckAttendanceAdapter.setCheckAttendanceListener(new CheckAttendanceAdapterClass.CheckAttendanceListener() {
             @Override
@@ -733,6 +747,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
                     Log.e(TAG,"check toggle is: "+ isChecked);
                     onSwitchStatus(isChecked);
+                    if (isChecked){
+                        btnScanQr.setVisibility(View.GONE);
+                    }else {
+                        btnScanQr.setVisibility(View.VISIBLE);
+                        /*Toast.makeText(mContext, "First scan QR button, then duty on otherwise off", Toast.LENGTH_SHORT).show();*/
+                        AUtils.warning(mContext,"First scan QR button, then duty on otherwise off");
+                    }
 
                 } else {
                     /*Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_SHORT).show();*/
@@ -838,6 +859,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 //    }
 
     private void initData() {
+        if (empType.matches("D")){
+            if (isChanged){
+                btnScanQr.setVisibility(View.VISIBLE);
+            }else {
+                markAttendance.setVisibility(View.GONE);
+            }
+        }
         Log.e(TAG, "EmpType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
         lastLocationRepository.clearUnwantedRows();
         initUserDetails();
@@ -1033,6 +1061,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 Log.i(TAG, AUtils.getInPunchDate());
                 AUtils.setIsOnduty(true);
             }
+            btnScanQr.setVisibility(View.GONE);
            /* attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
             attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));*/
         }
@@ -1040,20 +1069,62 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onOutPunchSuccess() {
-        attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
+        if (empType.matches("L") || empType.matches("S") || empType.matches("N")){
+            attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
+            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
+
+            vehicleStatus.setText("");
+            vehicleStatus.setVisibility(View.VISIBLE);
+
+            stopServiceIfRunning();
+
+            markAttendance.setChecked(false);
+            txtDumpyardId.setVisibility(View.GONE);
+            btnScanQr.setVisibility(View.GONE);
+            Prefs.remove(AUtils.HOUSE_ID_START);
+            Prefs.remove(AUtils.HOUSE_ID);
+
+            attendancePojo = null;
+            AUtils.removeInPunchDate();
+            AUtils.setIsOnduty(false);
+
+        }else if (empType.matches("D")){
+            attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
+            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
+
+            vehicleStatus.setText("");
+            vehicleStatus.setVisibility(View.GONE);
+
+            stopServiceIfRunning();
+
+            markAttendance.setChecked(false);
+            txtDumpyardId.setVisibility(View.GONE);
+            btnScanQr.setVisibility(View.VISIBLE);
+            Prefs.remove(AUtils.HOUSE_ID_START);
+            Prefs.remove(AUtils.HOUSE_ID);
+
+            attendancePojo = null;
+            AUtils.removeInPunchDate();
+            AUtils.setIsOnduty(false);
+
+        }
+       /* attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
 
         vehicleStatus.setText("");
+        vehicleStatus.setVisibility(View.VISIBLE);
 
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
+        txtDumpyardId.setVisibility(View.GONE);
+        btnScanQr.setVisibility(View.VISIBLE);
         Prefs.remove(AUtils.HOUSE_ID_START);
         Prefs.remove(AUtils.HOUSE_ID);
 
         attendancePojo = null;
         AUtils.removeInPunchDate();
-        AUtils.setIsOnduty(false);
+        AUtils.setIsOnduty(false);*/
     }
 
     private void stopServiceIfRunning() {
@@ -1189,6 +1260,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private void onSwitchOn() {
 
         if (empType.matches("L") || empType.matches("S") || empType.matches("N")){
+            btnScanQr.setVisibility(View.GONE);
+            txtDumpyardId.setVisibility(View.GONE);
+
             if (isLocationPermission) {
 
                 if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
@@ -1235,7 +1309,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
 
 
-                            startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+                           // startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
 
                             Prefs.putString(AUtils.VEHICLE_ID, null);
 
@@ -1247,6 +1321,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                                // attendancePojo.setReferanceId(dumpId);
                             }
                             Log.e(TAG," api switch on emp type D");
+                            btnScanQr.setVisibility(View.GONE);
+                            txtDumpyardId.setVisibility(View.VISIBLE);
 
                             try {
                                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);

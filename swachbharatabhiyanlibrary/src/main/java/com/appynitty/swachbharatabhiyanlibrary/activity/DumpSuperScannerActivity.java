@@ -491,7 +491,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
             } else if (houseid.substring(0, 2).matches("^[DdYy]+$")) {
                   // getDumpYardDetails(houseid);
                 Log.e(TAG,"Dumpyard scan Id: "+ houseid);
-                AUtils.success(mContext,"Dump yard id get successfully: "+houseid,Toast.LENGTH_SHORT);
+                AUtils.success(mContext,"Dump yard id get successfully: "+houseid +", please switch on toggle button",1000*6);
                 /*Prefs.putString(AUtils.HOUSE_ID, houseid);
                 Prefs.putString(AUtils.HOUSE_ID_START, houseid);*/
                 //editor.commit();

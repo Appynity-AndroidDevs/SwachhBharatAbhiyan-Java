@@ -19,26 +19,28 @@ import retrofit2.Response;
  * Created by Ayan Dey on 28/5/19.
  */
 public class EmpQrLocationAdapterClass {
-
+    private static final String TAG = "EmpQrLocationAdapterCla";
     private EmpQrLocationListner empQrLocationListner;
 
     public void setEmpQrLocationListner(EmpQrLocationListner empQrLocationListner) {
         this.empQrLocationListner = empQrLocationListner;
     }
 
-    public void saveQrLocation(QrLocationPojo submitPojo){
+    public void saveQrLocation(QrLocationPojo submitPojo) {
         QrLocationWebService qrLocationWebService = Connection.createService(QrLocationWebService.class,
                 AUtils.SERVER_URL);
         qrLocationWebService.saveQrLocationDetails(
-                Prefs.getString(AUtils.APP_ID, ""),
-                submitPojo.getReferanceId(), submitPojo.getGcType(), AUtils.CONTENT_TYPE, submitPojo)
+                        Prefs.getString(AUtils.APP_ID, ""),
+                        submitPojo.getReferanceId(), submitPojo.getGcType(), AUtils.CONTENT_TYPE, submitPojo)
                 .enqueue(new Callback<ResultPojo>() {
                     @Override
                     public void onResponse(@NonNull Call<ResultPojo> call, @NonNull Response<ResultPojo> response) {
-                        if(response.code() == 200)
+                        if (response.code() == 200)
                             empQrLocationListner.onSuccessCallback(response.body());
                         else
                             empQrLocationListner.onFailureCallback();
+
+                        Log.e(TAG, "onResponse: " + response.body().getMessage());
                     }
 
                     @Override
@@ -50,9 +52,11 @@ public class EmpQrLocationAdapterClass {
                 });
     }
 
-    public interface EmpQrLocationListner{
+    public interface EmpQrLocationListner {
         void onSuccessCallback(ResultPojo resultPojo);
+
         void onFailureCallback();
+
         void onErrorCallback();
     }
 }

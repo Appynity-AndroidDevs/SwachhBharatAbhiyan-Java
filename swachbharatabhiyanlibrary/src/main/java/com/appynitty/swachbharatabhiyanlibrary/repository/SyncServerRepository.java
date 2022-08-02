@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.appynitty.swachbharatabhiyanlibrary.entity.EmpSyncServerEntity;
 import com.appynitty.swachbharatabhiyanlibrary.entity.SyncServerEntity;
-import com.appynitty.swachbharatabhiyanlibrary.entity.UserLocationEntity;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 
 import java.util.ArrayList;
@@ -55,6 +53,29 @@ public class SyncServerRepository {
         database.close();
         return list;
     }
+
+    public List<SyncServerEntity> get10SyncServerEntities() {
+        SQLiteDatabase database = AUtils.sqlDBInstance(mContext);
+        List<SyncServerEntity> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM " + AUtils.COLLECTION_TABLE_NAME + " ORDER BY " + SyncServerEntity.COLUMN_ID + " DESC" + " LIMIT 10";
+
+        Cursor cursor = database.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                SyncServerEntity syncServerEntity = new SyncServerEntity();
+                syncServerEntity.setIndex_id(cursor.getInt(cursor.getColumnIndex(SyncServerEntity.COLUMN_ID)));
+                syncServerEntity.setPojo(cursor.getString(cursor.getColumnIndex(SyncServerEntity.COLUMN_DATA)));
+
+                list.add(syncServerEntity);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        database.close();
+        return list;
+    }
+
 
     public void deleteSyncServerEntity(int id) {
 

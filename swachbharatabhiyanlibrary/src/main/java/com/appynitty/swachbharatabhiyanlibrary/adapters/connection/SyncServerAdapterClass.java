@@ -15,7 +15,6 @@ import com.pixplicity.easyprefs.library.Prefs;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,13 +28,13 @@ public class SyncServerAdapterClass {
     private final List<OfflineGarbageColectionPojo> offlineGarbageColectionPojoList;
 
 
-    public SyncServerAdapterClass(){
+    public SyncServerAdapterClass() {
         mSyncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
         offlineGarbageColectionPojoList = new ArrayList<>();
     }
 
     public void syncServer() {
-        if(!AUtils.isSyncServerRequestEnable) {
+        if (!AUtils.isSyncServerRequestEnable) {
 
             getDBList();
 
@@ -57,14 +56,14 @@ public class SyncServerAdapterClass {
                             onResponseReceived(response.body());
                         } else {
                             Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + response.code());
-                            AUtils.isSyncServerRequestEnable =false;
+                            AUtils.isSyncServerRequestEnable = false;
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<OfflineGcResultPojo>> call, Throwable t) {
                         Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + t.getMessage());
-                        AUtils.isSyncServerRequestEnable =false;
+                        AUtils.isSyncServerRequestEnable = false;
                     }
                 });
             }
@@ -101,14 +100,15 @@ public class SyncServerAdapterClass {
                 }
             }
         }
-        AUtils.isSyncServerRequestEnable =false;
+        AUtils.isSyncServerRequestEnable = false;
     }
 
-    private void getDBList(){
-        List<SyncServerEntity> entityList = mSyncServerRepository.getAllSyncServerEntity();
+    private void getDBList() {
+        List<SyncServerEntity> entityList = mSyncServerRepository.get10SyncServerEntities();
         offlineGarbageColectionPojoList.clear();
         for (SyncServerEntity entity : entityList) {
-            Type type = new TypeToken<OfflineGarbageColectionPojo>() {}.getType();
+            Type type = new TypeToken<OfflineGarbageColectionPojo>() {
+            }.getType();
             OfflineGarbageColectionPojo pojo = new Gson().fromJson(entity.getPojo(), type);
             pojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
             pojo.setOfflineID(String.valueOf(entity.getIndex_id()));

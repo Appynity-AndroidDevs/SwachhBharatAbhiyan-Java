@@ -698,29 +698,31 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         markAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
-                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                }
-                if (!AUtils.isIsOnduty()) {
-                    startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
-                    finish();
-                } else {
+                if (empType.matches("D")) {
+                    if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                    }
+                    if (!AUtils.isIsOnduty()) {
+                        startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+                        finish();
+                    } else {
 
-                    AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            dumpEmpAttendanceVM.setDumpEmpAttendanceOut(Prefs.getString(AUtils.dumpYardSuperId, null));
-                        }
-                    }, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            markAttendance.setChecked(AUtils.isIsOnduty());
-                        }
-                    });
+                        AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                dumpEmpAttendanceVM.setDumpEmpAttendanceOut(Prefs.getString(AUtils.dumpYardSuperId, null));
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                markAttendance.setChecked(AUtils.isIsOnduty());
+                            }
+                        });
+                    }
                 }
-            }
+            }//end of onclick
         });
 
         markAttendance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {   //changes made by Swapnil

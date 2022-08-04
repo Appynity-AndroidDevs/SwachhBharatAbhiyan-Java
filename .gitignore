@@ -320,3 +320,13 @@ local.properties
 .idea/libraries/Gradle__np_com_susanthapa_curved_bottom_navigation_0_6_5_aar.xml
 .idea/misc.xml
 .idea/misc.xml
+.idea/libraries/Gradle___retrofitconnectionlibrary_release__aar.xml
+.idea/libraries/Gradle__androidx_activity_activity_1_2_3_aar.xml
+.idea/libraries/Gradle__androidx_activity_activity_1_2_4_aar.xml
+.idea/libraries/Gradle__androidx_annotation_annotation_1_2_0.xml
+.idea/libraries/Gradle__androidx_annotation_annotation_experimental_1_0_0_aar.xml
+.idea/libraries/Gradle__androidx_annotation_annotation_experimental_1_1_0_aar.xml
+.idea/libraries/Gradle__androidx_appcompat_appcompat_1_3_0_aar.xml
+.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_3_0_aar.xml
+*.xml
+local.properties

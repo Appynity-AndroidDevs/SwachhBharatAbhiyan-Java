@@ -3,9 +3,8 @@ package com.appynitty.swachbharatabhiyanlibrary.webservices;
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendanceResponsePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.DumpEmpPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.InPunchPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginDetailsPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.OutPunchPojo;
 
 import java.util.List;
@@ -25,14 +24,28 @@ public interface PunchWebService {
 
     @POST("api/Save/UserAttendenceOut")
     Call<ResultPojo> saveOutPunchDetails(@Header("appId") String appId,
-                                        @Header("Content-Type") String content_type,
+                                         @Header("Content-Type") String content_type,
                                          @Header("batteryStatus") int batteryStatus,
-                                        @Body OutPunchPojo outPojo);
+                                         @Body OutPunchPojo outPojo);
 
     @POST("api/Save/AttendenceOffline")
     Call<List<AttendanceResponsePojo>> saveOfflineAttendanceDetails(@Header("appId") String appId,
                                                                     @Header("Content-Type") String content_type,
-                                                                    @Header("cdate")String currentDateTime,
-                                                                    @Header("EmpType")String empType,
+                                                                    @Header("cdate") String currentDateTime,
+                                                                    @Header("EmpType") String empType,
                                                                     @Body List<AttendancePojo> attendancePojoList);
+
+    @POST("api/Save/UserAttendenceIn")
+    Call<DumpEmpPunchPojo> saveDumpEmpAttendanceIn(@Header("appId") String appId,
+                                                   @Header("batteryStatus") String batteryStatus,
+                                                   @Header("Content-Type") String content_type,
+                                                   @Body DumpEmpPunchPojo dumpEmpCheckInPojo);
+
+@POST("api/Save/UserAttendenceOut")
+    Call<DumpEmpPunchPojo> saveDumpEmpAttendanceOut(@Header("appId") String appId,
+                                                    @Header("batteryStatus") String batteryStatus,
+                                                    @Header("Content-Type") String content_type,
+                                                    @Body DumpEmpPunchPojo dumpEmpCheckInPojo);
+
+
 }

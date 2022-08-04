@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +49,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAda
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.DumpEmpPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -57,6 +61,7 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.DumpEmpAttendanceVM;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.IMEIWebService;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.LocationSettingsStates;
@@ -98,23 +103,19 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private RecyclerView menuGridView;
     private Toolbar toolbar;
     private TextView attendanceStatus;
-    private TextView btnScanQr, txtDumpyardId;
     private TextView vehicleStatus;
     private Switch markAttendance;
     private ImageView profilePic;
+    private ProgressBar progressBar;
     public boolean isView = false;
     private TextView userName;
     private TextView empId, txtEmpId;
     public boolean isSync = true;
     String vehicleType = null;
+    String empType = Prefs.getString(AUtils.EMP_TYPE, null);
     String vehicle_no = null;
-    String dumpId;
-    Bundle bundle = new Bundle();
-    boolean isChanged = true;
-
-
     private AttendancePojo attendancePojo = null;
-    String empType;
+
     private List<VehicleTypePojo> vehicleTypePojoList;
 
     private UserDetailPojo userDetailPojo;
@@ -125,6 +126,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private boolean isFromLogin;
     private LoginPojo loginPojo;
 
+
+    private DumpEmpAttendanceVM dumpEmpAttendanceVM;
     private CheckAttendanceAdapterClass mCheckAttendanceAdapter;
     private AttendanceAdapterClass mAttendanceAdapter;
     private VehicleTypeAdapterClass mVehicleTypeAdapter;
@@ -143,6 +146,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     //    private WorkManager workManager;
     MediaPlayer mp = null;
     FrameLayout pb;
+    private String dumpRefId = null;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -159,8 +163,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
         onSwitchStatus(AUtils.isIsOnduty());
-//        Log.e(TAG, "Location Coordinates:- " + Prefs.getString(AUtils.LAT, null) + ", " + Prefs.getString(AUtils.LONG, null));
-
     }
 
     @Override
@@ -233,7 +235,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 });
             } else {
                 if (isSwitchOn) {
-                    markAttendance.setChecked(true);
+                    markAttendance.setChecked(false);
                 }
             }
 
@@ -304,7 +306,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 onOutPunchSuccess();
             }
 
-            /*if (!inDate.equals(currentDate)) {
+            if (!inDate.equals(currentDate)) {
                 isFromAttendanceChecked = true;
 
                 String dutyEndTime = AUtils.getPreviousDateDutyOffTime();
@@ -313,37 +315,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         syncOfflineAttendanceRepository.checkAttendance(), dutyEndTime);
 
                 onOutPunchSuccess();
-            }*/
-            if (empType.matches("l") || empType.matches("S") || empType.matches("N")) {
-                if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
-                    attendancePojo = syncOfflineAttendanceRepository.checkAttendance();
-
-                    if (!AUtils.isNull(attendancePojo)) {
-                        markAttendance.setChecked(true);
-                        onInPunchSuccess();
-                    }
-                }
-            } else if (empType.matches("D")) {
-                if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
-                    attendancePojo = syncOfflineAttendanceRepository.checkAttendance();
-
-                    if (!AUtils.isNull(attendancePojo.getReferanceId())) {
-                        markAttendance.setChecked(true);
-                        onInPunchSuccess();
-                    }
-                }
-            } else {
-                onOutPunchSuccess();
             }
 
-            /*if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
+            if (!AUtils.isNull(syncOfflineAttendanceRepository) && !isFromLogin) {
                 attendancePojo = syncOfflineAttendanceRepository.checkAttendance();
 
                 if (!AUtils.isNull(attendancePojo)) {
                     markAttendance.setChecked(true);
                     onInPunchSuccess();
                 }
-            }*/
+            }
 
             if (!AUtils.isSyncOfflineDataRequestEnable) {
                 verifyDataAdapterClass.verifyOfflineSync();
@@ -361,8 +342,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     this.getResources().getString(R.string.hyphen), vehicle_no,
                     this.getResources().getString(R.string.closing_round_bracket)));
         } else {
-            vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
-                    vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
+            vehicleStatus.setText("");
         }
     }
 
@@ -598,6 +578,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mContext = DashboardActivity.this;
         AUtils.currentContextConstant = mContext;
         checkIsFromLogin();
+        progressBar = findViewById(R.id.loader);
         mCheckAttendanceAdapter = new CheckAttendanceAdapterClass();
         mAttendanceAdapter = new AttendanceAdapterClass();
         mVehicleTypeAdapter = new VehicleTypeAdapterClass();
@@ -621,24 +602,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         toolbar = findViewById(R.id.toolbar);
         attendanceStatus = findViewById(R.id.user_attendance_status);
         vehicleStatus = findViewById(R.id.user_vehicle_type);
-        btnScanQr = findViewById(R.id.scan_qr);
-        txtDumpyardId = findViewById(R.id.user_dumpyard_id);
         markAttendance = findViewById(R.id.user_attendance_toggle);
         userName = findViewById(R.id.user_full_name);
         empId = findViewById(R.id.user_emp_id);
         profilePic = findViewById(R.id.user_profile_pic);
-        empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
-
-        bundle = getIntent().getExtras();
-        if (bundle != null) {
-            Prefs.remove(AUtils.HOUSE_ID_START);
-            Prefs.remove(AUtils.HOUSE_ID);
-            dumpId = bundle.getString(AUtils.dumpYardSuperId);
-            Prefs.putString(AUtils.HOUSE_ID, dumpId);
-            Prefs.putString(AUtils.HOUSE_ID_START, dumpId);
-            Log.e(TAG, "Dump Qr Scan entry Id: " + Prefs.getString(AUtils.HOUSE_ID_START, ""));
-            Log.e(TAG, "Dump Qr Scan exit Id: " + Prefs.getString(AUtils.HOUSE_ID, ""));
-        }
 
         initToolBar();
 
@@ -652,16 +619,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void registerEvents() {
-
-        btnScanQr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
-                markAttendance.setVisibility(View.VISIBLE);
-                txtDumpyardId.setVisibility(View.VISIBLE);
-                txtDumpyardId.setText(Prefs.getString(AUtils.HOUSE_ID_START, ""));
-            }
-        });
 
         mCheckAttendanceAdapter.setCheckAttendanceListener(new CheckAttendanceAdapterClass.CheckAttendanceListener() {
             @Override
@@ -738,28 +695,47 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
         });
 
+        markAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                }
+                if (!AUtils.isIsOnduty()) {
+                    startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
+                    finish();
+                } else {
+
+                    AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            dumpEmpAttendanceVM.setDumpEmpAttendanceOut(Prefs.getString(AUtils.dumpYardSuperId, null));
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            markAttendance.setChecked(AUtils.isIsOnduty());
+                        }
+                    });
+                }
+            }
+        });
+
         markAttendance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {   //changes made by Swapnil
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 AUtils.gpsStatusCheck(DashboardActivity.this);
-                if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
-                    Log.e(TAG, "check toggle is: " + isChecked);
-                    onSwitchStatus(isChecked);
-                    if (isChecked) {
-                        btnScanQr.setVisibility(View.GONE);
+
+                if (!empType.matches("D")) {
+                    if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                        onSwitchStatus(isChecked);
                     } else {
-                        btnScanQr.setVisibility(View.VISIBLE);
-                        /*Toast.makeText(mContext, "First scan QR button, then duty on otherwise off", Toast.LENGTH_SHORT).show();*/
-                        AUtils.warning(mContext, "First scan QR button, then duty on otherwise off");
+                        markAttendance.setChecked(AUtils.isIsOnduty());
                     }
-
-                } else {
-                    /*Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_SHORT).show();*/
-                    markAttendance.setChecked(AUtils.isIsOnduty());
                 }
-
             }
         });
 
@@ -815,68 +791,20 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     }
 
-//    private void setMenuClick(int position) {
-//
-//        if(!AUtils.isSyncOfflineDataRequestEnable){
-//            verifyDataAdapterClass.verifyOfflineSync();
-//        }
-//
-//        switch (position) {
-//            case 0:
-//                if(AUtils.isIsOnduty())
-//                    if(!AUtils.isInternetAvailable()) startActivity(new Intent(mContext, QRcodeScannerActivity.class));
-//                    else
-//                        //verifyOfflineData(mContext, QRcodeScannerActivity.class, false);
-//                        startActivity(new Intent(mContext, QRcodeScannerActivity.class));
-//                else
-//                    AUtils.warning(mContext, getResources().getString(R.string.be_no_duty));
-//                break;
-//            case 1:
-//                if(AUtils.isIsOnduty())
-//                    if(!AUtils.isInternetAvailable()) startActivity(new Intent(mContext, TakePhotoActivity.class));
-//                    else
-////                        verifyOfflineData(mContext, TakePhotoActivity.class, false);
-//                        startActivity(new Intent(mContext, TakePhotoActivity.class));
-//                else
-//                    AUtils.warning(mContext, getResources().getString(R.string.be_no_duty));
-//                break;
-//            case 2:
-//                if(AUtils.isIsOnduty())
-//                    startActivity(new Intent(mContext, BroadcastActivity.class));
-//                else
-//                    AUtils.warning(mContext, getResources().getString(R.string.be_no_duty));
-//                break;
-//            case 3:
-//                startActivity(new Intent(mContext, HistoryPageActivity.class));
-//                break;
-//            case 4:
-//                startActivity(new Intent(mContext, ProfilePageActivity.class));
-//                break;
-//            case 5:
-//                startActivity(new Intent(mContext, SyncOfflineActivity.class));
-//                break;
-//        }
-//    }
-
     private void initData() {
-        if (empType.matches("D")) {
-            if (isChanged) {
-                btnScanQr.setVisibility(View.VISIBLE);
-            } else {
-                markAttendance.setVisibility(View.GONE);
-            }
-        }
-        Log.e(TAG, "EmpType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
+        Log.e(TAG, "empType- " + empType);
         lastLocationRepository.clearUnwantedRows();
         initUserDetails();
+        if (!empType.matches("D"))
+            mVehicleTypeAdapter.getVehicleType();
 
-        mVehicleTypeAdapter.getVehicleType();
         mUserDetailAdapter.getUserDetail();
 
         List<MenuListPojo> menuPojoList = new ArrayList<MenuListPojo>();
 
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerActivity.class, true));
-        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
+        if (!empType.matches("D"))
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
 
 //        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
@@ -885,8 +813,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
 
         DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(mContext);
-        if (empType.matches("D"))
-            menuPojoList.remove(1);
         mainMenuAdaptor.setMenuList(menuPojoList);
         menuGridView.setAdapter(mainMenuAdaptor);
 
@@ -896,6 +822,61 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         if (isView)
             checkDutyStatus();
+
+
+        if (empType.matches("D")) {
+            Intent i = getIntent();
+
+            if (i.hasExtra(AUtils.dumpYardSuperId))
+                dumpRefId = i.getStringExtra(AUtils.dumpYardSuperId);
+
+            Log.e(TAG, "initData: dumpId: " + i.getStringExtra(AUtils.dumpYardSuperId));
+            dumpEmpAttendanceVM = new ViewModelProvider(this).get(DumpEmpAttendanceVM.class);
+            if (!AUtils.isNullString(dumpRefId))
+                dumpEmpAttendanceVM.setDumpEmpAttendanceIn(dumpRefId);
+
+            dumpEmpAttendanceVM.getDumpEmpCheckInLiveData().observe(this, new Observer<DumpEmpPunchPojo>() {
+                @Override
+                public void onChanged(DumpEmpPunchPojo dumpEmpPunchPojo) {
+                    Log.e(TAG, "onChanged: " + dumpEmpPunchPojo.getMessage());
+                    if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                        AUtils.success(mContext, dumpEmpPunchPojo.getMessage());
+                        Prefs.putString(AUtils.dumpYardSuperId, dumpRefId);
+                        onInPunchSuccess();
+                    }
+                }
+            });
+
+            dumpEmpAttendanceVM.getDumpEmpCheckOutLiveData().observe(this, new Observer<DumpEmpPunchPojo>() {
+                @Override
+                public void onChanged(DumpEmpPunchPojo dumpEmpPunchPojo) {
+                    if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                        AUtils.success(mContext, dumpEmpPunchPojo.getMessage());
+                        onOutPunchSuccess();
+                        if (AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                            ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
+                        }
+                    } else if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
+                        AUtils.warning(mContext, dumpEmpPunchPojo.getMessage());
+                        markAttendance.setChecked(AUtils.isIsOnduty());
+                    }
+                }
+            });
+
+            dumpEmpAttendanceVM.getDumpEmpAttendanceError().observe(this, new Observer<Throwable>() {
+                @Override
+                public void onChanged(Throwable throwable) {
+                    AUtils.error(mContext, throwable.getMessage());
+                }
+            });
+
+            dumpEmpAttendanceVM.getProgressStatusLiveData().observe(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer status) {
+                    progressBar.setVisibility(status);
+                }
+            });
+        }
     }
 
     private void performLogout() {
@@ -938,8 +919,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.LONG);
         Prefs.remove(AUtils.VEHICLE_NO);
         Prefs.remove(AUtils.VEHICLE_ID);
-        Prefs.remove(AUtils.HOUSE_ID);
-        Prefs.remove(AUtils.HOUSE_ID_START);
 
         startActivity(new Intent(context, providedClass));
     }
@@ -970,28 +949,22 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onSwitchStatus(boolean isChecked) {
-       /* bundle = getIntent().getExtras();
-        if (bundle != null) {
-            dumpId = bundle.getString(AUtils.dumpYardSuperId);
-            System.out.println("Dumpster Scan Id: "+dumpId);
-        }*/
 
         isSwitchOn = isChecked;
 
         if (isChecked) {
             playsound();
             onSwitchOn();
-
         } else {
             playsound();
             onSwitchOff();
+
 
         }
 
     }
 
     private void onVehicleTypeDialogClose(Object listItemSelected, String vehicleNo) {
-        Log.e(TAG, " api vehicle dialog");
 
         if (!AUtils.isNull(vehicleNo) && !vehicleNo.isEmpty()) {
             VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) listItemSelected;
@@ -1005,7 +978,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
 
             try {
-
                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                 onInPunchSuccess();
                 if (AUtils.isInternetAvailable()) {
@@ -1023,13 +995,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onInPunchSuccess() {
+        attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+        attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
-        if (empType.matches("L") || empType.matches("S") || empType.matches("N")) {
-            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-
-//        String vehicleType = null;
-
+        if (!empType.matches("D")) {
             for (int i = 0; i < vehicleTypePojoList.size(); i++) {
                 if (Prefs.getString(AUtils.VEHICLE_ID, "0").equals(vehicleTypePojoList.get(i).getVtId())) {
 //                if(Prefs.getString(AUtils.LANGUAGE_NAME,AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
@@ -1053,80 +1022,26 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             AUtils.setInPunchDate(Calendar.getInstance());
             Log.i(TAG, AUtils.getInPunchDate());
             AUtils.setIsOnduty(true);
-
-        } else if (empType.matches("D")) {
-
-            if (!AUtils.isNullString(attendancePojo.getReferanceId())) {
-                attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-                attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-                AUtils.setInPunchDate(Calendar.getInstance());
-                Log.i(TAG, AUtils.getInPunchDate());
-                AUtils.setIsOnduty(true);
-            }
-            btnScanQr.setVisibility(View.GONE);
-           /* attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));*/
+        } else {
+            AUtils.setIsOnduty(true);
+            markAttendance.setChecked(true);
+            Prefs.putString(AUtils.dumpYardSuperId, dumpRefId);
         }
-
     }
 
     private void onOutPunchSuccess() {
-        if (empType.matches("L") || empType.matches("S") || empType.matches("N")) {
-            attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
-            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
-
-            vehicleStatus.setText("");
-            vehicleStatus.setVisibility(View.VISIBLE);
-
-            stopServiceIfRunning();
-
-            markAttendance.setChecked(false);
-            txtDumpyardId.setVisibility(View.GONE);
-            btnScanQr.setVisibility(View.GONE);
-            Prefs.remove(AUtils.HOUSE_ID_START);
-            Prefs.remove(AUtils.HOUSE_ID);
-
-            attendancePojo = null;
-            AUtils.removeInPunchDate();
-            AUtils.setIsOnduty(false);
-
-        } else if (empType.matches("D")) {
-            attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
-            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
-
-            vehicleStatus.setText("");
-            vehicleStatus.setVisibility(View.GONE);
-
-            stopServiceIfRunning();
-
-            markAttendance.setChecked(false);
-            txtDumpyardId.setVisibility(View.GONE);
-            btnScanQr.setVisibility(View.VISIBLE);
-            Prefs.remove(AUtils.HOUSE_ID_START);
-            Prefs.remove(AUtils.HOUSE_ID);
-
-            attendancePojo = null;
-            AUtils.removeInPunchDate();
-            AUtils.setIsOnduty(false);
-
-        }
-       /* attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
+        attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
 
         vehicleStatus.setText("");
-        vehicleStatus.setVisibility(View.VISIBLE);
 
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
-        txtDumpyardId.setVisibility(View.GONE);
-        btnScanQr.setVisibility(View.VISIBLE);
-        Prefs.remove(AUtils.HOUSE_ID_START);
-        Prefs.remove(AUtils.HOUSE_ID);
 
         attendancePojo = null;
         AUtils.removeInPunchDate();
-        AUtils.setIsOnduty(false);*/
+        AUtils.setIsOnduty(false);
     }
 
     private void stopServiceIfRunning() {
@@ -1177,20 +1092,18 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void checkDutyStatus() {
-
         if (AUtils.isIsOnduty()) {
 
-            if (empType.matches("L") || empType.matches("S") || empType.matches("N")) {
-                if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
-                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                }
-                markAttendance.setChecked(true);
+            if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+            }
+            markAttendance.setChecked(true);
 
-                /*attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-                attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));*/
+            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
+            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
-                String vehicleName = "";
-
+            String vehicleName = "";
+            if (!empType.matches("D")) {
                 if (AUtils.isNull(vehicleTypePojoList)) {
                     vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
                 }
@@ -1210,22 +1123,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 } else {
                     vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.closing_round_bracket)));
                 }
-            } else if (empType.matches("D")) {
-                if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
-                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                }
-                markAttendance.setChecked(true);
-                attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-                attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-                //attendancePojo.setReferanceId(Prefs.getString(AUtils.PREFS.DUMP_YARD_SUPERVISOR,""));
+            } else {
 
-                String vehicleName = "";
-                vehicleStatus.setText(" ");
             }
         } else {
             markAttendance.setChecked(false);
-            attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
-            attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
         }
     }
 
@@ -1260,14 +1162,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private void onSwitchOn() {
 
-        if (empType.matches("L") || empType.matches("S") || empType.matches("N")) {
-            btnScanQr.setVisibility(View.GONE);
-            txtDumpyardId.setVisibility(View.GONE);
+        if (isLocationPermission) {
 
-            if (isLocationPermission) {
+            if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
+                if (!AUtils.DutyOffFromService) {
+                    if (empType.matches("D")) {
 
-                if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
-                    if (!AUtils.DutyOffFromService) {
+                    } else {
                         HashMap<Integer, Object> mLanguage = new HashMap<>();
 
                         vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
@@ -1279,6 +1180,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                             if (!AUtils.isIsOnduty()) {
                                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
                                 PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_VEHICLE, mLanguage, this);
                                 dialog.show();
                             }
@@ -1287,153 +1189,58 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             markAttendance.setChecked(false);
                             AUtils.error(mContext, mContext.getString(R.string.vehicle_not_found_error), Toast.LENGTH_SHORT);
                         }
-                    } else {
-                        AUtils.DutyOffFromService = false;
                     }
+
                 } else {
-                    markAttendance.setChecked(false);
-//                Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_LONG).show();
-//                AUtils.showGPSSettingsAlert(mContext);
+                    AUtils.DutyOffFromService = false;
                 }
             } else {
-                isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
-            }
-        } else if (empType.matches("D")) {
-
-
-            if (isLocationPermission) {
-
-                if (AUtils.isGPSEnable(AUtils.currentContextConstant) && AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
-                    if (!AUtils.DutyOffFromService) {
-
-                        if (!AUtils.isIsOnduty()) {
-                            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-
-
-                            // startActivity(new Intent(mContext, DumpSuperScannerActivity.class));
-
-                            Prefs.putString(AUtils.VEHICLE_ID, null);
-
-                            Prefs.putString(AUtils.VEHICLE_NO, null);
-
-
-                            if (AUtils.isNull(attendancePojo)) {
-                                attendancePojo = new AttendancePojo();
-                                // attendancePojo.setReferanceId(dumpId);
-                            }
-                            Log.e(TAG, " api switch on emp type D");
-                            btnScanQr.setVisibility(View.GONE);
-                            txtDumpyardId.setVisibility(View.VISIBLE);
-
-                            try {
-                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
-                                Log.e(TAG, "InAttendanceId : " + SyncOfflineAttendanceRepository.InAttendanceId);
-                                onInPunchSuccess();
-                                /*if (AUtils.isInternetAvailable()) {
-                                    if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
-                                        mOfflineAttendanceAdapter.SyncOfflineData();
-                                }*/
-                                if (AUtils.isInternetAvailable()) {
-                                    mOfflineAttendanceAdapter.SyncOfflineData();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                markAttendance.setChecked(false);
-                                AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
-                            }
-                        }
-                        /*else {
-                            markAttendance.setChecked(false);
-                        }*/
-                    } else {
-                        AUtils.DutyOffFromService = false;
-                    }
-                } else {
-                    markAttendance.setChecked(false);
+                markAttendance.setChecked(false);
 //                Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_LONG).show();
 //                AUtils.showGPSSettingsAlert(mContext);
-                }
-            } else {
-                isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
             }
-
+        } else {
+            isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
         }
     }
 
     private void onSwitchOff() {
-        if (empType.matches("L") || empType.matches("S") || empType.matches("N")) {
-            Log.e(TAG, " api switch oFF emp type LNS");
-            if (AUtils.isIsOnduty()) {
-                try {
-                    if (!isFromAttendanceChecked) {
-                        AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                if (AUtils.isNull(attendancePojo))
-                                    attendancePojo = new AttendancePojo();
 
-                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
-                                onOutPunchSuccess();
+        if (AUtils.isIsOnduty()) {
+            try {
+                if (!isFromAttendanceChecked) {
+                    AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            if (AUtils.isNull(attendancePojo))
+                                attendancePojo = new AttendancePojo();
 
-                                if (AUtils.isInternetAvailable()) {
-                                    mOfflineAttendanceAdapter.SyncOfflineData();
-                                }
-                                Prefs.remove(AUtils.HOUSE_ID);
-                                Prefs.remove(AUtils.HOUSE_ID_START);
+                            syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                            onOutPunchSuccess();
+
+                            if (AUtils.isInternetAvailable()) {
+                                mOfflineAttendanceAdapter.SyncOfflineData();
                             }
-                        }, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                markAttendance.setChecked(true);
-                            }
-                        });
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            markAttendance.setChecked(true);
+                        }
+                    });
 
-                    } else {
-                        isFromAttendanceChecked = false;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    markAttendance.setChecked(false);
+                } else {
+                    isFromAttendanceChecked = false;
                 }
-            }
-        } else if (empType.matches("D")) {
-            Log.e(TAG, " api switch oFF emp type D");
-            if (AUtils.isIsOnduty()) {
-                try {
-                    if (!isFromAttendanceChecked) {
-                        AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                if (AUtils.isNull(attendancePojo))
-                                    attendancePojo = new AttendancePojo();
-
-                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
-                                onOutPunchSuccess();
-
-                                if (AUtils.isInternetAvailable()) {
-                                    mOfflineAttendanceAdapter.SyncOfflineData();
-                                }
-                            }
-                        }, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                markAttendance.setChecked(true);
-                            }
-                        });
-
-                    } else {
-                        isFromAttendanceChecked = false;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    markAttendance.setChecked(false);
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                markAttendance.setChecked(true);
             }
         }
+
+
     }
 
     private void onCaptureImageResult(Intent data) {
@@ -1454,7 +1261,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
             attendancePojo.setImagePath(destination.getAbsolutePath());
-            // attendancePojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID,""));
+
             onSwitchOn();
 
         } catch (Exception e) {
@@ -1462,27 +1269,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             e.printStackTrace();
             AUtils.error(mContext, mContext.getResources().getString(R.string.image_add_error), Toast.LENGTH_SHORT);
         }
-    }
-
-    private boolean getStringDump() {
-        if (empType.matches("D")) {
-            bundle = getIntent().getExtras();
-            if (bundle != null) {
-                dumpId = bundle.getString(AUtils.dumpYardSuperId);
-                Prefs.remove(AUtils.HOUSE_ID_START);
-                Prefs.remove(AUtils.HOUSE_ID);
-                Prefs.putString(AUtils.HOUSE_ID, dumpId);
-                Prefs.putString(AUtils.HOUSE_ID_START, dumpId);
-                Log.e(TAG, "Dumpster Scan Id: " + dumpId);
-                if (dumpId != null) {
-                    Log.e(TAG, "On Create ");
-                    onSwitchStatus(AUtils.isIsOnduty());
-                }
-                return false;
-            }
-
-        }
-        return true;
     }
 
     @Override

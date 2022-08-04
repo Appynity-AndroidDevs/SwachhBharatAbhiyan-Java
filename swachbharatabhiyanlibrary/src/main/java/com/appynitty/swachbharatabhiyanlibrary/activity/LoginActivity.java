@@ -244,7 +244,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
                 Prefs.putString(AUtils.PREFS.USER_TYPE_ID, mAdapter.getLoginDetailsPojo().getTypeId());
                 Prefs.putString(AUtils.PREFS.EMPLOYEE_TYPE, mAdapter.getLoginDetailsPojo().getEmpType()); //added by swapnil
                 Prefs.putBoolean(AUtils.PREFS.IS_GT_FEATURE, mAdapter.getLoginDetailsPojo().getGtFeatures());
-                Log.e("LoginActivity", "EmpType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
+                Log.e("LoginActivity", "empType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
                 Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, true);
 
                 AUtils.success(mContext, message, Toast.LENGTH_SHORT);

@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,10 +40,8 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.AutocompleteContainSe
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaHouseAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.DumpYardAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.connection.SyncServer;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaPointPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionDumpYardPointPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GarbageCollectionPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GcResultPojo;
@@ -83,7 +79,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
     private Toolbar toolbar;
     private ZBarScannerView scannerView;
     private FabSpeedDial fabSpeedDial;
-   // private AutoCompleteTextView dumpAutoComplete;
+    // private AutoCompleteTextView dumpAutoComplete;
     private TextInputLayout idIpLayout/*, dumpYardIdIpLayout*/;
     private AutoCompleteTextView idAutoComplete;
     private AreaHouseAdapterClass mHpAdapter;
@@ -218,7 +214,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
             scanQR();
         } else {
             super.onBackPressed();
-
+            startActivity(new Intent(this, DashboardActivity.class));
         }
     }
 
@@ -330,7 +326,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
     protected void initToolbar() {
         toolbar.setTitle(getResources().getString(R.string.title_activity_qrcode_scanner));
         setSupportActionBar(toolbar);
-       /* dumpYardIdIpLayout.setVisibility(View.GONE);*/
+        /* dumpYardIdIpLayout.setVisibility(View.GONE);*/
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
@@ -357,11 +353,11 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isValid()){
+                if (isValid()) {
                     submitQRcode(idAutoComplete.getText().toString().toUpperCase(Locale.ROOT));
-                    Log.e(TAG, "manually qr code entered is: " +idAutoComplete.getText().toString());
+                    Log.e(TAG, "manually qr code entered is: " + idAutoComplete.getText().toString());
                     finish();
-                    AUtils.success(mContext,"dump yard manually entered "+idAutoComplete.getText().toString() +" successfully", Toast.LENGTH_SHORT);
+                    AUtils.success(mContext, "dump yard manually entered " + idAutoComplete.getText().toString() + " successfully", Toast.LENGTH_SHORT);
 
                 }
             }
@@ -469,8 +465,8 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         }
     }
 
-    private boolean isValid(){
-        if (idAutoComplete.getText().toString().trim().isEmpty()){
+    private boolean isValid() {
+        if (idAutoComplete.getText().toString().trim().isEmpty()) {
             AUtils.warning(mContext, "Please select dump yard id");
             return false;
         }
@@ -489,16 +485,16 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
             } else if (houseid.substring(0, 2).matches("^[GgPp]+$")) {
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.gp_qr_alert), null);
             } else if (houseid.substring(0, 2).matches("^[DdYy]+$")) {
-                  // getDumpYardDetails(houseid);
-                Log.e(TAG,"Dumpyard scan Id: "+ houseid);
-                AUtils.success(mContext,"Dump yard id get successfully: "+houseid +", please switch on toggle button",1000*6);
+                // getDumpYardDetails(houseid);
+                Log.e(TAG, "Dumpyard scan Id: " + houseid);
+//                AUtils.success(mContext, "Dump yard id get successfully: " + houseid + ", please switch on toggle button", 1000 * 6);
                 /*Prefs.putString(AUtils.HOUSE_ID, houseid);
                 Prefs.putString(AUtils.HOUSE_ID_START, houseid);*/
                 //editor.commit();
 
                 submitDumpYardSuperAttendance(houseid);
                 stopCamera();
-               // submitDumpyardRepo(houseid);
+                // submitDumpyardRepo(houseid);
                 /*Prefs.getString(AUtils.HOUSE_ID,"");*/
                 finish();
             }
@@ -507,15 +503,16 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
     }
 
     private void submitDumpYardSuperAttendance(final String houseNo) {
-        Log.e(TAG,"Dumyard Supervisor : "+houseNo);
+        Log.e(TAG, "Dumyard Supervisor : " + houseNo);
         Intent intent = new Intent(mContext, DashboardActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(AUtils.dumpYardSuperId, houseNo);
         intent.putExtras(bundle);
-        startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
+        startActivity(intent);
     }
+
     private void submitDumpyardRepo(final String houseNo) {
-        Log.e(TAG,"Dumyard Supervisor Repo : "+houseNo);
+        Log.e(TAG, "Dumyard Supervisor Repo : " + houseNo);
         Intent intent = new Intent(mContext, SyncOfflineAttendanceRepository.class);
         Bundle bundle = new Bundle();
         bundle.putString(AUtils.HOUSE_ID, houseNo);
@@ -523,7 +520,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
     }
 
-    private void dumpIdDropDownList(){
+    private void dumpIdDropDownList() {
 
     }
 
@@ -741,7 +738,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
 
     private void inflateAutoComplete(String areaId) {
 
-            mHpAdapter.fetchHpList("", areaId);
+        mHpAdapter.fetchHpList("", areaId);
     }
 
 

@@ -842,7 +842,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 public void onChanged(DumpEmpPunchPojo dumpEmpPunchPojo) {
                     Log.e(TAG, "onChanged: " + dumpEmpPunchPojo.getMessage());
                     if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                        AUtils.success(mContext, dumpEmpPunchPojo.getMessage());
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(mContext, dumpEmpPunchPojo.getMessageMar());
+                        }else{
+                            AUtils.success(mContext, dumpEmpPunchPojo.getMessage());
+                        }
                         Prefs.putString(AUtils.dumpYardSuperId, dumpRefId);
                         onInPunchSuccess();
                     }
@@ -853,13 +857,21 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 @Override
                 public void onChanged(DumpEmpPunchPojo dumpEmpPunchPojo) {
                     if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                        AUtils.success(mContext, dumpEmpPunchPojo.getMessage());
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(mContext, dumpEmpPunchPojo.getMessageMar());
+                        }else{
+                            AUtils.success(mContext, dumpEmpPunchPojo.getMessage());
+                        }
                         onOutPunchSuccess();
                         if (AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
                         }
                     } else if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
-                        AUtils.warning(mContext, dumpEmpPunchPojo.getMessage());
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.warning(mContext, dumpEmpPunchPojo.getMessageMar());
+                        } else {
+                            AUtils.warning(mContext, dumpEmpPunchPojo.getMessage());
+                        }
                         markAttendance.setChecked(AUtils.isIsOnduty());
                     }
                 }

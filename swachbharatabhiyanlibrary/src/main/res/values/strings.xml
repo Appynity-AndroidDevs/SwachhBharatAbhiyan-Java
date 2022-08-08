@@ -36,6 +36,7 @@
     <string name="forgot_password_txt">Forgot Password?</string>
 
     <string name="vehicle_no_txt">Enter Vehicle No.</string>
+    <string name="vehicle_no_txt_select">Select Vehicle No.</string>
     <string name="submit_txt">Submit</string>
     <string name="dialog_title_txt_vehicle">Ghanta Gadi Types</string>
 

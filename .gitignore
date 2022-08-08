@@ -328,5 +328,5 @@ local.properties
 .idea/libraries/Gradle__androidx_annotation_annotation_experimental_1_1_0_aar.xml
 .idea/libraries/Gradle__androidx_appcompat_appcompat_1_3_0_aar.xml
 .idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_3_0_aar.xml
-*.xml
+
 local.properties

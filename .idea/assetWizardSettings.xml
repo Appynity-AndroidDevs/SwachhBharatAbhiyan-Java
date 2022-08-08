@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ababab" />
-                            <entry key="outputName" value="ic_arrow_down" />
+                            <entry key="color" value="343232" />
+                            <entry key="outputName" value="ic_arrow_drop_down" />
                             <entry key="sourceFile" value="D:\CloneSBA\swachbharatabhiyanlibrary\src\main\res\drawable-hdpi\try.svg" />
                           </map>
                         </option>

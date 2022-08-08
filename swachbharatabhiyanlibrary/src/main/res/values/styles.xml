@@ -132,6 +132,11 @@
         <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorControlActivated">@android:color/white</item>
     </style>
+    <style name="spinnerTheme">
+        <item name="android:textColor">@color/colorGray</item>
+        <item name="android:textSize"> @dimen/dim_14_sp</item>
+        <item name="android:text"> Select Vehicle number</item>
+    </style>
 
     <style name="SBA.AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

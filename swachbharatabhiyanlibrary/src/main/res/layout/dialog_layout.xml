@@ -39,11 +39,22 @@
         android:layout_margin="@dimen/login_margin"
         android:visibility="gone">
 
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="If vehicle number not registered, please checked me and enter manually."
+            android:textColor="@color/colorGray"
+            android:textSize="10sp"
+            android:checked="false"
+            android:buttonTint="@color/colorPrimary"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dim_20_dp"
-            android:layout_marginBottom="@dimen/dim_12_dp">
+            android:layout_marginBottom="@dimen/dim_12_dp"
+            android:visibility="visible">
 
             <EditText
                 android:id="@+id/txt_vehicle_no"
@@ -54,6 +65,35 @@
                 android:digits="@string/vehicle_no_validation"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_20_dp"
+            android:layout_marginBottom="@dimen/dim_12_dp"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/select_vehicle_no"
+                style="@style/MyEditTextStyleLight"
+                android:hint="@string/vehicle_no_txt_select"
+                android:maxLines="1"
+                android:maxLength="12"
+                android:focusableInTouchMode="false"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:drawablePadding="@dimen/dim_10_dp"
+                android:focusable="false"
+                android:singleLine="true"
+                android:digits="@string/vehicle_no_validation"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_50_dp"
+            style="spinnerTheme"
+            android:prompt="@string/vehicle_no_txt_select"/>
 
         <Button
             style="@style/MyButtonStyle"

@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
+import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.DashboardMenuAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AttendanceAdapterClass;
@@ -49,7 +50,6 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAda
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.DumpEmpPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -837,15 +837,15 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             if (!AUtils.isNullString(dumpRefId))
                 dumpEmpAttendanceVM.setDumpEmpAttendanceIn(dumpRefId);
 
-            dumpEmpAttendanceVM.getDumpEmpCheckInLiveData().observe(this, new Observer<DumpEmpPunchPojo>() {
+            dumpEmpAttendanceVM.getDumpEmpCheckInLiveData().observe(this, new Observer<ResultPojo>() {
                 @Override
-                public void onChanged(DumpEmpPunchPojo dumpEmpPunchPojo) {
-                    Log.e(TAG, "onChanged: " + dumpEmpPunchPojo.getMessage());
-                    if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                public void onChanged(ResultPojo resultPojo) {
+                    Log.e(TAG, "DumpEmpCheckInLiveData: " + resultPojo.getMessage());
+                    if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                            AUtils.success(mContext, dumpEmpPunchPojo.getMessageMar());
-                        }else{
-                            AUtils.success(mContext, dumpEmpPunchPojo.getMessage());
+                            AUtils.success(mContext, resultPojo.getMessageMar());
+                        } else {
+                            AUtils.success(mContext, resultPojo.getMessage());
                         }
                         Prefs.putString(AUtils.dumpYardSuperId, dumpRefId);
                         onInPunchSuccess();
@@ -853,24 +853,24 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 }
             });
 
-            dumpEmpAttendanceVM.getDumpEmpCheckOutLiveData().observe(this, new Observer<DumpEmpPunchPojo>() {
+            dumpEmpAttendanceVM.getDumpEmpCheckOutLiveData().observe(this, new Observer<ResultPojo>() {
                 @Override
-                public void onChanged(DumpEmpPunchPojo dumpEmpPunchPojo) {
-                    if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                public void onChanged(ResultPojo resultPojo) {
+                    if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                            AUtils.success(mContext, dumpEmpPunchPojo.getMessageMar());
-                        }else{
-                            AUtils.success(mContext, dumpEmpPunchPojo.getMessage());
+                            AUtils.success(mContext, resultPojo.getMessageMar());
+                        } else {
+                            AUtils.success(mContext, resultPojo.getMessage());
                         }
                         onOutPunchSuccess();
                         if (AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
                         }
-                    } else if (dumpEmpPunchPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
+                    } else if (resultPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                            AUtils.warning(mContext, dumpEmpPunchPojo.getMessageMar());
+                            AUtils.warning(mContext, resultPojo.getMessageMar());
                         } else {
-                            AUtils.warning(mContext, dumpEmpPunchPojo.getMessage());
+                            AUtils.warning(mContext, resultPojo.getMessage());
                         }
                         markAttendance.setChecked(AUtils.isIsOnduty());
                     }

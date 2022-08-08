@@ -35,17 +35,5 @@ public interface PunchWebService {
                                                                     @Header("EmpType") String empType,
                                                                     @Body List<AttendancePojo> attendancePojoList);
 
-    @POST("api/Save/UserAttendenceIn")
-    Call<DumpEmpPunchPojo> saveDumpEmpAttendanceIn(@Header("appId") String appId,
-                                                   @Header("batteryStatus") String batteryStatus,
-                                                   @Header("Content-Type") String content_type,
-                                                   @Body DumpEmpPunchPojo dumpEmpCheckInPojo);
-
-@POST("api/Save/UserAttendenceOut")
-    Call<DumpEmpPunchPojo> saveDumpEmpAttendanceOut(@Header("appId") String appId,
-                                                    @Header("batteryStatus") String batteryStatus,
-                                                    @Header("Content-Type") String content_type,
-                                                    @Body DumpEmpPunchPojo dumpEmpCheckInPojo);
-
 
 }

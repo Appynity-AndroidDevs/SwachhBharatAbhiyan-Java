@@ -3,7 +3,9 @@ package com.appynitty.swachbharatabhiyanlibrary.repository;
 import android.util.Log;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.DumpEmpPunchPojo;
+import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.InPunchPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.OutPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.PunchWebService;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -22,23 +24,31 @@ public class DumpEmpAttendanceRepo {
 
     public void setDumpEmpAttendanceIn(String refId, IDumpEmpAttendanceResponse iDumpEmpAttendanceResponse) {
 
-        DumpEmpPunchPojo dumpEmpPunchInBody = new DumpEmpPunchPojo(Prefs.getString(AUtils.PREFS.USER_ID, null), Prefs.getString(AUtils.LAT, null),
-                Prefs.getString(AUtils.LONG, null), AUtils.getServerTime(), AUtils.getLocalDate(), "", "", Prefs.getString(AUtils.EMP_TYPE, null), refId);
+        InPunchPojo inPunchBody = new InPunchPojo();
+        inPunchBody.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, null));
+        inPunchBody.setStartLat(Prefs.getString(AUtils.LAT, null));
+        inPunchBody.setStartLong(Prefs.getString(AUtils.LONG, null));
+        inPunchBody.setDaDate(AUtils.getLocalDate());
+        inPunchBody.setStartTime(AUtils.getServerTime());
+        inPunchBody.setVehicleNumber("");
+        inPunchBody.setVtId("");
+        inPunchBody.setReferanceId(refId);
+        inPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
 
         PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
-        Call<DumpEmpPunchPojo> punchCall = punchWebService.saveDumpEmpAttendanceIn(Prefs.getString(AUtils.APP_ID, null),
-                String.valueOf(AUtils.getBatteryStatus()),
-                AUtils.CONTENT_TYPE, dumpEmpPunchInBody);
+        Call<ResultPojo> punchInCall = punchWebService.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, null), AUtils.CONTENT_TYPE,
+                AUtils.getBatteryStatus(),
+                inPunchBody);
 
-        punchCall.enqueue(new Callback<DumpEmpPunchPojo>() {
+        punchInCall.enqueue(new Callback<ResultPojo>() {
             @Override
-            public void onResponse(Call<DumpEmpPunchPojo> call, Response<DumpEmpPunchPojo> response) {
+            public void onResponse(Call<ResultPojo> call, Response<ResultPojo> response) {
                 Log.e(TAG, "onResponse: " + response.body().getMessage());
                 iDumpEmpAttendanceResponse.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<DumpEmpPunchPojo> call, Throwable t) {
+            public void onFailure(Call<ResultPojo> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
                 iDumpEmpAttendanceResponse.onFailure(t);
             }
@@ -47,30 +57,31 @@ public class DumpEmpAttendanceRepo {
 
     public void setDumpEmpAttendanceOut(String refId, IDumpEmpAttendanceResponse iDumpEmpAttendanceResponse) {
 
-        DumpEmpPunchPojo dumpEmpPunchOutBody = new DumpEmpPunchPojo(
-                Prefs.getString(AUtils.PREFS.USER_ID, null),
-                Prefs.getString(AUtils.LAT, null),
-                Prefs.getString(AUtils.LONG, null),
-                AUtils.getServerTime(),
-                AUtils.getLocalDate(),
-                "", "",
-                Prefs.getString(AUtils.EMP_TYPE, null),
-                refId, "Perform duty off!");
+        OutPunchPojo outPunchBody = new OutPunchPojo();
+        outPunchBody.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, null));
+        outPunchBody.setEndLat(Prefs.getString(AUtils.LAT, null));
+        outPunchBody.setEndLong(Prefs.getString(AUtils.LONG, null));
+        outPunchBody.setEndTime(AUtils.getServerTime());
+        outPunchBody.setDaDate(AUtils.getLocalDate());
+        outPunchBody.setVehicleNumber("");
+        outPunchBody.setVtId("");
+        outPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
+        outPunchBody.setReferanceId(refId);
 
         PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
-        Call<DumpEmpPunchPojo> punchCall = punchWebService.saveDumpEmpAttendanceOut(Prefs.getString(AUtils.APP_ID, null),
-                String.valueOf(AUtils.getBatteryStatus()),
-                AUtils.CONTENT_TYPE, dumpEmpPunchOutBody);
+        Call<ResultPojo> punchOutCall = punchWebService.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, null),
+                AUtils.CONTENT_TYPE, AUtils.getBatteryStatus(),
+                outPunchBody);
 
-        punchCall.enqueue(new Callback<DumpEmpPunchPojo>() {
+        punchOutCall.enqueue(new Callback<ResultPojo>() {
             @Override
-            public void onResponse(Call<DumpEmpPunchPojo> call, Response<DumpEmpPunchPojo> response) {
+            public void onResponse(Call<ResultPojo> call, Response<ResultPojo> response) {
                 Log.e(TAG, "onResponse: " + response.body().getMessage());
                 iDumpEmpAttendanceResponse.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<DumpEmpPunchPojo> call, Throwable t) {
+            public void onFailure(Call<ResultPojo> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
                 iDumpEmpAttendanceResponse.onFailure(t);
             }
@@ -78,7 +89,7 @@ public class DumpEmpAttendanceRepo {
     }
 
     public interface IDumpEmpAttendanceResponse {
-        void onResponse(DumpEmpPunchPojo attendanceResponse);
+        void onResponse(ResultPojo resultPojo);
 
         void onFailure(Throwable throwable);
     }

@@ -14,6 +14,12 @@ public class OutPunchPojo {
 
     private String ReferanceId;
 
+    private String vtId;
+
+    private String vehicleNumber;
+
+    private String EmpType;
+
     public String getReferanceId() {
         return ReferanceId;
     }
@@ -60,6 +66,30 @@ public class OutPunchPojo {
 
     public void setEndLat(String endLat) {
         this.endLat = endLat;
+    }
+
+    public String getVtId() {
+        return vtId;
+    }
+
+    public void setVtId(String vtId) {
+        this.vtId = vtId;
+    }
+
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
+
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
+
+    public String getEmpType() {
+        return EmpType;
+    }
+
+    public void setEmpType(String empType) {
+        EmpType = empType;
     }
 
     @Override

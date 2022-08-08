@@ -15,7 +15,9 @@ public class InPunchPojo {
     private String vtId;
 
     private String vehicleNumber;
+
     private String EmpType;
+
     private String ReferanceId;
 
     public String getReferanceId() {

@@ -45,6 +45,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CheckAttendan
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.OfflineAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncOfflineAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.UserDetailAdapterClass;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleNumberAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
@@ -118,6 +119,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private List<VehicleTypePojo> vehicleTypePojoList;
 
+
     private UserDetailPojo userDetailPojo;
 
     private boolean isLocationPermission = false;
@@ -131,6 +133,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private CheckAttendanceAdapterClass mCheckAttendanceAdapter;
     private AttendanceAdapterClass mAttendanceAdapter;
     private VehicleTypeAdapterClass mVehicleTypeAdapter;
+    private VehicleNumberAdapterClass mVehicleNumberAdapterClass;
     private UserDetailAdapterClass mUserDetailAdapter;
     private OfflineAttendanceAdapterClass mOfflineAttendanceAdapter;
 
@@ -582,6 +585,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mCheckAttendanceAdapter = new CheckAttendanceAdapterClass();
         mAttendanceAdapter = new AttendanceAdapterClass();
         mVehicleTypeAdapter = new VehicleTypeAdapterClass();
+        mVehicleNumberAdapterClass = new VehicleNumberAdapterClass();
         mUserDetailAdapter = new UserDetailAdapterClass();
         verifyDataAdapterClass = new VerifyDataAdapterClass(mContext);
         mOfflineAttendanceAdapter = new OfflineAttendanceAdapterClass(mContext);
@@ -1124,6 +1128,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 for (int i = 0; i < vehicleTypePojoList.size(); i++) {
 
                     if (Prefs.getString(AUtils.VEHICLE_ID, "").equals(vehicleTypePojoList.get(i).getVtId())) {
+                        //rahul
                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
                             vehicleName = vehicleTypePojoList.get(i).getDescriptionMar();
                         else

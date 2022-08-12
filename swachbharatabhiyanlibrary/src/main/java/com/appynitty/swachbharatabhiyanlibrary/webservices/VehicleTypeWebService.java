@@ -20,7 +20,7 @@ public interface VehicleTypeWebService {
     @GET("api/Get/Vehicles")
     Call<List<VehicleNumberPojo>> pullVehicleNumberList(@Header("Content-Type") String content_type,
                                                         @Header("appId") String appId,
-                                                        @Header("vehicleTypeId") String vehicleNo);
+                                                        @Header("vehicleTypeId") String vehicleTypeId);
 
 
 }

@@ -1,6 +1,9 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.connection;
 
+import android.widget.SpinnerAdapter;
+
 import com.appynitty.swachbharatabhiyanlibrary.connection.SyncServer;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleTypePojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyAsyncTask;
@@ -11,56 +14,58 @@ import com.pixplicity.easyprefs.library.Prefs;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class VehicleTypeAdapterClass {
+public class VehicleNumberAdapterClass {
 
-    private VehicleTypeListener mListener;
+    private VehicleNumListener mListener;
 
-    private List<VehicleTypePojo> vehicleTypePojoList;
+    private List<VehicleNumberPojo> vehicleNumPojoList;
 
     private static final Gson gson = new Gson();
 
-    public VehicleTypeListener getVehicleTypeListener() {
+    public VehicleNumListener getVehicleNumListener() {
         return mListener;
     }
 
-    public void setVehicleTypeListener(VehicleTypeListener mListener) {
+    public void setVehicleNumListener(VehicleNumListener mListener) {
         this.mListener = mListener;
     }
 
-    public List<VehicleTypePojo> getVehicleTypePojoList() {
+    public List<VehicleNumberPojo> getVehicleNumPojoList() {
 
-        Type type = new TypeToken<List<VehicleTypePojo>>() {
+        Type type = new TypeToken<List<VehicleNumberPojo>>() {
         }.getType();
 
-        vehicleTypePojoList = gson.fromJson(
-                Prefs.getString(AUtils.PREFS.VEHICLE_TYPE_POJO_LIST, null), type);
-        return vehicleTypePojoList;
+        vehicleNumPojoList = gson.fromJson(
+                Prefs.getString(AUtils.PREFS.VEHICLE_NUMBER_POJO_LIST, null), type);
+        return vehicleNumPojoList;
     }
 
 
-    public static void setVehicleTypePojoList(List<VehicleTypePojo> vehicleTypePojoList) {
-        Type type = new TypeToken<List<VehicleTypePojo>>() {
+    public static void setVehicleNumPojoList(List<VehicleNumberPojo> vehicleNumPojoList) {
+        Type type = new TypeToken<List<VehicleNumberPojo>>() {
         }.getType();
-        Prefs.putString(AUtils.PREFS.VEHICLE_TYPE_POJO_LIST, gson.toJson(vehicleTypePojoList, type));
+        Prefs.putString(AUtils.PREFS.VEHICLE_NUMBER_POJO_LIST, gson.toJson(vehicleNumPojoList, type));
     }
 
-    public void getVehicleType() {
+    public void getVehicleNUmber(String vType) {
 
         new MyAsyncTask(AUtils.currentContextConstant, false, new MyAsyncTask.AsynTaskListener() {
             public boolean isDataPull = false;
 
             @Override
             public void doInBackgroundOpration(SyncServer syncServer) {
-
-                isDataPull = syncServer.pullVehicleTypeListFromServer();
+                /*if (vehicleTypeId.matches(Prefs.getString(AUtils.DIALOG_TYPE_VEHICLE,""))){
+                    isDataPull = syncServer.pullVehicleNumberListFromServer();
+                }*/
+                isDataPull = syncServer.pullVehicleNumberListFromServer(vType);
             }
 
             @Override
             public void onFinished() {
 
-                getVehicleTypePojoList();
+                getVehicleNumPojoList();
 
-                if (!AUtils.isNull(vehicleTypePojoList) && !vehicleTypePojoList.isEmpty())
+                if (!AUtils.isNull(vehicleNumPojoList) && !vehicleNumPojoList.isEmpty())
                 {
                     if(!AUtils.isNull(mListener))
                         mListener.onSuccessCallBack();
@@ -80,7 +85,7 @@ public class VehicleTypeAdapterClass {
         }).execute();
     }
 
-    public interface VehicleTypeListener {
+    public interface VehicleNumListener {
         void onSuccessCallBack();
         void onFailureCallBack();
     }

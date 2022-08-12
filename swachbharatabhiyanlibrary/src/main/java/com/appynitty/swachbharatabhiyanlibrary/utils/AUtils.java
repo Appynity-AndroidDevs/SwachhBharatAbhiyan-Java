@@ -108,6 +108,7 @@ public class AUtils extends CommonUtils {
     public static final String VERSION_CODE = "AppVersion";
 
     public static final String DIALOG_TYPE_VEHICLE = "DialogTypeVehicle";
+    public static final String DIALOG_NUMBER_VEHICLE = "DialogNumberVehicle";
     public static final String DIALOG_TYPE_LANGUAGE = "Dialog_Type_Language";
 
     public static final String DEFAULT_LANGUAGE_ID = LanguageConstants.ENGLISH;
@@ -227,6 +228,7 @@ public class AUtils extends CommonUtils {
 
         String IN_PUNCH_POJO = "InPunchPull";
         String VEHICLE_TYPE_POJO_LIST = "VehicleTypePullList";
+        String VEHICLE_NUMBER_POJO_LIST = "VehicleNo";
         String USER_DETAIL_POJO = "UserDetailPull";
         String WORK_HISTORY_POJO_LIST = "WorkHistoryPullList";
         String WORK_HISTORY_DETAIL_POJO_LIST = "WorkHistoryDetailPullList";

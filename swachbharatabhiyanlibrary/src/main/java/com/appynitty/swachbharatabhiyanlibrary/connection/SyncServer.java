@@ -5,6 +5,7 @@ import android.content.Context;
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.UserDetailAdapterClass;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleNumberAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CheckAttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
@@ -20,6 +21,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.OutPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleTypePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.WorkHistoryDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -250,6 +252,32 @@ public class SyncServer {
             } else {
 
                 Prefs.putString(AUtils.PREFS.VEHICLE_TYPE_POJO_LIST, null);
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean pullVehicleNumberListFromServer(String vehicleTypeId) {
+
+        List<VehicleNumberPojo> vehicleNumberList = null;
+
+        try {
+
+            VehicleTypeWebService service = Connection.createService(VehicleTypeWebService.class, AUtils.SERVER_URL);
+            vehicleNumberList = service.pullVehicleNumberList(AUtils.CONTENT_TYPE,
+                    Prefs.getString(AUtils.APP_ID, ""), vehicleTypeId).execute().body();
+
+            if (!AUtils.isNull(vehicleNumberList) && !vehicleNumberList.isEmpty()) {
+
+                VehicleNumberAdapterClass.setVehicleNumPojoList(vehicleNumberList);
+
+                return true;
+            } else {
+
+                Prefs.putString(AUtils.PREFS.VEHICLE_NUMBER_POJO_LIST, null);
             }
         } catch (Exception e) {
 

@@ -121,7 +121,7 @@
     <string name="try_after_sometime">कृपया कुछ देर बाद प्रयास करें!</string>
     <string name="user_name_txt">उपयोगकर्ता नाम</string>
     <string name="vehicle_no_txt">वाहन क्रमांक दर्ज करें</string>
-    <string name="vehicle_no_txt_select">वाहन क्रमांक दर्ज करें</string>
+    <string name="vehicle_no_txt_select">कृपया वाहन संख्या का चयन करें</string>
     <string name="vehicle_number_txt">वाहन संख्या:</string>
     <string name="ward_no">वार्ड क्र</string>
     <string name="yes_txt">हाँ</string>

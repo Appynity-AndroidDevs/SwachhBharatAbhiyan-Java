@@ -22,7 +22,7 @@
     <string name="password_txt">पासवर्ड</string>
     <string name="forgot_password_txt">फॉरगेट पासवर्ड?</string>
     <string name="vehicle_no_txt">वाहन नंबर प्रविष्ट करा</string>
-    <string name="vehicle_no_txt_select">वाहन नंबर प्रविष्ट करा</string>
+    <string name="vehicle_no_txt_select">कृपया वाहन क्रमांक निवडा</string>
     <string name="submit_txt">सबमिट</string>
     <string name="dialog_title_txt_vehicle">घंटा गाडी प्रकार</string>
     <string name="lodin_success">लॉग इन पूर्ण झाले</string>

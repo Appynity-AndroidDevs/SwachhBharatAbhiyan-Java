@@ -172,11 +172,11 @@ public class PopUpDialog extends Dialog {
                         @Override
                         public void onResponse(List<VehicleNumberPojo> vehicleNumbersList) {
 
-                            for (VehicleNumberPojo vehicleNumberPojo : vehicleNumbersList) {
+                           /* for (VehicleNumberPojo vehicleNumberPojo : vehicleNumbersList) {
                                 Log.e(TAG, "onResponse: " + vehicleNumberPojo.getVehicleNo());
                             }
 
-                            showVehicleNoList(autoTxtVehicleNum, vehicleNumbersList);
+                            showVehicleNoList(autoTxtVehicleNum, vehicleNumbersList);*/
 
                             if (vehicleNumbersList.size() > 0){
 

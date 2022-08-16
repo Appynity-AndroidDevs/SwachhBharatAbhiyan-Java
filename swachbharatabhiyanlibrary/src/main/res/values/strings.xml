@@ -81,6 +81,7 @@
     <string name="house_id_txt">House ID :</string>
     <string name="point_id_txt">Point ID :</string>
     <string name="dump_yard_id_txt">Dump Yard ID :</string>
+    <string name="dump_yard_vehicle_id_txt">Vehicle ID :</string>
     <string name="street_sweep_id_txt">Street Sweep ID :</string>
     <string name="liquid_waste_id_txt">Liquid Waste ID :</string>
     <string name="vehicle_number_txt">Vehicle No :</string>

@@ -85,7 +85,12 @@ public class InflateHistoryDetailsAdapter extends ArrayAdapter<WorkHistoryDetail
                 holder.time.setBackgroundResource(R.drawable.rounded_pink_button);
                 holder.time.setPadding(0, 0, 0, 0);
                 holder.id.setText(String.format("%s %s", context.getResources().getString(R.string.street_sweep_id_txt), workHistoryDetailPojo.getRefid()));
-            } else {
+            } else if (workHistoryDetailPojo.getType().equals("6")) {
+                holder.time.setBackgroundResource(R.drawable.rounded_gray_button);
+                holder.time.setPadding(0, 0, 0, 0);
+                holder.id.setText(String.format("%s %s", context.getResources().getString(R.string.dump_yard_vehicle_id_txt), workHistoryDetailPojo.getRefid()));
+            }
+            else {
                 holder.time.setBackgroundResource(R.drawable.rounded_orange_button);
                 holder.time.setPadding(0, 0, 0, 0);
                 holder.id.setText(String.format("%s %s", context.getResources().getString(R.string.dump_yard_id_txt), workHistoryDetailPojo.getRefid()));

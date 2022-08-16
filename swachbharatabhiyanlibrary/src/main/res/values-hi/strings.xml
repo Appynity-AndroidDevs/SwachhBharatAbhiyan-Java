@@ -18,6 +18,7 @@
     <string name="cancel_txt">रद्द करें</string>
     <string name="done_txt">पूरा कर लिया है</string>
     <string name="dump_yard_id_txt">डंप यार्ड आईडी:</string>
+    <string name="dump_yard_vehicle_id_txt">वाहन आईडी :</string>
     <string name="dump_yard_txt">डंप यार्ड ट्रिप</string>
     <string name="dy_area_validation">कृपया मान्य क्षेत्र और डंप यार्ड का चयन करें।</string>
     <string name="dy_area_validation_emp">कृपया डंप यार्ड आईडी दर्ज करें।</string>

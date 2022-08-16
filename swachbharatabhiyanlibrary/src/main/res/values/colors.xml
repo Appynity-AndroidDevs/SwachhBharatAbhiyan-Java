@@ -24,6 +24,7 @@
     <color name="colorGreenLight">#54e69d</color>
     <color name="colorPinkLight">#ff6058</color>
     <color name="colorOrange">#fe973c</color>
+    <color name="colorGrass">#598F5B</color>
     <color name="colorPinkDark">#ff2d2d</color>
 
     <!-- dots inactive colors -->

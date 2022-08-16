@@ -59,6 +59,9 @@ public class InflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.WorkH
             viewHolder.liquidCollectionLbl = view.findViewById(R.id.lwc_collection_lbl);
             viewHolder.streetCollection = view.findViewById(R.id.ss_collection);
             viewHolder.streetCollectionLbl = view.findViewById(R.id.ss_collection_lbl);
+            //dump yard supervisor - rahul
+            viewHolder.dumpSuperCollectionLbl = view.findViewById(R.id.ds_collection_lbl);
+            viewHolder.dumpSuperCollection = view.findViewById(R.id.ds_collection);
             view.setTag(viewHolder);
 
         } else {
@@ -79,6 +82,8 @@ public class InflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.WorkH
                 holder.liquidCollectionLbl.setVisibility(View.GONE);
                 holder.streetCollection.setVisibility(View.GONE);
                 holder.streetCollectionLbl.setVisibility(View.GONE);
+                holder.dumpSuperCollection.setVisibility(View.GONE);
+                holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
 
             } else if (empType.matches("L")) {
                 holder.houseCollectionTitle.setText(R.string.liquid_collection);
@@ -91,6 +96,8 @@ public class InflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.WorkH
                 holder.liquidCollectionLbl.setVisibility(View.GONE);
                 holder.streetCollection.setVisibility(View.GONE);
                 holder.streetCollectionLbl.setVisibility(View.GONE);
+                holder.dumpSuperCollection.setVisibility(View.GONE);
+                holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
             } else if (empType.matches("S")) {
 
                 Log.e(TAG, "getView: Street collection=>" + workHistoryPojo.getStreetCollection());
@@ -104,6 +111,23 @@ public class InflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.WorkH
                 holder.liquidCollectionLbl.setVisibility(View.GONE);
                 holder.streetCollection.setVisibility(View.GONE);
                 holder.streetCollectionLbl.setVisibility(View.GONE);
+                holder.dumpSuperCollection.setVisibility(View.GONE);
+                holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
+            } else if (empType.matches("D")){
+
+                holder.houseCollectionTitle.setText(R.string.dumpyard_plant_collection);
+                holder.date.setText(AUtils.extractDate(workHistoryPojo.getDate()));
+                holder.month.setText(AUtils.extractMonth(workHistoryPojo.getDate()));
+                holder.houseCollection.setVisibility(View.GONE);
+                holder.dyCollectionlbl.setVisibility(View.GONE);
+                holder.dyCollection.setVisibility(View.GONE);
+                holder.liquidCollection.setVisibility(View.GONE);
+                holder.liquidCollectionLbl.setVisibility(View.GONE);
+                holder.streetCollection.setVisibility(View.GONE);
+                holder.streetCollectionLbl.setVisibility(View.GONE);
+                holder.dumpSuperCollection.setVisibility(View.VISIBLE);
+                holder.dumpSuperCollection.setText(workHistoryPojo.getDumpYardPlantCollection());
+                holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
             }
 
         }
@@ -125,6 +149,8 @@ public class InflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.WorkH
         private TextView liquidCollectionLbl;
         private TextView streetCollection;
         private TextView streetCollectionLbl;
+        private TextView dumpSuperCollectionLbl;
+        private TextView dumpSuperCollection;
     }
 
 

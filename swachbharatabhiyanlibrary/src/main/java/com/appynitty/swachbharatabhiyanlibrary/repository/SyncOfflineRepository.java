@@ -35,6 +35,7 @@ public class SyncOfflineRepository {
     private static final int dumpCollectionId = 3;
     private static final int liquidCollectionId = 4;
     private static final int streetCollectionId = 5;
+    private static final int DumpYardPlantCollectionId = 6;
 
     private static final int DATA_LIMIT = 25;
     private final static String COLUMN_ID = "_offlineSyncId";
@@ -286,7 +287,6 @@ public class SyncOfflineRepository {
                 entity.setOfflineIsLocation(cursor.getString(cursor.getColumnIndex(COLUMN_IS_LOCATION)));
                 entity.setOfflineDate(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)));
 
-
                 mList.add(entity);
 
             } while (cursor.moveToNext());
@@ -373,19 +373,25 @@ public class SyncOfflineRepository {
                 " select count(*) as ss, date(" + COLUMN_DATE + ") as gcdateSs from " + SYNC_OFFLINE_TABLE +
                 " where " + COLUMN_GC_TYPE + " = " + streetCollectionId +
                 " group by date(tableSyncOffline.offlineSyncDate))," +
+                "cteDs as(" +
+                " select count(*) as ds, date(" + COLUMN_DATE + ") as gcdateDs from " + SYNC_OFFLINE_TABLE +
+                " where " + COLUMN_GC_TYPE + " = " + DumpYardPlantCollectionId +
+                " group by date(tableSyncOffline.offlineSyncDate))," +
                 "ctef as (" +
                 " select a.dte, " +
                 " case when b.hp is null then 0 else b.hp end as hp, " +
                 " case when c.gp is null then 0 else c.gp end as gp, " +
                 " case when d.dy is null then 0 else d.dy end as dy, " +
                 " case when e.lw is null then 0 else e.lw end as lw, " +
-                " case when f.ss is null then 0 else f.ss end as ss " +
+                " case when f.ss is null then 0 else f.ss end as ss, " +
+                " case when g.ds is null then 0 else g.ds end as ds " +
                 " from cte a " +
                 " left join cteHp b on b.gcdateHp = a.dte " +
                 " left join cteGp c on c.gcdateGp = a.dte " +
                 " left join cteDy d on d.gcdateDy = a.dte " +
                 " left join cteLw e on e.gcdateLw = a.dte " +
                 " left join cteSs f on f.gcdateSs = a.dte " +
+                " left join cteDs g on g.gcdateDs = a.dte " +
                 " order by dte desc)" +
                 "select * from ctef";
 
@@ -401,6 +407,7 @@ public class SyncOfflineRepository {
                     entity.setDumpYardCollection(cursor.getString(cursor.getColumnIndex("dy")));
                     entity.setLiquidCollection(cursor.getString(cursor.getColumnIndex("lw")));
                     entity.setStreetCollection(cursor.getString(cursor.getColumnIndex("ss")));
+                    entity.setDumpYardPlantCollection(cursor.getString(cursor.getColumnIndex("ds")));
                     mList.add(entity);
                 } while (cursor.moveToNext());
             }

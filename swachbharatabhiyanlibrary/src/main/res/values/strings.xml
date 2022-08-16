@@ -241,6 +241,7 @@
     <string name="please_wait">Please wait!</string>
     <string name="colectnStatus">Garbage Weight Registration Complete</string>
     <string name="dump_yard_supervisor">Dump Yard Supervisor</string>
+    <string name="dumpyard_plant_collection">DumpYard Plant Collection</string>
 
 
 </resources>

@@ -13,6 +13,15 @@ public class TableDataCountPojo {
         private String pointCollection;
 
         private String DumpYardCollection;
+        private String DumpYardPlantCollection;
+
+        public String getDumpYardPlantCollection() {
+            return DumpYardPlantCollection;
+        }
+
+        public void setDumpYardPlantCollection(String dumpYardPlantCollection) {
+            DumpYardPlantCollection = dumpYardPlantCollection;
+        }
 
         public String getHouseCollection() {
             return houseCollection;
@@ -71,6 +80,7 @@ public class TableDataCountPojo {
                     + ", DumpYardCollection='" + DumpYardCollection + '\''
                     + ", LiquidCollection='" + LiquidCollection + '\''
                     + ", StreetCollection='" + StreetCollection + '\''
+                    + ", DumpYardPlantCollection='" + DumpYardPlantCollection + '\''
                     + '}';
         }
     }

@@ -175,4 +175,5 @@
     <string name="please_wait">कृपया थांबा...</string>
     <string name="colectnStatus">कचरा वजन पंजीकरण पूर्ण</string>
     <string name="dump_yard_supervisor">डंप यार्ड सुपरवाइज़र</string>
+    <string name="dumpyard_plant_collection">डंपयार्ड प्लांट कलेक्शन</string>
 </resources>

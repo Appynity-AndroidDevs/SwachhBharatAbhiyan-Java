@@ -178,4 +178,6 @@
     <string name="colectnStatus">कचरा वजन पंजीकरण पूर्ण</string>
     <string name="dump_yard_supervisor">डंप यार्ड सुपरवाइज़र</string>
     <string name="dumpyard_plant_collection">डंपयार्ड प्लांट कलेक्शन</string>
+    <string name="err_vehicle_id">कृपया वैध वाहन आईडी दर्ज करें</string>
+    <string name="str_vehicle_qr_id">वाहन क्यूआर आईडी दर्ज करें</string>
 </resources>

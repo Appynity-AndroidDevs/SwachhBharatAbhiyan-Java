@@ -358,31 +358,10 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
     protected void registerEvents() {
         Log.d(TAG, "registerEvents Id : " + idAutoComplete.getText().toString());
 
-
-        /*submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                try {
-                    Boolean vehicleValid = isAutoCompleteValid(vehicleAutoComplete, areaHash);
-
-
-                    if (vehicleValid) {
-                        submitQRcode(idHash.get(vehicleAutoComplete.getText().toString().toLowerCase()));
-                        submitQRcode(idHash.get(idAutoComplete.getText().toString().toLowerCase()));
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });*/
-
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!AUtils.isNull(vehicleAutoComplete.getText().toString().trim().isEmpty())){
+                if (isValid()){
                     submitQRcode(vehicleAutoComplete.getText().toString().toUpperCase(Locale.ROOT).trim());
                 }
             }
@@ -571,6 +550,17 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
             }
         }
 
+    }
+
+    private boolean isValid(){
+        if (vehicleAutoComplete.getText().toString().trim().isEmpty()){
+            AUtils.warning(mContext,getString(R.string.err_vehicle_id));
+            return false;
+        }else if (idAutoComplete.getText().toString().trim().isEmpty()){
+            AUtils.warning(mContext,getString(R.string.err_vehicle_id));
+            return false;
+        }
+        return true;
     }
 
 

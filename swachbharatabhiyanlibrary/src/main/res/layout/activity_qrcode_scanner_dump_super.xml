@@ -40,7 +40,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="@dimen/dim_12_dp"
                 android:backgroundTint="@color/white"
-                android:hint="Enter Vehicle QR id"
+                android:hint="@string/str_vehicle_qr_id"
                 android:theme="@style/TextLabel2">
 
                 <AutoCompleteTextView
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-                android:hint="Enter Vehicle QR Id"
+                android:hint="@string/str_vehicle_qr_id"
                 android:theme="@style/TextLabel2">
 
                 <AutoCompleteTextView

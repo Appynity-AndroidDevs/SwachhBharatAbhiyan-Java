@@ -23,6 +23,7 @@
     <string name="dy_area_validation">कृपया मान्य क्षेत्र और डंप यार्ड का चयन करें।</string>
     <string name="dy_area_validation_emp">कृपया डंप यार्ड आईडी दर्ज करें।</string>
     <string name="dy_id_hint">डंप यार्ड आईडी दर्ज करें</string>
+    <string name="dy_super_id_hint">डंप यार्ड वाहन आईडी दर्ज करें</string>
     <string name="dy_validation">कृपया मान्य डंप यार्ड चुनें।</string>
     <string name="emp_id_full">कर्मचारी आईडी:</string>
     <string name="emp_id_short">कर्मचारी आईडी</string>

@@ -93,6 +93,11 @@
             android:name=".activity.QRcodeScannerActivity"
             android:label="@string/title_activity_qrcode_scanner"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.QRcodeScannerDumpSuperActivity"
+            android:label="@string/title_activity_qrcode_scanner"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.DumpSuperScannerActivity"
             android:label="@string/title_activity_qrcode_scanner"

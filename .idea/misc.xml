@@ -16,6 +16,7 @@
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/drawable/ic_arrow_drop_down.xml" value="0.1565" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/drawable/rounded_gray_button.xml" value="0.1565" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/drawable/rounded_orange_button.xml" value="0.1565" />
+        <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_camera.xml" value="0.26875" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_dashboard.xml" value="0.26875" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_dump_super_qr.xml" value="0.6466165413533834" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_dump_super_qr_scanner.xml" value="0.27291666666666664" />
@@ -25,17 +26,21 @@
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_history_details_page.xml" value="0.26875" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_login_layout.xml" value="0.27291666666666664" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_qrcode_scanner.xml" value="0.24722222222222223" />
+        <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_qrcode_scanner_dump_super.xml" value="0.26875" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/content_dashboard.xml" value="0.26875" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/content_dump_yard_weight.xml" value="0.26875" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/content_history_details_page.xml" value="0.26875" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/content_qrcode_scanner.xml" value="0.26875" />
+        <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/content_qrcode_scanner_dump_super.xml" value="0.24722222222222223" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/dialog_layout.xml" value="0.24722222222222223" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/dialog_vehicle_num.xml" value="0.2677083333333333" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/dialog_vehicle_number.xml" value="0.26875" />
+        <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/emp_activity_qrcode_scanner.xml" value="0.1" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/emp_content_dashboard.xml" value="0.24722222222222223" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/layout_history_card.xml" value="0.33" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/layout_history_detail_card.xml" value="0.26875" />
         <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/vehicle_number_item.xml" value="0.2677083333333333" />
+        <entry key="..\:/SBA_Library_Ghanta_gadi/sba_dump/code/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/menu/emp_types_menu.xml" value="0.26875" />
         <entry key="..\:/Swapnil/Appynitty Projects by Swapnil/GithubDesktop/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/activity_dashboard.xml" value="0.2609375" />
         <entry key="..\:/Swapnil/Appynitty Projects by Swapnil/GithubDesktop/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/content_dump_yard_weight.xml" value="0.2609375" />
         <entry key="..\:/Swapnil/Appynitty Projects by Swapnil/GithubDesktop/Swachh-Bharat-Abhiyan/swachbharatabhiyanlibrary/src/main/res/layout/layout_qr_result.xml" value="0.2609375" />

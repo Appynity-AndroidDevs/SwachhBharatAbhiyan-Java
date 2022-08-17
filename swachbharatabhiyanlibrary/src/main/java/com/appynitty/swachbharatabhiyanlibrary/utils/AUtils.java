@@ -169,6 +169,7 @@ public class AUtils extends CommonUtils {
     public static final String GP_AREA_TYPE_ID = "2";
 
     public static final String DY_AREA_TYPE_ID = "3";
+    public static final String DY_SUPERVISOR_TYPE_ID = "6";
 
     public final static String CONNECTIVITY_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
 

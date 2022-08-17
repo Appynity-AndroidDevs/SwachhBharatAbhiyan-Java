@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.webservices;
 
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.InPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleTypePojo;
@@ -22,5 +23,10 @@ public interface VehicleTypeWebService {
                                                         @Header("appId") String appId,
                                                         @Header("vehicleTypeId") String vehicleTypeId);
 
-
+    @GET("api/Get/AreaHouse")
+    Call<List<CollectionAreaHousePojo>> pullVehicleQRIdList(@Header("appId") String appId,
+                                                            @Header("Content-Type") String content_type,
+                                                            @Header("type") String collectionType,
+                                                            @Header("areaId") String areaId,
+                                                            @Header("EmpType") String EmpType);
 }

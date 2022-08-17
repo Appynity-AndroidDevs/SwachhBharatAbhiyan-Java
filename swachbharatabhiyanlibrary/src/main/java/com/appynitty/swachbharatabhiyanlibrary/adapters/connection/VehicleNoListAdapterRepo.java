@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.BaseAdapter;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.VehicleTypeWebService;
@@ -39,6 +40,32 @@ public class VehicleNoListAdapterRepo {
                 Log.e(TAG, "onFailure: " + t.getMessage());
             }
         });
+    }
+
+    public void getVehicleQRIdList(String appId, IVehicleQRIdListListener iVehicleQRIdListListener) {
+        VehicleTypeWebService service = Connection.createService(VehicleTypeWebService.class, AUtils.SERVER_URL);
+        Call<List<CollectionAreaHousePojo>> vehicleNosListCall = service.pullVehicleQRIdList(appId,AUtils.CONTENT_TYPE,"","0","V");
+        vehicleNosListCall.enqueue(new Callback<List<CollectionAreaHousePojo>>() {
+            @Override
+            public void onResponse(Call<List<CollectionAreaHousePojo>> call, Response<List<CollectionAreaHousePojo>> response) {
+                iVehicleQRIdListListener.onResponse(response.body());
+                Log.e(TAG, "onResponse: " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<CollectionAreaHousePojo>> call, Throwable t) {
+                iVehicleQRIdListListener.onFailure(t);
+                Log.e(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+
+
+    public interface IVehicleQRIdListListener{
+        void onResponse(List<CollectionAreaHousePojo> vehicleQRIdList);
+
+        void onFailure(Throwable throwable);
     }
 
 

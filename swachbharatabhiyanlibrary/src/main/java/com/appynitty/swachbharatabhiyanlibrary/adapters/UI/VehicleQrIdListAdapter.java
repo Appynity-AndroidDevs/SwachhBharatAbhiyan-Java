@@ -7,14 +7,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 
 import java.util.List;
 
-public class VehicleNoListAdapter extends BaseAdapter {
-    List<VehicleNumberPojo> vehicleNumberList;
+public class VehicleQrIdListAdapter extends BaseAdapter {
+    List<CollectionAreaHousePojo> vehicleNumberList;
 
-    public VehicleNoListAdapter(List<VehicleNumberPojo> vehicleNumberList) {
+    public VehicleQrIdListAdapter(List<CollectionAreaHousePojo> vehicleNumberList) {
         this.vehicleNumberList = vehicleNumberList;
     }
 
@@ -25,7 +26,7 @@ public class VehicleNoListAdapter extends BaseAdapter {
     }
 
     @Override
-    public VehicleNumberPojo getItem(int position) {
+    public CollectionAreaHousePojo getItem(int position) {
         return vehicleNumberList.get(position);
     }
 
@@ -45,7 +46,7 @@ public class VehicleNoListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.txtVnum.setText(getItem(position).getVehicleNo());
+        holder.txtVnum.setText(getItem(position).getHouseid());
         return convertView;
     }
 

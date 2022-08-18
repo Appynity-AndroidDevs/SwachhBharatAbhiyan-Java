@@ -54,6 +54,8 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
     private LoginAdapterClass mAdapter;
 
+    String AppId =  Prefs.getString(AUtils.APP_ID, "");
+
 //    private PopupMenu popup;
     //spinner employee types
 //    Spinner spnrEmpType;
@@ -158,8 +160,14 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
                 //Creating the instance of PopupMenu
                 final PopupMenu popup = new PopupMenu(LoginActivity.this, EtEmpType);
                 //Inflating the Popup using xml file
+                /*popup.getMenuInflater()
+                        .inflate(R.menu.emp_types_menu, popup.getMenu());*/
+
+
+                // only nagpur appId 3068 menu
                 popup.getMenuInflater()
-                        .inflate(R.menu.emp_types_menu, popup.getMenu());
+                        .inflate(R.menu.emp_types_menu_nagpur, popup.getMenu());
+
 
 //                popup.getMenu().getItem(2).setChecked(true);
 

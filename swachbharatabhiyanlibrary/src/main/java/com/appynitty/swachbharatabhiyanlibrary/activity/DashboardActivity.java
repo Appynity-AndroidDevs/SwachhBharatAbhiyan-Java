@@ -881,7 +881,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         } else {
                             AUtils.warning(mContext, resultPojo.getMessage());
                         }
-                        markAttendance.setChecked(AUtils.isIsOnduty());
+                       // markAttendance.setChecked(AUtils.isIsOnduty());
+                        markAttendance.setChecked(false);
                     }
                 }
             });

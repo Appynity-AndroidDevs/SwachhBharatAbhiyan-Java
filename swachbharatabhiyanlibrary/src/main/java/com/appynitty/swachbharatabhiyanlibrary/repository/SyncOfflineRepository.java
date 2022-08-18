@@ -36,7 +36,7 @@ public class SyncOfflineRepository {
     private static final int liquidCollectionId = 4;
     private static final int streetCollectionId = 5;
 
-    private static final int DATA_LIMIT = 25;
+    private static final int DATA_LIMIT = 10;
     private final static String COLUMN_ID = "_offlineSyncId";
     private final static String COLUMN_POJO = "offlineSyncPojo";
     public final static String COLUMN_DATE = "offlineSyncDate";
@@ -296,6 +296,7 @@ public class SyncOfflineRepository {
         sqLiteDatabase.close();
         return mList;
     }
+
 
     public List<SyncOfflineEntity> fetchOfflineLocation(String offset) {
         if (AUtils.isNull(offset))

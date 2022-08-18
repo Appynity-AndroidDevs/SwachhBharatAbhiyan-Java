@@ -929,7 +929,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 attendancePojo = new AttendancePojo();
             }
 
-            try {
+            try {       //Make changes here for the direct attendance instead of offline attendance...
                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                 onInPunchSuccess();
                 if (AUtils.isInternetAvailable()) {

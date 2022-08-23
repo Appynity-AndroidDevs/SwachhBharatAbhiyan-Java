@@ -152,21 +152,21 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         /*EtEmpType.clearListSelection();
         EtEmpType.setText("");*/
 
-
-        EtEmpType.setOnClickListener(new View.OnClickListener() {     //Swapnil
+        /*EtEmpType.setText(R.string.household_collection);*/
+        EtEmpType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //Creating the instance of PopupMenu
                 final PopupMenu popup = new PopupMenu(LoginActivity.this, EtEmpType);
                 //Inflating the Popup using xml file
-                /*popup.getMenuInflater()
-                        .inflate(R.menu.emp_types_menu, popup.getMenu());*/
-
-
-                // only nagpur appId 3068 menu
                 popup.getMenuInflater()
-                        .inflate(R.menu.emp_types_menu_nagpur, popup.getMenu());
+                        .inflate(R.menu.emp_types_menu, popup.getMenu());
+
+
+               /* // only nagpur appId 3068 menu
+                popup.getMenuInflater()
+                        .inflate(R.menu.emp_types_menu_nagpur, popup.getMenu());*/
 
 
 //                popup.getMenu().getItem(2).setChecked(true);
@@ -250,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
                 Prefs.putString(AUtils.PREFS.USER_ID, mAdapter.getLoginDetailsPojo().getUserId());
                 Prefs.putString(AUtils.PREFS.USER_TYPE, mAdapter.getLoginDetailsPojo().getType());
                 Prefs.putString(AUtils.PREFS.USER_TYPE_ID, mAdapter.getLoginDetailsPojo().getTypeId());
-                Prefs.putString(AUtils.PREFS.EMPLOYEE_TYPE, mAdapter.getLoginDetailsPojo().getEmpType()); //added by swapnil
+                Prefs.putString(AUtils.PREFS.EMPLOYEE_TYPE, mAdapter.getLoginDetailsPojo().getEmpType());
                 Prefs.putBoolean(AUtils.PREFS.IS_GT_FEATURE, mAdapter.getLoginDetailsPojo().getGtFeatures());
                 Log.e("LoginActivity", "empType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
                 Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, true);
@@ -285,7 +285,6 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
             public void onFailureCallBack() {
                 Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
                 AUtils.error(mContext, "" + mContext.getString(R.string.serverError), Toast.LENGTH_SHORT);
-
 
             }
         });

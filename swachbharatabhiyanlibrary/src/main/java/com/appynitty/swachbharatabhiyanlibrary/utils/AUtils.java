@@ -69,13 +69,13 @@ public class AUtils extends CommonUtils {
 
     //  Advanced Ghanta Gadi Live URL
 //    public static final String SERVER_URL = "http://202.65.157.253:6560";
-   // public static final String SERVER_URL = "http://202.65.157.254:6560";
+    public static final String SERVER_URL = "http://202.65.157.254:6560";
 
     /*//Nagpur staging server url
     public static final String SERVER_URL = "http://183.177.126.33:6561";*/
 
-    //Nagpur live server url
-    public static final String SERVER_URL = "http://202.65.157.253:6561";
+    /*//Nagpur live server url
+    public static final String SERVER_URL = "http://202.65.157.253:6561";*/
 
 
        // public static final String SERVER_URL = "https://ictsbm.com:30443";
@@ -239,6 +239,7 @@ public class AUtils extends CommonUtils {
         String WORK_HISTORY_POJO_LIST = "WorkHistoryPullList";
         String WORK_HISTORY_DETAIL_POJO_LIST = "WorkHistoryDetailPullList";
         String LANGUAGE_POJO_LIST = "LanguagePullList";
+        String VEHICLE_NUMBER_LIST = "VehicleNumberList";
 
         String EMPLOYEE_TYPE = "EmpType";
         /*String DUMP_YARD_SUPERVISOR = "ReferanceId";

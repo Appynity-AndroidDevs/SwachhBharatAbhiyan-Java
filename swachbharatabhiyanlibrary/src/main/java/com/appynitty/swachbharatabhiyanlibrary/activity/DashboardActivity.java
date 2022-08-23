@@ -658,8 +658,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 if (type == 1) {
                     onInPunchSuccess();
+                    AUtils.success(mContext, "Shift started successfully");
                 } else if (type == 2) {
                     onOutPunchSuccess();
+                    AUtils.success(mContext, "Shift ended successfully");
                 }
             }
 
@@ -817,6 +819,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         if (!empType.matches("D"))
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
 
+        if (Prefs.getString(AUtils.APP_ID,"").equalsIgnoreCase("3068")){
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
+        }
 //        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
 
@@ -1007,6 +1012,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 if (AUtils.isInternetAvailable()) {
                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                         mOfflineAttendanceAdapter.SyncOfflineData();
+                    AUtils.success(mContext, "Shift started successfully");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1062,6 +1068,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
+        AUtils.success(mContext, "Shift ended successfully");
 
         attendancePojo = null;
         AUtils.removeInPunchDate();

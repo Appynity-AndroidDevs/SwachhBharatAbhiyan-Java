@@ -206,5 +206,6 @@
     <string name="dumpyard_plant_collection">डंपयार्ड प्लांट कलेक्शन</string>
     <string name="err_vehicle_id">कृपया वैध वाहन आयडी प्रविष्ट करा</string>
     <string name="str_vehicle_qr_id">वाहनाचा क्यूआर आयडी एंटर करा</string>
+    <string name="str_note_vehicle">क्षमस्व! तुमचे वाहन नोंदणीकृत नाही, कृपया वाहन क्रमांक प्रविष्ट करा.</string>
 
 </resources>

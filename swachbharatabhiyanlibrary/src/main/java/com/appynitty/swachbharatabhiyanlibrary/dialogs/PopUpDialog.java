@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,15 +64,21 @@ public class PopUpDialog extends Dialog {
     private EditText txtVehicleNo;
     private Button btnSubmit;
     private TextView lblTitle;
+    private TextView txtVehicleNote;
     private DialogAdapter mAdapter;
     private final HashMap<Integer, Object> mList;
     private VehicleNoListAdapterRepo vehicleNoListAdapterRepo;
+    private int vNumberListSize;
+    private ProgressBar loader;
 
     private Object mReturnData;
     private ArrayList<VehicleNumberPojo> vehicleNumList;
+    private List<VehicleNumberPojo> vehiNumList;
     private String mVehicleNo;
 
     private String mVehicleId = "";
+    //private Integer vNumListSize ;
+    private static Integer vNumListSize = null;
 
 
     private final PopUpDialogListener mListener;
@@ -105,6 +113,7 @@ public class PopUpDialog extends Dialog {
 
         lblTitle = findViewById(R.id.lbl_title);
         mItemList = findViewById(R.id.dialog_listview);
+        txtVehicleNote = findViewById(R.id.txt_vehicle_note);
 
         hiddenView = findViewById(R.id.dialog_input_view);
 
@@ -114,7 +123,7 @@ public class PopUpDialog extends Dialog {
 
             txtVehicleNo = findViewById(R.id.txt_vehicle_no);
             tiVehicle = findViewById(R.id.ti_vehicle);
-
+            loader = findViewById(R.id.progress_bar);
             liSelectVehicleNum = findViewById(R.id.li_selection_vehicle_num);
             autoTxtVehicleNum = findViewById(R.id.auto_select_vNumber);
 
@@ -138,7 +147,6 @@ public class PopUpDialog extends Dialog {
         {
             lblTitle.setText(mContext.getResources().getString(R.string.dialog_title_txt_vehicle));
 
-
         }
         else
         {
@@ -161,8 +169,35 @@ public class PopUpDialog extends Dialog {
         });
 
         if (mType.equals(AUtils.DIALOG_TYPE_VEHICLE)){
+            loader.setVisibility(View.VISIBLE);
 
-            autoTxtVehicleNum.setOnClickListener(new View.OnClickListener() {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loader.setVisibility(View.VISIBLE);
+                    VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) mReturnData;
+                    mVehicleId = vehicleTypePojo.getVtId();
+                    vehicleNoListAdapterRepo.getVehicleNosList(Prefs.getString(AUtils.APP_ID, null), mVehicleId, new VehicleNoListAdapterRepo.IVehicleNoListListener() {
+                        @Override
+                        public void onResponse(List<VehicleNumberPojo> vehicleNumbersList) {
+                            vehiNumList = vehicleNumbersList;
+                            vNumListSize = vehicleNumbersList.size();
+                            Log.e(TAG, "Vehicle number list: " + vNumListSize);
+                            loader.setVisibility(View.VISIBLE);
+                            listSize(vNumListSize);
+                        }
+
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Log.e(TAG, "onFailure: " + throwable.getMessage());
+                        }
+                    });
+                }
+            }, 1000*5);
+
+
+
+            /*autoTxtVehicleNum.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -171,16 +206,13 @@ public class PopUpDialog extends Dialog {
                     vehicleNoListAdapterRepo.getVehicleNosList(Prefs.getString(AUtils.APP_ID, null), mVehicleId, new VehicleNoListAdapterRepo.IVehicleNoListListener() {
                         @Override
                         public void onResponse(List<VehicleNumberPojo> vehicleNumbersList) {
+                             vNumListSize = vehicleNumbersList.size();
 
-                           /* for (VehicleNumberPojo vehicleNumberPojo : vehicleNumbersList) {
-                                Log.e(TAG, "onResponse: " + vehicleNumberPojo.getVehicleNo());
-                            }
-
-                            showVehicleNoList(autoTxtVehicleNum, vehicleNumbersList);*/
-
-                            if (vehicleNumbersList.size() > 0){
+                             listSize(vNumListSize);
+                            *//*if (vehicleNumbersList.size() > 7){
 
                                 tiVehicle.setVisibility(View.GONE);
+                                txtVehicleNote.setVisibility(View.GONE);
                                 autoTxtVehicleNum.setVisibility(View.VISIBLE);
 
                                 for (VehicleNumberPojo vehicleNumberPojo : vehicleNumbersList) {
@@ -189,12 +221,13 @@ public class PopUpDialog extends Dialog {
 
                                 showVehicleNoList(autoTxtVehicleNum, vehicleNumbersList);
 
-                            } else {
+                            }*//**//* else {
 
                                 tiVehicle.setVisibility(View.VISIBLE);
+                                txtVehicleNote.setVisibility(View.VISIBLE);
                                 autoTxtVehicleNum.setVisibility(View.GONE);
                                 Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
-                            }
+                            }*//*
 
                         }
 
@@ -204,28 +237,25 @@ public class PopUpDialog extends Dialog {
                         }
                     });
                 }
-            });
-        }
+            });*/
 
-        /*autoTxtVehicleNum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+           /* autoTxtVehicleNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
                     VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) mReturnData;
                     mVehicleId = vehicleTypePojo.getVtId();
                     vehicleNoListAdapterRepo.getVehicleNosList(Prefs.getString(AUtils.APP_ID, null), mVehicleId, new VehicleNoListAdapterRepo.IVehicleNoListListener() {
                         @Override
                         public void onResponse(List<VehicleNumberPojo> vehicleNumbersList) {
+                            vNumListSize = vehicleNumbersList.size();
+                            Log.e(TAG, "vehicle number list size: "+ vNumListSize);
 
-                            for (VehicleNumberPojo vehicleNumberPojo : vehicleNumbersList) {
-                                Log.e(TAG, "onResponse: " + vehicleNumberPojo.getVehicleNo());
-                            }
-
-                            showVehicleNoList(autoTxtVehicleNum, vehicleNumbersList);
-
-                            if (vehicleNumbersList.size() > 0){
+                            if (vehicleNumbersList.size() > 7){
 
                                 tiVehicle.setVisibility(View.GONE);
+                                txtVehicleNote.setVisibility(View.GONE);
                                 autoTxtVehicleNum.setVisibility(View.VISIBLE);
 
                                 for (VehicleNumberPojo vehicleNumberPojo : vehicleNumbersList) {
@@ -234,12 +264,13 @@ public class PopUpDialog extends Dialog {
 
                                 showVehicleNoList(autoTxtVehicleNum, vehicleNumbersList);
 
-                            } else {
+                            } *//*else {
 
                                 tiVehicle.setVisibility(View.VISIBLE);
+                                txtVehicleNote.setVisibility(View.VISIBLE);
                                 autoTxtVehicleNum.setVisibility(View.GONE);
                                 Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
-                            }
+                            }*//*
 
                         }
 
@@ -248,8 +279,10 @@ public class PopUpDialog extends Dialog {
                             Log.e(TAG, "onFailure: " + throwable.getMessage());
                         }
                     });
-            }
-        });*/
+                }
+            });*/
+
+        }
 
 
         mItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -269,7 +302,37 @@ public class PopUpDialog extends Dialog {
         }
     }
 
+    private void listSize(int vNumListSize){
+        Log.e(TAG, "Vehicle number list: " + vNumListSize);
+        /*if (vNumListSize <= 7){
+            tiVehicle.setVisibility(View.VISIBLE);
+            txtVehicleNote.setVisibility(View.GONE);
+            autoTxtVehicleNum.setVisibility(View.GONE);
+            Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
+        }*/
+        if (vNumListSize > 7){
+            loader.setVisibility(View.GONE);
+            tiVehicle.setVisibility(View.GONE);
+            txtVehicleNote.setVisibility(View.GONE);
+            autoTxtVehicleNum.setVisibility(View.VISIBLE);
+            autoTxtVehicleNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (VehicleNumberPojo vehicleNumberPojo : vehiNumList) {
+                        Log.e(TAG, "onResponse: " + vehicleNumberPojo.getVehicleNo());
+                    }
 
+                    showVehicleNoList(autoTxtVehicleNum, vehiNumList);
+                }
+            });
+        }else {
+            loader.setVisibility(View.GONE);
+            tiVehicle.setVisibility(View.VISIBLE);
+            txtVehicleNote.setVisibility(View.VISIBLE);
+            autoTxtVehicleNum.setVisibility(View.GONE);
+            Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
+        }
+    }
     private void itemSelected(int postion)
     {
          mReturnData = mList.get(postion);

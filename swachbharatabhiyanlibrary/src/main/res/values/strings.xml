@@ -246,6 +246,7 @@
     <string name="dumpyard_plant_collection">DumpYard Plant Collection</string>
     <string name="err_vehicle_id">Please entered valid vehicle id</string>
     <string name="str_vehicle_qr_id">Enter vehicle QR id</string>
+    <string name="str_note_vehicle">Sorry ! your vehicle not registered, please enter vehicle number.</string>
 
 
 </resources>

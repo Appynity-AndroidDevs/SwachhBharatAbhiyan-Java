@@ -48,6 +48,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+/****
+ * Updated dialog popup by rahul rokade
+ * vehicle number selection
+ * */
 public class PopUpDialog extends Dialog {
 
     private static final String TAG = "PopUpDialog";
@@ -310,7 +314,7 @@ public class PopUpDialog extends Dialog {
             autoTxtVehicleNum.setVisibility(View.GONE);
             Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
         }*/
-        if (vNumListSize > 7){
+        if (vNumListSize > 0){
             loader.setVisibility(View.GONE);
             tiVehicle.setVisibility(View.GONE);
             txtVehicleNote.setVisibility(View.GONE);
@@ -328,7 +332,7 @@ public class PopUpDialog extends Dialog {
         }else {
             loader.setVisibility(View.GONE);
             tiVehicle.setVisibility(View.VISIBLE);
-            txtVehicleNote.setVisibility(View.VISIBLE);
+            txtVehicleNote.setVisibility(View.GONE);
             autoTxtVehicleNum.setVisibility(View.GONE);
             Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
         }

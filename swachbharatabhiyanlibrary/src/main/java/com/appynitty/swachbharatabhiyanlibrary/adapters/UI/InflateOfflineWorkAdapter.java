@@ -19,6 +19,7 @@ import java.util.List;
 
 /**
  * Created by Swapnil Lanjewar on 18/01/2022.
+ * updated by Rahul Rokade offline work history
  */
 
 public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.WorkHistory> {

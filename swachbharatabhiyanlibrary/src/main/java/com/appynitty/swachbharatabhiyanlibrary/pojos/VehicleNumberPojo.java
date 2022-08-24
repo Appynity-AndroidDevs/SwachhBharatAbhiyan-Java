@@ -1,5 +1,9 @@
 package com.appynitty.swachbharatabhiyanlibrary.pojos;
 // TODO: 08/08/2022
+/*****
+ * created by Rahul Rokade
+ * vehicle number pojo
+ * */
 
 public class VehicleNumberPojo {
     private String vtId;

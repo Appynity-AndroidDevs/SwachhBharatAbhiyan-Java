@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Created by Ayan Dey on 25/10/18.
+ * updated by Rahul Rokade
  */
 
 public class InflateHistoryDetailsAdapter extends ArrayAdapter<WorkHistoryDetailPojo> {
@@ -50,7 +51,6 @@ public class InflateHistoryDetailsAdapter extends ArrayAdapter<WorkHistoryDetail
 
             view.setTag(viewHolder);
 
-            /**Added by Swapnil*/
             viewHolder.time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

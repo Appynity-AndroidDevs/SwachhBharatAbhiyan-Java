@@ -12,6 +12,9 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 
 import java.util.List;
 
+/*****
+ * created by Rahul rokade
+ * */
 public class VehicleQrIdListAdapter extends BaseAdapter {
     List<CollectionAreaHousePojo> vehicleNumberList;
 

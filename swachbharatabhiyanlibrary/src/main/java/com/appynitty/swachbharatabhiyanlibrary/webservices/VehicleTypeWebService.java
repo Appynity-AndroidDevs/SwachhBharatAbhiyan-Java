@@ -18,12 +18,12 @@ public interface VehicleTypeWebService {
     Call<List<VehicleTypePojo>> pullVehicleTypeList(@Header("appId") String appId,
                                                     @Header("Content-Type") String content_type);
 
-    @GET("api/Get/Vehicles")
+    @GET("api/Get/Vehicles") // added by Rahul
     Call<List<VehicleNumberPojo>> pullVehicleNumberList(@Header("Content-Type") String content_type,
                                                         @Header("appId") String appId,
                                                         @Header("vehicleTypeId") String vehicleTypeId);
 
-    @GET("api/Get/AreaHouse")
+    @GET("api/Get/AreaHouse") // added by Rahul
     Call<List<CollectionAreaHousePojo>> pullVehicleQRIdList(@Header("appId") String appId,
                                                             @Header("Content-Type") String content_type,
                                                             @Header("type") String collectionType,

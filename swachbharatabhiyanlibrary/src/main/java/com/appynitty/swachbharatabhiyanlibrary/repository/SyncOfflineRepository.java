@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * Created by Ayan Dey on 17/9/19.
  * It contains CRUD operation methods for offline sync of data from Ghanta Gadi Employee
+ * updated by Rahul Rokade
  */
 public class SyncOfflineRepository {
 
@@ -35,7 +36,7 @@ public class SyncOfflineRepository {
     private static final int dumpCollectionId = 3;
     private static final int liquidCollectionId = 4;
     private static final int streetCollectionId = 5;
-    private static final int DumpYardPlantCollectionId = 6;
+    private static final int DumpYardPlantCollectionId = 6; //added by rahul
 
     private static final int DATA_LIMIT = 25;
     private final static String COLUMN_ID = "_offlineSyncId";

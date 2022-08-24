@@ -15,6 +15,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/*****
+ * created by Rahul rokade
+ * vehicle number list and vehicle QR id list enter manually api repository
+ * */
+
 public class VehicleNoListAdapterRepo {
     private static final String TAG = "VehicleNoListAdapterRepo";
 

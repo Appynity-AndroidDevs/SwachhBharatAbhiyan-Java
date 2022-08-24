@@ -14,6 +14,11 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 
 import java.util.ArrayList;
 
+/******
+ * created by Rahul Rokade
+ * vehicle number item adapter
+ * */
+
 public class VehicleNumberAdapter extends RecyclerView.Adapter<VehicleNumberAdapter.MyViewHolder> {
 
     private Context context;

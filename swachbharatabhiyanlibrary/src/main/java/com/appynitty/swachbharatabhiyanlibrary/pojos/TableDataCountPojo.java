@@ -13,7 +13,7 @@ public class TableDataCountPojo {
         private String pointCollection;
 
         private String DumpYardCollection;
-        private String DumpYardPlantCollection;
+        private String DumpYardPlantCollection; // added by rahul
 
         public String getDumpYardPlantCollection() {
             return DumpYardPlantCollection;

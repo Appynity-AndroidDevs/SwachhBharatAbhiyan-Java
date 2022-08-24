@@ -450,6 +450,18 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         });
 
+        offlineAdapterClasss.setAreaErrorListener(new SyncOfflineAdapterClass.AreaWarningListener() {
+            @Override
+            public void onError(String s) {
+                Log.e(TAG, "onError: " + s);
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), s, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AUtils.gpsStatusCheck(mContext);
+                    }
+                });
+            }
+        });
 
     }
 

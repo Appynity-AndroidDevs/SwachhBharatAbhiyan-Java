@@ -375,11 +375,23 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
                 vehicleNoListAdapterRepo.getVehicleQRIdList(Prefs.getString(AUtils.APP_ID, null), new VehicleNoListAdapterRepo.IVehicleQRIdListListener() {
                     @Override
                     public void onResponse(List<CollectionAreaHousePojo> vehicleQRIdList) {
+                        /***
+                         * write with search list
+                         * added by Rahul Rokade
+                         * */
+                        vehicleAutoComplete.clearListSelection();
+                        vehicleAutoComplete.requestFocus();
+                        idAutoComplete.clearListSelection();
                         inflateVehicleAutoComplete(vehicleQRIdList);
-                        for (CollectionAreaHousePojo vehicleQrIdList : vehicleQRIdList) {
+
+                        /***
+                         * pop up list
+                         * added by Rahul Rokade
+                         * */
+                       /* for (CollectionAreaHousePojo vehicleQrIdList : vehicleQRIdList) {
                             Log.e(TAG, "onResponse: " + vehicleQrIdList.getHouseid());
                         }
-                        showVehicleNoList(vehicleAutoComplete, vehicleQRIdList);
+                        showVehicleNoList(vehicleAutoComplete, vehicleQRIdList);*/
 
                     }
 
@@ -555,13 +567,13 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
     }
 
     private boolean isValid(){
-        if (vehicleAutoComplete.getText().toString().trim().isEmpty() || vehicleAutoComplete.getText().toString().equalsIgnoreCase("VQR")){
+        if (vehicleAutoComplete.getText().toString().trim().isEmpty()){
             AUtils.warning(mContext,getString(R.string.err_vehicle_id));
             return false;
-        }else if (idAutoComplete.getText().toString().trim().isEmpty()|| vehicleAutoComplete.getText().toString().equalsIgnoreCase("VQR")){
+        }/*else if (idAutoComplete.getText().toString().trim().isEmpty()){
             AUtils.warning(mContext,getString(R.string.err_vehicle_id));
             return false;
-        }
+        }*/
         return true;
     }
 

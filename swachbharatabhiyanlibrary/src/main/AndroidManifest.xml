@@ -132,6 +132,10 @@
             android:label="@string/title_activity_dump_yard_weight"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.DumpYardWeightSuperActivity"
+            android:label="@string/title_activity_dump_yard_weight"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.EmpDashboardActivity"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />

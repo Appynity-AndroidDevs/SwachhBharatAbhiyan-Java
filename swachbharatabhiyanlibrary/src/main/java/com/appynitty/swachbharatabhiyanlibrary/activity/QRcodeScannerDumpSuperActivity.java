@@ -81,7 +81,9 @@ import java.util.Objects;
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
-
+/****
+ * Created by Rahul Rokade
+ * */
 public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler, GarbageTypePopUp.GarbagePopUpDialogListener {
 
     private final static String TAG = "QRcodeScannerDumpSuperActivity";
@@ -373,17 +375,17 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
                 vehicleNoListAdapterRepo.getVehicleQRIdList(Prefs.getString(AUtils.APP_ID, null), new VehicleNoListAdapterRepo.IVehicleQRIdListListener() {
                     @Override
                     public void onResponse(List<CollectionAreaHousePojo> vehicleQRIdList) {
-
+                        inflateVehicleAutoComplete(vehicleQRIdList);
                         for (CollectionAreaHousePojo vehicleQrIdList : vehicleQRIdList) {
                             Log.e(TAG, "onResponse: " + vehicleQrIdList.getHouseid());
                         }
-
                         showVehicleNoList(vehicleAutoComplete, vehicleQRIdList);
+
                     }
 
                     @Override
                     public void onFailure(Throwable throwable) {
-
+                        Toast.makeText(mContext, ""+ throwable, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -553,10 +555,10 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
     }
 
     private boolean isValid(){
-        if (vehicleAutoComplete.getText().toString().trim().isEmpty()){
+        if (vehicleAutoComplete.getText().toString().trim().isEmpty() || vehicleAutoComplete.getText().toString().equalsIgnoreCase("VQR")){
             AUtils.warning(mContext,getString(R.string.err_vehicle_id));
             return false;
-        }else if (idAutoComplete.getText().toString().trim().isEmpty()){
+        }else if (idAutoComplete.getText().toString().trim().isEmpty()|| vehicleAutoComplete.getText().toString().equalsIgnoreCase("VQR")){
             AUtils.warning(mContext,getString(R.string.err_vehicle_id));
             return false;
         }
@@ -797,7 +799,7 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
 
     private void getDumpYardDetails(final String houseNo) {
 
-        Intent intent = new Intent(mContext, DumpYardWeightActivity.class);
+        Intent intent = new Intent(mContext, DumpYardWeightSuperActivity.class);
         intent.putExtra(AUtils.dumpYardId, houseNo);
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
     }
@@ -811,7 +813,7 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
   //      insertToDB(garbageCollectionPojo);
 
         Log.e(TAG,"Dumyard Supervisor : "+houseNo);
-        Intent intent = new Intent(mContext, DumpYardWeightActivity.class);
+        Intent intent = new Intent(mContext, DumpYardWeightSuperActivity.class);
         intent.putExtra(AUtils.dumpYardId, houseNo);
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
     }
@@ -832,6 +834,24 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
             vehicleAutoComplete.requestFocus();
         }
 //        areaAutoComplete.showDropDown();
+
+    }
+
+    private void inflateVehicleAutoComplete(List<CollectionAreaHousePojo> pojoList) {
+
+        areaHash = new HashMap<>();
+        ArrayList<String> keyList = new ArrayList<>();
+        for (CollectionAreaHousePojo pojo : pojoList) {
+            areaHash.put(pojo.getHouseid().toLowerCase()/**/, pojo.getHouseNumber());
+            keyList.add(pojo.getHouseid().trim());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+        vehicleAutoComplete.setThreshold(0);
+        vehicleAutoComplete.setAdapter(adapter);
+        if (!vehicleAutoComplete.isFocused()) {
+            vehicleAutoComplete.requestFocus();
+        }
 
     }
 

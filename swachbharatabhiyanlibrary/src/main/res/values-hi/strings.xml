@@ -110,6 +110,7 @@
     <string name="title_activity_dashboard">यवतमाल कचरा संग्रह वैन</string>
     <string name="title_activity_dump_registration_form_page">डंप यार्ड विवरण जोड़ें</string>
     <string name="title_activity_dump_yard_weight">डंप यार्ड विवरण</string>
+    <string name="title_activity_super_dump_yard_weight">वाहन विवरण</string>
     <string name="title_activity_emp_add_location_details">विवरण जोड़ें</string>
     <string name="title_activity_history_page">काम का इतिहास</string>
     <string name="title_activity_house_registration_form_page">हाउस विवरण जोड़ें</string>

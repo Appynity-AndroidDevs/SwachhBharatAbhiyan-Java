@@ -237,6 +237,7 @@
     <string name="turning_on_the_gps_n_please_wait">Turning on the GPS\nPlease wait...</string>
     <string name="please_wait">Please wait!</string>
     <string name="colectnStatus">Garbage Weight Registration Complete</string>
+    <string name="out_of_area_msg">You\'re out of the scanning area.\\nPlease go inside the area and try again</string>
 
 
 </resources>

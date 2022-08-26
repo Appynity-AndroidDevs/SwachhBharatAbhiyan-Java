@@ -43,6 +43,9 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.maps.android.PolyUtil;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.utils.CommonUtils;
 import com.valdesekamdem.library.mdtoast.MDToast;
@@ -51,6 +54,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class AUtils extends CommonUtils {
@@ -1132,6 +1137,27 @@ public class AUtils extends CommonUtils {
         double x = (pY - bee) / m; // algebra is neat!
 
         return x > pX;
+    }
+
+    public static boolean isValidArea() {
+        double lat = Double.parseDouble(Prefs.getString(AUtils.LAT, null));
+        double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
+        LatLng asdf = new LatLng(lat, lon);
+
+        List<LatLng> prefList;
+        String json = Prefs.getString(AUtils.PREFS.AREA_VERTICES, null);
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<LatLng>>() {
+        }.getType();
+
+        prefList = gson.fromJson(json, type);
+
+        boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
+
+        Log.e(TAG, "current latlng= " + asdf
+                + "isValidArea: " + isPointInPolygon);
+        return isPointInPolygon;
     }
 
 }

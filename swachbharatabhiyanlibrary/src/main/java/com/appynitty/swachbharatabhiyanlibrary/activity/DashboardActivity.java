@@ -65,7 +65,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.maps.android.PolyUtil;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.GlideCircleTransformation;
 import com.riaylibrary.utils.LocaleHelper;
@@ -276,7 +275,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        checkLocationValidity();
+
         try {
             if (AUtils.isInternetAvailable()) {
                 AUtils.hideSnackBar();
@@ -814,7 +813,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             checkDutyStatus();
     }
 
-    private void checkLocationValidity() {
+    /*private void checkLocationValidity() {
         double lat = Double.parseDouble(Prefs.getString(AUtils.LAT, null));
         double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
         LatLng asdf = new LatLng(lat, lon);
@@ -832,7 +831,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         Log.e(TAG, "initData: latlng= " + asdf
                 + " isPointInPolygon: " + isPointInPolygon);
-    }
+    }*/
 
     private void performLogout() {
         AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_LOGOUT_DIALOG, new DialogInterface.OnClickListener() {
@@ -989,16 +988,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mAppGeoAreaAdapter.getAppGeoArea(new AppGeoAreaAdapter.AppGeoListener() {
             @Override
             public void onResponse(AppGeoArea appGeoArea) {
-                Log.e(TAG, "onResponse: IsAreaActive: " + appGeoArea.getIsAreaActive());
+                Log.e(TAG, "onResponse: IsAreaActive: " + appGeoArea.getIsAreaActive() + ", List of vertices: " + appGeoArea.getAreaGeoVertices());
                 Prefs.putBoolean(AUtils.PREFS.IS_AREA_ACTIVE, appGeoArea.getIsAreaActive());
                 String s = appGeoArea.getAreaGeoVertices();
                 String[] splitString = s.split(";");
                 List<LatLng> prefList = new ArrayList<>();
 
                 for (String value : splitString) {
-                    String[] splitString1 = value.split(",");
-                    double lat = Double.parseDouble(splitString1[0]);
-                    double lon = Double.parseDouble(splitString1[1]);
+                    String[] splitSubString = value.split(",");
+                    double lat = Double.parseDouble(splitSubString[0]);
+                    double lon = Double.parseDouble(splitSubString[1]);
                     LatLng asdf = new LatLng(lat, lon);
                     prefList.add(asdf);
                 }
@@ -1008,7 +1007,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 String json = gson.toJson(prefList);
 
                 Prefs.putString(AUtils.PREFS.AREA_VERTICES, json);
-                checkLocationValidity();
+//                checkLocationValidity();
             }
 
             @Override

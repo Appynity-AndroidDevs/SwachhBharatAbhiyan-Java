@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.activity.QRcodeScannerActivity;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -62,17 +64,23 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                         break;
                     case AUtils.USER_TYPE.USER_TYPE_GHANTA_GADI:
                     default:
-                        if(!AUtils.isSyncOfflineDataRequestEnable){
+                        if (!AUtils.isSyncOfflineDataRequestEnable) {
                             verifyDataAdapterClass.verifyOfflineSync();
                         }
                         break;
                 }
-                if(menuPojo.getCheckAttendance()) {
-                    if(AUtils.isIsOnduty())
-                        context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                    else
+                if (menuPojo.getCheckAttendance()) {
+                    if (AUtils.isIsOnduty()) {
+                        /*if (menuPojo.getNextIntentClass().equals(QRcodeScannerActivity.class)) {
+                            Toast.makeText(context, "Wow, you wanna scan a code!", Toast.LENGTH_SHORT).show();
+                        } else {*/
+                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+//                        }
+
+                    } else {
                         AUtils.warning(context, context.getResources().getString(R.string.be_no_duty));
-                }else
+                    }
+                } else
                     context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
             }
         });
@@ -83,7 +91,7 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
         return (menuList != null) ? menuList.size() : 0;
     }
 
-    class WasteMenuViewHolder extends RecyclerView.ViewHolder{
+    class WasteMenuViewHolder extends RecyclerView.ViewHolder {
 
         TextView menuNameTextView;
         ImageView menuImageView;

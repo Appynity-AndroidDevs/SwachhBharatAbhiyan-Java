@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.DashboardMenuAdapter;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CheckAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.OfflineAttendanceAdapterClass;
@@ -45,6 +46,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAd
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.AppGeoArea;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
@@ -59,10 +61,11 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.IMEIWebService;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.maps.android.PolyUtil;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.GlideCircleTransformation;
 import com.riaylibrary.utils.LocaleHelper;
@@ -124,6 +127,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private VehicleTypeAdapterClass mVehicleTypeAdapter;
     private UserDetailAdapterClass mUserDetailAdapter;
     private OfflineAttendanceAdapterClass mOfflineAttendanceAdapter;
+    private AppGeoAreaAdapter mAppGeoAreaAdapter;
 
     private VerifyDataAdapterClass verifyDataAdapterClass;
     private LastLocationRepository lastLocationRepository;
@@ -137,6 +141,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     //    private WorkManager workManager;
     MediaPlayer mp = null;
     FrameLayout pb;
+    ArrayList<LatLng> vertices;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -271,7 +276,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     @Override
     protected void onPostResume() {
         super.onPostResume();
-
+        checkLocationValidity();
         try {
             if (AUtils.isInternetAvailable()) {
                 AUtils.hideSnackBar();
@@ -353,7 +358,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
         }
 
-        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
         if (requestCode == 101) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
@@ -588,11 +592,23 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mUserDetailAdapter = new UserDetailAdapterClass();
         verifyDataAdapterClass = new VerifyDataAdapterClass(mContext);
         mOfflineAttendanceAdapter = new OfflineAttendanceAdapterClass(mContext);
+        mAppGeoAreaAdapter = AppGeoAreaAdapter.getInstance();
         pb = findViewById(R.id.progress_layout);
         lastLocationRepository = new LastLocationRepository(mContext);
         syncOfflineRepository = new SyncOfflineRepository(mContext);
         syncOfflineAttendanceRepository = new SyncOfflineAttendanceRepository(mContext);
 
+        vertices = new ArrayList<>();
+        /*vertices.add(new LatLng(21.1453413124267, 79.0587460547738));
+        vertices.add(new LatLng(21.1453413124267, 79.0587460547738));
+        vertices.add(new LatLng(21.1453413124267, 79.0587460547738));
+        vertices.add(new LatLng(21.1453413124267, 79.0587460547738));
+        vertices.add(new LatLng(21.1453413124267, 79.0587460547738));
+        vertices.add(new LatLng(21.1453413124267, 79.0587460547738));
+        vertices.add(new LatLng(21.1453413124267, 79.0587460547738));
+        vertices.add(new LatLng(21.1453413124267, 79.0587460547738));*/
+
+        Log.e(TAG, "generateId: vertices:- " + vertices);
 
         if (AUtils.isNull(attendancePojo)) {
             attendancePojo = new AttendancePojo();
@@ -766,50 +782,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     }
 
-//    private void setMenuClick(int position) {
-//
-//        if(!AUtils.isSyncOfflineDataRequestEnable){
-//            verifyDataAdapterClass.verifyOfflineSync();
-//        }
-//
-//        switch (position) {
-//            case 0:
-//                if(AUtils.isIsOnduty())
-//                    if(!AUtils.isInternetAvailable()) startActivity(new Intent(mContext, QRcodeScannerActivity.class));
-//                    else
-//                        //verifyOfflineData(mContext, QRcodeScannerActivity.class, false);
-//                        startActivity(new Intent(mContext, QRcodeScannerActivity.class));
-//                else
-//                    AUtils.warning(mContext, getResources().getString(R.string.be_no_duty));
-//                break;
-//            case 1:
-//                if(AUtils.isIsOnduty())
-//                    if(!AUtils.isInternetAvailable()) startActivity(new Intent(mContext, TakePhotoActivity.class));
-//                    else
-////                        verifyOfflineData(mContext, TakePhotoActivity.class, false);
-//                        startActivity(new Intent(mContext, TakePhotoActivity.class));
-//                else
-//                    AUtils.warning(mContext, getResources().getString(R.string.be_no_duty));
-//                break;
-//            case 2:
-//                if(AUtils.isIsOnduty())
-//                    startActivity(new Intent(mContext, BroadcastActivity.class));
-//                else
-//                    AUtils.warning(mContext, getResources().getString(R.string.be_no_duty));
-//                break;
-//            case 3:
-//                startActivity(new Intent(mContext, HistoryPageActivity.class));
-//                break;
-//            case 4:
-//                startActivity(new Intent(mContext, ProfilePageActivity.class));
-//                break;
-//            case 5:
-//                startActivity(new Intent(mContext, SyncOfflineActivity.class));
-//                break;
-//        }
-//    }
-
     private void initData() {
+
         Log.e(TAG, "EmpType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
         lastLocationRepository.clearUnwantedRows();
         initUserDetails();
@@ -838,6 +812,26 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         if (isView)
             checkDutyStatus();
+    }
+
+    private void checkLocationValidity() {
+        double lat = Double.parseDouble(Prefs.getString(AUtils.LAT, null));
+        double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
+        LatLng asdf = new LatLng(lat, lon);
+
+        List<LatLng> prefList;
+        String json = Prefs.getString(AUtils.PREFS.AREA_VERTICES, null);
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<LatLng>>() {
+        }.getType();
+
+        prefList = gson.fromJson(json, type);
+
+        boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
+
+        Log.e(TAG, "initData: latlng= " + asdf
+                + " isPointInPolygon: " + isPointInPolygon);
     }
 
     private void performLogout() {
@@ -959,6 +953,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onInPunchSuccess() {
+        getAppGeoArea();    //call geoAreaService here!!!
+
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
@@ -987,6 +983,39 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         AUtils.setInPunchDate(Calendar.getInstance());
         Log.i(TAG, AUtils.getInPunchDate());
         AUtils.setIsOnduty(true);
+    }
+
+    private void getAppGeoArea() {
+        mAppGeoAreaAdapter.getAppGeoArea(new AppGeoAreaAdapter.AppGeoListener() {
+            @Override
+            public void onResponse(AppGeoArea appGeoArea) {
+                Log.e(TAG, "onResponse: IsAreaActive: " + appGeoArea.getIsAreaActive());
+                Prefs.putBoolean(AUtils.PREFS.IS_AREA_ACTIVE, appGeoArea.getIsAreaActive());
+                String s = appGeoArea.getAreaGeoVertices();
+                String[] splitString = s.split(";");
+                List<LatLng> prefList = new ArrayList<>();
+
+                for (String value : splitString) {
+                    String[] splitString1 = value.split(",");
+                    double lat = Double.parseDouble(splitString1[0]);
+                    double lon = Double.parseDouble(splitString1[1]);
+                    LatLng asdf = new LatLng(lat, lon);
+                    prefList.add(asdf);
+                }
+
+                Gson gson = new Gson();
+
+                String json = gson.toJson(prefList);
+
+                Prefs.putString(AUtils.PREFS.AREA_VERTICES, json);
+                checkLocationValidity();
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.e(TAG, "onFailure: " + throwable.getMessage());
+            }
+        });
     }
 
     private void onOutPunchSuccess() {

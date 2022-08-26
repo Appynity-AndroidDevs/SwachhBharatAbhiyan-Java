@@ -112,7 +112,7 @@ dependencies {
 
     implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
 
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 }
 configurations.all {
     resolutionStrategy {

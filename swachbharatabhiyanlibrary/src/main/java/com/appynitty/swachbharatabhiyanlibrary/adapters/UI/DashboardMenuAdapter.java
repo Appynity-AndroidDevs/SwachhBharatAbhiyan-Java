@@ -95,6 +95,8 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                                     AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
                                 }
                             }
+                        }else{
+                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
                         }
 
                     } else {

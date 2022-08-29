@@ -1166,13 +1166,15 @@ public class AUtils extends CommonUtils {
                 String json = gson.toJson(prefList);
 
                 Prefs.putString(AUtils.PREFS.AREA_VERTICES, json);
-                geoAreaRequestListener.onResponse();
+                if (geoAreaRequestListener != null)
+                    geoAreaRequestListener.onResponse();
 //                checkLocationValidity();
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-                geoAreaRequestListener.onFailure();
+                if (geoAreaRequestListener != null)
+                    geoAreaRequestListener.onFailure();
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });

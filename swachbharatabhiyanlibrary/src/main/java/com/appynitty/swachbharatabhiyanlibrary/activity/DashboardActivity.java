@@ -1,5 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.getAppGeoArea;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -46,7 +48,6 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAd
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.AppGeoArea;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
@@ -952,7 +953,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onInPunchSuccess() {
-        getAppGeoArea();    //call geoAreaService here!!!
+        getAppGeoArea(null);
 
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
@@ -982,39 +983,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         AUtils.setInPunchDate(Calendar.getInstance());
         Log.i(TAG, AUtils.getInPunchDate());
         AUtils.setIsOnduty(true);
-    }
-
-    private void getAppGeoArea() {
-        mAppGeoAreaAdapter.getAppGeoArea(new AppGeoAreaAdapter.AppGeoListener() {
-            @Override
-            public void onResponse(AppGeoArea appGeoArea) {
-                Log.e(TAG, "onResponse: IsAreaActive: " + appGeoArea.getIsAreaActive() + ", List of vertices: " + appGeoArea.getAreaGeoVertices());
-                Prefs.putBoolean(AUtils.PREFS.IS_AREA_ACTIVE, appGeoArea.getIsAreaActive());
-                String s = appGeoArea.getAreaGeoVertices();
-                String[] splitString = s.split(";");
-                List<LatLng> prefList = new ArrayList<>();
-
-                for (String value : splitString) {
-                    String[] splitSubString = value.split(",");
-                    double lat = Double.parseDouble(splitSubString[0]);
-                    double lon = Double.parseDouble(splitSubString[1]);
-                    LatLng asdf = new LatLng(lat, lon);
-                    prefList.add(asdf);
-                }
-
-                Gson gson = new Gson();
-
-                String json = gson.toJson(prefList);
-
-                Prefs.putString(AUtils.PREFS.AREA_VERTICES, json);
-//                checkLocationValidity();
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                Log.e(TAG, "onFailure: " + throwable.getMessage());
-            }
-        });
     }
 
     private void onOutPunchSuccess() {

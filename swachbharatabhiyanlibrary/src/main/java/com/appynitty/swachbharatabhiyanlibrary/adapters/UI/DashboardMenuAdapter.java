@@ -8,13 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
-import com.appynitty.swachbharatabhiyanlibrary.activity.QRcodeScannerActivity;
+import com.appynitty.swachbharatabhiyanlibrary.activity.EmpQRcodeScannerActivity;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -26,7 +25,7 @@ import java.util.List;
  * Created by Ayan Dey on 22/1/20.
  */
 public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdapter.WasteMenuViewHolder> {
-
+    private static final String TAG = "DashboardMenuAdapter";
     private final Context context;
     private List<MenuListPojo> menuList;
     private final VerifyDataAdapterClass verifyDataAdapterClass;
@@ -53,6 +52,7 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
         final MenuListPojo menuPojo = menuList.get(position);
         holder.menuNameTextView.setText(menuPojo.getMenuName());
         holder.menuImageView.setImageResource(menuPojo.getImage());
+
         holder.menuCardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,11 +71,31 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                 }
                 if (menuPojo.getCheckAttendance()) {
                     if (AUtils.isIsOnduty()) {
-                        /*if (menuPojo.getNextIntentClass().equals(QRcodeScannerActivity.class)) {
-                            Toast.makeText(context, "Wow, you wanna scan a code!", Toast.LENGTH_SHORT).show();
-                        } else {*/
-                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-//                        }
+                        if (menuPojo.getNextIntentClass().equals(EmpQRcodeScannerActivity.class)) {
+                            if (AUtils.isInternetAvailable()) {
+                                AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
+                                    @Override
+                                    public void onResponse() {
+                                        if (AUtils.isValidArea()) {
+                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                        } else {
+                                            AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure() {
+
+                                    }
+                                });
+                            } else {
+                                if (AUtils.isValidArea()) {
+                                    context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                } else {
+                                    AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                }
+                            }
+                        }
 
                     } else {
                         AUtils.warning(context, context.getResources().getString(R.string.be_no_duty));

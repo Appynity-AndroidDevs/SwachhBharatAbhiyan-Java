@@ -28,10 +28,12 @@ import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.activity.DashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.activity.EmpDashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.activity.WasteDashboardActivity;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.entity.LastLocationEntity;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.AppGeoArea;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.LastLocationRepository;
 import com.google.android.gms.common.api.ApiException;
@@ -1139,6 +1141,49 @@ public class AUtils extends CommonUtils {
         return x > pX;
     }
 
+    public static void getAppGeoArea(geoAreaRequestListener geoAreaRequestListener) {
+
+        AppGeoAreaAdapter.getInstance().getAppGeoArea(new AppGeoAreaAdapter.AppGeoListener() {
+            @Override
+            public void onResponse(AppGeoArea appGeoArea) {
+                Log.e(TAG, "onResponse: IsAreaActive: " + appGeoArea.getIsAreaActive() + ", List of vertices: " + appGeoArea.getAreaGeoVertices());
+
+                Prefs.putBoolean(AUtils.PREFS.IS_AREA_ACTIVE, appGeoArea.getIsAreaActive());
+                String s = appGeoArea.getAreaGeoVertices();
+                String[] splitString = s.split(";");
+                List<LatLng> prefList = new ArrayList<>();
+
+                for (String value : splitString) {
+                    String[] splitSubString = value.split(",");
+                    double lat = Double.parseDouble(splitSubString[0]);
+                    double lon = Double.parseDouble(splitSubString[1]);
+                    LatLng asdf = new LatLng(lat, lon);
+                    prefList.add(asdf);
+                }
+
+                Gson gson = new Gson();
+
+                String json = gson.toJson(prefList);
+
+                Prefs.putString(AUtils.PREFS.AREA_VERTICES, json);
+                geoAreaRequestListener.onResponse();
+//                checkLocationValidity();
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                geoAreaRequestListener.onFailure();
+                Log.e(TAG, "onFailure: " + throwable.getMessage());
+            }
+        });
+    }
+
+    public interface geoAreaRequestListener {
+        void onResponse();
+
+        void onFailure();
+    }
+
     public static boolean isValidArea() {
         double lat = Double.parseDouble(Prefs.getString(AUtils.LAT, null));
         double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
@@ -1156,7 +1201,7 @@ public class AUtils extends CommonUtils {
         boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
 
         Log.e(TAG, "current latlng= " + asdf
-                + "isValidArea: " + isPointInPolygon);
+                + ", isValidArea: " + isPointInPolygon);
         return isPointInPolygon;
     }
 

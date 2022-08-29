@@ -1,6 +1,8 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import static android.os.Environment.DIRECTORY_PICTURES;
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.getAppGeoArea;
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.isValidArea;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -73,9 +75,6 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler {
 
     private final static String TAG = "EmpQRcodeScannerActivity";
-    /**
-     * permission code
-     */
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1013;
     private Context mContext;
     private Toolbar toolbar;
@@ -496,12 +495,12 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
     private Boolean validSubmitId(String id) {
 
         Log.e(TAG, "validSubmitId: " + id);
-       /* if (Prefs.getBoolean(AUtils.PREFS.IS_SAME_LOCALITY, false)) {*/
-            return id.substring(0, 2).matches("^[HhPp]+$")
-                    || id.matches("gpsba[0-9]+$")
-                    || id.matches("lwsba[0-9]+$")
-                    || id.matches("sssba[0-9]+$")
-                    || id.matches("dysba[0-9]+$");
+        /* if (Prefs.getBoolean(AUtils.PREFS.IS_SAME_LOCALITY, false)) {*/
+        return id.substring(0, 2).matches("^[HhPp]+$")
+                || id.matches("gpsba[0-9]+$")
+                || id.matches("lwsba[0-9]+$")
+                || id.matches("sssba[0-9]+$")
+                || id.matches("dysba[0-9]+$");
        /* } else {
             return false;
         }*/
@@ -574,7 +573,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
     }
 
 
-    private void takePhotoImageViewOnClick() {
+    private void takeQrsPhoto() {
 //        setContentView(R.layout.layout_blank);
 //        stopPreview();
         scannerView.stopCamera();
@@ -586,7 +585,34 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
     public void handleResult(Result result) {
         Log.e(TAG, "handleResult: " + result.getContents());
         mHouse_id = result.getContents();
-        takePhotoImageViewOnClick();
+
+        if (AUtils.isInternetAvailable()) {        //for online scanning
+            getAppGeoArea(new AUtils.geoAreaRequestListener() {
+                @Override
+                public void onResponse() {
+                    Log.e(TAG, "onResponse: ");
+                    if (isValidArea()) {
+                        takeQrsPhoto();
+                    } else {
+                        scannerView.stopCamera();
+                        AUtils.warning(mContext, getResources().getString(R.string.out_of_area_msg));
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "onFailure: getAppGeoArea");
+                }
+            });
+        } else {        //for offline scanning
+            if (isValidArea()) {
+                takeQrsPhoto();
+            } else {
+                scannerView.stopCamera();
+                AUtils.warning(mContext, getResources().getString(R.string.out_of_area_msg));
+            }
+        }
+
     }
 
     private void startPreview() {

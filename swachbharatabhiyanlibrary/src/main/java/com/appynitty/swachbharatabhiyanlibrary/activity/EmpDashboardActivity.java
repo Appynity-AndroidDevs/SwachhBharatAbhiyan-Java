@@ -1,5 +1,8 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.getAppGeoArea;
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.isIsOnduty;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,14 +34,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.DashboardMenuAdapter;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpCheckAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetailAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.LocalityAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.AppGeoArea;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -75,6 +80,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     private TextView userName;
     private TextView empId;
     private ImageView profilePic;
+    private ProgressBar rProgress;
     /*int AppId = 0;
     String locality;*/
     FrameLayout progressBar;
@@ -93,6 +99,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
     private EmpUserDetailAdapterClass mUserDetailAdapter;
 
+    private AppGeoAreaAdapter mAppGeoAreaAdapter;
 //    private LocalityAdapterClass mLocalityAdapter;
 
     private boolean isFromAttendanceChecked = false;
@@ -294,6 +301,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         mCheckAttendanceAdapter = new EmpCheckAttendanceAdapterClass();
         mAttendanceAdapter = new EmpAttendanceAdapterClass();
         mUserDetailAdapter = new EmpUserDetailAdapterClass();
+        mAppGeoAreaAdapter = AppGeoAreaAdapter.getInstance();
 //        mLocalityAdapter = new LocalityAdapterClass(mContext);
 
         fab = findViewById(R.id.fab_setting);
@@ -307,6 +315,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         userName = findViewById(R.id.user_full_name);
         empId = findViewById(R.id.user_emp_id);
         profilePic = findViewById(R.id.user_profile_pic);
+        rProgress = findViewById(R.id.progress123);
 
         initToolBar();
     }
@@ -373,13 +382,13 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         });
 
         mAttendanceAdapter.setAttendanceListener(new EmpAttendanceAdapterClass.AttendanceListener() {
+
             @Override
             public void onSuccessCallBack(int type) {
 
                 if (type == 1) {
                     onInPunchSuccess();
                 } else if (type == 2) {
-
                     onOutPunchSuccess();
                 }
             }
@@ -419,9 +428,50 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         markAttendance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onSwitchStatus(isChecked);
+                if (AUtils.isInternetAvailable()) {
+                    getAppGeoArea(new AUtils.geoAreaRequestListener() {
+                        @Override
+                        public void onResponse() {
+                            onSwitchStatus(isChecked);
+                            Log.e(TAG, "onResponse: isChecked: " + isChecked);
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            Log.e(TAG, "onFailure: getAppGeoArea");
+                        }
+                    });
+                } else {
+                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
+                    markAttendance.setChecked(isIsOnduty());
+                }
             }
         });
+
+        /*markAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean currentState = markAttendance.isChecked();
+                if (AUtils.isInternetAvailable()) {
+                    getAppGeoArea(new AUtils.geoAreaRequestListener() {
+                        @Override
+                        public void onResponse() {
+                            onSwitchStatus(currentState);
+                            Log.e(TAG, "onResponse: isChecked: " + currentState);
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            Log.e(TAG, "onFailure: getAppGeoArea");
+                        }
+                    });
+                } else {
+                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
+                    markAttendance.setChecked(isIsOnduty());
+                }
+            }
+        });*/
 
         mUserDetailAdapter.setUserDetailListener(new EmpUserDetailAdapterClass.UserDetailListener() {
             @Override
@@ -577,20 +627,43 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     private void onChangeDutyStatus() {
 
         if (AUtils.isInternetAvailable()) {
+            boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
 
-            if (AUtils.isNull(empInPunchPojo)) {
-                empInPunchPojo = new EmpInPunchPojo();
-            }
+            if (isAreaActive) {
+                if (AUtils.isValidArea()) {
+                    if (AUtils.isNull(empInPunchPojo)) {
+                        empInPunchPojo = new EmpInPunchPojo();
+                    }
 
-            empInPunchPojo.setStartDate(AUtils.getServerDate());
-            empInPunchPojo.setStartTime(AUtils.getServerTime());
+                    empInPunchPojo.setStartDate(AUtils.getServerDate());
+                    empInPunchPojo.setStartTime(AUtils.getServerTime());
 
-            try {
-                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
-            } catch (Exception e) {
-                e.printStackTrace();
-                markAttendance.setChecked(false);
-                AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                    try {
+                        mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        markAttendance.setChecked(false);
+                        AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                    }
+                } else {
+                    markAttendance.setChecked(AUtils.isIsOnduty());
+                    AUtils.error(mContext, getResources().getString(R.string.out_of_area_msg));
+                }
+            } else {
+                if (AUtils.isNull(empInPunchPojo)) {
+                    empInPunchPojo = new EmpInPunchPojo();
+                }
+
+                empInPunchPojo.setStartDate(AUtils.getServerDate());
+                empInPunchPojo.setStartTime(AUtils.getServerTime());
+
+                try {
+                    mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    markAttendance.setChecked(false);
+                    AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                }
             }
         } else {
             AUtils.warning(mContext, mContext.getString(R.string.no_internet_error));
@@ -601,19 +674,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     private void onInPunchSuccess() {
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-
-//        String vehicleType = null;
-//
-//        if (!AUtils.isNullString(empInPunchPojo.getVehicleNumber())) {
-//
-//            vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
-//                    this.getResources().getString(R.string.hyphen), empInPunchPojo.getVehicleNumber(),
-//                    this.getResources().getString(R.string.closing_round_bracket)));
-//        } else {
-//            vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
-//                    vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
-//        }
-
         AUtils.setIsOnduty(true);
     }
 
@@ -625,7 +685,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         boolean isservicerunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
 
-//
         if (isservicerunning)
             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
 
@@ -683,14 +742,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
             attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
-//            String vehicleName = "";
-//
-//            if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO,""))) {
-//
-//                vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.hyphen), empInPunchPojo.getVehicleNumber(), this.getResources().getString(R.string.closing_round_bracket)));
-//            } else {
-//                vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.closing_round_bracket)));
-//            }
         }
     }
 

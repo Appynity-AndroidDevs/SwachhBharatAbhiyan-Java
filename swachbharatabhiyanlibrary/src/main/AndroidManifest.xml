@@ -107,6 +107,10 @@
             android:label="@string/title_activity_qrcode_scanner"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.AttendanceVehicleScannerActivity"
+            android:label="@string/title_activity_qrcode_scanner"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.TakePhotoActivity"
             android:label="@string/title_activity_take_photo"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -183,7 +183,9 @@
     <string name="select_employee_type">कर्मचारी प्रकार निवडा</string>
     <string name="house_qr_alert">हाऊस QR स्कॅन करण्यासाठी कृपया waste collection आयडी ने लॉगिन करा.</string>
     <string name="gp_qr_alert">गार्बेज पॉईंट QR स्कॅन करण्यासाठी कृपया Waste Collection आयडी ने लॉग इन करा.</string>
+    <string name="vehicle_qr_alert">वाहन QR स्कॅन करण्यासाठी कृपया Waste Collection आयडी ने लॉग इन करा.</string>
     <string name="dy_qr_alert">डंप यार्ड क्यूआर स्कॅन करण्यासाठी, कृपया Waste Collection आयडी ने  लॉग इन करा.</string>
+    <string name="dy_qr_super_alert">डंप यार्ड क्यूआर स्कॅन करण्यासाठी, कृपया dumpyard supervisor आयडी ने  लॉग इन करा.</string>
     <string name="lwc_qr_alert">लिक्विड वेस्ट क्यूआर स्कॅन करण्यासाठी, कृपया लिक्विड वेस्ट क्लीनिंग आयडी ने  लॉग इन करा.</string>
     <string name="alert">अलर्ट !</string>
     <string name="liquid_collection">लिक्विड कलेक्शन</string>

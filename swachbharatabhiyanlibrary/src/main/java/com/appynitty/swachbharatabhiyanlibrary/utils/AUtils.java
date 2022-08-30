@@ -146,6 +146,7 @@ public class AUtils extends CommonUtils {
     public static final String isFromLogin = "isFromLogin";
     public static final String dumpYardId = "dumpYardId";
     public static final String dumpYardSuperId = "dumpYardSuperId";
+    public static final String vehicleDetailsSuperId = "vehicleDetailsSuperId";
 
     public static final String SERVER_DATE_FORMATE = "MM-dd-yyyy";
     public static final String SERVER_DATE_FORMATE_LOCAL = "yyyy-MM-dd";

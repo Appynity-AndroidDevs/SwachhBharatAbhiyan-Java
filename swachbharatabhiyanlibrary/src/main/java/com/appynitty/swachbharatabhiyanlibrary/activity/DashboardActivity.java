@@ -729,6 +729,29 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             }
                         });
                     }
+                }else {
+                    if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                    }
+                    if (!AUtils.isIsOnduty()) {
+                        startActivity(new Intent(mContext, AttendanceVehicleScannerActivity.class));
+                        finish();
+                    } else {
+
+                        AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                dumpEmpAttendanceVM.setDumpEmpAttendanceOut(Prefs.getString(AUtils.vehicleDetailsSuperId, null));
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                markAttendance.setChecked(AUtils.isIsOnduty());
+                            }
+                        });
+                    }
                 }
             }//end of onclick
         });
@@ -874,9 +897,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 public void onChanged(ResultPojo resultPojo) {
                     if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                            AUtils.success(mContext, resultPojo.getMessageMar());
+                            AUtils.error(mContext, resultPojo.getMessageMar());
                         } else {
-                            AUtils.success(mContext, resultPojo.getMessage());
+                            AUtils.error(mContext, resultPojo.getMessage());
                         }
                         onOutPunchSuccess();
                         if (AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
@@ -889,6 +912,72 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             AUtils.warning(mContext, resultPojo.getMessage());
                         }
                        // markAttendance.setChecked(AUtils.isIsOnduty());
+                        markAttendance.setChecked(false);
+                    }
+                }
+            });
+
+            dumpEmpAttendanceVM.getDumpEmpAttendanceError().observe(this, new Observer<Throwable>() {
+                @Override
+                public void onChanged(Throwable throwable) {
+                    AUtils.error(mContext, throwable.getMessage());
+                }
+            });
+
+            dumpEmpAttendanceVM.getProgressStatusLiveData().observe(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer status) {
+                    progressBar.setVisibility(status);
+                }
+            });
+        } else {
+
+            Intent i = getIntent();
+
+            if (i.hasExtra(AUtils.vehicleDetailsSuperId))
+                dumpRefId = i.getStringExtra(AUtils.vehicleDetailsSuperId);
+
+            Log.e(TAG, "initData: vehicle Id: " + i.getStringExtra(AUtils.vehicleDetailsSuperId));
+            dumpEmpAttendanceVM = new ViewModelProvider(this).get(DumpEmpAttendanceVM.class);
+            if (!AUtils.isNullString(dumpRefId))
+                dumpEmpAttendanceVM.setDumpEmpAttendanceIn(dumpRefId);
+
+            dumpEmpAttendanceVM.getDumpEmpCheckInLiveData().observe(this, new Observer<ResultPojo>() {
+                @Override
+                public void onChanged(ResultPojo resultPojo) {
+                    Log.e(TAG, "VehicleDetailsEmpCheckInLiveData: " + resultPojo.getMessage());
+                    if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(mContext, resultPojo.getMessageMar());
+                        } else {
+                            AUtils.success(mContext, resultPojo.getMessage());
+                        }
+                        Prefs.putString(AUtils.vehicleDetailsSuperId, dumpRefId);
+                        onInPunchSuccess();
+                    }
+                }
+            });
+
+            dumpEmpAttendanceVM.getDumpEmpCheckOutLiveData().observe(this, new Observer<ResultPojo>() {
+                @Override
+                public void onChanged(ResultPojo resultPojo) {
+                    if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.error(mContext, resultPojo.getMessageMar());
+                        } else {
+                            AUtils.error(mContext, resultPojo.getMessage());
+                        }
+                        onOutPunchSuccess();
+                        if (AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                            ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
+                        }
+                    } else if (resultPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.warning(mContext, resultPojo.getMessageMar());
+                        } else {
+                            AUtils.warning(mContext, resultPojo.getMessage());
+                        }
+                        // markAttendance.setChecked(AUtils.isIsOnduty());
                         markAttendance.setChecked(false);
                     }
                 }
@@ -1014,7 +1103,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 if (AUtils.isInternetAvailable()) {
                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                         mOfflineAttendanceAdapter.SyncOfflineData();
-                    AUtils.success(mContext, "Shift started successfully");
+                    //AUtils.success(mContext, "Shift started successfully");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1031,7 +1120,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
         if (!empType.matches("D")) {
-            for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+            /*for (int i = 0; i < vehicleTypePojoList.size(); i++) {
                 if (Prefs.getString(AUtils.VEHICLE_ID, "0").equals(vehicleTypePojoList.get(i).getVtId())) {
 //                if(Prefs.getString(AUtils.LANGUAGE_NAME,AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
 //                    vehicleType = vehicleTypePojoList.get(i).getDescriptionMar();
@@ -1049,11 +1138,12 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             } else {
                 vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
                         vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
-            }
-
+            }*/
+            Prefs.putString(AUtils.vehicleDetailsSuperId, dumpRefId);
             AUtils.setInPunchDate(Calendar.getInstance());
             Log.i(TAG, AUtils.getInPunchDate());
             AUtils.setIsOnduty(true);
+            markAttendance.setChecked(true);
         } else {
             AUtils.setIsOnduty(true);
             markAttendance.setChecked(true);
@@ -1070,7 +1160,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
-        AUtils.success(mContext, "Shift ended successfully");
+        //AUtils.success(mContext, "Shift ended successfully");
 
         attendancePojo = null;
         AUtils.removeInPunchDate();
@@ -1200,7 +1290,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
                 if (!AUtils.DutyOffFromService) {
-                    if (empType.matches("D")) {
+                    /*if (empType.matches("D")) {
 
                     } else {
                         HashMap<Integer, Object> mLanguage = new HashMap<>();
@@ -1223,7 +1313,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             markAttendance.setChecked(false);
                             AUtils.error(mContext, mContext.getString(R.string.vehicle_not_found_error), Toast.LENGTH_SHORT);
                         }
-                    }
+                    }*/
 
                 } else {
                     AUtils.DutyOffFromService = false;

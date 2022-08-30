@@ -223,7 +223,9 @@
     <string name="select_employee_type">Select Employee Type</string>
     <string name="house_qr_alert">For scanning House QR, kindly login with waste collection id.</string>
     <string name="gp_qr_alert">For scanning Garbage Point QR, kindly login with waste collection id</string>
+    <string name="vehicle_qr_alert">For scanning Vehicle QR, kindly login with waste collection id</string>
     <string name="dy_qr_alert">For scanning Dump Yard QR, kindly login with waste collection id.</string>
+    <string name="dy_qr_super_alert">For scanning Dump Yard QR, kindly login with dumpyard supervisor id.</string>
     <string name="lwc_qr_alert">For scanning Liquid Waste QR, kindly login with liquid waste cleaning id</string>
     <string name="alert">Alert!</string>
     <string name="liquid_collection">Liquid Collection</string>

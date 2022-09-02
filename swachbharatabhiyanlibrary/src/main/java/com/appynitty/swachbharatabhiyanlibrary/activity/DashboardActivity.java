@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,10 +37,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
+import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.DashboardMenuAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AttendanceAdapterClass;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AttendanceOnlineAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CheckAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.OfflineAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncOfflineAdapterClass;
@@ -49,6 +52,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAda
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.InPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -126,9 +130,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private AttendanceAdapterClass mAttendanceAdapter;
     private VehicleTypeAdapterClass mVehicleTypeAdapter;
     private UserDetailAdapterClass mUserDetailAdapter;
+    private AttendanceOnlineAdapter mAttendanceOnlineAdapter;
     private OfflineAttendanceAdapterClass mOfflineAttendanceAdapter;
     private AppGeoAreaAdapter mAppGeoAreaAdapter;
-
+    private ProgressBar pbLocading;
     private VerifyDataAdapterClass verifyDataAdapterClass;
     private LastLocationRepository lastLocationRepository;
     private SyncOfflineRepository syncOfflineRepository;
@@ -337,6 +342,24 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
                     this.getResources().getString(R.string.hyphen), vehicle_no,
+                    this.getResources().getString(R.string.closing_round_bracket)));
+        } else if (!AUtils.isNullString(Prefs.getString(AUtils.PREFS.IN_PUNCH_POJO, null)) && vehicleTypePojoList != null) {
+
+            for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+                if (Prefs.getString(AUtils.VEHICLE_ID, "0").equals(vehicleTypePojoList.get(i).getVtId())) {
+//                if(Prefs.getString(AUtils.LANGUAGE_NAME,AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+//                    vehicleType = vehicleTypePojoList.get(i).getDescriptionMar();
+//                else
+                    vehicleType = vehicleTypePojoList.get(i).getDescription();
+                }
+            }
+
+            Gson gson = new Gson();
+            String json = Prefs.getString(AUtils.PREFS.IN_PUNCH_POJO, null);
+            InPunchPojo obj = gson.fromJson(json, InPunchPojo.class);
+            vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket),
+                    vehicleType,
+                    this.getResources().getString(R.string.hyphen), obj.getVehicleNumber(),
                     this.getResources().getString(R.string.closing_round_bracket)));
         } else {
             vehicleStatus.setText("");
@@ -588,12 +611,14 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         checkIsFromLogin();
         mCheckAttendanceAdapter = new CheckAttendanceAdapterClass();
         mAttendanceAdapter = new AttendanceAdapterClass();
+        mAttendanceOnlineAdapter = AttendanceOnlineAdapter.getInstance();
         mVehicleTypeAdapter = new VehicleTypeAdapterClass();
         mUserDetailAdapter = new UserDetailAdapterClass();
         verifyDataAdapterClass = new VerifyDataAdapterClass(mContext);
         mOfflineAttendanceAdapter = new OfflineAttendanceAdapterClass(mContext);
         mAppGeoAreaAdapter = AppGeoAreaAdapter.getInstance();
         pb = findViewById(R.id.progress_layout);
+        pbLocading = findViewById(R.id.pbLoading);
         lastLocationRepository = new LastLocationRepository(mContext);
         syncOfflineRepository = new SyncOfflineRepository(mContext);
         syncOfflineAttendanceRepository = new SyncOfflineAttendanceRepository(mContext);
@@ -718,12 +743,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                pbLocading.setVisibility(View.VISIBLE);
                 AUtils.gpsStatusCheck(DashboardActivity.this);
                 if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+
                     onSwitchStatus(isChecked);
                 } else {
-                    /*Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_SHORT).show();*/
+                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
                     markAttendance.setChecked(AUtils.isIsOnduty());
                 }
 
@@ -936,13 +962,38 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
 
             try {       //Make changes here for the direct attendance instead of offline attendance...
-                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
-                onInPunchSuccess();
+//                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+
+                mAttendanceOnlineAdapter.setAttendanceIn(new AttendanceOnlineAdapter.AttendanceResponseListener() {
+
+                    @Override
+                    public void onResponse(ResultPojo resultPojo) {
+                        pbLocading.setVisibility(View.GONE);
+                        if (resultPojo.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                            onInPunchSuccess();
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                AUtils.success(mContext, resultPojo.getMessageMar());
+                            else
+                                AUtils.success(mContext, resultPojo.getMessage());
+                        } else if (resultPojo.getStatus().equals(AUtils.STATUS_ERROR)) {
+                            AUtils.error(mContext, resultPojo.getMessage());
+                        }
+                        Log.e(TAG, "onResponse: " + resultPojo.getMessageMar());
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        pbLocading.setVisibility(View.GONE);
+                        Log.e(TAG, "onFailure: " + throwable.getMessage());
+                    }
+                });
+
                 if (AUtils.isInternetAvailable()) {
                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                         mOfflineAttendanceAdapter.SyncOfflineData();
                 }
             } catch (Exception e) {
+                pbLocading.setVisibility(View.GONE);
                 e.printStackTrace();
                 markAttendance.setChecked(false);
                 AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
@@ -976,8 +1027,12 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     this.getResources().getString(R.string.closing_round_bracket)));
             vehicle_no = attendancePojo.getVehicleNumber();
         } else {
-            vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
-                    vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
+            Gson gson = new Gson();
+            String json = Prefs.getString(AUtils.PREFS.IN_PUNCH_POJO, null);
+            InPunchPojo obj = gson.fromJson(json, InPunchPojo.class);
+            vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
+                    this.getResources().getString(R.string.hyphen), obj.getVehicleNumber(),
+                    this.getResources().getString(R.string.closing_round_bracket)));
         }
 
         AUtils.setInPunchDate(Calendar.getInstance());
@@ -1048,7 +1103,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void checkDutyStatus() {
-
+        pbLocading.setVisibility(View.GONE);
         if (AUtils.isIsOnduty()) {
 
             if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
@@ -1115,11 +1170,12 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onSwitchOn() {
-
+        pbLocading.setVisibility(View.VISIBLE);
         if (isLocationPermission) {
 
             if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
                 if (!AUtils.DutyOffFromService) {
+
                     HashMap<Integer, Object> mLanguage = new HashMap<>();
 
                     vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
@@ -1165,7 +1221,28 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             if (AUtils.isNull(attendancePojo))
                                 attendancePojo = new AttendancePojo();
 
-                            syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+//                            syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                            mAttendanceOnlineAdapter.setAttendanceOut(new AttendanceOnlineAdapter.AttendanceResponseListener() {
+                                @Override
+                                public void onResponse(ResultPojo resultPojo) {
+                                    pbLocading.setVisibility(View.GONE);
+                                    if (resultPojo.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                            AUtils.success(mContext, resultPojo.getMessageMar());
+                                        else
+                                            AUtils.success(mContext, resultPojo.getMessage());
+                                    } else if (resultPojo.getStatus().equals(AUtils.STATUS_ERROR)) {
+                                        AUtils.error(mContext, resultPojo.getMessage());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Throwable throwable) {
+                                    pbLocading.setVisibility(View.GONE);
+                                    Log.e(TAG, "onFailure: " + throwable.getMessage());
+                                }
+                            });
+
                             onOutPunchSuccess();
 
                             if (AUtils.isInternetAvailable()) {

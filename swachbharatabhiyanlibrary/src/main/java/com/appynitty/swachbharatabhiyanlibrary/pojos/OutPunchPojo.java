@@ -4,13 +4,20 @@ public class OutPunchPojo {
 
     private String endLong;
 
-    private String daDate;
+    private String daendDate;
 
     private String userId;
 
     private String endTime;
 
     private String endLat;
+
+    private String vehicleNumber;
+
+    private String vtId;
+
+    private String EmpType;
+
 
     public String getEndLong() {
         return endLong;
@@ -20,12 +27,12 @@ public class OutPunchPojo {
         this.endLong = endLong;
     }
 
-    public String getDaDate() {
-        return daDate;
+    public String getDaendDate() {
+        return daendDate;
     }
 
-    public void setDaDate(String daDate) {
-        this.daDate = daDate;
+    public void setDaendDate(String daendDate) {
+        this.daendDate = daendDate;
     }
 
     public String getUserId() {
@@ -52,11 +59,35 @@ public class OutPunchPojo {
         this.endLat = endLat;
     }
 
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
+
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
+
+    public String getVtId() {
+        return vtId;
+    }
+
+    public void setVtId(String vtId) {
+        this.vtId = vtId;
+    }
+
+    public String getEmpType() {
+        return EmpType;
+    }
+
+    public void setEmpType(String empType) {
+        EmpType = empType;
+    }
+
     @Override
     public String toString() {
         return "OutPunchPojo{" +
                 "endLong='" + endLong + '\'' +
-                ", daDate='" + daDate + '\'' +
+                ", daendDate='" + daendDate + '\'' +
                 ", userId='" + userId + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", endLat='" + endLat + '\'' +

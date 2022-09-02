@@ -16,6 +16,8 @@ public class InPunchPojo {
 
     private String vehicleNumber;
 
+    private String EmpType;
+
     public String getEmpType() {
         return EmpType;
     }
@@ -23,8 +25,6 @@ public class InPunchPojo {
     public void setEmpType(String empType) {
         EmpType = empType;
     }
-
-    private String EmpType;
 
     public String getDaDate() {
         return daDate;

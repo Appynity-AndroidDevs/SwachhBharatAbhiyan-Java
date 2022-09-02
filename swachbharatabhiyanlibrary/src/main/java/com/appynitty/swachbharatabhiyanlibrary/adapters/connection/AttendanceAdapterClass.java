@@ -96,7 +96,7 @@ public class AttendanceAdapterClass {
             public void doInBackgroundOpration(SyncServer syncServer) {
 
                 OutPunchPojo outPunchPojo = new OutPunchPojo();
-                outPunchPojo.setDaDate(AUtils.getServerDate());
+                outPunchPojo.setDaendDate(AUtils.getServerDate());
                 outPunchPojo.setEndTime(AUtils.getServerTime());
                 resultPojo = syncServer.saveOutPunch(outPunchPojo);
 

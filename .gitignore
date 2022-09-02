@@ -415,3 +415,5 @@ build/intermediates/lint-cache/maven.google/com/google/android/material/group-in
 build/intermediates/lint-cache/maven.google/master-index.xml
 build/intermediates/lint-cache/sdk-registry.xml/sdk-registry.xml
 build/intermediates/lint-cache/typos-en.txt-2.bin
+.idea/libraries/Gradle___retrofitconnectionlibrary_release__aar.xml
+.idea/misc.xml

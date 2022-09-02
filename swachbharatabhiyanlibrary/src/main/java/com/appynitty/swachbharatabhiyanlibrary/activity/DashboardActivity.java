@@ -45,12 +45,14 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CheckAttendan
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.OfflineAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncOfflineAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.UserDetailAdapterClass;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleNoListAdapterRepo;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleNumberAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -142,6 +144,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private VerifyDataAdapterClass verifyDataAdapterClass;
     private LastLocationRepository lastLocationRepository;
     private SyncOfflineRepository syncOfflineRepository;
+
+    private VehicleNoListAdapterRepo vehicleNoListAdapterRepo;
 
     private SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
 
@@ -595,6 +599,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         lastLocationRepository = new LastLocationRepository(mContext);
         syncOfflineRepository = new SyncOfflineRepository(mContext);
         syncOfflineAttendanceRepository = new SyncOfflineAttendanceRepository(mContext);
+        vehicleNoListAdapterRepo = VehicleNoListAdapterRepo.getInstance();
 
 
         if (AUtils.isNull(attendancePojo)) {
@@ -663,7 +668,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     AUtils.success(mContext, "Shift started successfully");
                 } else if (type == 2) {
                     onOutPunchSuccess();
-                    AUtils.success(mContext, "Shift ended successfully");
+                    AUtils.error(mContext, "Shift ended successfully");
                 }
             }
 
@@ -730,7 +735,95 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         });
                     }
                 }else {
-                    if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+
+                    /*******
+                     * created by Rahul Rokade
+                     * Scan vehicle qr id code with manual enter vehicle number
+                     * */
+                    vehicleNoListAdapterRepo.getVehicleQRIdList(Prefs.getString(AUtils.APP_ID, null), new VehicleNoListAdapterRepo.IVehicleQRIdListListener() {
+                        @Override
+                        public void onResponse(List<CollectionAreaHousePojo> vehicleQRIdList) {
+                            Log.e(TAG,"Vehicle qr Id list available : " +vehicleQRIdList);
+
+                            if (vehicleQRIdList.size() > 0 || vehicleQRIdList != null ){
+
+                                if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                                }
+                                if (!AUtils.isIsOnduty()) {
+                                    startActivity(new Intent(mContext, AttendanceVehicleScannerActivity.class));
+                                    finish();
+                                } else {
+
+                                    AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_OFFDUTY_DIALOG, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            dumpEmpAttendanceVM.setDumpEmpAttendanceOut(Prefs.getString(AUtils.vehicleDetailsSuperId, null));
+                                        }
+                                    }, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            markAttendance.setChecked(AUtils.isIsOnduty());
+                                        }
+                                    });
+                                }
+
+                            }else {
+
+                                //Toast.makeText(mContext, "Please enter manually", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG,"Please enter manually: ");
+
+                                if (isLocationPermission) {
+
+                                    if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
+                                        if (!AUtils.DutyOffFromService) {
+                                            HashMap<Integer, Object> mLanguage = new HashMap<>();
+
+                                            vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
+
+                                            if (!AUtils.isNull(vehicleTypePojoList) && !vehicleTypePojoList.isEmpty()) {
+                                                for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+                                                    mLanguage.put(i, vehicleTypePojoList.get(i));
+                                                }
+
+                                                if (!AUtils.isIsOnduty()) {
+                                                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
+                                                    PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_VEHICLE, mLanguage, DashboardActivity.this);
+                                                    dialog.show();
+                                                }
+                                            } else {
+                                                mVehicleTypeAdapter.getVehicleType();
+                                                markAttendance.setChecked(false);
+                                                AUtils.error(mContext, mContext.getString(R.string.vehicle_not_found_error), Toast.LENGTH_SHORT);
+                                            }
+
+                                        } else {
+                                            AUtils.DutyOffFromService = false;
+                                        }
+                                    } else {
+                                        markAttendance.setChecked(false);
+//                Toast.makeText(mContext, getResources().getString(R.string.no_internet_error), Toast.LENGTH_LONG).show();
+//                AUtils.showGPSSettingsAlert(mContext);
+                                    }
+
+                                } else {
+                                    isLocationPermission = AUtils.isLocationPermissionGiven(DashboardActivity.this);
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Toast.makeText(mContext, ""+ throwable, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+                    /*if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
                     }
                     if (!AUtils.isIsOnduty()) {
@@ -751,7 +844,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                                 markAttendance.setChecked(AUtils.isIsOnduty());
                             }
                         });
-                    }
+                    }*/
                 }
             }//end of onclick
         });
@@ -1014,7 +1107,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     AUtils.info(mContext, getResources().getString(R.string.off_duty_warning));
                 }
                 Prefs.remove(AUtils.PREFS.EMPLOYEE_TYPE);
-
             }
 
         }, null);
@@ -1345,6 +1437,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                             if (AUtils.isInternetAvailable()) {
                                 mOfflineAttendanceAdapter.SyncOfflineData();
+                                AUtils.error(mContext,"Shift ended successfully");
                             }
                         }
                     }, new DialogInterface.OnClickListener() {

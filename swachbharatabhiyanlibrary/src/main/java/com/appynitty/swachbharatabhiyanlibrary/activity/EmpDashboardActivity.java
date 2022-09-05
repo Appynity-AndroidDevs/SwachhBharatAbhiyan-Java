@@ -42,7 +42,6 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.AppGeoArea;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -239,6 +238,8 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        AUtils.gpsStatusCheck(mContext);
+
         if (AUtils.isInternetAvailable()) {
             AUtils.hideSnackBar();
         } else {
@@ -284,8 +285,8 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
 
         getPermission();
-
         generateId();
+        AUtils.gpsStatusCheck(mContext);
         registerEvents();
         initData();
     }
@@ -312,6 +313,12 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         attendanceStatus = findViewById(R.id.user_attendance_status);
         vehicleStatus = findViewById(R.id.user_vehicle_type);
         markAttendance = findViewById(R.id.user_attendance_toggle);
+
+        if (Prefs.contains(AUtils.PREFS.IS_ON_DUTY)) {
+            if (isIsOnduty())
+                markAttendance.setChecked(true);
+        }
+
         userName = findViewById(R.id.user_full_name);
         empId = findViewById(R.id.user_emp_id);
         profilePic = findViewById(R.id.user_profile_pic);

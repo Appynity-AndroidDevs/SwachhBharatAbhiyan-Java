@@ -238,7 +238,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        AUtils.gpsStatusCheck(mContext);
 
         if (AUtils.isInternetAvailable()) {
             AUtils.hideSnackBar();

@@ -2,6 +2,7 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import static android.os.Environment.DIRECTORY_PICTURES;
 import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.getAppGeoArea;
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.gpsStatusCheck;
 import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.isValidArea;
 
 import android.Manifest;
@@ -26,7 +27,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -565,13 +565,13 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
             boolean GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             if (!GpsStatus) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+//                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                gpsStatusCheck(mContext);
             } //else {
             //AUtils.saveLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
             //}
         }
     }
-
 
     private void takeQrsPhoto() {
 //        setContentView(R.layout.layout_blank);
@@ -710,7 +710,28 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
                 e.printStackTrace();
             }
         }
-//        }
+
+        if (requestCode == 101) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    // All required changes were successfully made
+//                    Toast.makeText(DashboardActivity.this, "Turning on the GPS\nPlease wait..." + "", Toast.LENGTH_SHORT).show();
+
+
+                    break;
+                case Activity.RESULT_CANCELED:
+                    // The user was asked to change settings, but chose not to
+                    Toast.makeText(mContext, "Canceled", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(mContext, EmpDashboardActivity.class));
+                    finish();
+                       /* stopService();
+                        MainActivity.this.finishAndRemoveTask();*/
+
+                    break;
+                default:
+                    break;
+            }
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
 

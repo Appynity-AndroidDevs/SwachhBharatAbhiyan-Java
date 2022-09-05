@@ -133,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private AttendanceOnlineAdapter mAttendanceOnlineAdapter;
     private OfflineAttendanceAdapterClass mOfflineAttendanceAdapter;
     private AppGeoAreaAdapter mAppGeoAreaAdapter;
-    private ProgressBar pbLocading;
+    private ProgressBar pbLoading;
     private VerifyDataAdapterClass verifyDataAdapterClass;
     private LastLocationRepository lastLocationRepository;
     private SyncOfflineRepository syncOfflineRepository;
@@ -618,7 +618,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mOfflineAttendanceAdapter = new OfflineAttendanceAdapterClass(mContext);
         mAppGeoAreaAdapter = AppGeoAreaAdapter.getInstance();
         pb = findViewById(R.id.progress_layout);
-        pbLocading = findViewById(R.id.pbLoading);
+        pbLoading = findViewById(R.id.pbLoading);
         lastLocationRepository = new LastLocationRepository(mContext);
         syncOfflineRepository = new SyncOfflineRepository(mContext);
         syncOfflineAttendanceRepository = new SyncOfflineAttendanceRepository(mContext);
@@ -743,10 +743,15 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                pbLocading.setVisibility(View.VISIBLE);
+
                 AUtils.gpsStatusCheck(DashboardActivity.this);
                 if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                    if (pbLoading.getVisibility() == View.VISIBLE)
+                        pbLoading.setVisibility(View.GONE);
+                    else
+                        pbLoading.setVisibility(View.VISIBLE);
 
+                    AUtils.hideSnackBar();
                     onSwitchStatus(isChecked);
                 } else {
                     AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
@@ -968,7 +973,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                     @Override
                     public void onResponse(ResultPojo resultPojo) {
-                        pbLocading.setVisibility(View.GONE);
+                        pbLoading.setVisibility(View.GONE);
                         if (resultPojo.getStatus().equals(AUtils.STATUS_SUCCESS)) {
                             onInPunchSuccess();
                             if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
@@ -983,7 +988,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        pbLocading.setVisibility(View.GONE);
+                        pbLoading.setVisibility(View.GONE);
                         Log.e(TAG, "onFailure: " + throwable.getMessage());
                     }
                 });
@@ -993,7 +998,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         mOfflineAttendanceAdapter.SyncOfflineData();
                 }
             } catch (Exception e) {
-                pbLocading.setVisibility(View.GONE);
+                pbLoading.setVisibility(View.GONE);
                 e.printStackTrace();
                 markAttendance.setChecked(false);
                 AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
@@ -1103,7 +1108,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void checkDutyStatus() {
-        pbLocading.setVisibility(View.GONE);
+        pbLoading.setVisibility(View.GONE);
         if (AUtils.isIsOnduty()) {
 
             if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
@@ -1170,7 +1175,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onSwitchOn() {
-        pbLocading.setVisibility(View.VISIBLE);
         if (isLocationPermission) {
 
             if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
@@ -1225,7 +1229,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             mAttendanceOnlineAdapter.setAttendanceOut(new AttendanceOnlineAdapter.AttendanceResponseListener() {
                                 @Override
                                 public void onResponse(ResultPojo resultPojo) {
-                                    pbLocading.setVisibility(View.GONE);
+                                    pbLoading.setVisibility(View.GONE);
                                     if (resultPojo.getStatus().equals(AUtils.STATUS_SUCCESS)) {
                                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
                                             AUtils.success(mContext, resultPojo.getMessageMar());
@@ -1238,7 +1242,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                                 @Override
                                 public void onFailure(Throwable throwable) {
-                                    pbLocading.setVisibility(View.GONE);
+                                    pbLoading.setVisibility(View.GONE);
                                     Log.e(TAG, "onFailure: " + throwable.getMessage());
                                 }
                             });

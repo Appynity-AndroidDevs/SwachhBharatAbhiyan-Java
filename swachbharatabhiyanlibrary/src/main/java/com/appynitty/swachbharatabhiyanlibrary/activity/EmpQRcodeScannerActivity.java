@@ -426,7 +426,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
                         }
                         break;
                     case ChooseActionPopUp.SKIP_BUTTON_CLICKED:
-                        submitOnSkip(mHouse_id);
+                        submitOnSkip(mHouse_id.trim());
                         Log.e(TAG, "onChooseActionPopUpDismissed: " + mId);
                         break;
                 }
@@ -811,7 +811,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
         long lengthbmp = byteArrayImage.length;
         Log.e(TAG, "onCaptureImageResult: Final-size: " + lengthbmp);
 
-        encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+        encodedImage = Base64.encodeToString(byteArrayImage, Base64.NO_WRAP);
         Log.d(TAG, "onCaptureImageResult: Base64:- " + encodedImage);
 
     }

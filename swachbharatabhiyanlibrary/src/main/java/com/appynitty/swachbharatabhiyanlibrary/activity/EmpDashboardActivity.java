@@ -361,16 +361,16 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         mCheckAttendanceAdapter.setCheckAttendanceListener(new EmpCheckAttendanceAdapterClass.CheckAttendanceListener() {
             @Override
             public void onSuccessCallBack(boolean isAttendanceOff, String message, String messageMar) {
-
+//                Toast.makeText(mContext, "Check attendance called!", Toast.LENGTH_SHORT).show();
 
                 if (isAttendanceOff) {
                     isFromAttendanceChecked = true;
                     onOutPunchSuccess();
-                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageIDConstants.MARATHI)) {
+                    /*if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageIDConstants.MARATHI)) {
                         AUtils.info(mContext, messageMar, Toast.LENGTH_LONG);
                     } else {
                         AUtils.info(mContext, message, Toast.LENGTH_LONG);
-                    }
+                    }*/
                 }
             }
 
@@ -734,6 +734,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
+        AUtils.info(mContext, "Selected language: " + languagePojo.getLanguage());
     }
 
     private void checkDutyStatus() {

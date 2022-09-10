@@ -660,10 +660,19 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 if (type == 1) {
                     onInPunchSuccess();
-                    AUtils.success(mContext, "Shift started successfully");
+                    //AUtils.success(mContext, getString(R.string.shif_start));
+
+                    /*if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                        AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessageMar(), Toast.LENGTH_SHORT);
+                    } else if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                        AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessage(), Toast.LENGTH_SHORT);
+                    } else {
+                        AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessage(), Toast.LENGTH_SHORT);
+                    }*/
+
                 } else if (type == 2) {
                     onOutPunchSuccess();
-                    AUtils.success(mContext, "Shift ended successfully");
+                   // AUtils.success(mContext, getString(R.string.shift_end));
                 }
             }
 
@@ -965,6 +974,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         if (!AUtils.isNull(mLanguagePojoList) && !mLanguagePojoList.isEmpty()) {
             for (int i = 0; i < mLanguagePojoList.size(); i++) {
                 mLanguage.put(i, mLanguagePojoList.get(i));
+                Log.e(TAG,"language name : "+mLanguagePojoList.get(i));
             }
 
             PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_LANGUAGE, mLanguage, this);
@@ -1014,7 +1024,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 if (AUtils.isInternetAvailable()) {
                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                         mOfflineAttendanceAdapter.SyncOfflineData();
-                    AUtils.success(mContext, "Shift started successfully");
+                    AUtils.success(mContext, getString(R.string.shif_start));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1070,7 +1080,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
-        AUtils.success(mContext, "Shift ended successfully");
+        AUtils.success(mContext, getString(R.string.shift_end));
 
         attendancePojo = null;
         AUtils.removeInPunchDate();

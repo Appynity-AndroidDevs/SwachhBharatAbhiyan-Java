@@ -10,6 +10,9 @@
       <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/0c417cc5d5fbd67c05791ac6cff814f0/transformed/jetified-retrofitconnectionlibrary-release/res" />
       <root url="jar://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/0c417cc5d5fbd67c05791ac6cff814f0/transformed/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
       <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/0c417cc5d5fbd67c05791ac6cff814f0/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
+      <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/6ba979405c0e145a7801add1a6d98756/transformed/jetified-retrofitconnectionlibrary-release/res" />
+      <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/6ba979405c0e145a7801add1a6d98756/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
+      <root url="jar://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/6ba979405c0e145a7801add1a6d98756/transformed/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -185,10 +185,19 @@ public class PopUpDialog extends Dialog {
                         @Override
                         public void onResponse(List<VehicleNumberPojo> vehicleNumbersList) {
                             vehiNumList = vehicleNumbersList;
-                            vNumListSize = vehicleNumbersList.size();
-                            Log.e(TAG, "Vehicle number list: " + vNumListSize);
-                            loader.setVisibility(View.VISIBLE);
-                            listSize(vNumListSize);
+                            if (vehiNumList != null){
+                                vNumListSize = vehicleNumbersList.size();
+                                Log.e(TAG, "Vehicle number list: " + vNumListSize);
+                                loader.setVisibility(View.VISIBLE);
+                                listSize(vNumListSize);
+                            }else {
+                                loader.setVisibility(View.GONE);
+                                tiVehicle.setVisibility(View.VISIBLE);
+                                txtVehicleNote.setVisibility(View.GONE);
+                                autoTxtVehicleNum.setVisibility(View.GONE);
+                                Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
+                            }
+
                         }
 
                         @Override
@@ -197,7 +206,7 @@ public class PopUpDialog extends Dialog {
                         }
                     });
                 }
-            }, 1000*5);
+            }, 1000*9);
 
 
 

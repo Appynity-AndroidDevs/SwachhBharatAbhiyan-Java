@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Prefs.putString(AUtils.APP_ID, "3098");       //for Appynitty ULB APP_ID - 3098
+       // Prefs.putString(AUtils.APP_ID, "3123");       //for Chandwad ULB APP_ID - 3123
        // Prefs.putString(AUtils.APP_ID, "3068");       //for nagpur ulb app id - 3068
 //        Prefs.putString(AUtils.APP_ID, "3099");       //for Indapur Nagar Parishad ULB APP_ID - 3106
         //for nagpur APP_ID="3068", Demo App-"1"

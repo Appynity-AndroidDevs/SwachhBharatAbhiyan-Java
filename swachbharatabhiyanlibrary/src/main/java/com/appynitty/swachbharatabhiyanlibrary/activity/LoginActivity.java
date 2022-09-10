@@ -445,6 +445,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
+        AUtils.info(mContext,"Selected language is : "+((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void changeLanguage() {
@@ -466,7 +467,6 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
     public void changeLanguage(String type) {
 
         AUtils.changeLanguage(this, type);
-
         recreate();
         generateId();
 

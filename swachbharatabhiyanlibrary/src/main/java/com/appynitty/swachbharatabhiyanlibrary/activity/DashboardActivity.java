@@ -982,10 +982,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         }
     }
 
+
     public void changeLanguage(String type) {
 
         AUtils.changeLanguage(this, type);
-
         recreate();
     }
 
@@ -1132,6 +1132,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
+        AUtils.info(mContext,"Selected language is : "+((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void checkDutyStatus() {

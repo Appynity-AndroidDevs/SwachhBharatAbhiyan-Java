@@ -15,8 +15,8 @@
     <item
         android:id="@+id/item_lwc"
         android:title="@string/liquid_waste_cleaning" />
-    <item
+    <!--<item
         android:id="@+id/item_dumps"
-        android:title="@string/dump_yard_supervisor" />
+        android:title="@string/dump_yard_supervisor" />-->
 
 </menu>

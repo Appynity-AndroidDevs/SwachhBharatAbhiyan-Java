@@ -68,8 +68,17 @@ public class AUtils extends CommonUtils {
 //    public static final String SERVER_URL = "http://192.168.200.3:6560/";
 
     //  Advanced Ghanta Gadi Live URL
-//    public static final String SERVER_URL = "http://202.65.157.253:6560";
-    public static final String SERVER_URL = "http://202.65.157.254:6560";
+   // public static final String SERVER_URL = "http://202.65.157.253:6560";
+   // public static final String SERVER_URL = "http://202.65.157.254:6560";
+
+
+    /**
+     * http://202.65.157.254:6590/
+     * https://akot.ictsbm.com/
+     * akot special
+     * app Id : 3127
+     * ***/
+   // public static final String SERVER_URL = "http://202.65.157.254:6590"; //akot
 
     /*//Nagpur staging server url
     public static final String SERVER_URL = "http://183.177.126.33:6561";*/
@@ -88,7 +97,7 @@ public class AUtils extends CommonUtils {
     //    Staging URL
 //    public static final String SERVER_URL = "http://115.115.153.117:4044/";
 //    public static final String SERVER_URL = "http://202.65.157.254:6560";
-//    public static final String SERVER_URL = "http://202.65.157.254:5049";   //Important note: Ballarpur port = 5047, Wanadongri = 5048, Shrirampur = 5049
+    public static final String SERVER_URL = "http://202.65.157.254:5049";   //Important note: Ballarpur port = 5047, Wanadongri = 5048, Shrirampur = 5049
 
 //    public static final String SERVER_URL = "http://183.177.126.33:6560/";
 

@@ -141,6 +141,7 @@
     <string name="no_garbage">Garbage not Received</string>
     <string name="bifurcate_title">Bifurcated Types</string>
     <string name="bifurcate_garbage_hint">(Wet/Dried/Fatal)</string>
+    <string name="bifurcate_garbage_hint_akot">(Wet/Dried/Hazardous)</string>
 
     <string name="garbage_error">Please select bifurcation type!</string>
 

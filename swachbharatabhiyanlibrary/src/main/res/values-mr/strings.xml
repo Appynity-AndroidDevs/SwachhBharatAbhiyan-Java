@@ -110,6 +110,7 @@
     <string name="no_garbage">कचरा मिळाला नाही</string>
     <string name="bifurcate_title">वर्गीकरणाचे प्रकार</string>
     <string name="bifurcate_garbage_hint">(ओला/सुका/घातक)</string>
+    <string name="bifurcate_garbage_hint_akot">(ओला/सुका/घातक)</string>
 
     <string name="garbage_error">वर्गीकरणाचे प्रकार निवडा</string>
 

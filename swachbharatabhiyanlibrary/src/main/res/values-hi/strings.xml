@@ -8,6 +8,7 @@
     <string name="be_no_duty">कृपया अपनी उपस्थिति पहले दर्ज करें!</string>
     <string name="bifurcate_garbage">वर्गीकृत कचरा</string>
     <string name="bifurcate_garbage_hint">(गीले / सूखे / घातक)</string>
+    <string name="bifurcate_garbage_hint_akot">(गीले / सूखे / घातक)</string>
     <string name="bifurcate_title">द्विभाजित प्रकार</string>
     <string name="change_language">भाषा बदलो</string>
     <string name="choose_option_txt">विकल्प चुनें</string>

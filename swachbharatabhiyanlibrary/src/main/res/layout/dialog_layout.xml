@@ -86,6 +86,7 @@
             android:textColor="@color/colorGray"
             android:textSize="@dimen/dim_14_sp"
             android:hint="@string/vehicle_no_txt_select"
+            android:singleLine="true"
             android:ellipsize="start"
             android:scrollbars="vertical"
             android:layout_marginVertical="@dimen/dim_15_dp"

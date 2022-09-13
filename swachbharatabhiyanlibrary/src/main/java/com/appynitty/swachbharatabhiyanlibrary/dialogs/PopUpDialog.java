@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /****
  * Updated dialog popup by rahul rokade
@@ -79,6 +80,7 @@ public class PopUpDialog extends Dialog {
     private ArrayList<VehicleNumberPojo> vehicleNumList;
     private List<VehicleNumberPojo> vehiNumList;
     private String mVehicleNo;
+    private HashMap<String, String> areaHash;
 
     private String mVehicleId = "";
     //private Integer vNumListSize ;
@@ -190,6 +192,8 @@ public class PopUpDialog extends Dialog {
                                 Log.e(TAG, "Vehicle number list: " + vNumListSize);
                                 loader.setVisibility(View.VISIBLE);
                                 listSize(vNumListSize);
+
+
                             }else {
                                 loader.setVisibility(View.GONE);
                                 tiVehicle.setVisibility(View.VISIBLE);
@@ -317,18 +321,12 @@ public class PopUpDialog extends Dialog {
 
     private void listSize(int vNumListSize){
         Log.e(TAG, "Vehicle number list: " + vNumListSize);
-        /*if (vNumListSize <= 7){
-            tiVehicle.setVisibility(View.VISIBLE);
-            txtVehicleNote.setVisibility(View.GONE);
-            autoTxtVehicleNum.setVisibility(View.GONE);
-            Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
-        }*/
         if (vNumListSize > 0){
             loader.setVisibility(View.GONE);
             tiVehicle.setVisibility(View.GONE);
             txtVehicleNote.setVisibility(View.GONE);
             autoTxtVehicleNum.setVisibility(View.VISIBLE);
-            autoTxtVehicleNum.setOnClickListener(new View.OnClickListener() {
+            /*autoTxtVehicleNum.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     for (VehicleNumberPojo vehicleNumberPojo : vehiNumList) {
@@ -337,7 +335,16 @@ public class PopUpDialog extends Dialog {
 
                     showVehicleNoList(autoTxtVehicleNum, vehiNumList);
                 }
-            });
+            });*/
+
+            /***
+             * write with search list
+             * added by Rahul Rokade
+             * */
+            autoTxtVehicleNum.requestFocus();
+            autoTxtVehicleNum.clearListSelection();
+            inflateVehicleAutoComplete(vehiNumList);
+
         }else {
             loader.setVisibility(View.GONE);
             tiVehicle.setVisibility(View.VISIBLE);
@@ -400,7 +407,26 @@ public class PopUpDialog extends Dialog {
             }
         }
     }
-    
+
+    private void inflateVehicleAutoComplete(List<VehicleNumberPojo> pojoList) {
+
+        areaHash = new HashMap<>();
+        ArrayList<String> keyList = new ArrayList<>();
+        for (VehicleNumberPojo pojo : pojoList) {
+            areaHash.put(pojo.getVehicleNo().toLowerCase(Locale.ROOT), pojo.getVehicleNo());
+            keyList.add(pojo.getVehicleNo().trim());
+            //keyList.contains(pojo.getVehicleNo().endsWith(pojo.getVehicleNo()));
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+        autoTxtVehicleNum.setThreshold(1);
+        autoTxtVehicleNum.setAdapter(adapter);
+        txtVehicleNo = autoTxtVehicleNum;
+        if (!autoTxtVehicleNum.isFocused()) {
+            autoTxtVehicleNum.requestFocus();
+        }
+
+    }
 
     private void showVehicleNoList(View textView, List<VehicleNumberPojo> mVehicleNoList) {
 

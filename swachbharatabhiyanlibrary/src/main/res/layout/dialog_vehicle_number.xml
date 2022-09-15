@@ -15,12 +15,12 @@
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dim_50_dp"
-            android:text="Select Vehicle number"
-            android:textSize="@dimen/dim_10_sp"
-            android:textColor="@color/white"
             android:layout_centerHorizontal="true"
             android:background="@color/colorPrimary"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="Select Vehicle number"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_15_sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

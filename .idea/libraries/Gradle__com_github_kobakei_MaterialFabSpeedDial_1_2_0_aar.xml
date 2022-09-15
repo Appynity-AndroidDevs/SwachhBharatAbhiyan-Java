@@ -1,22 +1,14 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.kobakei:MaterialFabSpeedDial:1.2.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../Program Files/java/jdk-17.0.1/caches/transforms-3/3b9b7b0c33a8327c5e7c7e3487295734/transformed/jetified-MaterialFabSpeedDial-1.2.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../../../../Program Files/java/jdk-17.0.1/caches/transforms-3/3b9b7b0c33a8327c5e7c7e3487295734/transformed/jetified-MaterialFabSpeedDial-1.2.0/res" />
-      <root url="file://$PROJECT_DIR$/../../../../Program Files/java/jdk-17.0.1/caches/transforms-3/3b9b7b0c33a8327c5e7c7e3487295734/transformed/jetified-MaterialFabSpeedDial-1.2.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/425a5dd16f8ca55eea30b176f3e29821/transformed/jetified-MaterialFabSpeedDial-1.2.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/425a5dd16f8ca55eea30b176f3e29821/transformed/jetified-MaterialFabSpeedDial-1.2.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/425a5dd16f8ca55eea30b176f3e29821/transformed/jetified-MaterialFabSpeedDial-1.2.0/res" />
       <root url="jar://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/3b9b7b0c33a8327c5e7c7e3487295734/transformed/jetified-MaterialFabSpeedDial-1.2.0/jars/classes.jar!/" />
-      <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/3b9b7b0c33a8327c5e7c7e3487295734/transformed/jetified-MaterialFabSpeedDial-1.2.0/AndroidManifest.xml" />
       <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/3b9b7b0c33a8327c5e7c7e3487295734/transformed/jetified-MaterialFabSpeedDial-1.2.0/res" />
+      <root url="file://C:/Program Files/java/jdk-17.0.1/caches/transforms-3/3b9b7b0c33a8327c5e7c7e3487295734/transformed/jetified-MaterialFabSpeedDial-1.2.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../../../../Program Files/java/jdk-17.0.1/caches/modules-2/files-2.1/com.github.kobakei/MaterialFabSpeedDial/1.2.0/bff81e362a385751d3f432e53f561abfd7045b36/MaterialFabSpeedDial-1.2.0-javadoc.jar!/" />
       <root url="jar://C:/Program Files/java/jdk-17.0.1/caches/modules-2/files-2.1/com.github.kobakei/MaterialFabSpeedDial/1.2.0/bff81e362a385751d3f432e53f561abfd7045b36/MaterialFabSpeedDial-1.2.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../../../Program Files/java/jdk-17.0.1/caches/modules-2/files-2.1/com.github.kobakei/MaterialFabSpeedDial/1.2.0/b48ad84271cd5603e94aa14aa5048d83f918e9d/MaterialFabSpeedDial-1.2.0-sources.jar!/" />
       <root url="jar://C:/Program Files/java/jdk-17.0.1/caches/modules-2/files-2.1/com.github.kobakei/MaterialFabSpeedDial/1.2.0/b48ad84271cd5603e94aa14aa5048d83f918e9d/MaterialFabSpeedDial-1.2.0-sources.jar!/" />
     </SOURCES>
   </library>

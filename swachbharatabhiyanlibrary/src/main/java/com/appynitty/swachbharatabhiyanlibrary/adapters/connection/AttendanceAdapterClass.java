@@ -56,6 +56,14 @@ public class AttendanceAdapterClass {
                             message = resultPojo.getMessage();
                         }
                         AUtils.success(AUtils.currentContextConstant, "" + message, Toast.LENGTH_SHORT);
+//                        AUtils.success(AUtils.currentContextConstant, "" + message, Toast.LENGTH_SHORT);
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessageMar(), Toast.LENGTH_SHORT);
+                        } else if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessage(), Toast.LENGTH_SHORT);
+                        } else {
+                            AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessage(), Toast.LENGTH_SHORT);
+                        }
                     } else {
                         if(!AUtils.isNull(mListener))
                         {
@@ -121,6 +129,14 @@ public class AttendanceAdapterClass {
                         }
 
                         AUtils.success(AUtils.currentContextConstant, "" + message, Toast.LENGTH_SHORT);
+//                        AUtils.success(AUtils.currentContextConstant, "" + message, Toast.LENGTH_SHORT);
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessageMar(), Toast.LENGTH_SHORT);
+                        } else if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessage(), Toast.LENGTH_SHORT);
+                        } else {
+                            AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessage(), Toast.LENGTH_SHORT);
+                        }
                     } else {
                         if(!AUtils.isNull(mListener))
                         {

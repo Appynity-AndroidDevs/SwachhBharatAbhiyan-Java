@@ -44,7 +44,12 @@ public class SbaDatabase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int prevVersion, int newVersion) {
         if(prevVersion == 2 && newVersion == 3) {
             update_2_3(sqLiteDatabase);
-        } else {
+        }else if (prevVersion == 1 && newVersion == 2){
+            update_1_2(sqLiteDatabase);
+        } else if (prevVersion == 3 && newVersion == 4){
+
+        }
+        else {
             update_1_2(sqLiteDatabase);
         }
     }

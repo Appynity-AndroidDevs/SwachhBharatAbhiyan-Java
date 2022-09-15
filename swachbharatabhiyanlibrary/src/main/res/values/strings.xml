@@ -7,6 +7,7 @@
     <string name="title_activity_history_page">Work History</string>
     <string name="title_activity_broadcast_page">Broadcast</string>
     <string name="title_activity_dump_yard_weight">Dump Yard Details</string>
+    <string name="title_activity_super_dump_yard_weight">Vehicle Details</string>
 
 
     //UserType array
@@ -36,7 +37,7 @@
     <string name="forgot_password_txt">Forgot Password?</string>
 
     <string name="vehicle_no_txt">Enter Vehicle No.</string>
-    <string name="vehicle_no_txt_select">Select Vehicle No.</string>
+    <string name="vehicle_no_txt_select">Please Select Vehicle Number</string>
     <string name="submit_txt">Submit</string>
     <string name="dialog_title_txt_vehicle">Ghanta Gadi Types</string>
 
@@ -58,6 +59,7 @@
     <string name="house_number_hint">Enter House Number</string>
     <string name="gp_id_hint">Enter Garbage Point ID</string>
     <string name="dy_id_hint">Enter Dump Yard ID</string>
+    <string name="dy_super_id_hint">Enter Dump Yard Vehicle ID</string>
 
     <string name="take_before_photo">Take Before Photo</string>
     <string name="take_after_photo">Take After Photo</string>
@@ -81,6 +83,7 @@
     <string name="house_id_txt">House ID :</string>
     <string name="point_id_txt">Point ID :</string>
     <string name="dump_yard_id_txt">Dump Yard ID :</string>
+    <string name="dump_yard_vehicle_id_txt">Vehicle ID :</string>
     <string name="street_sweep_id_txt">Street Sweep ID :</string>
     <string name="liquid_waste_id_txt">Liquid Waste ID :</string>
     <string name="vehicle_number_txt">Vehicle No :</string>
@@ -138,6 +141,7 @@
     <string name="no_garbage">Garbage not Received</string>
     <string name="bifurcate_title">Bifurcated Types</string>
     <string name="bifurcate_garbage_hint">(Wet/Dried/Fatal)</string>
+    <string name="bifurcate_garbage_hint_akot">(Wet/Dried/Hazardous)</string>
 
     <string name="garbage_error">Please select bifurcation type!</string>
 
@@ -241,6 +245,12 @@
     <string name="please_wait">Please wait!</string>
     <string name="colectnStatus">Garbage Weight Registration Complete</string>
     <string name="dump_yard_supervisor">Dump Yard Supervisor</string>
+    <string name="dumpyard_plant_collection">DumpYard Plant Collection</string>
+    <string name="err_vehicle_id">Please entered valid vehicle id</string>
+    <string name="str_vehicle_qr_id">Enter vehicle QR id</string>
+    <string name="str_note_vehicle">Sorry ! your vehicle not registered, please enter vehicle number.</string>
+    <string name="shif_start">Shift started successfully</string>
+    <string name="shift_end">Shift ended successfully</string>
 
 
 </resources>

@@ -37,6 +37,7 @@ public class VehicleTypeAdapterClass {
         return vehicleTypePojoList;
     }
 
+
     public static void setVehicleTypePojoList(List<VehicleTypePojo> vehicleTypePojoList) {
         Type type = new TypeToken<List<VehicleTypePojo>>() {
         }.getType();

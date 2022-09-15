@@ -5,7 +5,7 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.QRcodeScannerActivity">
+    tools:context=".activity.QRcodeScanerActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -103,7 +103,6 @@
                 android:backgroundTint="@color/white"
 
                 android:theme="@style/TextLabel2">
-                <!--                android:hint="@string/hp_gp_id_hint"-->
                 <AutoCompleteTextView
                     android:id="@+id/txt_id_auto"
                     android:layout_width="match_parent"
@@ -111,12 +110,11 @@
                     android:layout_marginStart="@dimen/dim_6_dp"
                     android:layout_marginEnd="@dimen/dim_6_dp"
                     android:backgroundTint="@color/white"
-
                     android:inputType="textCapCharacters"
                     android:maxLines="1"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dim_18_sp" />
-                <!--                android:hint="Enter Street ID"-->
+
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>

@@ -259,15 +259,15 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btn_submit_dump"
                 style="@style/MyButtonStyle"
                 android:layout_below="@id/layout_total_weight"
                 android:layout_alignParentBottom="true"
-                android:id="@+id/btn_submit_dump"
-                android:text="@string/submit_txt"
+                android:layout_gravity="bottom"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="70dp"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/dim_10_dp"/>
+                android:layout_marginBottom="@dimen/dim_10_dp"
+                android:text="@string/submit_txt" />
 
         </RelativeLayout>
 

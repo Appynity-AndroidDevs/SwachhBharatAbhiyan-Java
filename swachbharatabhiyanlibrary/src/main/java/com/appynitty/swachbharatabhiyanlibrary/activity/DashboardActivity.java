@@ -45,6 +45,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CheckAttendan
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.OfflineAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncOfflineAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.UserDetailAdapterClass;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleNumberAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
@@ -90,7 +91,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
+/***
+ * Code updated by Rahul
+ * */
 public class DashboardActivity extends AppCompatActivity implements PopUpDialog.PopUpDialogListener {
 
     private final static String TAG = "DashboardActivity";
@@ -118,6 +121,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private List<VehicleTypePojo> vehicleTypePojoList;
 
+
     private UserDetailPojo userDetailPojo;
 
     private boolean isLocationPermission = false;
@@ -131,6 +135,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private CheckAttendanceAdapterClass mCheckAttendanceAdapter;
     private AttendanceAdapterClass mAttendanceAdapter;
     private VehicleTypeAdapterClass mVehicleTypeAdapter;
+    private VehicleNumberAdapterClass mVehicleNumberAdapterClass;
     private UserDetailAdapterClass mUserDetailAdapter;
     private OfflineAttendanceAdapterClass mOfflineAttendanceAdapter;
 
@@ -582,6 +587,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mCheckAttendanceAdapter = new CheckAttendanceAdapterClass();
         mAttendanceAdapter = new AttendanceAdapterClass();
         mVehicleTypeAdapter = new VehicleTypeAdapterClass();
+        mVehicleNumberAdapterClass = new VehicleNumberAdapterClass();
         mUserDetailAdapter = new UserDetailAdapterClass();
         verifyDataAdapterClass = new VerifyDataAdapterClass(mContext);
         mOfflineAttendanceAdapter = new OfflineAttendanceAdapterClass(mContext);
@@ -654,8 +660,19 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 if (type == 1) {
                     onInPunchSuccess();
+                    //AUtils.success(mContext, getString(R.string.shif_start));
+
+                    /*if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                        AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessageMar(), Toast.LENGTH_SHORT);
+                    } else if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                        AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessage(), Toast.LENGTH_SHORT);
+                    } else {
+                        AUtils.success(AUtils.currentContextConstant, "" + resultPojo.getMessage(), Toast.LENGTH_SHORT);
+                    }*/
+
                 } else if (type == 2) {
                     onOutPunchSuccess();
+                   // AUtils.success(mContext, getString(R.string.shift_end));
                 }
             }
 
@@ -804,15 +821,23 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         List<MenuListPojo> menuPojoList = new ArrayList<MenuListPojo>();
 
-        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerActivity.class, true));
+        if (empType.matches("D")){
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerDumpSuperActivity.class, true));
+        }else {
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScanerActivity.class, true));
+        }
+
         if (!empType.matches("D"))
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
 
+        if (Prefs.getString(AUtils.APP_ID,"").equalsIgnoreCase("3068")){
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
+        }
 //        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
 
-        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
+        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
 
         DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(mContext);
         mainMenuAdaptor.setMenuList(menuPojoList);
@@ -872,7 +897,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         } else {
                             AUtils.warning(mContext, resultPojo.getMessage());
                         }
-                        markAttendance.setChecked(AUtils.isIsOnduty());
+                       // markAttendance.setChecked(AUtils.isIsOnduty());
+                        markAttendance.setChecked(false);
                     }
                 }
             });
@@ -948,6 +974,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         if (!AUtils.isNull(mLanguagePojoList) && !mLanguagePojoList.isEmpty()) {
             for (int i = 0; i < mLanguagePojoList.size(); i++) {
                 mLanguage.put(i, mLanguagePojoList.get(i));
+                Log.e(TAG,"language name : "+mLanguagePojoList.get(i));
             }
 
             PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_LANGUAGE, mLanguage, this);
@@ -955,10 +982,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         }
     }
 
+
     public void changeLanguage(String type) {
 
         AUtils.changeLanguage(this, type);
-
         recreate();
     }
 
@@ -997,6 +1024,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 if (AUtils.isInternetAvailable()) {
                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                         mOfflineAttendanceAdapter.SyncOfflineData();
+                    AUtils.success(mContext, getString(R.string.shif_start));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1052,6 +1080,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
+        AUtils.success(mContext, getString(R.string.shift_end));
 
         attendancePojo = null;
         AUtils.removeInPunchDate();
@@ -1103,6 +1132,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
+        AUtils.info(mContext,"Selected language is : "+((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void checkDutyStatus() {
@@ -1124,6 +1154,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 for (int i = 0; i < vehicleTypePojoList.size(); i++) {
 
                     if (Prefs.getString(AUtils.VEHICLE_ID, "").equals(vehicleTypePojoList.get(i).getVtId())) {
+                        //rahul
                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
                             vehicleName = vehicleTypePojoList.get(i).getDescriptionMar();
                         else

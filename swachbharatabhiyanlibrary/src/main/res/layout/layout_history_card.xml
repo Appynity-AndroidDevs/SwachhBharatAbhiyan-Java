@@ -158,6 +158,24 @@
                     android:text="@string/hyphen"
                     android:textColor="@color/colorPinkLight"
                     android:textSize="@dimen/dim_17_sp" />
+                <TextView
+                    android:id="@+id/ds_collection_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ss_collection"
+                    android:layout_marginTop="@dimen/dim_6_dp"
+                    android:text="@string/dumpyard_plant_collection"
+                    android:textColor="@color/colorDefault"
+                    android:textSize="@dimen/dim_12_sp" />
+
+                <TextView
+                    android:id="@+id/ds_collection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ds_collection_lbl"
+                    android:text="@string/hyphen"
+                    android:textColor="@color/colorPinkLight"
+                    android:textSize="@dimen/dim_17_sp" />
 
             </RelativeLayout>
 

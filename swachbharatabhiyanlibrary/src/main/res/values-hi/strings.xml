@@ -8,6 +8,7 @@
     <string name="be_no_duty">कृपया अपनी उपस्थिति पहले दर्ज करें!</string>
     <string name="bifurcate_garbage">वर्गीकृत कचरा</string>
     <string name="bifurcate_garbage_hint">(गीले / सूखे / घातक)</string>
+    <string name="bifurcate_garbage_hint_akot">(गीले / सूखे / घातक)</string>
     <string name="bifurcate_title">द्विभाजित प्रकार</string>
     <string name="change_language">भाषा बदलो</string>
     <string name="choose_option_txt">विकल्प चुनें</string>
@@ -18,10 +19,12 @@
     <string name="cancel_txt">रद्द करें</string>
     <string name="done_txt">पूरा कर लिया है</string>
     <string name="dump_yard_id_txt">डंप यार्ड आईडी:</string>
+    <string name="dump_yard_vehicle_id_txt">वाहन आईडी :</string>
     <string name="dump_yard_txt">डंप यार्ड ट्रिप</string>
     <string name="dy_area_validation">कृपया मान्य क्षेत्र और डंप यार्ड का चयन करें।</string>
     <string name="dy_area_validation_emp">कृपया डंप यार्ड आईडी दर्ज करें।</string>
     <string name="dy_id_hint">डंप यार्ड आईडी दर्ज करें</string>
+    <string name="dy_super_id_hint">डंप यार्ड वाहन आईडी दर्ज करें</string>
     <string name="dy_validation">कृपया मान्य डंप यार्ड चुनें।</string>
     <string name="emp_id_full">कर्मचारी आईडी:</string>
     <string name="emp_id_short">कर्मचारी आईडी</string>
@@ -108,6 +111,7 @@
     <string name="title_activity_dashboard">यवतमाल कचरा संग्रह वैन</string>
     <string name="title_activity_dump_registration_form_page">डंप यार्ड विवरण जोड़ें</string>
     <string name="title_activity_dump_yard_weight">डंप यार्ड विवरण</string>
+    <string name="title_activity_super_dump_yard_weight">वाहन विवरण</string>
     <string name="title_activity_emp_add_location_details">विवरण जोड़ें</string>
     <string name="title_activity_history_page">काम का इतिहास</string>
     <string name="title_activity_house_registration_form_page">हाउस विवरण जोड़ें</string>
@@ -121,7 +125,7 @@
     <string name="try_after_sometime">कृपया कुछ देर बाद प्रयास करें!</string>
     <string name="user_name_txt">उपयोगकर्ता नाम</string>
     <string name="vehicle_no_txt">वाहन क्रमांक दर्ज करें</string>
-    <string name="vehicle_no_txt_select">वाहन क्रमांक दर्ज करें</string>
+    <string name="vehicle_no_txt_select">कृपया वाहन संख्या का चयन करें</string>
     <string name="vehicle_number_txt">वाहन संख्या:</string>
     <string name="ward_no">वार्ड क्र</string>
     <string name="yes_txt">हाँ</string>
@@ -175,4 +179,10 @@
     <string name="please_wait">कृपया थांबा...</string>
     <string name="colectnStatus">कचरा वजन पंजीकरण पूर्ण</string>
     <string name="dump_yard_supervisor">डंप यार्ड सुपरवाइज़र</string>
+    <string name="dumpyard_plant_collection">डंपयार्ड प्लांट कलेक्शन</string>
+    <string name="err_vehicle_id">कृपया वैध वाहन आईडी दर्ज करें</string>
+    <string name="str_vehicle_qr_id">वाहन क्यूआर आईडी दर्ज करें</string>
+    <string name="str_note_vehicle">माफ़ करना ! आपका वाहन पंजीकृत नहीं है, कृपया वाहन संख्या दर्ज करें।</string>
+    <string name="shif_start">शिफ्ट सुरू</string>
+    <string name="shift_end">शिफ्ट समाप्त</string>
 </resources>

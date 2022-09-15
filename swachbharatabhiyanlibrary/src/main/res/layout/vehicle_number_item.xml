@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dim_10_dp">
+    <TextView
+        android:id="@+id/txt_vNo_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="vehicle number"
+        android:textSize="@dimen/dim_18_sp"
+        android:textColor="@color/colorGray"
+        android:layout_marginStart="@dimen/dim_10_dp"/>
+
+</RelativeLayout>

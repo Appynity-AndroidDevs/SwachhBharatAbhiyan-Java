@@ -12,6 +12,7 @@ import com.appynitty.swachbharatabhiyanlibrary.activity.WelcomeActivity;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
+import com.riaylibrary.utils.CommonUtils;
 import com.riaylibrary.utils.LocaleHelper;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void attachBaseContext(Context base) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            super.attachBaseContext(LocaleHelper.onAttach(base, AUtils.LanguageConstants.MARATHI));
+            super.attachBaseContext(LocaleHelper.onAttach(base, AUtils.LanguageConstants.ENGLISH));
         } else {
             super.attachBaseContext(base);
         }
@@ -34,7 +35,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Prefs.putString(AUtils.APP_ID, "3098");       //for Appynitty ULB APP_ID - 3098
+       // Prefs.putString(AUtils.APP_ID, "3098");       //for Appynitty ULB APP_ID - 3098
+       // Prefs.putString(AUtils.APP_ID, "3122");       //for Appynitty ULB APP_ID - 3098
+        Prefs.putString(AUtils.APP_ID, "3111");       //for Shrirampur ULB APP_ID - 3111
+       // Prefs.putString(AUtils.APP_ID, "3127");       //for Akot ULB APP_ID - 3127
+       // Prefs.putString(AUtils.APP_ID, "3123");       //for Chandwad ULB APP_ID - 3123
+       // Prefs.putString(AUtils.APP_ID, "3068");       //for nagpur ulb app id - 3068
 //        Prefs.putString(AUtils.APP_ID, "3099");       //for Indapur Nagar Parishad ULB APP_ID - 3106
         //for nagpur APP_ID="3068", Demo App-"1"
 //           Prefs.putString(AUtils.APP_ID, "3041");

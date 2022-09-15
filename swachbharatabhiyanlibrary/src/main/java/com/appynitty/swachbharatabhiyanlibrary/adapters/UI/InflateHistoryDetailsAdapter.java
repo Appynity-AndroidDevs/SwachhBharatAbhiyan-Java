@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Created by Ayan Dey on 25/10/18.
+ * updated by Rahul Rokade
  */
 
 public class InflateHistoryDetailsAdapter extends ArrayAdapter<WorkHistoryDetailPojo> {
@@ -50,7 +51,6 @@ public class InflateHistoryDetailsAdapter extends ArrayAdapter<WorkHistoryDetail
 
             view.setTag(viewHolder);
 
-            /**Added by Swapnil*/
             viewHolder.time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,7 +85,12 @@ public class InflateHistoryDetailsAdapter extends ArrayAdapter<WorkHistoryDetail
                 holder.time.setBackgroundResource(R.drawable.rounded_pink_button);
                 holder.time.setPadding(0, 0, 0, 0);
                 holder.id.setText(String.format("%s %s", context.getResources().getString(R.string.street_sweep_id_txt), workHistoryDetailPojo.getRefid()));
-            } else {
+            } else if (workHistoryDetailPojo.getType().equals("6")) {
+                holder.time.setBackgroundResource(R.drawable.rounded_gray_button);
+                holder.time.setPadding(0, 0, 0, 0);
+                holder.id.setText(String.format("%s %s", context.getResources().getString(R.string.dump_yard_vehicle_id_txt), workHistoryDetailPojo.getRefid()));
+            }
+            else {
                 holder.time.setBackgroundResource(R.drawable.rounded_orange_button);
                 holder.time.setPadding(0, 0, 0, 0);
                 holder.id.setText(String.format("%s %s", context.getResources().getString(R.string.dump_yard_id_txt), workHistoryDetailPojo.getRefid()));

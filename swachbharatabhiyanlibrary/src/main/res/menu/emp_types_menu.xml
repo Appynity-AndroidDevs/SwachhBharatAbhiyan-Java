@@ -15,6 +15,11 @@
     <item
         android:id="@+id/item_lwc"
         android:title="@string/liquid_waste_cleaning" />
+
+    <item
+        android:id="@+id/item_ct"
+        android:title="@string/ct_pt_cleaning_monitoring_system" />
+
     <!--<item
         android:id="@+id/item_dumps"
         android:title="@string/dump_yard_supervisor" />-->

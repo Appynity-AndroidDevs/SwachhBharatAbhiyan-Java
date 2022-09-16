@@ -181,6 +181,7 @@
     <string name="household_collection">"वेस्ट कलेक्शन मॉनिटरिंग टेक्नोलॉजी "</string>
     <string name="street_sweeping">स्ट्रीट स्वीपिंग मॉनिटरिंग सिस्टम</string>
     <string name="liquid_waste_cleaning">लिक्विड वेस्ट क्लीनिंग मॉनिटरिंग सिस्टम</string>
+    <string name="ct_pt_cleaning_monitoring_system">सीटी/पीटी क्लीनिंग मॉनिटरिंग सिस्टम</string>
     <string name="select_employee_type">कर्मचारी प्रकार निवडा</string>
     <string name="house_qr_alert">हाऊस QR स्कॅन करण्यासाठी कृपया waste collection आयडी ने लॉगिन करा.</string>
     <string name="gp_qr_alert">गार्बेज पॉईंट QR स्कॅन करण्यासाठी कृपया Waste Collection आयडी ने लॉग इन करा.</string>

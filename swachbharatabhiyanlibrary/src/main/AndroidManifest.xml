@@ -86,6 +86,17 @@
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.CommunityAndPublicToiletActivity"
+            android:label="@string/title_activity_take_photo"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.QRcodeScannerCtptActivity"
+            android:label="@string/title_activity_qrcode_scanner"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/about_appynitty"
             android:theme="@style/AppTheme.NoActionBar" />

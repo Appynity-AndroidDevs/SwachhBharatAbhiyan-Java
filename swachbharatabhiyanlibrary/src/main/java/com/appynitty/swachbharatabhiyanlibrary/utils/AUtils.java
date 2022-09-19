@@ -151,6 +151,8 @@ public class AUtils extends CommonUtils {
 
     public static final String RADIO_SELECTED_GP = "garbage_point";
     public static final String RADIO_SELECTED_DY = "garbage_dump_yard";
+    public static final String RADIO_SELECTED_CT = "garbage_ctpt";
+    public static final String RADIO_SELECTED_CP = "commercial_point";
 
     public static final String isFromLogin = "isFromLogin";
     public static final String dumpYardId = "dumpYardId";
@@ -181,6 +183,8 @@ public class AUtils extends CommonUtils {
     public static final String HP_AREA_TYPE_ID = "1";
 
     public static final String GP_AREA_TYPE_ID = "2";
+    public static final int CTPT_GC_TYPE = 10;
+    public static final String CT_AREA_TYPE_ID = "5";
 
     public static final String DY_AREA_TYPE_ID = "3";
     public static final String DY_SUPERVISOR_TYPE_ID = "6";

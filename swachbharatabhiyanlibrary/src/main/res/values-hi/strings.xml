@@ -186,4 +186,20 @@
     <string name="str_note_vehicle">माफ़ करना ! आपका वाहन पंजीकृत नहीं है, कृपया वाहन संख्या दर्ज करें।</string>
     <string name="shif_start">शिफ्ट सुरू</string>
     <string name="shift_end">शिफ्ट समाप्त</string>
+
+    <!--CTPT activity-->
+    <string name="string_ctpt_heading">सीटीपीटी शौचालय</string>
+    <string name="str_toilet_seats_count_heading">साफ शौचालय सीटें गिनती</string>
+    <string name="str_hint_toilet_seats_count">कृपया साफ शौचालय सीटों की गिनती दर्ज करें</string>
+    <string name="str_title_type_of_toilet">शौचालय का प्रकार</string>
+    <string name="str_rd_btn_community_toilet">सामुदायिक शौचालय</string>
+    <string name="str_rd_btn_public_toilet">सार्वजनिक शौचालय</string>
+    <string name="str_rd_btn_urinal">मूत्रालय</string>
+    <string name="str_err_select_type">कृपया शौचालय का प्रकार चुनें</string>
+    <string name="plz_capture_after_img">कृपया छवि के बाद कैप्चर करें</string>
+    <string name="string_commercial_collection">वाणिज्यिक संग्रह</string>
+    <string name="commercial_collection">वाणिज्यिक अपशिष्ट कलेक्शन</string>
+    <string name="commercial_id_hint">व्यापारिक पॉइंट आयडी दर्ज़ करें</string>
+    <string name="string_ctpt_waste_id">सीटीपीटी शौचालय पहचान :</string>
+    <string name="cleaned_successful">सफाई सफलतापूर्वक पूर्ण</string>
 </resources>

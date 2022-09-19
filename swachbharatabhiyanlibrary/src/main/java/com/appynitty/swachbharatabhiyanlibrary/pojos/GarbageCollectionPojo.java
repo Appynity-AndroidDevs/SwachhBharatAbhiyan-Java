@@ -26,7 +26,25 @@ public class GarbageCollectionPojo {
     private double distance;
 
     private String gcType;
+    private String TNS;
+    private String TOT;
+    private String TOR;
 
+    public String getTOT() {
+        return TOT;
+    }
+
+    public void setTOT(String TOT) {
+        this.TOT = TOT;
+    }
+
+    public String getTNS() {
+        return TNS;
+    }
+
+    public void setTNS(String TNS) {
+        this.TNS = TNS;
+    }
 
     public String getGpBeforImageTime() {
         return gpBeforImageTime;

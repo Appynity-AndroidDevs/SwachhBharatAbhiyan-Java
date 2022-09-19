@@ -253,5 +253,22 @@
     <string name="shif_start">Shift started successfully</string>
     <string name="shift_end">Shift ended successfully</string>
 
+    <!--CTPT activity-->
+    <string name="string_ctpt_heading">CTPT Toilet</string>
+    <string name="str_toilet_seats_count_heading">Cleaned Toilet Seats Count</string>
+    <string name="str_hint_toilet_seats_count">Please enter cleaned toilet seats count</string>
+    <string name="str_title_type_of_toilet">Type Of Toilet</string>
+    <string name="str_rd_btn_community_toilet">Community Toilet</string>
+    <string name="str_rd_btn_public_toilet">Public Toilet</string>
+    <string name="str_rd_btn_urinal">Urinal Toilet</string>
+    <string name="str_err_select_type">Please select toilet type</string>
+    <string name="plz_capture_after_img">Please capture after image</string>
+    <string name="string_commercial_collection">Commercial Collection</string>
+    <string name="commercial_collection">Commercial Collection</string>
+    <string name="commercial_id_hint">Enter Commercial Point ID</string>
+    <string name="string_ctpt_waste_id">CTPT Toilet ID :</string>
+    <string name="cleaned_successful">Cleaning completed successfully</string>
+
+
 
 </resources>

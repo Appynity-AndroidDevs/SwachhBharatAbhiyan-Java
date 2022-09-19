@@ -38,6 +38,34 @@ public class OfflineGarbageColectionPojo {
     private String gpBeforImageTime;
     private String gpAfterImage;
 
+    private String TNS;
+    private String TOT;
+    private String TOR;
+
+    public String getTOT() {
+        return TOT;
+    }
+
+    public void setTOT(String TOT) {
+        this.TOT = TOT;
+    }
+
+    public String getTOR() {
+        return TOR;
+    }
+
+    public void setTOR(String TOR) {
+        this.TOR = TOR;
+    }
+
+    public String getTNS() {
+        return TNS;
+    }
+
+    public void setTNS(String TNS) {
+        this.TNS = TNS;
+    }
+
     public Boolean getOffline() {
         return isOffline;
     }

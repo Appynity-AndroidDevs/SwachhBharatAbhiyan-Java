@@ -839,6 +839,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
 
+        if (empType.matches("CT")) {
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.string_ctpt_heading), R.drawable.ic_ctpt_toilet_new, CommunityAndPublicToiletActivity.class, true));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
+        }
+
         DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(mContext);
         mainMenuAdaptor.setMenuList(menuPojoList);
         menuGridView.setAdapter(mainMenuAdaptor);
@@ -1064,7 +1071,28 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             AUtils.setInPunchDate(Calendar.getInstance());
             Log.i(TAG, AUtils.getInPunchDate());
             AUtils.setIsOnduty(true);
-        } else {
+        }else if(empType.matches("CT")){
+            if (!AUtils.isNullString(attendancePojo.getVehicleNumber())) {
+
+                if (empType.matches("CT")) {
+                    vehicleStatus.setText("");
+                } else {
+                    vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
+                            this.getResources().getString(R.string.hyphen), attendancePojo.getVehicleNumber(),
+                            this.getResources().getString(R.string.closing_round_bracket)));
+                }
+
+            } else {
+                if (empType.matches("CT")) {
+                    vehicleStatus.setText("");
+                } else {
+                    vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
+                            vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
+                }
+//            vehicleStatus.setText("");
+            }
+        }
+        else {
             AUtils.setIsOnduty(true);
             markAttendance.setChecked(true);
             Prefs.putString(AUtils.dumpYardSuperId, dumpRefId);

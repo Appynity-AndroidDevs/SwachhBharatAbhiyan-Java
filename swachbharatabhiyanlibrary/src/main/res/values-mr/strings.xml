@@ -213,4 +213,20 @@
     <string name="shif_start">शिफ्ट सुरू</string>
     <string name="shift_end">शिफ्ट संपली</string>
 
+    <!--CTPT activity-->
+    <string name="string_ctpt_heading">सीटीपीटी शौचालय</string>
+    <string name="str_toilet_seats_count_heading">स्वच्छ शौचालय आसनांची संख्या</string>
+    <string name="str_hint_toilet_seats_count">कृपया स्वच्छ केलेल्या टॉयलेट सीटची संख्या प्रविष्ट करा</string>
+    <string name="str_title_type_of_toilet">शौचालयाचा प्रकार</string>
+    <string name="str_rd_btn_community_toilet">सामुदायिक शौचालय</string>
+    <string name="str_rd_btn_public_toilet">सार्वजनिक शौचालय</string>
+    <string name="str_rd_btn_urinal">लघवी करण्याचे ठिकाण</string>
+    <string name="str_err_select_type">कृपया शौचालयाचा प्रकार निवडा</string>
+    <string name="plz_capture_after_img">कृपया प्रतिमा नंतर कॅप्चर करा</string>
+    <string name="string_commercial_collection">व्यावसायिक संकलन</string>
+    <string name="commercial_collection">व्यावसायिक कचरा कलेक्शन</string>
+    <string name="commercial_id_hint">व्यावसायिक पॉइंट आयडी एंटर करा</string>
+    <string name="string_ctpt_waste_id">सीटीपीटी शौचालय ओळखपत्र :</string>
+    <string name="cleaned_successful">सफाई सफलतापूर्वक पूर्ण</string>
+
 </resources>

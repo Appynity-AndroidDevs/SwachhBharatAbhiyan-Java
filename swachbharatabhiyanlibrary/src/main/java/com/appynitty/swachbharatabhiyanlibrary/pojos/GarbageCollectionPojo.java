@@ -30,6 +30,14 @@ public class GarbageCollectionPojo {
     private String TOT;
     private String TOR;
 
+    public String getTOR() {
+        return TOR;
+    }
+
+    public void setTOR(String TOR) {
+        this.TOR = TOR;
+    }
+
     public String getTOT() {
         return TOT;
     }

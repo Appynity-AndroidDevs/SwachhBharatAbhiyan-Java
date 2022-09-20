@@ -1130,9 +1130,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     private void inflateAutoComplete(String areaId) {
         //rahul
         String areaType = getAreaType();
-        if (areaType.equals(AUtils.HP_AREA_TYPE_ID)) {
+        /*if (areaType.equals(AUtils.HP_AREA_TYPE_ID)) {
             mHpAdapter.fetchHpList(areaId);
-        }
+        }*/
 
         if (areaType.equals(AUtils.GP_AREA_TYPE_ID)) {
             mGpAdapter.fetchGpList(areaId);
@@ -1185,7 +1185,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             garbageCollectionPojo.setComment(imagePojo.getComment());
             garbageCollectionPojo.setImage1(imagePojo.getImage1());
             garbageCollectionPojo.setImage2(imagePojo.getImage2());
-            garbageCollectionPojo.setBeforeImageTime("11:11 am");
+            garbageCollectionPojo.setGpBeforImageTime("11:11 am");
             garbageCollectionPojo.setTNS(imagePojo.getTNS());
         }
 

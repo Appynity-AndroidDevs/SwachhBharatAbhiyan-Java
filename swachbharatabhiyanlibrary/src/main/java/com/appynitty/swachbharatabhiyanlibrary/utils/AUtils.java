@@ -87,7 +87,7 @@ public class AUtils extends CommonUtils {
     public static final String SERVER_URL = "http://202.65.157.253:6561";*/
 
 
-        public static final String SERVER_URL = "https://ictsbm.com:30443";
+       // public static final String SERVER_URL = "https://ictsbm.com:30443";
 
     /***
      * Staging portap
@@ -97,7 +97,7 @@ public class AUtils extends CommonUtils {
     //    Staging URL
 //    public static final String SERVER_URL = "http://115.115.153.117:4044/";
 //    public static final String SERVER_URL = "http://202.65.157.254:6560";
-    //public static final String SERVER_URL = "http://202.65.157.254:5049";   //Important note: Ballarpur port = 5047, Wanadongri = 5048, Shrirampur = 5049
+    public static final String SERVER_URL = "http://202.65.157.254:5049";   //Important note: Ballarpur port = 5047, Wanadongri = 5048, Shrirampur = 5049
 
 //    public static final String SERVER_URL = "http://183.177.126.33:6560/";
 

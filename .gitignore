@@ -3,3 +3,7 @@
 .idea/libraries/Gradle__androidx_appcompat_appcompat_1_3_0_aar.xml
 libraries\
 .idea\
+/.gradle/
+/.idea/
+/app/release/
+/riaylibrary/build/

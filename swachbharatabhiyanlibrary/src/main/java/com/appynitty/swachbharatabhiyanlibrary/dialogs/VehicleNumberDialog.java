@@ -20,6 +20,10 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
+/******
+ * created by Rahul Rokade
+ * vehicle number dialog
+ * */
 
 public class VehicleNumberDialog extends Dialog {
     private final static String TAG  = "VehicleNumberDialog";

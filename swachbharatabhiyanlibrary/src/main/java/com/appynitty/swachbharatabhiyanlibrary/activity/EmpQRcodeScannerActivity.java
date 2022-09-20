@@ -415,7 +415,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
                 switch (actionType) {
                     case ChooseActionPopUp.ADD_DETAILS_BUTTON_CLICKED:
                         if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
-                            submitOnDetails(mId, getGCType(mId));
+                              submitOnDetails(mId, getGCType(mId.trim()));
                         } else {
                             if (!AUtils.isConnectedFast(mContext)) {
                                 AUtils.warning(mContext, getResources().getString(R.string.feature_unavailable_error), Toast.LENGTH_LONG);
@@ -427,7 +427,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
                         }
                         break;
                     case ChooseActionPopUp.SKIP_BUTTON_CLICKED:
-                        submitOnSkip(mHouse_id);
+                        submitOnSkip(mHouse_id.trim().toString());
                         Log.e(TAG, "onChooseActionPopUpDismissed: " + mId);
                         break;
                 }

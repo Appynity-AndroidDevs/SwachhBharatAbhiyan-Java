@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ListPopupWindow;
 
 import android.os.Handler;
@@ -13,10 +15,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -43,14 +47,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /****
  * Updated dialog popup by rahul rokade
  * vehicle number selection
  * */
-public class PopUpDialog extends Dialog{
+public class PopUpDialog extends Dialog {
 
     private static final String TAG = "PopUpDialog";
+
+    private Executor executor = Executors.newSingleThreadExecutor();
+
     private final Context mContext;
     private final String mType;
 
@@ -88,6 +97,7 @@ public class PopUpDialog extends Dialog{
 
     private VehicleNumberDialog vehicleNumberDialog;
 
+
     public PopUpDialog(Context context, String type, HashMap<Integer, Object> list, PopUpDialogListener listener) {
         super(context);
         // TODO Auto-generated constructor stub
@@ -122,8 +132,7 @@ public class PopUpDialog extends Dialog{
 
         hiddenView = findViewById(R.id.dialog_input_view);
 
-        if(mType.equals(AUtils.DIALOG_TYPE_VEHICLE))
-        {
+        if (mType.equals(AUtils.DIALOG_TYPE_VEHICLE)) {
             vehicleNumList = new ArrayList<>();
 
             txtVehicleNo = findViewById(R.id.txt_vehicle_no);
@@ -135,7 +144,7 @@ public class PopUpDialog extends Dialog{
 
         }
 
-        if (mType.equals(AUtils.DIALOG_TYPE_LANGUAGE)){
+        if (mType.equals(AUtils.DIALOG_TYPE_LANGUAGE)) {
             lblTitle.setText(mContext.getResources().getString(R.string.change_language));
 
             mAdapter = new DialogAdapter(mContext, mList, mType);
@@ -147,13 +156,10 @@ public class PopUpDialog extends Dialog{
     private void initData() {
         vehicleNoListAdapterRepo = VehicleNoListAdapterRepo.getInstance();
 
-        if(mType.equals(AUtils.DIALOG_TYPE_VEHICLE))
-        {
+        if (mType.equals(AUtils.DIALOG_TYPE_VEHICLE)) {
             lblTitle.setText(mContext.getResources().getString(R.string.dialog_title_txt_vehicle));
 
-        }
-        else
-        {
+        } else {
             lblTitle.setText(mContext.getResources().getString(R.string.change_language));
         }
 
@@ -172,45 +178,10 @@ public class PopUpDialog extends Dialog{
             }
         });
 
-        if (mType.equals(AUtils.DIALOG_TYPE_VEHICLE)){
-            loader.setVisibility(View.VISIBLE);
+        if (mType.equals(AUtils.DIALOG_TYPE_VEHICLE)) {
+            //   loader.setVisibility(View.VISIBLE);
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    loader.setVisibility(View.VISIBLE);
-                    VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) mReturnData;
-                    mVehicleId = vehicleTypePojo.getVtId();
-                    vehicleNoListAdapterRepo.getVehicleNosList(Prefs.getString(AUtils.APP_ID, null), mVehicleId, new VehicleNoListAdapterRepo.IVehicleNoListListener() {
-                        @Override
-                        public void onResponse(List<VehicleNumberPojo> vehicleNumbersList) {
-                            vehiNumList = vehicleNumbersList;
-                            if (vehiNumList != null){
-                                vNumListSize = vehicleNumbersList.size();
-                                Log.e(TAG, "Vehicle number list: " + vNumListSize);
-                                loader.setVisibility(View.VISIBLE);
-                                listSize(vNumListSize);
-
-                            }else {
-                                loader.setVisibility(View.GONE);
-                                tiVehicle.setVisibility(View.VISIBLE);
-                                txtVehicleNote.setVisibility(View.GONE);
-                                autoTxtVehicleNum.setVisibility(View.GONE);
-                                Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Log.e(TAG, "onFailure: " + throwable.getMessage());
-                        }
-                    });
-                }
-            }, 1000*9);
-
-
-             textWatcher = new TextWatcher() {
+            textWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -220,6 +191,11 @@ public class PopUpDialog extends Dialog{
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     adapterN.getFilter().filter(charSequence.toString());
 
+//                    int test = autoTxtVehicleNum.getText().toString().length();
+//                    Log.d(TAG, "onTextChanged: "+test);
+//                    if (autoTxtVehicleNum.getText().toString().length() == 0){
+//                        autoTxtVehicleNum.showDropDown();
+//                    }
                 }
 
                 @Override
@@ -231,15 +207,41 @@ public class PopUpDialog extends Dialog{
 
         }
 
+//        autoTxtVehicleNum.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//
+//
+//                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+//
+//                    //touch
+//                    autoTxtVehicleNum.showDropDown();
+//                    openSoftKeyboard();
+//
+//                }
+//                return true;
+//            }
+//        });
+
+        autoTxtVehicleNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b == true){
+                    autoTxtVehicleNum.showDropDown();
+                    openSoftKeyboard();
+                }
+            }
+        });
+
 
         mItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 itemSelected(position);
+
             }
         });
-        if(!AUtils.isNull(btnSubmit))
-        {
+        if (!AUtils.isNull(btnSubmit)) {
             btnSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -249,15 +251,20 @@ public class PopUpDialog extends Dialog{
         }
     }
 
-    private void listSize(int vNumListSize){
+    private void openSoftKeyboard() {
+        InputMethodManager keyboard = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.showSoftInput(autoTxtVehicleNum, 0);
+    }
+
+    private void listSize(int vNumListSize) {
         Log.e(TAG, "Vehicle number list: " + vNumListSize);
-        if (vNumListSize > 0){
+        if (vNumListSize > 0) {
             loader.setVisibility(View.GONE);
             tiVehicle.setVisibility(View.GONE);
             txtVehicleNote.setVisibility(View.GONE);
-            autoTxtVehicleNum.setVisibility(View.VISIBLE);
 
-           /**
+
+            /**
              * just show only list then select
              * added by Rahul Rokade
              */
@@ -282,8 +289,7 @@ public class PopUpDialog extends Dialog{
             autoTxtVehicleNum.clearListSelection();
             inflateVehicleAutoComplete(vehiNumList);
 
-
-        }else {
+        } else {
             loader.setVisibility(View.GONE);
             tiVehicle.setVisibility(View.VISIBLE);
             txtVehicleNote.setVisibility(View.GONE);
@@ -291,30 +297,79 @@ public class PopUpDialog extends Dialog{
             Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
         }
     }
-    private void itemSelected(int postion)
-    {
-         mReturnData = mList.get(postion);
-         if(mType.equals(AUtils.DIALOG_TYPE_VEHICLE))
-         {
-             hiddenView.setVisibility(View.VISIBLE);
-             mItemList.setVisibility(View.GONE);
-         }
-         else {
-             this.dismiss();
-         }
+
+    private void itemSelected(int postion) {
+        mReturnData = mList.get(postion);
+        Log.d(TAG, "itemSelected: " + mReturnData);
+        if (mType.equals(AUtils.DIALOG_TYPE_VEHICLE)) {
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    getVehicleTypeData();
+                }
+
+            });
+            mItemList.setVisibility(View.GONE);
+            autoTxtVehicleNum.setVisibility(View.VISIBLE);
+            hiddenView.setVisibility(View.VISIBLE);
+        } else {
+            this.dismiss();
+        }
     }
 
-    private void onSubmitClick()
-    {
+    private void getVehicleTypeData() {
+        //
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+
+//        loader.setVisibility(View.VISIBLE);
+        VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) mReturnData;
+
+        Log.d(TAG, "run: " + mReturnData);
+        Log.d(TAG, "run: " + vehicleTypePojo);
+        mVehicleId = vehicleTypePojo.getVtId();
+        vehicleNoListAdapterRepo.getVehicleNosList(Prefs.getString(AUtils.APP_ID, null), mVehicleId, new VehicleNoListAdapterRepo.IVehicleNoListListener() {
+            @Override
+            public void onResponse(List<VehicleNumberPojo> vehicleNumbersList) {
+                vehiNumList = vehicleNumbersList;
+                if (vehiNumList != null) {
+                    vNumListSize = vehicleNumbersList.size();
+                    Log.e(TAG, "Vehicle number list: " + vNumListSize);
+//                    loader.setVisibility(View.VISIBLE);
+                    listSize(vNumListSize);
+
+                } else {
+                    loader.setVisibility(View.GONE);
+                    tiVehicle.setVisibility(View.VISIBLE);
+                    txtVehicleNote.setVisibility(View.GONE);
+                    autoTxtVehicleNum.setVisibility(View.GONE);
+                    Log.e(TAG, "Please Enter Manually: " + txtVehicleNo.getText().toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.e(TAG, "onFailure: " + throwable.getMessage());
+            }
+        });
+//                }
+//
+//            }, 1000*0);
+
+    }
+
+    private void onSubmitClick() {
         mVehicleNo = txtVehicleNo.getText().toString();
-        if(!mVehicleNo.isEmpty()){
+        if (!mVehicleNo.isEmpty()) {
             this.dismiss();
-        }else {
+        } else {
             txtVehicleNo.setError(mContext.getString(R.string.noVehicleNo));
         }
     }
 
-    private void vehicleNumberDialogOpen(){
+    private void vehicleNumberDialogOpen() {
         vehicleNumberDialog = new VehicleNumberDialog(mContext, new VehicleNumberDialog.VehicleNumberDialogInterface() {
             @Override
             public void onClicked(VehicleNumberPojo model) {
@@ -326,32 +381,26 @@ public class PopUpDialog extends Dialog{
     }
 
 
-
-    private void popUpDismiss()
-    {
-        if(mType.equals(AUtils.DIALOG_TYPE_VEHICLE))
-        {
+    private void popUpDismiss() {
+        if (mType.equals(AUtils.DIALOG_TYPE_VEHICLE)) {
             /*if(!AUtils.isNull(mListener))
             {
                 mListener.onPopUpDismissed(mType, mReturnData,mVehicleNo);
             }*/
 
-         /****** Rahul**********/
+            /****** Rahul**********/
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(!AUtils.isNull(mListener))
-                    {
-                        mListener.onPopUpDismissed(mType, mReturnData,mVehicleNo);
+                    if (!AUtils.isNull(mListener)) {
+                        mListener.onPopUpDismissed(mType, mReturnData, mVehicleNo);
                     }
                 }
-            }, 1000*2);
-        }
-        else {
-            if(!AUtils.isNull(mListener))
-            {
-                Log.e("dialog popup", "Vehicle type selected: " +mType);
-                mListener.onPopUpDismissed(mType, mReturnData,"");
+            }, 1000 * 2);
+        } else {
+            if (!AUtils.isNull(mListener)) {
+                Log.e("dialog popup", "Vehicle type selected: " + mType);
+                mListener.onPopUpDismissed(mType, mReturnData, "");
             }
         }
     }
@@ -371,6 +420,8 @@ public class PopUpDialog extends Dialog{
         adapterN = adapter;
         autoTxtVehicleNum.setThreshold(0);
         autoTxtVehicleNum.setAdapter(adapter);
+        autoTxtVehicleNum.showDropDown();
+
 
         txtVehicleNo = autoTxtVehicleNum;
         if (!autoTxtVehicleNum.isFocused()) {
@@ -378,7 +429,6 @@ public class PopUpDialog extends Dialog{
         }
 
     }
-
 
 
     private Boolean isAutoCompleteValid(AutoCompleteTextView autoCompleteTextView, HashMap<String, String> hashMap) {

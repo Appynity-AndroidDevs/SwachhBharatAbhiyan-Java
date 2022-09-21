@@ -62,6 +62,7 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.CtptEmpAttendanceVM;
 import com.appynitty.swachbharatabhiyanlibrary.viewmodels.DumpEmpAttendanceVM;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.IMEIWebService;
 import com.bumptech.glide.Glide;
@@ -132,6 +133,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
 
     private DumpEmpAttendanceVM dumpEmpAttendanceVM;
+    private CtptEmpAttendanceVM ctptEmpAttendanceVM;
     private CheckAttendanceAdapterClass mCheckAttendanceAdapter;
     private AttendanceAdapterClass mAttendanceAdapter;
     private VehicleTypeAdapterClass mVehicleTypeAdapter;
@@ -821,7 +823,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         List<MenuListPojo> menuPojoList = new ArrayList<MenuListPojo>();
 
-        if (empType.matches("D")){
+        /*if (empType.matches("D")){
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerDumpSuperActivity.class, true));
         }else {
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScanerActivity.class, true));
@@ -838,12 +840,26 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
-
+*/
         if (empType.matches("CT")) {
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.string_ctpt_heading), R.drawable.ic_ctpt_toilet_new, CommunityAndPublicToiletActivity.class, true));
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
+        }else if (empType.matches("D")){
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerDumpSuperActivity.class, true));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
+        } else if (empType.matches("N") || empType.matches("S") || empType.matches("L")){
+
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScanerActivity.class, true));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
+        }
+        if (Prefs.getString(AUtils.APP_ID,"").equalsIgnoreCase("3068")){
+            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
         }
 
         DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(mContext);
@@ -918,6 +934,75 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             });
 
             dumpEmpAttendanceVM.getProgressStatusLiveData().observe(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer status) {
+                    progressBar.setVisibility(status);
+                }
+            });
+        }
+
+        if (empType.matches("CT")) {
+            /*Intent i = getIntent();
+
+            if (i.hasExtra(AUtils.dumpYardSuperId))
+                dumpRefId = i.getStringExtra(AUtils.dumpYardSuperId);
+
+            Log.e(TAG, "initData: dumpId: " + i.getStringExtra(AUtils.dumpYardSuperId));
+            dumpEmpAttendanceVM = new ViewModelProvider(this).get(DumpEmpAttendanceVM.class);
+            if (!AUtils.isNullString(dumpRefId))
+                dumpEmpAttendanceVM.setDumpEmpAttendanceIn(dumpRefId);*/
+
+            ctptEmpAttendanceVM = new ViewModelProvider(this).get(CtptEmpAttendanceVM.class);
+
+            ctptEmpAttendanceVM.getCtptEmpCheckInLiveData().observe(this, new Observer<ResultPojo>() {
+                @Override
+                public void onChanged(ResultPojo resultPojo) {
+                    Log.e(TAG, "CtptEmpCheckInLiveData: " + resultPojo.getMessage());
+                    if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(mContext, resultPojo.getMessageMar());
+                        } else {
+                            AUtils.success(mContext, resultPojo.getMessage());
+                        }
+
+                        onInPunchSuccess();
+                    }
+                }
+            });
+
+            ctptEmpAttendanceVM.getCtptEmpCheckOutLiveData().observe(this, new Observer<ResultPojo>() {
+                @Override
+                public void onChanged(ResultPojo resultPojo) {
+                    if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(mContext, resultPojo.getMessageMar());
+                        } else {
+                            AUtils.success(mContext, resultPojo.getMessage());
+                        }
+                        onOutPunchSuccess();
+                        if (AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                            ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
+                        }
+                    } else if (resultPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.warning(mContext, resultPojo.getMessageMar());
+                        } else {
+                            AUtils.warning(mContext, resultPojo.getMessage());
+                        }
+                        // markAttendance.setChecked(AUtils.isIsOnduty());
+                        markAttendance.setChecked(false);
+                    }
+                }
+            });
+
+            ctptEmpAttendanceVM.getCtptEmpAttendanceError().observe(this, new Observer<Throwable>() {
+                @Override
+                public void onChanged(Throwable throwable) {
+                    AUtils.error(mContext, throwable.getMessage());
+                }
+            });
+
+            ctptEmpAttendanceVM.getProgressStatusLiveData().observe(this, new Observer<Integer>() {
                 @Override
                 public void onChanged(Integer status) {
                     progressBar.setVisibility(status);

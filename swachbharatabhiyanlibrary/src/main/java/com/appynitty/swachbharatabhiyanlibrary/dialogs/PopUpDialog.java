@@ -388,15 +388,19 @@ public class PopUpDialog extends Dialog {
                 mListener.onPopUpDismissed(mType, mReturnData,mVehicleNo);
             }*/
 
+            if (!AUtils.isNull(mListener)) {
+                mListener.onPopUpDismissed(mType, mReturnData, mVehicleNo);
+            }
+
             /****** Rahul**********/
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!AUtils.isNull(mListener)) {
-                        mListener.onPopUpDismissed(mType, mReturnData, mVehicleNo);
-                    }
-                }
-            }, 1000 * 2);
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (!AUtils.isNull(mListener)) {
+//                        mListener.onPopUpDismissed(mType, mReturnData, mVehicleNo);
+//                    }
+//                }
+//            }, 1000 * 2);
         } else {
             if (!AUtils.isNull(mListener)) {
                 Log.e("dialog popup", "Vehicle type selected: " + mType);

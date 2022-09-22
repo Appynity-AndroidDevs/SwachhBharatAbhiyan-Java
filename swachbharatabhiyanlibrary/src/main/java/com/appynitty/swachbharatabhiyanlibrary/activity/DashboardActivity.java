@@ -253,11 +253,15 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         if (!AUtils.isNull(listItemSelected)) {
             switch (type) {
                 case AUtils.DIALOG_TYPE_VEHICLE: {
+
+                    Log.d(TAG, "onPopUpDismissed: ");
+
                     onVehicleTypeDialogClose(listItemSelected, vehicleNo);
+
                 }
                 break;
                 case AUtils.DIALOG_TYPE_LANGUAGE: {
-
+                    Log.d(TAG, "onPopUpDismissed: ");
                     onLanguageTypeDialogClose(listItemSelected);
                 }
                 break;
@@ -266,8 +270,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             switch (type) {
                 case AUtils.DIALOG_TYPE_VEHICLE: {
                     if (AUtils.isIsOnduty()) {
-
+                        Log.d(TAG, "onPopUpDismissed: ");
                     } else {
+
+                        Log.d(TAG, "onPopUpDismissed: ");
                         markAttendance.setChecked(false);
                         ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
                     }
@@ -672,7 +678,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 } else if (type == 2) {
                     onOutPunchSuccess();
-                   // AUtils.success(mContext, getString(R.string.shift_end));
+                    // AUtils.success(mContext, getString(R.string.shift_end));
                 }
             }
 
@@ -821,16 +827,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         List<MenuListPojo> menuPojoList = new ArrayList<MenuListPojo>();
 
-        if (empType.matches("D")){
+        if (empType.matches("D")) {
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerDumpSuperActivity.class, true));
-        }else {
+        } else {
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScanerActivity.class, true));
         }
 
         if (!empType.matches("D"))
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
 
-        if (Prefs.getString(AUtils.APP_ID,"").equalsIgnoreCase("3068")){
+        if (Prefs.getString(AUtils.APP_ID, "").equalsIgnoreCase("3068")) {
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
         }
 //        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
@@ -849,7 +855,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         if (isView)
             checkDutyStatus();
-
 
         if (empType.matches("D")) {
             Intent i = getIntent();
@@ -897,7 +902,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         } else {
                             AUtils.warning(mContext, resultPojo.getMessage());
                         }
-                       // markAttendance.setChecked(AUtils.isIsOnduty());
+                        // markAttendance.setChecked(AUtils.isIsOnduty());
                         markAttendance.setChecked(false);
                     }
                 }
@@ -974,7 +979,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         if (!AUtils.isNull(mLanguagePojoList) && !mLanguagePojoList.isEmpty()) {
             for (int i = 0; i < mLanguagePojoList.size(); i++) {
                 mLanguage.put(i, mLanguagePojoList.get(i));
-                Log.e(TAG,"language name : "+mLanguagePojoList.get(i));
+                Log.e(TAG, "language name : " + mLanguagePojoList.get(i));
             }
 
             PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_LANGUAGE, mLanguage, this);
@@ -1000,7 +1005,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             playsound();
             onSwitchOff();
 
-
         }
 
     }
@@ -1009,6 +1013,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         if (!AUtils.isNull(vehicleNo) && !vehicleNo.isEmpty()) {
             VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) listItemSelected;
+
 
             Prefs.putString(AUtils.VEHICLE_ID, vehicleTypePojo.getVtId());
 
@@ -1023,6 +1028,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 onInPunchSuccess();
                 if (AUtils.isInternetAvailable()) {
                     if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
+                        //      mOfflineAttendanceAdapter.markAttendanceDirectly();
                         mOfflineAttendanceAdapter.SyncOfflineData();
                     AUtils.success(mContext, getString(R.string.shif_start));
                 }
@@ -1132,7 +1138,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
-        AUtils.info(mContext,"Selected language is : "+((LanguagePojo) listItemSelected).getLanguage());
+        AUtils.info(mContext, "Selected language is : " + ((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void checkDutyStatus() {

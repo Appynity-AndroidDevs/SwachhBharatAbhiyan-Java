@@ -504,3 +504,5 @@ build/intermediates/lint-cache/typos-en.txt-2.bin
 .idea/libraries/Gradle__org_hamcrest_hamcrest_integration_1_3.xml
 .idea/libraries/Gradle__org_hamcrest_hamcrest_library_1_3.xml
 .idea/misc.xml
+/.idea/
+/.idea/libraries/

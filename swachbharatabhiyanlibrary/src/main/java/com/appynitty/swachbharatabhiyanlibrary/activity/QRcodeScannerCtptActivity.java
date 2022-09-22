@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -78,7 +79,7 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 /******  Rahul Rokade 24/01/22 **************/
 public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler, GarbageTypePopUp.GarbagePopUpDialogListener, ToiletTypePopUp.ToiletTypePopUpDialogListener {
 
-    private final static String TAG = "QRcodeScannerActivity";
+    private final static String TAG = "QRcodeScannerCtptActivity";
     private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 100;
     GarbageCollectionPojo garbageCollectionPojo;
     private Context mContext;
@@ -113,6 +114,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     TextView collectionStatus;
     private String EmpType, gcType;
     private String areaType;
+    private Uri uri;
+    private String CtptId;
+    private String urlSting;
 
 
     @Override
@@ -772,14 +776,22 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         } else if (EmpType.matches("CT")) {
             gcType = "10";
-            toiletTypePopUp = new ToiletTypePopUp(mContext, houseid, this);
-            if (houseid.substring(0, 2).matches("^[CcTtPpTt]+$")) {
+            toiletTypePopUp = new ToiletTypePopUp(mContext, CtptId, this);
+
+            uri = Uri.parse(houseid);
+            CtptId = uri.getQueryParameter("sid");
+            Log.e(TAG,"CTPT id is: "+CtptId);
+
+            startSubmitQRAsyncTask(/*houseid*/ CtptId , 0, gcType, null, imagePojo.getTNS(), null);
+
+
+            /*if (houseid.substring(0, 2).matches("^[CcTtPpTt]+$")) {
                 // toiletTypePopUp.show();
-                startSubmitQRAsyncTask(houseid, -1, gcType, null, imagePojo.getTNS(), null);
+                startSubmitQRAsyncTask(houseid, 0, gcType, null, imagePojo.getTNS(), null);
                 // startSubmitQRAsyncTask(houseid, -1, gcType, null,0, null);
             } else if (houseid.substring(0, 3).matches("^[TtMmCc]+$")) {
                 startSubmitQRAsyncTask(houseid, -1, gcType, null, imagePojo.getTNS(), null);
-            }
+            }*/
         }
 
     }
@@ -973,7 +985,12 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     }
 
     public void handleResult(Result result) {
+
         Log.d(TAG, "handleResult: " + new Gson().toJson(result));
+        uri = Uri.parse(String.valueOf(result));
+        CtptId = uri.getQueryParameter("sid");
+        Log.e(TAG,"CTPT id is: "+CtptId);
+
         submitQRcode(result.getContents());
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -1017,7 +1034,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             dialog.show();
         } else {
             gcType = "10";
-            startSubmitQRAsyncTask(houseid, 1, gcType, null, imagePojo.getTNS(), null);
+            startSubmitQRAsyncTask(houseid, 0, gcType, null, imagePojo.getTNS(), null);
         }
     }
 

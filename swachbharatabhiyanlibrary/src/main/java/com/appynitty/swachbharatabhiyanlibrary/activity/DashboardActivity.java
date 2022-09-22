@@ -33,6 +33,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleTypePojo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.CtptEmpAttendanceRepo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.LastLocationRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
@@ -146,6 +148,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private SyncOfflineRepository syncOfflineRepository;
 
     private SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
+    private CtptEmpAttendanceRepo ctptEmpAttendanceRepo;
 
     private boolean isFromAttendanceChecked = false;
     private boolean isDeviceMatch = false;
@@ -597,6 +600,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         lastLocationRepository = new LastLocationRepository(mContext);
         syncOfflineRepository = new SyncOfflineRepository(mContext);
         syncOfflineAttendanceRepository = new SyncOfflineAttendanceRepository(mContext);
+        ctptEmpAttendanceRepo = CtptEmpAttendanceRepo.getInstance();
 
 
         if (AUtils.isNull(attendancePojo)) {
@@ -717,6 +721,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         markAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 if (empType.matches("D")) {
                     if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
@@ -740,7 +746,125 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             }
                         });
                     }
+                } else  if (empType.matches("CT")) {
+                    ctptEmpAttendanceVM = new ViewModelProvider(DashboardActivity.this).get(CtptEmpAttendanceVM.class);
+
+                    if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                    }
+                    if (!AUtils.isIsOnduty()) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        ctptEmpAttendanceRepo.setCtptEmpAttendanceIn(/*refId,*/ new CtptEmpAttendanceRepo.ICtptEmpAttendanceResponse() {
+                            @Override
+                            public void onResponse(ResultPojo attendanceResponse) {
+                                //progressStatusLiveData.setValue(View.GONE);
+                                progressBar.setVisibility(View.GONE);
+                                Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
+                               // ctptEmpCheckInMutableLiveData.setValue(attendanceResponse);
+
+                                onInPunchSuccess();
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                //progressStatusLiveData.setValue(View.GONE);
+                                progressBar.setVisibility(View.GONE);
+                                Log.e(TAG, "onFailure: " + throwable.getMessage());
+                               // ctptEmpAttendanceError.setValue(throwable);
+                            }
+                        });
+
+                        /*ctptEmpAttendanceVM.getCtptEmpCheckInLiveData().observe(DashboardActivity.this, new Observer<ResultPojo>() {
+                            @Override
+                            public void onChanged(ResultPojo resultPojo) {
+                                Log.e(TAG, "CtptEmpCheckInLiveData: " + resultPojo.getMessage());
+                                if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                        AUtils.success(mContext, resultPojo.getMessageMar());
+                                    } else {
+                                        AUtils.success(mContext, resultPojo.getMessage());
+                                    }
+
+                                    onInPunchSuccess();
+                                }
+                            }
+                        });
+
+                        ctptEmpAttendanceVM.getCtptEmpAttendanceError().observe(DashboardActivity.this, new Observer<Throwable>() {
+                            @Override
+                            public void onChanged(Throwable throwable) {
+                                AUtils.error(mContext, throwable.getMessage());
+                            }
+                        });
+
+                        ctptEmpAttendanceVM.getProgressStatusLiveData().observe(DashboardActivity.this, new Observer<Integer>() {
+                            @Override
+                            public void onChanged(Integer status) {
+                                progressBar.setVisibility(status);
+                            }
+                        });*/
+
+
+
+                    }
+
+
+                    /*ctptEmpAttendanceVM.getCtptEmpCheckInLiveData().observe(this, new Observer<ResultPojo>() {
+                        @Override
+                        public void onChanged(ResultPojo resultPojo) {
+                            Log.e(TAG, "CtptEmpCheckInLiveData: " + resultPojo.getMessage());
+                            if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                    AUtils.success(mContext, resultPojo.getMessageMar());
+                                } else {
+                                    AUtils.success(mContext, resultPojo.getMessage());
+                                }
+
+                                onInPunchSuccess();
+                            }
+                        }
+                    });
+
+                    ctptEmpAttendanceVM.getCtptEmpCheckOutLiveData().observe(this, new Observer<ResultPojo>() {
+                        @Override
+                        public void onChanged(ResultPojo resultPojo) {
+                            if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                    AUtils.success(mContext, resultPojo.getMessageMar());
+                                } else {
+                                    AUtils.success(mContext, resultPojo.getMessage());
+                                }
+                                onOutPunchSuccess();
+                                if (AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+                                    ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
+                                }
+                            } else if (resultPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
+                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                    AUtils.warning(mContext, resultPojo.getMessageMar());
+                                } else {
+                                    AUtils.warning(mContext, resultPojo.getMessage());
+                                }
+                                // markAttendance.setChecked(AUtils.isIsOnduty());
+                                markAttendance.setChecked(false);
+                            }
+                        }
+                    });
+
+                    ctptEmpAttendanceVM.getCtptEmpAttendanceError().observe(this, new Observer<Throwable>() {
+                        @Override
+                        public void onChanged(Throwable throwable) {
+                            AUtils.error(mContext, throwable.getMessage());
+                        }
+                    });
+
+                    ctptEmpAttendanceVM.getProgressStatusLiveData().observe(this, new Observer<Integer>() {
+                        @Override
+                        public void onChanged(Integer status) {
+                            progressBar.setVisibility(status);
+                        }
+                    });*/
                 }
+
             }//end of onclick
         });
 
@@ -751,6 +875,14 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 AUtils.gpsStatusCheck(DashboardActivity.this);
 
                 if (!empType.matches("D")) {
+                    if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                        onSwitchStatus(isChecked);
+                    } else {
+                        markAttendance.setChecked(AUtils.isIsOnduty());
+                    }
+                }
+
+                if (!empType.matches("CT")) {
                     if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
                         onSwitchStatus(isChecked);
                     } else {
@@ -941,16 +1073,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             });
         }
 
-        if (empType.matches("CT")) {
-            /*Intent i = getIntent();
-
-            if (i.hasExtra(AUtils.dumpYardSuperId))
-                dumpRefId = i.getStringExtra(AUtils.dumpYardSuperId);
-
-            Log.e(TAG, "initData: dumpId: " + i.getStringExtra(AUtils.dumpYardSuperId));
-            dumpEmpAttendanceVM = new ViewModelProvider(this).get(DumpEmpAttendanceVM.class);
-            if (!AUtils.isNullString(dumpRefId))
-                dumpEmpAttendanceVM.setDumpEmpAttendanceIn(dumpRefId);*/
+       else if (empType.matches("CT")) {
 
             ctptEmpAttendanceVM = new ViewModelProvider(this).get(CtptEmpAttendanceVM.class);
 
@@ -1092,7 +1215,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             playsound();
             onSwitchOff();
 
-
         }
 
     }
@@ -1132,7 +1254,15 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
-        if (!empType.matches("D")) {
+        if(empType.matches("CT")){
+
+            AUtils.setInPunchDate(Calendar.getInstance());
+            Log.i(TAG, AUtils.getInPunchDate());
+            AUtils.setIsOnduty(true);
+        } else if (empType.matches("D")){
+
+        }
+        else if ((empType.matches("N") || empType.matches("S") || empType.matches("L"))) {
             for (int i = 0; i < vehicleTypePojoList.size(); i++) {
                 if (Prefs.getString(AUtils.VEHICLE_ID, "0").equals(vehicleTypePojoList.get(i).getVtId())) {
 //                if(Prefs.getString(AUtils.LANGUAGE_NAME,AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
@@ -1156,26 +1286,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             AUtils.setInPunchDate(Calendar.getInstance());
             Log.i(TAG, AUtils.getInPunchDate());
             AUtils.setIsOnduty(true);
-        }else if(empType.matches("CT")){
-            if (!AUtils.isNullString(attendancePojo.getVehicleNumber())) {
-
-                if (empType.matches("CT")) {
-                    vehicleStatus.setText("");
-                } else {
-                    vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
-                            this.getResources().getString(R.string.hyphen), attendancePojo.getVehicleNumber(),
-                            this.getResources().getString(R.string.closing_round_bracket)));
-                }
-
-            } else {
-                if (empType.matches("CT")) {
-                    vehicleStatus.setText("");
-                } else {
-                    vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
-                            vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
-                }
-//            vehicleStatus.setText("");
-            }
         }
         else {
             AUtils.setIsOnduty(true);
@@ -1281,7 +1391,12 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 } else {
                     vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.closing_round_bracket)));
                 }
-            } else {
+            }else if (empType.matches("CT")){
+                if (AUtils.isIsOnduty()){
+                    markAttendance.setChecked(AUtils.isIsOnduty());
+                }
+            }
+            else {
 
             }
         } else {
@@ -1324,9 +1439,44 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             if (AUtils.isGPSEnable(AUtils.currentContextConstant) /*&& AUtils.isInternetAvailable(AUtils.mainApplicationConstant*/) {
                 if (!AUtils.DutyOffFromService) {
+
                     if (empType.matches("D")) {
 
-                    } else {
+                    } else if (empType.matches("CT")){
+
+                        ctptEmpAttendanceVM = new ViewModelProvider(this).get(CtptEmpAttendanceVM.class);
+
+                        ctptEmpAttendanceVM.getCtptEmpCheckInLiveData().observe(this, new Observer<ResultPojo>() {
+                            @Override
+                            public void onChanged(ResultPojo resultPojo) {
+                                Log.e(TAG, "CtptEmpCheckInLiveData: " + resultPojo.getMessage());
+                                if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                        AUtils.success(mContext, resultPojo.getMessageMar());
+                                    } else {
+                                        AUtils.success(mContext, resultPojo.getMessage());
+                                    }
+
+                                    onInPunchSuccess();
+                                }
+                            }
+                        });
+
+                        ctptEmpAttendanceVM.getCtptEmpAttendanceError().observe(this, new Observer<Throwable>() {
+                            @Override
+                            public void onChanged(Throwable throwable) {
+                                AUtils.error(mContext, throwable.getMessage());
+                            }
+                        });
+
+                        ctptEmpAttendanceVM.getProgressStatusLiveData().observe(this, new Observer<Integer>() {
+                            @Override
+                            public void onChanged(Integer status) {
+                                progressBar.setVisibility(status);
+                            }
+                        });
+                    }
+                    else if ((empType.matches("N") || empType.matches("S") || empType.matches("L"))){
                         HashMap<Integer, Object> mLanguage = new HashMap<>();
 
                         vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
@@ -1348,6 +1498,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             AUtils.error(mContext, mContext.getString(R.string.vehicle_not_found_error), Toast.LENGTH_SHORT);
                         }
                     }
+
 
                 } else {
                     AUtils.DutyOffFromService = false;
@@ -1371,6 +1522,23 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
+                            if (empType.matches("CT")){
+
+                                ctptEmpAttendanceRepo.setCtptEmpAttendanceOut(/*refId,*/ new CtptEmpAttendanceRepo.ICtptEmpAttendanceResponse() {
+                                    @Override
+                                    public void onResponse(ResultPojo attendanceResponse) {
+                                       progressBar.setVisibility(View.GONE);
+                                        Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
+                                        onOutPunchSuccess();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Throwable throwable) {
+                                        progressBar.setVisibility(View.GONE);
+                                        Log.e(TAG, "onFailure: " + throwable.getMessage());
+                                    }
+                                });
+                            }
                             if (AUtils.isNull(attendancePojo))
                                 attendancePojo = new AttendancePojo();
 

@@ -113,9 +113,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
     private SyncOfflineRepository syncOfflineRepository;
     private SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
 
-    private MyProgressDialog myProgressDialog;
-    private ArrayList<Integer> mSelectedIndices;
-
+    private boolean isFlashOn;
     private String EmpType, gcType;
     private String areaType, lastText;
 
@@ -613,13 +611,19 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
         fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (getApplicationContext().getPackageManager()
-                        .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-                    scannerView.setTorchOn();
-                    fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on_indicator));
+                if (hasFlash()) {
+                    if (isFlashOn) {
+                        isFlashOn = false;
+                        scannerView.setTorchOff();
+                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
+                    } else {
+                        isFlashOn = true;
+                        scannerView.setTorchOn();
+                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on_indicator));
+                    }
+
                 } else {
-                    scannerView.setTorchOff();
-                    fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
+                    fabSpeedDial.setVisibility(View.GONE);
                 }
             }
         });
@@ -1364,5 +1368,10 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
             }
         });
 
+    }
+
+    private boolean hasFlash() {
+        return getApplicationContext().getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 }

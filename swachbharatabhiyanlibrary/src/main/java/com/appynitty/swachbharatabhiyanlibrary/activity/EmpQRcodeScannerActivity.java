@@ -30,7 +30,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -53,6 +52,13 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.BeepManager;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.MyProgressDialog;
 import com.riaylibrary.utils.LocaleHelper;
@@ -64,13 +70,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
-import me.dm7.barcodescanner.zbar.Result;
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
-public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler {
+public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     private final static String TAG = "EmpQRcodeScannerActivity";
     /**
@@ -79,7 +86,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1013;
     private Context mContext;
     private Toolbar toolbar;
-    private ZBarScannerView scannerView;
+    //    private ZBarScannerView scannerView;
+    private DecoratedBarcodeView scannerView;
     private FabSpeedDial fabSpeedDial;
     private TextInputLayout idIpLayout;
     private AutoCompleteTextView idAutoComplete;
@@ -96,8 +104,10 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
     private EmpSyncServerRepository empSyncServerRepository;
     private Gson gson;
     Camera mCamera;
+    private String lastText;
+    private BeepManager beepManager;
     boolean isChecked = true;
-
+    boolean turn_on_flashlight = false;
     private MyProgressDialog myProgressDialog;
     private ArrayList<Integer> mSelectedIndices;
 
@@ -207,12 +217,14 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
     @Override
     protected void onResume() {
         super.onResume();
+        scannerView.resume();
 //        startPreview();
     }
 
     @Override
     protected void onPause() {
-        stopPreview();
+//        stopPreview();
+        scannerView.pause();
         super.onPause();
     }
 
@@ -285,13 +297,19 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
 
         isScanQr = true;
 
-        ViewGroup contentFrame = (ViewGroup) findViewById(R.id.qr_scanner);
+        /*ViewGroup contentFrame = (ViewGroup) findViewById(R.id.qr_scanner);
         scannerView = new ZBarScannerView(mContext);
         scannerView.setAutoFocus(true);
         scannerView.setLaserColor(getResources().getColor(R.color.colorPrimary));
         scannerView.setBorderColor(getResources().getColor(R.color.colorPrimary));
-        contentFrame.addView(scannerView);
+        contentFrame.addView(scannerView);*/
+        scannerView = findViewById(R.id.barcode_scanner);
+        Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
+        scannerView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
+        scannerView.initializeFromIntent(getIntent());
+        scannerView.decodeContinuous(callback);
 
+        beepManager = new BeepManager(EmpQRcodeScannerActivity.this);
 
         initToolbar();
 
@@ -305,6 +323,26 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
+
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            if (result.getText() == null || result.getText().equals(lastText)) {
+                // Prevent duplicate scans
+                return;
+            }
+
+            Log.e(TAG, "barcodeResult: " + result.getText() + ", Bitmap: " + result.getBitmap());
+            lastText = result.getText();
+            scannerView.setStatusText(result.getText());
+            beepManager.playBeepSoundAndVibrate();
+            handleResult(result);
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+        }
+    };
 
     protected void registerEvents() {
 
@@ -398,11 +436,12 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
         fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (scannerView.getFlash()) {
-                    scannerView.setFlash(false);
+                if (getApplicationContext().getPackageManager()
+                        .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+                    scannerView.setTorchOn();
                     fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on_indicator));
                 } else {
-                    scannerView.setFlash(true);
+                    scannerView.setTorchOff();
                     fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
                 }
             }
@@ -415,7 +454,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
                 switch (actionType) {
                     case ChooseActionPopUp.ADD_DETAILS_BUTTON_CLICKED:
                         if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
-                              submitOnDetails(mId, getGCType(mId.trim()));
+                            submitOnDetails(mId, getGCType(mId.trim()));
                         } else {
                             if (!AUtils.isConnectedFast(mContext)) {
                                 AUtils.warning(mContext, getResources().getString(R.string.feature_unavailable_error), Toast.LENGTH_LONG);
@@ -496,12 +535,12 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
     private Boolean validSubmitId(String id) {
 
         Log.e(TAG, "validSubmitId: " + id);
-       /* if (Prefs.getBoolean(AUtils.PREFS.IS_SAME_LOCALITY, false)) {*/
-            return id.substring(0, 2).matches("^[HhPp]+$")
-                    || id.matches("gpsba[0-9]+$")
-                    || id.matches("lwsba[0-9]+$")
-                    || id.matches("sssba[0-9]+$")
-                    || id.matches("dysba[0-9]+$");
+        /* if (Prefs.getBoolean(AUtils.PREFS.IS_SAME_LOCALITY, false)) {*/
+        return id.substring(0, 2).matches("^[HhPp]+$")
+                || id.matches("gpsba[0-9]+$")
+                || id.matches("lwsba[0-9]+$")
+                || id.matches("sssba[0-9]+$")
+                || id.matches("dysba[0-9]+$");
        /* } else {
             return false;
         }*/
@@ -577,35 +616,33 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
     private void takePhotoImageViewOnClick() {
 //        setContentView(R.layout.layout_blank);
 //        stopPreview();
-        scannerView.stopCamera();
+//        scannerView.stopCamera();
 //        scannerView.stopCameraPreview();
         Intent i = new Intent(EmpQRcodeScannerActivity.this, CameraActivity.class);
         startActivityForResult(i, REQUEST_CAMERA);
     }
 
-    public void handleResult(Result result) {
-        Log.e(TAG, "handleResult: " + result.getContents());
-        mHouse_id = result.getContents();
+    public void handleResult(BarcodeResult result) {
+        Log.e(TAG, "handleResult: " + result.getText());
+        mHouse_id = result.getText();
         takePhotoImageViewOnClick();
     }
 
     private void startPreview() {
-        scannerView.startCamera();
-        scannerView.resumeCameraPreview(this);
+        scannerView.resume();
     }
 
     private void stopPreview() {
-        scannerView.stopCameraPreview();
-        scannerView.stopCamera();
+        scannerView.pause();
     }
 
     private void startCamera() {
-        scannerView.startCamera();
+        scannerView.resume();
 
     }
 
     private void stopCamera() {
-        scannerView.stopCamera();
+        scannerView.pause();
     }
 
     private void restartPreview() {
@@ -1067,5 +1104,11 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity implements ZBarS
 
         return density;
     }
-
+    public void switchFlashlight(View view) {
+        if (turn_on_flashlight) {
+            scannerView.setTorchOn();
+        } else {
+            scannerView.setTorchOff();
+        }
+    }
 }

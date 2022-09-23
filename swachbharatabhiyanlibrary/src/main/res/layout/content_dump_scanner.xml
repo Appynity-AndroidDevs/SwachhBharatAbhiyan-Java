@@ -4,19 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activity.EmpQRcodeScannerActivity"
-    tools:showIn="@layout/emp_activity_qrcode_scanner"
-    android:orientation="vertical">
-
-
-    <View
-        android:id="@+id/centerHorizont"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    tools:context=".activity.QRcodeScannerDumpSuperActivity"
+    tools:showIn="@layout/activity_dump_super_scanner">
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
-        android:id="@+id/barcode_scanner"
+        android:id="@+id/qr_scanner1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,5 +24,4 @@
         android:layout_margin="@dimen/dim_6_dp"
         android:elevation="@dimen/dim_6_dp"
         app:fab_fabDrawable="@drawable/ic_flash_on_indicator"/>
-
 </FrameLayout>

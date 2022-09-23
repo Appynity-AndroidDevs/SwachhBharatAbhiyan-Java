@@ -203,4 +203,5 @@
     <string name="string_ctpt_waste_id">सीटीपीटी शौचालय पहचान :</string>
     <string name="cleaned_successful">सफाई सफलतापूर्वक पूर्ण</string>
     <string name="str_date_time_on_photo">दिनांक और समय</string>
+    <string name="string_ctpt_collection">सीटीपीटी शौचालय सफाई</string>
 </resources>

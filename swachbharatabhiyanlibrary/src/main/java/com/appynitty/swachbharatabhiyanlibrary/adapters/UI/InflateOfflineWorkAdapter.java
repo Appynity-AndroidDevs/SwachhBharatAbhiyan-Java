@@ -61,6 +61,10 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
             //dump yard supervisor - rahul
             viewHolder.dumpSuperCollectionLbl = view.findViewById(R.id.ds_collection_lbl);
             viewHolder.dumpSuperCollection = view.findViewById(R.id.ds_collection);
+
+            //ctpt collection - rahul\
+            viewHolder.ctptCollectionLbl = view.findViewById(R.id.ctpt_collection_lbl);
+            viewHolder.ctptCollection = view.findViewById(R.id.ctpt_collection);
             view.setTag(viewHolder);
 
         } else {
@@ -84,6 +88,8 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
                 holder.streetCollectionLbl.setVisibility(View.GONE);
                 holder.dumpSuperCollection.setVisibility(View.GONE);
                 holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollection.setVisibility(View.GONE);
 
             } else if (empType.matches("L")) {
                 holder.houseCollectionTitle.setText(R.string.liquid_collection);
@@ -98,6 +104,9 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
                 holder.streetCollectionLbl.setVisibility(View.GONE);
                 holder.dumpSuperCollection.setVisibility(View.GONE);
                 holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollection.setVisibility(View.GONE);
+
             } else if (empType.matches("S")) {
                 holder.houseCollectionTitle.setText(R.string.street_collection);
                 holder.houseCollection.setText(workHistoryPojo.getStreetCollection());
@@ -111,6 +120,9 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
                 holder.streetCollectionLbl.setVisibility(View.GONE);
                 holder.dumpSuperCollection.setVisibility(View.GONE);
                 holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollection.setVisibility(View.GONE);
+
             } else if (empType.matches("D")){
 
                 holder.houseCollectionTitle.setText(R.string.dumpyard_plant_collection);
@@ -126,6 +138,26 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
                 holder.dumpSuperCollection.setVisibility(View.VISIBLE);
                 holder.dumpSuperCollection.setText(workHistoryPojo.getDumpYardPlantCollection());
                 holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollection.setVisibility(View.GONE);
+
+            }else if (empType.matches("CT")){
+
+                holder.houseCollectionTitle.setText(R.string.string_ctpt_collection);
+                holder.date.setText(AUtils.extractDate(workHistoryPojo.getDate()));
+                holder.month.setText(AUtils.extractMonth(workHistoryPojo.getDate()));
+                holder.houseCollection.setVisibility(View.GONE);
+                holder.dyCollectionlbl.setVisibility(View.GONE);
+                holder.dyCollection.setVisibility(View.GONE);
+                holder.liquidCollection.setVisibility(View.GONE);
+                holder.liquidCollectionLbl.setVisibility(View.GONE);
+                holder.streetCollection.setVisibility(View.GONE);
+                holder.streetCollectionLbl.setVisibility(View.GONE);
+                holder.dumpSuperCollection.setVisibility(View.GONE);
+                holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollectionLbl.setVisibility(View.GONE);
+                holder.ctptCollection.setVisibility(View.VISIBLE);
+                holder.ctptCollection.setText(workHistoryPojo.getCtptCollection());
             }
 
         }
@@ -149,6 +181,9 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
         private TextView streetCollectionLbl;
         private TextView dumpSuperCollectionLbl;
         private TextView dumpSuperCollection;
+        private TextView ctptCollectionLbl;
+        private TextView ctptCollection;
+
     }
 
 }

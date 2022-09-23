@@ -77,7 +77,7 @@ import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
 /******  Rahul Rokade 24/01/22 **************/
-public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler, GarbageTypePopUp.GarbagePopUpDialogListener, ToiletTypePopUp.ToiletTypePopUpDialogListener {
+public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler, GarbageTypePopUp.GarbagePopUpDialogListener/*, ToiletTypePopUp.ToiletTypePopUpDialogListener*/ {
 
     private final static String TAG = "QRcodeScannerCtptActivity";
     private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 100;
@@ -755,7 +755,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         } else if (EmpType.matches("N")) {
             gcType = "10";
-            toiletTypePopUp = new ToiletTypePopUp(mContext, houseid, this);
+           // toiletTypePopUp = new ToiletTypePopUp(mContext, houseid, this);
             if (houseid.substring(0, 2).matches("^[CcTtPpTt]+$")) {
                 // toiletTypePopUp.show();
                 startSubmitQRAsyncTask(houseid, -1, gcType, null, imagePojo.getTNS(), null);
@@ -776,7 +776,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         } else if (EmpType.matches("CT")) {
             gcType = "10";
-            toiletTypePopUp = new ToiletTypePopUp(mContext, CtptId, this);
+           // toiletTypePopUp = new ToiletTypePopUp(mContext, CtptId, this);
 
             uri = Uri.parse(houseid);
             CtptId = uri.getQueryParameter("sid");
@@ -1190,9 +1190,11 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         garbageCollectionPojo.setId(houseNo);
         garbageCollectionPojo.setGarbageType(garbageType);
         garbageCollectionPojo.setComment(comment);
-        garbageCollectionPojo.setTNS(tns);
+        //garbageCollectionPojo.setTNS(tns);
+        garbageCollectionPojo.setTNS("2");
         garbageCollectionPojo.setGcType(gcType);
-        garbageCollectionPojo.setTOT(toiletType);
+        //garbageCollectionPojo.setTOT(toiletType);
+        garbageCollectionPojo.setTOT("CT");
         double newlat = Double.parseDouble(Prefs.getString(AUtils.LAT, "0"));
         double newlng = Double.parseDouble(Prefs.getString(AUtils.LONG, "0"));
         garbageCollectionPojo.setDistance(AUtils.calculateDistance(mContext, newlat, newlng));
@@ -1202,8 +1204,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             garbageCollectionPojo.setComment(imagePojo.getComment());
             garbageCollectionPojo.setImage1(imagePojo.getImage1());
             garbageCollectionPojo.setImage2(imagePojo.getImage2());
-            garbageCollectionPojo.setGpBeforImageTime("11:11 am");
-            garbageCollectionPojo.setTNS(imagePojo.getTNS());
+            garbageCollectionPojo.setGpBeforImageTime(Prefs.getString(AUtils.BEFORE_IMAGE_TIME,""));
+           // garbageCollectionPojo.setTNS(imagePojo.getTNS());
+            garbageCollectionPojo.setTNS("2");
         }
 
 
@@ -1258,7 +1261,8 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         entity.setTotalGcWeight(String.valueOf(garbageCollectionPojo.getWeightTotal()));
         entity.setTotalDryWeight(String.valueOf(garbageCollectionPojo.getWeightTotalDry()));
         entity.setTotalWetWeight(String.valueOf(garbageCollectionPojo.getWeightTotalWet()));
-        entity.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
+        //entity.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
+        entity.setVehicleNumber("1");
         entity.setLong(Prefs.getString(AUtils.LONG, ""));
         entity.setLat(Prefs.getString(AUtils.LAT, ""));
 //        entity.setGcDate(AUtils.getServerDateTime());
@@ -1381,10 +1385,10 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
     }
 
-    @Override
+   /* @Override
     public void onToiletTypePopUpDismissed(String toiletId, String toiletType) {
         Log.e(TAG, "onEmpSWMTypePopUpDialogDismissed: " + toiletType);
         startSubmitQRAsyncTask(toiletId, -1, gcType, null, imagePojo.getTNS(), toiletType);
 
-    }
+    }*/
 }

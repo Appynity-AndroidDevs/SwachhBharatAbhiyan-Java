@@ -37,6 +37,7 @@ public class SyncOfflineRepository {
     private static final int liquidCollectionId = 4;
     private static final int streetCollectionId = 5;
     private static final int DumpYardPlantCollectionId = 6; //added by rahul
+    private static final int ctptId = 10; //added by rahul
 
     private static final int DATA_LIMIT = 25;
     private final static String COLUMN_ID = "_offlineSyncId";
@@ -238,15 +239,25 @@ public class SyncOfflineRepository {
         String mData = new Gson().toJson(offlinePojo, typeNew);
         contentValues.put(COLUMN_POJO, mData);
         contentValues.put(COLUMN_DATE, gcDate);
-        contentValues.put(COLUMN_GC_TYPE, Integer.parseInt(gcType));
+       // contentValues.put(COLUMN_GC_TYPE, Integer.parseInt(gcType));
+        contentValues.put(COLUMN_GC_TYPE, gcType);
         contentValues.put(COLUMN_REFERENCE_ID, refId);
         contentValues.put(COLUMN_IS_LOCATION, "false");
 
         String offlineId = null;
-        if (gcType.equals(String.valueOf(houseCollectionId))) {
+        /*if (gcType.equals(String.valueOf(houseCollectionId)) || gcType.equals(ctptId)) {
             offlineId = checkHouseAvailableData(sqLiteDatabase, contentValues);
-        } else
+        } else {
             offlineId = checkDumpPointAvailableData(sqLiteDatabase, contentValues);
+        }*/
+
+        if (offlineId != null){
+            if (gcType.equals(String.valueOf(houseCollectionId)) || gcType.equals(ctptId)) {
+                offlineId = checkHouseAvailableData(sqLiteDatabase, contentValues);
+            } else {
+                offlineId = checkDumpPointAvailableData(sqLiteDatabase, contentValues);
+            }
+        }
 
         if (AUtils.isNull(offlineId))
             insertSyncTableData(sqLiteDatabase, contentValues);
@@ -378,6 +389,10 @@ public class SyncOfflineRepository {
                 " select count(*) as ds, date(" + COLUMN_DATE + ") as gcdateDs from " + SYNC_OFFLINE_TABLE +
                 " where " + COLUMN_GC_TYPE + " = " + DumpYardPlantCollectionId +
                 " group by date(tableSyncOffline.offlineSyncDate))," +
+                "cteCt as(" +
+                " select count(*) as ct, date(" + COLUMN_DATE + ") as gcdateCt from " + SYNC_OFFLINE_TABLE +
+                " where " + COLUMN_GC_TYPE + " = " + ctptId +
+                " group by date(tableSyncOffline.offlineSyncDate))," +
                 "ctef as (" +
                 " select a.dte, " +
                 " case when b.hp is null then 0 else b.hp end as hp, " +
@@ -385,7 +400,8 @@ public class SyncOfflineRepository {
                 " case when d.dy is null then 0 else d.dy end as dy, " +
                 " case when e.lw is null then 0 else e.lw end as lw, " +
                 " case when f.ss is null then 0 else f.ss end as ss, " +
-                " case when g.ds is null then 0 else g.ds end as ds " +
+                " case when g.ds is null then 0 else g.ds end as ds, " +
+                " case when h.ct is null then 0 else h.ct end as ct " +
                 " from cte a " +
                 " left join cteHp b on b.gcdateHp = a.dte " +
                 " left join cteGp c on c.gcdateGp = a.dte " +
@@ -393,6 +409,7 @@ public class SyncOfflineRepository {
                 " left join cteLw e on e.gcdateLw = a.dte " +
                 " left join cteSs f on f.gcdateSs = a.dte " +
                 " left join cteDs g on g.gcdateDs = a.dte " +
+                " left join cteCt h on h.gcdateCt = a.dte " +
                 " order by dte desc)" +
                 "select * from ctef";
 
@@ -409,6 +426,7 @@ public class SyncOfflineRepository {
                     entity.setLiquidCollection(cursor.getString(cursor.getColumnIndex("lw")));
                     entity.setStreetCollection(cursor.getString(cursor.getColumnIndex("ss")));
                     entity.setDumpYardPlantCollection(cursor.getString(cursor.getColumnIndex("ds")));
+                    entity.setCtptCollection(cursor.getString(cursor.getColumnIndex("ct")));
                     mList.add(entity);
                 } while (cursor.moveToNext());
             }

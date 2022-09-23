@@ -229,5 +229,6 @@
     <string name="string_ctpt_waste_id">सीटीपीटी शौचालय ओळखपत्र :</string>
     <string name="cleaned_successful">सफाई सफलतापूर्वक पूर्ण</string>
     <string name="str_date_time_on_photo">तारीख वेळ</string>
+    <string name="string_ctpt_collection">सीटीपीटी शौचालय स्वच्छता</string>
 
 </resources>

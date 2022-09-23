@@ -1254,6 +1254,10 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                 entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));
             }
         }
+        if ((gcType.equalsIgnoreCase("10")) && gcType.matches("10")) {
+            getIntent().getStringArrayExtra("CTPT");
+            entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));
+        }
         entity.setNote(garbageCollectionPojo.getComment());
         entity.setTNS(garbageCollectionPojo.getTNS());
         entity.setTOT(garbageCollectionPojo.getTOT());
@@ -1268,7 +1272,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 //        entity.setGcDate(AUtils.getServerDateTime());
         entity.setGcDate(AUtils.getServerDateTimeLocal());
         entity.setDistance(String.valueOf(garbageCollectionPojo.getDistance()));
-
+        /*entity.setGcType(gcType);*/
         entity.setIsOffline(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext));
 
         if (isActivityData) {

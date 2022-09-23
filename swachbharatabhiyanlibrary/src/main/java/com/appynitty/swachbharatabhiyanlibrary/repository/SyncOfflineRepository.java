@@ -239,8 +239,8 @@ public class SyncOfflineRepository {
         String mData = new Gson().toJson(offlinePojo, typeNew);
         contentValues.put(COLUMN_POJO, mData);
         contentValues.put(COLUMN_DATE, gcDate);
-       // contentValues.put(COLUMN_GC_TYPE, Integer.parseInt(gcType));
-        contentValues.put(COLUMN_GC_TYPE, gcType);
+        contentValues.put(COLUMN_GC_TYPE, Integer.parseInt(gcType));
+        //contentValues.put(COLUMN_GC_TYPE, gcType);
         contentValues.put(COLUMN_REFERENCE_ID, refId);
         contentValues.put(COLUMN_IS_LOCATION, "false");
 

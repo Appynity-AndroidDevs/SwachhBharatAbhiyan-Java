@@ -48,8 +48,12 @@ public class CtptEmpAttendanceRepo {
         punchInCall.enqueue(new Callback<ResultPojo>() {
             @Override
             public void onResponse(Call<ResultPojo> call, Response<ResultPojo> response) {
-                Log.e(TAG, "onResponse: " + response.body().getMessage());
-                iCtptEmpAttendanceResponse.onResponse(response.body());
+
+                if (response != null){
+                    Log.e(TAG, "onResponse: " + response.body().getMessage());
+                    iCtptEmpAttendanceResponse.onResponse(response.body());
+                }
+
             }
 
             @Override

@@ -14,14 +14,14 @@ public class TableDataCountPojo {
 
         private String DumpYardCollection;
         private String DumpYardPlantCollection; // added by rahul
-        private String ctptCollection; // added by rahul
+        private String CTPTCollection; // added by rahul
 
         public String getCtptCollection() {
-            return ctptCollection;
+            return CTPTCollection;
         }
 
-        public void setCtptCollection(String ctptCollection) {
-            this.ctptCollection = ctptCollection;
+        public void setCtptCollection(String CTPTCollection) {
+            this.CTPTCollection = CTPTCollection;
         }
 
         public String getDumpYardPlantCollection() {
@@ -90,7 +90,7 @@ public class TableDataCountPojo {
                     + ", LiquidCollection='" + LiquidCollection + '\''
                     + ", StreetCollection='" + StreetCollection + '\''
                     + ", DumpYardPlantCollection='" + DumpYardPlantCollection + '\''
-                    + ", ctptCollection='" + ctptCollection + '\''
+                    + ", CTPTCollection='" + CTPTCollection + '\''
                     + '}';
         }
     }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.DashboardMenuAdapter;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpCheckAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
@@ -75,6 +77,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     private TextView userName;
     private TextView empId;
     private ImageView profilePic;
+    private ProgressBar rProgress;
     /*int AppId = 0;
     String locality;*/
     FrameLayout progressBar;
@@ -93,6 +96,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
     private EmpUserDetailAdapterClass mUserDetailAdapter;
 
+    private AppGeoAreaAdapter mAppGeoAreaAdapter;
 //    private LocalityAdapterClass mLocalityAdapter;
 
     private boolean isFromAttendanceChecked = false;
@@ -294,6 +298,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         mCheckAttendanceAdapter = new EmpCheckAttendanceAdapterClass();
         mAttendanceAdapter = new EmpAttendanceAdapterClass();
         mUserDetailAdapter = new EmpUserDetailAdapterClass();
+        mAppGeoAreaAdapter = AppGeoAreaAdapter.getInstance();
 //        mLocalityAdapter = new LocalityAdapterClass(mContext);
 
         fab = findViewById(R.id.fab_setting);

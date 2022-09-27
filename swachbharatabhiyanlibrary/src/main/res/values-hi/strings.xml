@@ -185,4 +185,5 @@
     <string name="str_note_vehicle">माफ़ करना ! आपका वाहन पंजीकृत नहीं है, कृपया वाहन संख्या दर्ज करें।</string>
     <string name="shif_start">शिफ्ट सुरू</string>
     <string name="shift_end">शिफ्ट समाप्त</string>
+    <string name="out_of_area_msg">आप स्कैनिंग क्षेत्र से बाहर हैं। कृपया क्षेत्र के अंदर जाएं और पुनः प्रयास करें</string>
 </resources>

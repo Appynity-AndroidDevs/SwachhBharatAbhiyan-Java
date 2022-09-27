@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.activity.EmpQRcodeScannerActivity;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -24,7 +26,7 @@ import java.util.List;
  * Created by Ayan Dey on 22/1/20.
  */
 public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdapter.WasteMenuViewHolder> {
-
+    private static final String TAG = "DashboardMenuAdapter";
     private final Context context;
     private List<MenuListPojo> menuList;
     private final VerifyDataAdapterClass verifyDataAdapterClass;
@@ -62,17 +64,44 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                         break;
                     case AUtils.USER_TYPE.USER_TYPE_GHANTA_GADI:
                     default:
-                        if(!AUtils.isSyncOfflineDataRequestEnable){
+                        if (!AUtils.isSyncOfflineDataRequestEnable) {
                             verifyDataAdapterClass.verifyOfflineSync();
                         }
                         break;
                 }
-                if(menuPojo.getCheckAttendance()) {
-                    if(AUtils.isIsOnduty())
-                        context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                    else
+                if (menuPojo.getCheckAttendance()) {
+                    if (AUtils.isIsOnduty()) {
+                        if (menuPojo.getNextIntentClass().equals(EmpQRcodeScannerActivity.class)) {
+                            if (AUtils.isInternetAvailable()) {
+                                AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
+                                    @Override
+                                    public void onResponse() {
+                                        if (AUtils.isValidArea()) {
+                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                        } else {
+                                            AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure() {
+
+                                    }
+                                });
+                            } else {
+                                if (AUtils.isValidArea()) {
+                                    context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                } else {
+                                    AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                }
+                            }
+                        } else {
+                            Toast.makeText(context, "Hello, there!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
                         AUtils.warning(context, context.getResources().getString(R.string.be_no_duty));
-                }else
+                    }
+                } else
                     context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
             }
         });
@@ -83,7 +112,7 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
         return (menuList != null) ? menuList.size() : 0;
     }
 
-    class WasteMenuViewHolder extends RecyclerView.ViewHolder{
+    class WasteMenuViewHolder extends RecyclerView.ViewHolder {
 
         TextView menuNameTextView;
         ImageView menuImageView;

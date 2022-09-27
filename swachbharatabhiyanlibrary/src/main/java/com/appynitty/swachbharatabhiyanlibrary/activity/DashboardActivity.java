@@ -1,5 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.getAppGeoArea;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -40,6 +42,7 @@ import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.DashboardMenuAdapter;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CheckAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.OfflineAttendanceAdapterClass;
@@ -66,6 +69,7 @@ import com.appynitty.swachbharatabhiyanlibrary.viewmodels.DumpEmpAttendanceVM;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.IMEIWebService;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -138,7 +142,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private VehicleNumberAdapterClass mVehicleNumberAdapterClass;
     private UserDetailAdapterClass mUserDetailAdapter;
     private OfflineAttendanceAdapterClass mOfflineAttendanceAdapter;
-
+    private AppGeoAreaAdapter mAppGeoAreaAdapter;
     private VerifyDataAdapterClass verifyDataAdapterClass;
     private LastLocationRepository lastLocationRepository;
     private SyncOfflineRepository syncOfflineRepository;
@@ -151,6 +155,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     //    private WorkManager workManager;
     MediaPlayer mp = null;
     FrameLayout pb;
+    ArrayList<LatLng> vertices;
     private String dumpRefId = null;
 
     @Override
@@ -284,7 +289,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     @Override
     protected void onPostResume() {
         super.onPostResume();
-
         try {
             if (AUtils.isInternetAvailable()) {
                 AUtils.hideSnackBar();
@@ -463,6 +467,18 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         });
 
+        offlineAdapterClasss.setAreaErrorListener(new SyncOfflineAdapterClass.AreaWarningListener() {
+            @Override
+            public void onError(String s) {
+                Log.e(TAG, "onError: " + s);
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), s, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AUtils.gpsStatusCheck(mContext);
+                    }
+                });
+            }
+        });
 
     }
 
@@ -591,11 +607,12 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         mUserDetailAdapter = new UserDetailAdapterClass();
         verifyDataAdapterClass = new VerifyDataAdapterClass(mContext);
         mOfflineAttendanceAdapter = new OfflineAttendanceAdapterClass(mContext);
+        mAppGeoAreaAdapter = AppGeoAreaAdapter.getInstance();
         pb = findViewById(R.id.progress_layout);
         lastLocationRepository = new LastLocationRepository(mContext);
         syncOfflineRepository = new SyncOfflineRepository(mContext);
         syncOfflineAttendanceRepository = new SyncOfflineAttendanceRepository(mContext);
-
+        vertices = new ArrayList<>();
 
         if (AUtils.isNull(attendancePojo)) {
             attendancePojo = new AttendancePojo();
@@ -672,7 +689,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 } else if (type == 2) {
                     onOutPunchSuccess();
-                   // AUtils.success(mContext, getString(R.string.shift_end));
+                    // AUtils.success(mContext, getString(R.string.shift_end));
                 }
             }
 
@@ -821,16 +838,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         List<MenuListPojo> menuPojoList = new ArrayList<MenuListPojo>();
 
-        if (empType.matches("D")){
+        if (empType.matches("D")) {
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerDumpSuperActivity.class, true));
-        }else {
+        } else {
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerActivity.class, true));
         }
 
         if (!empType.matches("D"))
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
 
-        if (Prefs.getString(AUtils.APP_ID,"").equalsIgnoreCase("3068")){
+        if (Prefs.getString(AUtils.APP_ID, "").equalsIgnoreCase("3068")) {
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
         }
 //        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));
@@ -897,7 +914,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         } else {
                             AUtils.warning(mContext, resultPojo.getMessage());
                         }
-                       // markAttendance.setChecked(AUtils.isIsOnduty());
+                        // markAttendance.setChecked(AUtils.isIsOnduty());
                         markAttendance.setChecked(false);
                     }
                 }
@@ -919,6 +936,25 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         }
     }
 
+    /*private void checkLocationValidity() {
+        double lat = Double.parseDouble(Prefs.getString(AUtils.LAT, null));
+        double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
+        LatLng currentLatlong = new LatLng(lat, lon);
+
+        List<LatLng> prefList;
+        String json = Prefs.getString(AUtils.PREFS.AREA_VERTICES, null);
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<LatLng>>() {
+        }.getType();
+
+        prefList = gson.fromJson(json, type);
+
+        boolean isPointInPolygon = PolyUtil.containsLocation(currentLatlong, prefList, false);
+
+        Log.e(TAG, "initData: latlng= " + currentLatlong
+                + " isPointInPolygon: " + isPointInPolygon);
+    }*/
     private void performLogout() {
         AUtils.showConfirmationDialog(mContext, AUtils.CONFIRM_LOGOUT_DIALOG, new DialogInterface.OnClickListener() {
             @Override
@@ -974,7 +1010,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         if (!AUtils.isNull(mLanguagePojoList) && !mLanguagePojoList.isEmpty()) {
             for (int i = 0; i < mLanguagePojoList.size(); i++) {
                 mLanguage.put(i, mLanguagePojoList.get(i));
-                Log.e(TAG,"language name : "+mLanguagePojoList.get(i));
+                Log.e(TAG, "language name : " + mLanguagePojoList.get(i));
             }
 
             PopUpDialog dialog = new PopUpDialog(DashboardActivity.this, AUtils.DIALOG_TYPE_LANGUAGE, mLanguage, this);
@@ -1037,6 +1073,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onInPunchSuccess() {
+        getAppGeoArea(null);
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
@@ -1132,7 +1169,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
-        AUtils.info(mContext,"Selected language is : "+((LanguagePojo) listItemSelected).getLanguage());
+        AUtils.info(mContext, "Selected language is : " + ((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void checkDutyStatus() {

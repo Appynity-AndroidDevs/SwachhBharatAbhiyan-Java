@@ -68,7 +68,7 @@ public class LocationService extends Service {
     private LocationSettingsRequest locationSettingsRequest;
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
-    long notify_interval = 1000 * 60;
+    long notify_interval = 1000 * 60 * 10;
 
 
     private final LocationRepository mLocationRepository;

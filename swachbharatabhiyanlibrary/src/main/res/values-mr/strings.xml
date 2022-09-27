@@ -211,5 +211,6 @@
     <string name="str_note_vehicle">क्षमस्व! तुमचे वाहन नोंदणीकृत नाही, कृपया वाहन क्रमांक प्रविष्ट करा.</string>
     <string name="shif_start">शिफ्ट सुरू</string>
     <string name="shift_end">शिफ्ट संपली</string>
+    <string name="out_of_area_msg">तुम्ही स्कॅनिंग क्षेत्राच्या बाहेर आहात. कृपया परिसरात जा आणि पुन्हा प्रयत्न करा</string>
 
 </resources>

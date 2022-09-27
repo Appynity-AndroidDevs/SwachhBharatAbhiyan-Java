@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void attachBaseContext(Context base) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            super.attachBaseContext(LocaleHelper.onAttach(base, AUtils.LanguageConstants.ENGLISH));
+            super.attachBaseContext(LocaleHelper.onAttach(base, AUtils.LanguageConstants.MARATHI));
         } else {
             super.attachBaseContext(base);
         }

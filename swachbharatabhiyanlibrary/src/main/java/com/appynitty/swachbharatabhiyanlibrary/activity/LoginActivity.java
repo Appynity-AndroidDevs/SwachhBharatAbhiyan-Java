@@ -467,8 +467,15 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
     public void changeLanguage(String type) {
 
         AUtils.changeLanguage(this, type);
-        recreate();
-        generateId();
+//        recreate();
+//        generateId();
+
+
+        Intent intent = getIntent();
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+        overridePendingTransition(0, 0);
 
     }
 

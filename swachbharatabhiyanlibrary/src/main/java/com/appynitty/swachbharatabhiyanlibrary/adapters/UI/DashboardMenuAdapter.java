@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.activity.EmpQRcodeScannerActivity;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -68,10 +69,40 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                         break;
                 }
                 if(menuPojo.getCheckAttendance()) {
-                    if(AUtils.isIsOnduty())
-                        context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                    else
+                    if (AUtils.isIsOnduty()) {
+                        if (menuPojo.getNextIntentClass().equals(EmpQRcodeScannerActivity.class)) {
+                            if (AUtils.isInternetAvailable()) {
+                                AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
+                                    @Override
+                                    public void onResponse() {
+                                        if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false) && AUtils.isValidArea()) {
+                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                        } else if (!Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
+                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                        } else {
+                                            AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure() {
+
+                                    }
+                                });
+                            } else {
+                                if (AUtils.isValidArea()) {
+                                    context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                } else {
+                                    AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                }
+                            }
+                        } else {
+                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                        }
+
+                    } else {
                         AUtils.warning(context, context.getResources().getString(R.string.be_no_duty));
+                    }
                 }else
                     context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
             }

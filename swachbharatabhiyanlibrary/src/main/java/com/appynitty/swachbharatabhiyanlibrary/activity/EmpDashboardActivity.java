@@ -578,7 +578,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         if (AUtils.isInternetAvailable()) {
 
-            if (AUtils.isNull(empInPunchPojo)) {
+            /*if (AUtils.isNull(empInPunchPojo)) {
                 empInPunchPojo = new EmpInPunchPojo();
             }
 
@@ -591,6 +591,44 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 e.printStackTrace();
                 markAttendance.setChecked(false);
                 AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+            }*/
+            boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
+            Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
+            if (isAreaActive) {
+                if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && AUtils.isValidArea()) {
+                    if (AUtils.isNull(empInPunchPojo)) {
+                        empInPunchPojo = new EmpInPunchPojo();
+                    }
+
+                    empInPunchPojo.setStartDate(AUtils.getServerDate());
+                    empInPunchPojo.setStartTime(AUtils.getServerTime());
+
+                    try {
+                        mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        markAttendance.setChecked(false);
+                        AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                    }
+                } else {
+                    markAttendance.setChecked(AUtils.isIsOnduty());
+                    AUtils.error(mContext, getResources().getString(R.string.out_of_area_msg));
+                }
+            } else {
+                if (AUtils.isNull(empInPunchPojo)) {
+                    empInPunchPojo = new EmpInPunchPojo();
+                }
+
+                empInPunchPojo.setStartDate(AUtils.getServerDate());
+                empInPunchPojo.setStartTime(AUtils.getServerTime());
+
+                try {
+                    mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    markAttendance.setChecked(false);
+                    AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                }
             }
         } else {
             AUtils.warning(mContext, mContext.getString(R.string.no_internet_error));
@@ -669,7 +707,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
-        AUtils.info(mContext,"Language selected is : "+((LanguagePojo) listItemSelected).getLanguage());
+        AUtils.info(mContext, "Language selected is : " + ((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void checkDutyStatus() {

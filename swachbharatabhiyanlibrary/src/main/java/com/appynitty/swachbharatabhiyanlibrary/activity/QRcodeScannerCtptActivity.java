@@ -776,22 +776,18 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         } else if (EmpType.matches("CT")) {
             gcType = "10";
-           // toiletTypePopUp = new ToiletTypePopUp(mContext, CtptId, this);
 
-            uri = Uri.parse(houseid);
-            CtptId = uri.getQueryParameter("sid");
-            Log.e(TAG,"CTPT id is: "+CtptId);
+            if (houseid.length() >14){
+                uri = Uri.parse(houseid);
+                CtptId = uri.getQueryParameter("sid");
+                Log.e(TAG,"CTPT scan qr id is: "+CtptId);
+                startSubmitQRAsyncTask(CtptId , 0, gcType, null, imagePojo.getTNS(), null);
 
-            startSubmitQRAsyncTask(/*houseid*/ CtptId , 0, gcType, null, imagePojo.getTNS(), null);
-
-
-            /*if (houseid.substring(0, 2).matches("^[CcTtPpTt]+$")) {
-                // toiletTypePopUp.show();
+            }else {
+                Log.e(TAG,"CTPT select id is: "+houseid);
                 startSubmitQRAsyncTask(houseid, 0, gcType, null, imagePojo.getTNS(), null);
-                // startSubmitQRAsyncTask(houseid, -1, gcType, null,0, null);
-            } else if (houseid.substring(0, 3).matches("^[TtMmCc]+$")) {
-                startSubmitQRAsyncTask(houseid, -1, gcType, null, imagePojo.getTNS(), null);
-            }*/
+            }
+
         }
 
     }
@@ -1147,9 +1143,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     private void inflateAutoComplete(String areaId) {
         //rahul
         String areaType = getAreaType();
-        /*if (areaType.equals(AUtils.HP_AREA_TYPE_ID)) {
-            mHpAdapter.fetchHpList(areaId);
-        }*/
+        if (areaType.equals(AUtils.HP_AREA_TYPE_ID)) {
+            mHpAdapter.fetchHpList("1", "1");
+        }
 
         if (areaType.equals(AUtils.GP_AREA_TYPE_ID)) {
             mGpAdapter.fetchGpList(areaId);
@@ -1243,7 +1239,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         OfflineGarbageColectionPojo entity = new OfflineGarbageColectionPojo();
 
         entity.setReferenceID(garbageCollectionPojo.getId());
-        if (garbageCollectionPojo.getId().substring(0, 2).matches("^[CcTtPpTt]+$")) {
+        /*if (garbageCollectionPojo.getId().substring(0, 2).matches("^[CcTtPpTt]+$")) {
             if ((gcType.equalsIgnoreCase("10")) && gcType.matches("10")) {
                 getIntent().getStringArrayExtra("CTPT");
                 entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));
@@ -1253,7 +1249,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                 getIntent().getStringArrayExtra("CTPT");
                 entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));
             }
-        }
+        }*/
         if ((gcType.equalsIgnoreCase("10")) && gcType.matches("10")) {
             getIntent().getStringArrayExtra("CTPT");
             entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));

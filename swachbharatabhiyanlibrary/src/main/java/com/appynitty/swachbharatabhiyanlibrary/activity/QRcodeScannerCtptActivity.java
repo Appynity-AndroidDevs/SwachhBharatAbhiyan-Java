@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -86,12 +87,10 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     private Toolbar toolbar;
     private ZBarScannerView scannerView;
     private FabSpeedDial fabSpeedDial;
-    private AutoCompleteTextView areaAutoComplete;
-    private TextInputLayout idIpLayout, areaLayout;
+    private TextInputLayout idIpLayout;
     private AutoCompleteTextView idAutoComplete;
-    private RadioGroup collectionRadioGroup;
-    private RadioButton houseCollectionRadio, dumpYardRadio, commercialRadio;
-    private String radioSelection;
+
+   // private String radioSelection;
     private Button submitBtn, permissionBtn;
     private View contentView;
     private boolean isActivityData;
@@ -104,7 +103,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     private DumpYardAdapterClass mDyAdapter;
     private CollectionAreaAdapterClass mAreaAdapter;
     private GarbageCollectionAdapterClass mAdapter;
-    //        private SyncServerRepository syncServerRepository; //TODO
+
     private SyncOfflineRepository syncOfflineRepository;
     private SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
 
@@ -116,7 +115,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     private String areaType;
     private Uri uri;
     private String CtptId;
-    private String urlSting;
 
 
     @Override
@@ -304,13 +302,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
         fabSpeedDial = findViewById(R.id.flash_toggle);
 
-        areaLayout = findViewById(R.id.txt_area_layout);
-        areaAutoComplete = findViewById(R.id.txt_area_auto);
-        areaAutoComplete.setThreshold(0);
-        areaAutoComplete.setDropDownBackgroundResource(R.color.white);
-        areaAutoComplete.setSingleLine();
-
-
         idAutoComplete = findViewById(R.id.txt_id_auto);
         idAutoComplete.setThreshold(0);
         idAutoComplete.setDropDownBackgroundResource(R.color.white);
@@ -318,34 +309,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
         idIpLayout = findViewById(R.id.txt_id_layout);
 
-        collectionRadioGroup = findViewById(R.id.collection_radio_group);
-        houseCollectionRadio = findViewById(R.id.house_collection_radio);
-        dumpYardRadio = findViewById(R.id.dump_yard_radio);
-        commercialRadio = findViewById(R.id.comm_collection_radio);
-
         setHints();
-        /***** Rahul Rokade ****/
-
-        if (EmpType.matches("L")) {
-            idAutoComplete.setHint(getResources().getString(R.string.lw_dy_id_hint));
-            radioSelection = AUtils.RADIO_SELECTED_LW;
-            houseCollectionRadio.setText(R.string.liquid_collection_radio);
-            dumpYardRadio.setVisibility(View.GONE);
-        } else if (EmpType.matches("S")) {
-            idAutoComplete.setHint(getResources().getString(R.string.sw_dy_id_hint));
-            radioSelection = AUtils.RADIO_SELECTED_SW;
-            houseCollectionRadio.setText(R.string.street_collection_radio);
-            dumpYardRadio.setVisibility(View.GONE);
-        } else if (EmpType.matches("N")) {
-            idAutoComplete.setHint(getResources().getString(R.string.hp_gp_id_hint));
-            radioSelection = AUtils.RADIO_SELECTED_HP;
-            houseCollectionRadio.setText(R.string.waste_collection_radio);
-        } else {
-            idAutoComplete.setHint("Enter CT/PT ID");
-            radioSelection = AUtils.RADIO_SELECTED_CT;
-            houseCollectionRadio.setText("Toilet Cleaning");
-        }
-
 
         submitBtn = findViewById(R.id.submit_button);
         permissionBtn = findViewById(R.id.grant_permission);
@@ -360,54 +324,29 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         scannerView.setLaserColor(getResources().getColor(R.color.colorPrimary));
         scannerView.setBorderColor(getResources().getColor(R.color.colorPrimary));
         contentFrame.addView(scannerView);
-        areaAutoComplete.setVisibility(View.GONE);
 
         EmpType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null); //added by Swapnil
         gcType = "";
 
         initToolbar();
 
-//        syncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext()); //TODO
-        syncOfflineRepository = new SyncOfflineRepository(AUtils.mainApplicationConstant.getApplicationContext());
+          syncOfflineRepository = new SyncOfflineRepository(AUtils.mainApplicationConstant.getApplicationContext());
         syncOfflineAttendanceRepository = new SyncOfflineAttendanceRepository(AUtils.mainApplicationConstant.getApplicationContext());
     }
 
     private void setHints() {
-        if (EmpType.matches("L")) {
-            idAutoComplete.setHint(getResources().getString(R.string.lw_dy_id_hint));
-            radioSelection = AUtils.RADIO_SELECTED_LW;
-            houseCollectionRadio.setText(R.string.liquid_collection_radio);
-            dumpYardRadio.setVisibility(View.GONE);
-            commercialRadio.setVisibility(View.GONE);
-        } else if (EmpType.matches("S")) {
-            idAutoComplete.setHint(getResources().getString(R.string.sw_dy_id_hint));
-            radioSelection = AUtils.RADIO_SELECTED_SW;
-            houseCollectionRadio.setText(R.string.street_collection_radio);
-            dumpYardRadio.setVisibility(View.GONE);
-            commercialRadio.setVisibility(View.GONE);
-        } else if (EmpType.matches("N")) {
-            idIpLayout.setHint("");
-            idAutoComplete.setHint(getResources().getString(R.string.hp_gp_id_hint));
-            radioSelection = AUtils.RADIO_SELECTED_HP;
-            houseCollectionRadio.setText(R.string.waste_collection_radio);
-        } else if (EmpType.matches("CT")) {
+         if (EmpType.matches("CT")) {
             idAutoComplete.setHint("Enter toilet id");
-            radioSelection = AUtils.RADIO_SELECTED_SW;
-            houseCollectionRadio.setText("Toilet Cleaning");
-            dumpYardRadio.setVisibility(View.GONE);
-            commercialRadio.setVisibility(View.GONE);
         }
     }
 
     protected void initToolbar() {
         toolbar.setTitle(getResources().getString(R.string.title_activity_qrcode_scanner));
         setSupportActionBar(toolbar);
-        areaLayout.setVisibility(View.GONE);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
     protected void registerEvents() {
-        Log.d(TAG, "registerEvents Area: " + areaAutoComplete.getText().toString());
         Log.d(TAG, "registerEvents Id : " + idAutoComplete.getText().toString());
 
 
@@ -416,10 +355,10 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             public void onClick(View view) {
 
                 try {
-                    Boolean areaValid = isAutoCompleteValid(areaAutoComplete, areaHash);
+
                     Boolean idValid = isAutoCompleteValid(idAutoComplete, idHash);
 
-                    if (areaValid && idValid) {
+                    if (idValid) {
                         submitQRcode(idHash.get(idAutoComplete.getText().toString().toLowerCase()));
 
                     } else {
@@ -435,66 +374,13 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         });
 
-        collectionRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        idAutoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                int radioGroupId = radioGroup.getCheckedRadioButtonId();
-
-                areaAutoComplete.setText("");
-                idAutoComplete.setText("");
-                AUtils.showKeyboard((Activity) mContext);
-
-
-                /**** Rahul Rokade ******/
-                //Liquid :-
-                if (EmpType.matches("L")) {
-                    idIpLayout.setHint(getResources().getString(R.string.liquid_number_hint));
-                    radioSelection = AUtils.RADIO_SELECTED_HP;
-
-                    if (!AUtils.isConnectedFast(mContext)) {
-                        AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
-                    }
-                    mAreaAdapter.fetchAreaList(getAreaType(), true);
-                }
-
-                //Street :-
-                if (EmpType.matches("S")) {
-                    idIpLayout.setHint(getResources().getString(R.string.street_number_hint));
-
-                    if (!AUtils.isConnectedFast(mContext)) {
-                        AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
-                    }
-                    mAreaAdapter.fetchAreaList(getAreaType(), true);
-                }
-
-                //CT-PT
-                if (EmpType.matches("CT")) {
-                    idIpLayout.setHint(getResources().getString(R.string.street_number_hint));
-
-                    if (!AUtils.isConnectedFast(mContext)) {
-                        AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
-                    }
-                    mAreaAdapter.fetchAreaList(getAreaType(), true);
-                }
-
-                //Waste :-
-
-                if (EmpType.matches("N")) {
-                    idIpLayout.setVisibility(View.GONE);
-                    idIpLayout.setHint(getResources().getString(R.string.house_number_hint));
-
-                    if (radioGroupId == R.id.house_collection_radio) {
-                        idIpLayout.setHint(getResources().getString(R.string.house_number_hint));
-                        radioSelection = AUtils.RADIO_SELECTED_HP;
-                    } else if (radioGroupId == R.id.dump_yard_radio) {
-                        idIpLayout.setHint(getResources().getString(R.string.dy_id_hint));
-                        radioSelection = AUtils.RADIO_SELECTED_DY;
-                    }
-
-                    if (!AUtils.isConnectedFast(mContext)) {
-                        AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
-                    }
-                    mAreaAdapter.fetchAreaList(getAreaType(), true);
+            public void onFocusChange(View view, boolean b) {
+                if (b == true){
+                    idAutoComplete.showDropDown();
+                    mHpAdapter.fetchHpList("1","1");
+                    openSoftKeyboard();
                 }
             }
         });
@@ -509,6 +395,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                     Toast.makeText(mContext, "Focus changed!", Toast.LENGTH_SHORT).show();
                     hideQR();
                     AUtils.showKeyboard((Activity) mContext);
+                    inflateAutoComplete("1");
                 } else {
                     idAutoComplete.clearListSelection();
 
@@ -567,37 +454,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         });
 
-        areaAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (isAutoCompleteValid(areaAutoComplete, areaHash))
-                    inflateAutoComplete(areaHash.get(areaAutoComplete.getText().toString().toLowerCase()));
-                else
-                    AUtils.error(mContext, mContext.getResources().getString(R.string.area_validation));
-            }
-        });
-
-        areaAutoComplete.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    if (isAutoCompleteValid(areaAutoComplete, areaHash)) {
-                        inflateAutoComplete(areaHash.get(areaAutoComplete.getText().toString().toLowerCase()));
-                        return false;
-                    } else {
-                        areaAutoComplete.requestFocus();
-                        AUtils.error(mContext, mContext.getResources().getString(R.string.area_validation));
-                        return true;
-                    }
-                }
-
-                return false;
-
-            }
-        });
-
-
         permissionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -615,23 +471,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                     scannerView.setFlash(true);
                     fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
                 }
-            }
-        });
-
-        mAreaAdapter.setCollectionAreaListener(new CollectionAreaAdapterClass.CollectionAreaListener() {
-            @Override
-            public void onSuccessCallBack() {
-                areaAutoComplete.clearListSelection();
-                areaAutoComplete.requestFocus();
-                idAutoComplete.clearListSelection();
-                inflateAreaAutoComplete(mAreaAdapter.getAreaPojoList());
-
-            }
-
-            @Override
-            public void onFailureCallBack() {
-                AUtils.error(mContext, getResources().getString(R.string.serverError));
-
             }
         });
 
@@ -697,6 +536,11 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         });
     }
 
+    private void openSoftKeyboard() {
+        InputMethodManager keyboard = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.showSoftInput(idAutoComplete, 0);
+    }
+
     protected void initData() {
 
 
@@ -706,7 +550,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
         }
 
-        mAreaAdapter.fetchAreaList(getAreaType(), false);
 
         Intent intent = getIntent();
         if (intent.hasExtra(AUtils.REQUEST_CODE)) {
@@ -722,7 +565,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
     private void submitQRcode(String houseid) {
 
-        //Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null
         if (EmpType.matches("L")) {
 
             //  gcType = "4";
@@ -786,6 +628,17 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }else {
                 Log.e(TAG,"CTPT select id is: "+houseid);
                 startSubmitQRAsyncTask(houseid, 0, gcType, null, imagePojo.getTNS(), null);
+            }
+
+
+            if (houseid.substring(0, 2).matches("^[DdYy]+$")) {
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.dy_qr_alert), null);
+            } else if (houseid.substring(0, 2).matches("^[LlWw]+$")) {
+//                AUtils.warning(QRcodeScannerActivity.this, "For scanning Liquid Waste Collection QR,\nkindly login with liquid waste cleaning id", 16);
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.lwc_qr_alert), null);
+            } else if (houseid.substring(0, 2).matches("^[SsSs]+$")) {
+//                AUtils.warning(QRcodeScannerActivity.this, "For scanning Liquid Waste Collection QR,\nkindly login with liquid waste cleaning id", 16);
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.ssc_qr_warning), null);
             }
 
         }
@@ -916,13 +769,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         startCamera();
         contentView.setVisibility(View.VISIBLE);
         submitBtn.setVisibility(View.GONE);
-        collectionRadioGroup.setVisibility(View.GONE);
-        areaLayout.setVisibility(View.GONE);
-        areaAutoComplete.setVisibility(View.GONE);
-        areaAutoComplete.setText("");
+
         idAutoComplete.clearFocus();
         idAutoComplete.setText("");
-//        idIpLayout.setHint(getResources().getString(R.string.hp_gp_id_hint));
         scannerView.setAutoFocus(true);
 
 
@@ -933,33 +782,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         stopCamera();
         contentView.setVisibility(View.GONE);
         submitBtn.setVisibility(View.VISIBLE);
-        collectionRadioGroup.setVisibility(View.VISIBLE);
-        areaLayout.setVisibility(View.VISIBLE);
-        areaAutoComplete.setVisibility(View.VISIBLE);
-        areaAutoComplete.requestFocusFromTouch();
-        areaAutoComplete.setSelected(true);
 
-        if (radioSelection.equals(AUtils.RADIO_SELECTED_HP)) {
-            idIpLayout.setHint(getResources().getString(R.string.house_number_hint));
-            idAutoComplete.setHint("");
-        } else if (radioSelection.equals(AUtils.RADIO_SELECTED_LW)) {
-            idIpLayout.setHint(getResources().getString(R.string.liquid_number_hint));
-            idAutoComplete.setHint("");
-        } else if (radioSelection.equals(AUtils.RADIO_SELECTED_SW)) {
-            idIpLayout.setHint(getResources().getString(R.string.street_number_hint));
-            idAutoComplete.setHint("");
-        } else if (radioSelection.equals(AUtils.RADIO_SELECTED_CT)) {
-//            Toast.makeText(mContext, "Toilet collection selected!", Toast.LENGTH_SHORT).show();
-            idIpLayout.setHint("Enter CT/PT ID");
-            idAutoComplete.setHint("");
-        } else if (radioSelection.equals(AUtils.RADIO_SELECTED_CP)) {
-//            Toast.makeText(mContext, "Toilet collection selected!", Toast.LENGTH_SHORT).show();
-            idIpLayout.setHint(getResources().getString(R.string.commercial_id_hint));
-            idAutoComplete.setHint("");
-        }
-        /*else {
-            idIpLayout.setHint(getResources().getString(R.string.gp_id_hint));
-        }*/
+        idIpLayout.setHint("Enter CT/PT ID");
+        idAutoComplete.setHint("");
 
     }
 
@@ -974,9 +799,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
             if (!GpsStatus) {
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-            }//else{
-            // AUtils.saveLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-            // }
+            }
         }
     }
 
@@ -1071,25 +894,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
     }
 
-    private void inflateAreaAutoComplete(List<CollectionAreaPojo> pojoList) {
-
-        areaHash = new HashMap<>();
-        ArrayList<String> keyList = new ArrayList<>();
-        for (CollectionAreaPojo pojo : pojoList) {
-            areaHash.put(pojo.getArea().toLowerCase()/**/, pojo.getId());
-            keyList.add(pojo.getArea().trim());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
-        areaAutoComplete.setThreshold(0);
-        areaAutoComplete.setAdapter(adapter);
-        if (!areaAutoComplete.isFocused()) {
-            areaAutoComplete.requestFocus();
-        }
-//        areaAutoComplete.showDropDown();
-
-    }
-
     private void inflateHpAutoComplete(List<CollectionAreaHousePojo> pojoList) {
 
         idHash = new HashMap<>();
@@ -1099,8 +903,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             keyList.add(pojo.getHouseNumber().trim());
         }
 
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
-        AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+      AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
         idAutoComplete.setThreshold(0);
         idAutoComplete.setAdapter(adapter);
         idAutoComplete.requestFocus();
@@ -1163,12 +966,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
     private String getAreaType() {
         areaType = AUtils.HP_AREA_TYPE_ID;
-
-        if (radioSelection.equals(AUtils.RADIO_SELECTED_HP)) {
-            areaType = AUtils.HP_AREA_TYPE_ID;
-        } else if (radioSelection.equals(AUtils.RADIO_SELECTED_DY)) {
-            areaType = AUtils.DY_AREA_TYPE_ID;
-        }
         return areaType;
     }
 
@@ -1239,17 +1036,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         OfflineGarbageColectionPojo entity = new OfflineGarbageColectionPojo();
 
         entity.setReferenceID(garbageCollectionPojo.getId());
-        /*if (garbageCollectionPojo.getId().substring(0, 2).matches("^[CcTtPpTt]+$")) {
-            if ((gcType.equalsIgnoreCase("10")) && gcType.matches("10")) {
-                getIntent().getStringArrayExtra("CTPT");
-                entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));
-            }
-        } else if (garbageCollectionPojo.getId().substring(0, 3).matches("^[TtMmCc]+$")) {
-            if ((gcType.equalsIgnoreCase("10")) && gcType.matches("10")) {
-                getIntent().getStringArrayExtra("CTPT");
-                entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));
-            }
-        }*/
+
         if ((gcType.equalsIgnoreCase("10")) && gcType.matches("10")) {
             getIntent().getStringArrayExtra("CTPT");
             entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));

@@ -32,7 +32,7 @@
             android:paddingEnd="@dimen/dim_6_dp"
             android:paddingBottom="@dimen/dim_20_dp">
 
-            <RadioGroup
+            <!--<RadioGroup
                 android:id="@+id/collection_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     android:text="@string/house_collection_txt"
                     android:textColor="@color/white" />
 
-                <!--<RadioButton
+                &lt;!&ndash;<RadioButton
                     android:id="@+id/point_collection_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:text="@string/point_collection_txt"
                     android:layout_margin="@dimen/dim_6_dp"
                     android:textColor="@color/white"
-                    android:buttonTint="@color/white"/>-->
+                    android:buttonTint="@color/white"/>&ndash;&gt;
 
                 <RadioButton
                     android:id="@+id/comm_collection_radio"
@@ -82,9 +82,9 @@
                     android:textColor="@color/white"
                     android:visibility="gone" />
 
-            </RadioGroup>
+            </RadioGroup>-->
 
-            <com.google.android.material.textfield.TextInputLayout
+            <!--<com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_area_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,15 +107,13 @@
                     android:visibility="gone" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
+-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_id_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-
                 android:theme="@style/TextLabel2">
-                <!--                android:hint="@string/hp_gp_id_hint"-->
                 <AutoCompleteTextView
                     android:id="@+id/txt_id_auto"
                     android:layout_width="match_parent"
@@ -123,13 +121,12 @@
                     android:layout_marginStart="@dimen/dim_6_dp"
                     android:layout_marginEnd="@dimen/dim_6_dp"
                     android:backgroundTint="@color/white"
-
                     android:inputType="textCapCharacters"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dim_18_sp" />
-                <!--                android:hint="Enter Street ID"-->
-            </com.google.android.material.textfield.TextInputLayout>
+                 </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 

@@ -578,20 +578,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         if (AUtils.isInternetAvailable()) {
 
-            /*if (AUtils.isNull(empInPunchPojo)) {
-                empInPunchPojo = new EmpInPunchPojo();
-            }
-
-            empInPunchPojo.setStartDate(AUtils.getServerDate());
-            empInPunchPojo.setStartTime(AUtils.getServerTime());
-
-            try {
-                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
-            } catch (Exception e) {
-                e.printStackTrace();
-                markAttendance.setChecked(false);
-                AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
-            }*/
             boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
             Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
             if (isAreaActive) {

@@ -180,7 +180,12 @@ public class PopUpDialog extends Dialog{
                 public void run() {
                     loader.setVisibility(View.VISIBLE);
                     VehicleTypePojo vehicleTypePojo = (VehicleTypePojo) mReturnData;
-                    mVehicleId = vehicleTypePojo.getVtId();
+                    if (vehicleTypePojo != null){
+                        mVehicleId = vehicleTypePojo.getVtId();
+                    }else {
+                       // Toast.makeText(mContext, "Vehicle type id not getting", Toast.LENGTH_SHORT).show();
+                    }
+                   // mVehicleId = vehicleTypePojo.getVtId();
                     vehicleNoListAdapterRepo.getVehicleNosList(Prefs.getString(AUtils.APP_ID, null), mVehicleId, new VehicleNoListAdapterRepo.IVehicleNoListListener() {
                         @Override
                         public void onResponse(List<VehicleNumberPojo> vehicleNumbersList) {

@@ -108,6 +108,8 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 -->
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_id_layout"
                 android:layout_width="match_parent"
@@ -128,6 +130,12 @@
                     android:textSize="@dimen/dim_18_sp" />
                  </com.google.android.material.textfield.TextInputLayout>
 
+            <ListView
+                android:id="@+id/dialog_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:listSelector="@color/colorItemSelected"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

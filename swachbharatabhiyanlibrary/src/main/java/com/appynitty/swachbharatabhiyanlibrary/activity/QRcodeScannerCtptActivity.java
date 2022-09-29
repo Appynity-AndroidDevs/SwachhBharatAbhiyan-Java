@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -35,11 +36,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ListPopupWindow;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.AutocompleteContainSearch;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.VehicleNoListAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaHouseAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaPointAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CollectionAreaAdapterClass;
@@ -55,6 +58,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.GarbageCollectionPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GcResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.ImagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.OfflineGarbageColectionPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -77,7 +81,7 @@ import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
-/******  Rahul Rokade 24/01/22 **************/
+/******  Rahul Rokade 24/09/22 **************/
 public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler, GarbageTypePopUp.GarbagePopUpDialogListener/*, ToiletTypePopUp.ToiletTypePopUpDialogListener*/ {
 
     private final static String TAG = "QRcodeScannerCtptActivity";
@@ -115,6 +119,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     private String areaType;
     private Uri uri;
     private String CtptId;
+    private ListView mItemList;
+    private Object mReturnData;
+    private HashMap<Integer, Object> mList;
 
 
     @Override
@@ -301,6 +308,8 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         mAreaAdapter = new CollectionAreaAdapterClass();
 
         fabSpeedDial = findViewById(R.id.flash_toggle);
+        mItemList = findViewById(R.id.dialog_listview);
+        mItemList.setVisibility(View.GONE);
 
         idAutoComplete = findViewById(R.id.txt_id_auto);
         idAutoComplete.setThreshold(0);
@@ -336,7 +345,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
     private void setHints() {
          if (EmpType.matches("CT")) {
-            idAutoComplete.setHint("Enter toilet id");
+            idAutoComplete.setHint(getResources().getString(R.string.str_ctpt_id));
         }
     }
 
@@ -348,6 +357,13 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
     protected void registerEvents() {
         Log.d(TAG, "registerEvents Id : " + idAutoComplete.getText().toString());
+
+        mItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                itemSelected(position);
+            }
+        });
 
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -363,9 +379,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
                     } else {
                         if (getAreaType().equals(AUtils.HP_AREA_TYPE_ID))
-                            AUtils.error(mContext, mContext.getResources().getString(R.string.hp_area_validation));
+                            AUtils.error(mContext, mContext.getResources().getString(R.string.ctpt_validation));
                         else
-                            AUtils.error(mContext, mContext.getResources().getString(R.string.gp_area_validation));
+                            AUtils.error(mContext, mContext.getResources().getString(R.string.ctpt_validation));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -374,7 +390,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         });
 
-        idAutoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+       /* idAutoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b == true){
@@ -383,7 +399,8 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                     openSoftKeyboard();
                 }
             }
-        });
+        });*/
+
 
         idAutoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -394,7 +411,11 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                 if (isFocused && isScanQr) {
                     Toast.makeText(mContext, "Focus changed!", Toast.LENGTH_SHORT).show();
                     hideQR();
-                    AUtils.showKeyboard((Activity) mContext);
+                    idAutoComplete.showDropDown();
+                    //mHpAdapter.fetchHpList("1","1");
+                    openSoftKeyboard();
+                   // AUtils.showKeyboard((Activity) mContext);
+                    mItemList.setVisibility(View.VISIBLE);
                     inflateAutoComplete("1");
                 } else {
                     idAutoComplete.clearListSelection();
@@ -412,7 +433,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                 else {
                     switch (getAreaType()) {
                         case AUtils.HP_AREA_TYPE_ID:
-                            AUtils.error(mContext, mContext.getResources().getString(R.string.hp_validation));
+                            AUtils.error(mContext, mContext.getResources().getString(R.string.ctpt_validation));
                             break;
                         case AUtils.GP_AREA_TYPE_ID:
                             AUtils.error(mContext, mContext.getResources().getString(R.string.gp_validation));
@@ -437,7 +458,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                         idAutoComplete.requestFocus();
                         switch (getAreaType()) {
                             case AUtils.HP_AREA_TYPE_ID:
-                                AUtils.error(mContext, mContext.getResources().getString(R.string.hp_validation));
+                                AUtils.error(mContext, mContext.getResources().getString(R.string.ctpt_validation));
                                 break;
                             case AUtils.GP_AREA_TYPE_ID:
                                 AUtils.error(mContext, mContext.getResources().getString(R.string.gp_validation));
@@ -534,6 +555,12 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
             }
         });
+    }
+
+    private void itemSelected(int postion)
+    {
+        mReturnData = mList.get(postion);
+        mItemList.setVisibility(View.VISIBLE);
     }
 
     private void openSoftKeyboard() {
@@ -639,6 +666,8 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             } else if (houseid.substring(0, 2).matches("^[SsSs]+$")) {
 //                AUtils.warning(QRcodeScannerActivity.this, "For scanning Liquid Waste Collection QR,\nkindly login with liquid waste cleaning id", 16);
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.ssc_qr_warning), null);
+            }else if (houseid.substring(0, 2).matches("^[HhPp]+$")) {
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.house_qr_alert), null);
             }
 
         }
@@ -783,7 +812,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         contentView.setVisibility(View.GONE);
         submitBtn.setVisibility(View.VISIBLE);
 
-        idIpLayout.setHint("Enter CT/PT ID");
+        idIpLayout.setHint(getResources().getString(R.string.str_ctpt_id));
         idAutoComplete.setHint("");
 
     }

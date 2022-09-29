@@ -270,6 +270,8 @@
     <string name="cleaned_successful">Cleaning completed successfully</string>
     <string name="str_date_time_on_photo">Date Time</string>
     <string name="string_ctpt_collection">CTPT Toilet Cleaning</string>
+    <string name="ctpt_validation">Please Select Valid CTPT Id</string>
+    <string name="str_ctpt_id"> Select CTPT Id</string>
 
 
 

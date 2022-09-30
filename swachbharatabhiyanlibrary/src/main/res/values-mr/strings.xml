@@ -223,6 +223,7 @@
     <string name="str_rd_btn_urinal">लघवी करण्याचे ठिकाण</string>
     <string name="str_err_select_type">कृपया शौचालयाचा प्रकार निवडा</string>
     <string name="plz_capture_after_img">कृपया प्रतिमा नंतर कॅप्चर करा</string>
+    <string name="plz_capture_befor_img">कृपया प्रतिमा पूर्वी कॅप्चर करा</string>
     <string name="string_commercial_collection">व्यावसायिक संकलन</string>
     <string name="commercial_collection">व्यावसायिक कचरा कलेक्शन</string>
     <string name="commercial_id_hint">व्यावसायिक पॉइंट आयडी एंटर करा</string>

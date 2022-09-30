@@ -1,5 +1,6 @@
 package com.appynitty.swachbharatabhiyanlibrary.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -373,14 +375,35 @@ public class PopUpDialog extends Dialog{
 
         AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
 
-        adapterN = adapter;
+        /*adapterN = adapter;
         autoTxtVehicleNum.setThreshold(0);
         autoTxtVehicleNum.setAdapter(adapter);
 
         txtVehicleNo = autoTxtVehicleNum;
         if (!autoTxtVehicleNum.isFocused()) {
             autoTxtVehicleNum.requestFocus();
-        }
+        }*/
+
+        autoTxtVehicleNum.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (keyList.size() >0){
+                    if (autoTxtVehicleNum.getText().toString().equals("")){
+                        if (adapter != null){
+                            adapter.getFilter().filter(autoTxtVehicleNum.toString());
+                        }
+                        //adapter.getFilter().filter(null);
+                        autoTxtVehicleNum.showDropDown();
+                        autoTxtVehicleNum.setThreshold(0);
+                        autoTxtVehicleNum.setAdapter(adapter);
+                        autoTxtVehicleNum.requestFocus();
+
+                    }
+                }
+                return false;
+            }
+        });
 
     }
 

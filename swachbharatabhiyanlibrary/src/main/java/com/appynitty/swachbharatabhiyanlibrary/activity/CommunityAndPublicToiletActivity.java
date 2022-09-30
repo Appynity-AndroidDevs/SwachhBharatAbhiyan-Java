@@ -2,6 +2,8 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
@@ -534,6 +537,10 @@ public class CommunityAndPublicToiletActivity extends AppCompatActivity {
 
     private boolean validateForm() {
 
+        /*if (AUtils.isNullString(beforeImageFilePath)) {
+            AUtils.warning(mContext, mContext.getString(R.string.plz_capture_befor_img), Toast.LENGTH_SHORT);
+            return false;
+        }*/
         if (AUtils.isNullString(afterImageFilePath)) {
             AUtils.warning(mContext, mContext.getString(R.string.plz_capture_after_img), Toast.LENGTH_SHORT);
             return false;
@@ -541,6 +548,20 @@ public class CommunityAndPublicToiletActivity extends AppCompatActivity {
 
 
         return true;
+    }
+
+
+    public void onTaskRemoved(Intent rootIntent){
+        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
+        restartServiceIntent.setPackage(getPackageName());
+
+        PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmService.set(
+                AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + 1000,
+                restartServicePendingIntent);
+
     }
 
     private boolean getFormData() {

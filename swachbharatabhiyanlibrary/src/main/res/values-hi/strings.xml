@@ -197,6 +197,7 @@
     <string name="str_rd_btn_urinal">मूत्रालय</string>
     <string name="str_err_select_type">कृपया शौचालय का प्रकार चुनें</string>
     <string name="plz_capture_after_img">कृपया छवि के बाद कैप्चर करें</string>
+    <string name="plz_capture_befor_img">कृपया छवि से पहले कैप्चर करें</string>
     <string name="string_commercial_collection">वाणिज्यिक संग्रह</string>
     <string name="commercial_collection">वाणिज्यिक अपशिष्ट कलेक्शन</string>
     <string name="commercial_id_hint">व्यापारिक पॉइंट आयडी दर्ज़ करें</string>

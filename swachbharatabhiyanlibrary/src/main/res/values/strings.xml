@@ -263,6 +263,7 @@
     <string name="str_rd_btn_urinal">Urinal Toilet</string>
     <string name="str_err_select_type">Please select toilet type</string>
     <string name="plz_capture_after_img">Please capture after image</string>
+    <string name="plz_capture_befor_img">Please capture before image</string>
     <string name="string_commercial_collection">Commercial Collection</string>
     <string name="commercial_collection">Commercial Collection</string>
     <string name="commercial_id_hint">Enter Commercial Point ID</string>

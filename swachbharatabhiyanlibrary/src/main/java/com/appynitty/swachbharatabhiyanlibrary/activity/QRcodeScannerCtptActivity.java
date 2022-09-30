@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -119,9 +120,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     private String areaType;
     private Uri uri;
     private String CtptId;
-    private ListView mItemList;
-    private Object mReturnData;
-    private HashMap<Integer, Object> mList;
+
 
 
     @Override
@@ -308,8 +307,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         mAreaAdapter = new CollectionAreaAdapterClass();
 
         fabSpeedDial = findViewById(R.id.flash_toggle);
-        mItemList = findViewById(R.id.dialog_listview);
-        mItemList.setVisibility(View.GONE);
 
         idAutoComplete = findViewById(R.id.txt_id_auto);
         idAutoComplete.setThreshold(0);
@@ -344,9 +341,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     }
 
     private void setHints() {
-         if (EmpType.matches("CT")) {
+         /*if (EmpType.matches("CT")) {
             idAutoComplete.setHint(getResources().getString(R.string.str_ctpt_id));
-        }
+        }*/
     }
 
     protected void initToolbar() {
@@ -358,12 +355,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     protected void registerEvents() {
         Log.d(TAG, "registerEvents Id : " + idAutoComplete.getText().toString());
 
-        mItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                itemSelected(position);
-            }
-        });
 
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -390,16 +381,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         });
 
-       /* idAutoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b == true){
-                    idAutoComplete.showDropDown();
-                    mHpAdapter.fetchHpList("1","1");
-                    openSoftKeyboard();
-                }
-            }
-        });*/
 
 
         idAutoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -412,11 +393,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                     Toast.makeText(mContext, "Focus changed!", Toast.LENGTH_SHORT).show();
                     hideQR();
                     idAutoComplete.showDropDown();
-                    //mHpAdapter.fetchHpList("1","1");
-                    openSoftKeyboard();
-                   // AUtils.showKeyboard((Activity) mContext);
-                    mItemList.setVisibility(View.VISIBLE);
+                    AUtils.showKeyboard((Activity) mContext);
                     inflateAutoComplete("1");
+
                 } else {
                     idAutoComplete.clearListSelection();
 
@@ -540,8 +519,10 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                     ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
                     QRcodeScannerCtptActivity.this.finish();
                 } else {
-
-                    showPopup(getGarbageCollectionPojo().getId(), mAdapter.getResultPojo(), gcType);
+                    if (getGarbageCollectionPojo() != null){
+                        showPopup(getGarbageCollectionPojo().getId(), mAdapter.getResultPojo(), gcType);
+                    }
+                   // showPopup(getGarbageCollectionPojo().getId(), mAdapter.getResultPojo(), gcType);
 
                 }
             }
@@ -555,12 +536,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
             }
         });
-    }
-
-    private void itemSelected(int postion)
-    {
-        mReturnData = mList.get(postion);
-        mItemList.setVisibility(View.VISIBLE);
     }
 
     private void openSoftKeyboard() {
@@ -933,9 +908,35 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         }
 
       AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
-        idAutoComplete.setThreshold(0);
+        /*idAutoComplete.setThreshold(0);
         idAutoComplete.setAdapter(adapter);
-        idAutoComplete.requestFocus();
+        idAutoComplete.requestFocus();*/
+
+        /****
+         * added by Rahul rokade
+         * list with search
+         * */
+
+        idAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (keyList.size() >0){
+                    if (idAutoComplete.getText().toString().equals("")){
+                        if (adapter != null){
+                            adapter.getFilter().filter(idAutoComplete.toString());
+                        }
+                        //adapter.getFilter().filter(null);
+                        idAutoComplete.showDropDown();
+                        idAutoComplete.setThreshold(0);
+                        idAutoComplete.setAdapter(adapter);
+                        idAutoComplete.requestFocus();
+
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void inflateGpAutoComplete(List<CollectionAreaPointPojo> pojoList) {
@@ -1062,7 +1063,75 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
     private void insertToDB(GarbageCollectionPojo garbageCollectionPojo) {
 
-        OfflineGarbageColectionPojo entity = new OfflineGarbageColectionPojo();
+        if (garbageCollectionPojo != null){
+            OfflineGarbageColectionPojo entity = new OfflineGarbageColectionPojo();
+
+            entity.setReferenceID(garbageCollectionPojo.getId());
+
+            if ((gcType.equalsIgnoreCase("10")) && gcType.matches("10")) {
+                getIntent().getStringArrayExtra("CTPT");
+                entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));
+            }
+            entity.setNote(garbageCollectionPojo.getComment());
+            entity.setTNS(garbageCollectionPojo.getTNS());
+            entity.setTOT(garbageCollectionPojo.getTOT());
+            entity.setGarbageType(String.valueOf(garbageCollectionPojo.getGarbageType()));
+            entity.setTotalGcWeight(String.valueOf(garbageCollectionPojo.getWeightTotal()));
+            entity.setTotalDryWeight(String.valueOf(garbageCollectionPojo.getWeightTotalDry()));
+            entity.setTotalWetWeight(String.valueOf(garbageCollectionPojo.getWeightTotalWet()));
+            //entity.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
+            entity.setVehicleNumber("1");
+            entity.setLong(Prefs.getString(AUtils.LONG, ""));
+            entity.setLat(Prefs.getString(AUtils.LAT, ""));
+//        entity.setGcDate(AUtils.getServerDateTime());
+            entity.setGcDate(AUtils.getServerDateTimeLocal());
+            entity.setDistance(String.valueOf(garbageCollectionPojo.getDistance()));
+            /*entity.setGcType(gcType);*/
+            entity.setIsOffline(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext));
+
+            if (isActivityData) {
+//            entity.setAfterImage(imagePojo.getAfterImage());
+//            entity.setBeforeImage(imagePojo.getBeforeImage());
+//            entity.setComment(imagePojo.getComment());
+
+                try {
+                    if (imagePojo.getImage1() != null && imagePojo.getImage2() != null) {
+                        entity.setGpBeforImage(AUtils.getEncodedImage(imagePojo.getImage1(), this));
+                        entity.setGpAfterImage(AUtils.getEncodedImage(imagePojo.getImage2(), this));
+                        entity.setGpBeforImageTime("11:11:55 am");
+                        entity.setGpBeforImageTime(Prefs.getString(AUtils.BEFORE_IMAGE_TIME, null));
+                        Log.e(TAG, "Images are there!");
+                    } else if (!Prefs.getString(AUtils.BEFORE_IMAGE, null).isEmpty() || !AUtils.isNullString(Prefs.getString(AUtils.BEFORE_IMAGE, null))) {
+                        entity.setGpBeforImage(AUtils.getEncodedImage(Prefs.getString(AUtils.BEFORE_IMAGE, null), this));
+                        entity.setGpAfterImage(AUtils.getEncodedImage(Prefs.getString(AUtils.AFTER_IMAGE, null), this));
+                        entity.setGpBeforImageTime(Prefs.getString(AUtils.BEFORE_IMAGE_TIME, null));
+                    } else {
+                        entity.setGpBeforImage("");
+                        entity.setGpAfterImage("");
+                        Log.e(TAG, "Images are null!");
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+//        SyncServerRepository   mSyncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
+//
+//
+//        Type type = new TypeToken<OfflineGarbageColectionPojo>() {}.getType(); //TODO
+//        mSyncServerRepository.insertSyncServerEntity(new Gson().toJson(entity, type)); //TODO
+
+            syncOfflineRepository.insertCollection(entity);
+            Prefs.remove(AUtils.BEFORE_IMAGE);
+            Prefs.remove(AUtils.AFTER_IMAGE);
+            Prefs.remove(AUtils.BEFORE_IMAGE_TIME);
+            showOfflinePopup(garbageCollectionPojo.getId(), entity.getGcType());
+        }
+
+        /*OfflineGarbageColectionPojo entity = new OfflineGarbageColectionPojo();
 
         entity.setReferenceID(garbageCollectionPojo.getId());
 
@@ -1084,7 +1153,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 //        entity.setGcDate(AUtils.getServerDateTime());
         entity.setGcDate(AUtils.getServerDateTimeLocal());
         entity.setDistance(String.valueOf(garbageCollectionPojo.getDistance()));
-        /*entity.setGcType(gcType);*/
+        *//*entity.setGcType(gcType);*//*
         entity.setIsOffline(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext));
 
         if (isActivityData) {
@@ -1126,7 +1195,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         Prefs.remove(AUtils.BEFORE_IMAGE);
         Prefs.remove(AUtils.AFTER_IMAGE);
         Prefs.remove(AUtils.BEFORE_IMAGE_TIME);
-        showOfflinePopup(garbageCollectionPojo.getId(), entity.getGcType());
+        showOfflinePopup(garbageCollectionPojo.getId(), entity.getGcType());*/
     }
 
     private void showOfflinePopup(String pojo, String garbageType) {

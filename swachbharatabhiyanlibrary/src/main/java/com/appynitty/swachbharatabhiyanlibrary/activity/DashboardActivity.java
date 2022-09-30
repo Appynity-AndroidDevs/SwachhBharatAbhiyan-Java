@@ -694,29 +694,54 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 }
             }
         });
+            if (empType.matches("CT")){
+                int itemSetting = R.id.action_setting;
 
-        fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
-            @Override
-            public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
-                if (itemId == R.id.action_change_language) {
-                    changeLanguage();
-                } else if (itemId == R.id.action_setting) {
-                    startActivity(new Intent(mContext, SettingsActivity.class));
-                } else if (itemId == R.id.action_rate_app) {
-                    AUtils.rateApp(mContext);
-                } else if (itemId == R.id.action_share_app) {
-                    AUtils.shareThisApp(mContext, null);
-                } else if (itemId == R.id.action_logout) {
-                    if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
-                        performLogout();
+                fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
+                    @Override
+                    public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
+                        if (itemId == R.id.action_change_language) {
+                            changeLanguage();
+                        } else if (itemId == R.id.action_rate_app) {
+                            AUtils.rateApp(mContext);
+                        } else if (itemId == R.id.action_share_app) {
+                            AUtils.shareThisApp(mContext, null);
+                        } else if (itemId == R.id.action_logout) {
+                            if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                                performLogout();
+                            }
+
+                        } else if (itemId == R.id.privacy_policy) {
+                            startActivity(new Intent(DashboardActivity.this, PrivacyPage.class));
+
+                        }
                     }
+                });
+            }else {
+                fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
+                    @Override
+                    public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
+                        if (itemId == R.id.action_change_language) {
+                            changeLanguage();
+                        } else if (itemId == R.id.action_setting) {
+                            startActivity(new Intent(mContext, SettingsActivity.class));
+                        } else if (itemId == R.id.action_rate_app) {
+                            AUtils.rateApp(mContext);
+                        } else if (itemId == R.id.action_share_app) {
+                            AUtils.shareThisApp(mContext, null);
+                        } else if (itemId == R.id.action_logout) {
+                            if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                                performLogout();
+                            }
 
-                } else if (itemId == R.id.privacy_policy) {
-                    startActivity(new Intent(DashboardActivity.this, PrivacyPage.class));
+                        } else if (itemId == R.id.privacy_policy) {
+                            startActivity(new Intent(DashboardActivity.this, PrivacyPage.class));
 
-                }
+                        }
+                    }
+                });
             }
-        });
+
 
         markAttendance.setOnClickListener(new View.OnClickListener() {
             @Override

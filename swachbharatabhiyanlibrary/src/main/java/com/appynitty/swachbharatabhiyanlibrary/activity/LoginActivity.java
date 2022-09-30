@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
     private LoginAdapterClass mAdapter;
 
-    String AppId =  Prefs.getString(AUtils.APP_ID, "");
+    String AppId = Prefs.getString(AUtils.APP_ID, "");
 
 //    private PopupMenu popup;
     //spinner employee types
@@ -305,7 +305,8 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
     }
 
     private boolean validateForm() {
-
+        String strUsrName = txtUserName.getText().toString();
+        String strPwd = txtUserPwd.getText().toString();
 
         if (EtEmpType.getText().toString().isEmpty()) {
             AUtils.warning(mContext, mContext.getString(R.string.plz_slct_emp_type));
@@ -322,6 +323,10 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
             return false;
         }
 
+        if (strUsrName.contains(" ") || strPwd.contains(" ")) {
+            AUtils.warning(mContext, getString(R.string.usr_name_pwd_mismatch_warning));
+            return false;
+        }
         return true;
     }
 
@@ -348,7 +353,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         } else if (empType.matches(getResources().getString(R.string.liquid_waste_cleaning))) {
             loginPojo.setEmployeeType("L");
 
-        }else if (empType.matches(getResources().getString(R.string.dump_yard_supervisor))) {
+        } else if (empType.matches(getResources().getString(R.string.dump_yard_supervisor))) {
             loginPojo.setEmployeeType("D");
 
         }
@@ -445,7 +450,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
-        AUtils.info(mContext,"Selected language is : "+((LanguagePojo) listItemSelected).getLanguage());
+        AUtils.info(mContext, "Selected language is : " + ((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void changeLanguage() {

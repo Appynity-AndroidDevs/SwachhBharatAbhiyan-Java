@@ -40,7 +40,7 @@ public class LoginAdapterClass {
             @Override
             public void onFinished() {
 
-                if (!AUtils.isNull(getLoginDetailsPojo())) {
+                if (!AUtils.isNull(getLoginDetailsPojo()) && !AUtils.isNull(getLoginDetailsPojo().getStatus())) {
 
                     if (getLoginDetailsPojo().getStatus().equals(AUtils.STATUS_SUCCESS)) {
                         mListener.onSuccessCallBack();

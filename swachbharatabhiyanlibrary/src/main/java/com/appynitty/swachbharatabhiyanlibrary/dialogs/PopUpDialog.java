@@ -214,7 +214,7 @@ public class PopUpDialog extends Dialog{
                         }
                     });
                 }
-            }, 1000*9);
+            }, 1000*8);
 
 
              textWatcher = new TextWatcher() {
@@ -375,14 +375,14 @@ public class PopUpDialog extends Dialog{
 
         AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
 
-        /*adapterN = adapter;
+        adapterN = adapter;
         autoTxtVehicleNum.setThreshold(0);
         autoTxtVehicleNum.setAdapter(adapter);
 
         txtVehicleNo = autoTxtVehicleNum;
         if (!autoTxtVehicleNum.isFocused()) {
             autoTxtVehicleNum.requestFocus();
-        }*/
+        }
 
         autoTxtVehicleNum.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")

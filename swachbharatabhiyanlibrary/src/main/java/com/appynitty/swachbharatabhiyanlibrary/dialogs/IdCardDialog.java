@@ -104,6 +104,9 @@ public class IdCardDialog extends Dialog {
             } else if (empType.matches("L")) {
                 lblEmpType.setText(mContext.getResources().getString(R.string.liquid_waste_cleaning));
 
+            }else if (empType.matches("CT")) {
+                lblEmpType.setText(mContext.getResources().getString(R.string.ct_pt_cleaning_monitoring_system));
+
             }
         }
         else {

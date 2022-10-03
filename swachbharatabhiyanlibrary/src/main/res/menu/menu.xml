@@ -19,7 +19,8 @@
     <item
         android:id="@+id/action_setting"
         android:icon="@drawable/ic_settings_white"
-        android:title="@string/setting" />
+        android:title="@string/setting"
+        android:visible="true"/>
 
     <item
         android:id="@+id/action_share_app"

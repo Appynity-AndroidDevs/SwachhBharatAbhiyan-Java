@@ -341,9 +341,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     }
 
     private void setHints() {
-         /*if (EmpType.matches("CT")) {
+         if (EmpType.matches("CT")) {
             idAutoComplete.setHint(getResources().getString(R.string.str_ctpt_id));
-        }*/
+        }
     }
 
     protected void initToolbar() {
@@ -366,7 +366,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                     Boolean idValid = isAutoCompleteValid(idAutoComplete, idHash);
 
                     if (idValid) {
-                        submitQRcode(idHash.get(idAutoComplete.getText().toString().toLowerCase()));
+                        submitQRcode(idHash.get(idAutoComplete.getText().toString().trim().toLowerCase()));
 
                     } else {
                         if (getAreaType().equals(AUtils.HP_AREA_TYPE_ID))
@@ -478,6 +478,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             @Override
             public void onSuccessCallBack() {
                 inflateHpAutoComplete(mHpAdapter.getHpPojoList());
+                inflateHpAutoCompleteDirect(mHpAdapter.getHpPojoList());
             }
 
             @Override
@@ -691,7 +692,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             } else {
                 collectionStatus.setText(pojo.getMessage());
             }
-            ownerName.setText(id.toUpperCase());
+            ownerName.setText(id.trim().toUpperCase());
             ownerMobile.setText(null);
         } else if (responseStatus.equals(AUtils.STATUS_SUCCESS)) {
             if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals("2")) {
@@ -713,7 +714,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                 ownerMobile.setText(pojo.getMobile());
             }
 
-            houseId.setText(id);
+            houseId.setText(id.trim());
 //            ownerName.setText(pojo.getName());
 //            ownerMobile.setText(pojo.getMobile());
 
@@ -727,7 +728,10 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.cancel();
+                if (isValidDialog()){
+                    dialog.cancel();
+                }
+
             }
         });
 
@@ -754,6 +758,26 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         }
         gcType.equals(valueOne);
 
+    }
+
+    private boolean isValidDialog(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = View.inflate(mContext, R.layout.layout_qr_result, null);
+        builder.setView(view);
+        TextView ownerName = view.findViewById(R.id.house_owner_name);
+        TextView ownerMobile = view.findViewById(R.id.house_owner_mobile);
+        TextView houseId = view.findViewById(R.id.house_id);
+        if (ownerMobile.getText().toString().trim().isEmpty()){
+            Toast.makeText(mContext, "owner mobile is null", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (ownerName.getText().toString().trim().isEmpty()){
+            Toast.makeText(mContext, "Owner name is null", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (houseId.getText().toString().trim().isEmpty()){
+            Toast.makeText(mContext, "House id is null", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void checkCameraPermission() {
@@ -786,9 +810,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         stopCamera();
         contentView.setVisibility(View.GONE);
         submitBtn.setVisibility(View.VISIBLE);
-
-        idIpLayout.setHint(getResources().getString(R.string.str_ctpt_id));
-        idAutoComplete.setHint("");
+        idAutoComplete.setVisibility(View.VISIBLE);
+        /*idIpLayout.setHint(getResources().getString(R.string.str_ctpt_id));
+        idAutoComplete.setHint("");*/
 
     }
 
@@ -898,6 +922,21 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
     }
 
+    private void inflateHpAutoCompleteDirect(List<CollectionAreaHousePojo> pojoList) {
+
+        idHash = new HashMap<>();
+        ArrayList<String> keyList = new ArrayList<>();
+        for (CollectionAreaHousePojo pojo : pojoList) {
+            idHash.put(pojo.getHouseNumber().toLowerCase(), pojo.getHouseid());
+            keyList.add(pojo.getHouseNumber().trim());
+        }
+
+        AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+        idAutoComplete.setThreshold(0);
+        idAutoComplete.setAdapter(adapter);
+        idAutoComplete.requestFocus();
+    }
+
     private void inflateHpAutoComplete(List<CollectionAreaHousePojo> pojoList) {
 
         idHash = new HashMap<>();
@@ -1001,7 +1040,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
     private Boolean isAutoCompleteValid(AutoCompleteTextView autoCompleteTextView, HashMap<String, String> hashMap) {
         try {
-            return hashMap.containsKey(autoCompleteTextView.getText().toString().toLowerCase());
+            return hashMap.containsKey(autoCompleteTextView.getText().toString().trim().toLowerCase());
         } catch (Exception e) {
             e.printStackTrace();
         }

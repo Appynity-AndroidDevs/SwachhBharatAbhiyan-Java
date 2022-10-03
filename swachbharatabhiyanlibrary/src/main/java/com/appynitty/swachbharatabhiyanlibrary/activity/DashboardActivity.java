@@ -695,11 +695,12 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
         });
             if (empType.matches("CT")){
-                int itemSetting = R.id.action_setting;
+
 
                 fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
                     @Override
                     public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
+
                         if (itemId == R.id.action_change_language) {
                             changeLanguage();
                         } else if (itemId == R.id.action_rate_app) {
@@ -718,9 +719,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     }
                 });
             }else {
+
                 fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
                     @Override
                     public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
+
                         if (itemId == R.id.action_change_language) {
                             changeLanguage();
                         } else if (itemId == R.id.action_setting) {

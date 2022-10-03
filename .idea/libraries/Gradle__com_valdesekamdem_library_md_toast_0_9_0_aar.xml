@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.valdesekamdem.library:md-toast:0.9.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cd71d3c38b0886fa13588ba3e5778875/transformed/jetified-md-toast-0.9.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cd71d3c38b0886fa13588ba3e5778875/transformed/jetified-md-toast-0.9.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cd71d3c38b0886fa13588ba3e5778875/transformed/jetified-md-toast-0.9.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cd71d3c38b0886fa13588ba3e5778875/transformed/jetified-md-toast-0.9.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

@@ -390,7 +390,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                     AUtils.showKeyboard((Activity) mContext);
 
                 if (isFocused && isScanQr) {
-                    Toast.makeText(mContext, "Focus changed!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "Focus changed!", Toast.LENGTH_SHORT).show();
                     hideQR();
                     idAutoComplete.showDropDown();
                     AUtils.showKeyboard((Activity) mContext);

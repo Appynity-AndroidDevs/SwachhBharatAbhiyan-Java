@@ -902,7 +902,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AUtils.gpsStatusCheck(DashboardActivity.this);
 
-                if (!empType.matches("D")) {
+                if (empType.matches("D")) {
                     if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
                         onSwitchStatus(isChecked);
                     } else {
@@ -910,7 +910,15 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     }
                 }
 
-                if (!empType.matches("CT")) {
+                if (empType.matches("CT")) {
+                    if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                        onSwitchStatus(isChecked);
+                    } else {
+                        markAttendance.setChecked(AUtils.isIsOnduty());
+                    }
+                }
+
+                if (empType.matches("N") || empType.matches("S") || empType.matches("L")){
                     if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
                         onSwitchStatus(isChecked);
                     } else {

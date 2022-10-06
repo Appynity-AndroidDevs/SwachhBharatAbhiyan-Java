@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.ListPopupWindow;
@@ -251,6 +252,7 @@ public class PopUpDialog extends Dialog{
                 @Override
                 public void onClick(View v) {
                     onSubmitClick();
+                    dismiss();
                 }
             });
         }
@@ -316,6 +318,7 @@ public class PopUpDialog extends Dialog{
         mVehicleNo = txtVehicleNo.getText().toString();
         if(!mVehicleNo.isEmpty()){
             this.dismiss();
+            dismiss();
         }else {
             txtVehicleNo.setError(mContext.getString(R.string.noVehicleNo));
         }
@@ -362,6 +365,16 @@ public class PopUpDialog extends Dialog{
             }
         }
     }
+
+   /* @Override
+    public void onBackPressed() {
+        Log.d("CDA", "onBackPressed Called");
+        Intent setIntent = new Intent(Intent.ACTION_MAIN);
+        setIntent.addCategory(Intent.CATEGORY_HOME);
+        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        onStart();
+    }*/
 
 
     private void inflateVehicleAutoComplete(List<VehicleNumberPojo> pojoList) {

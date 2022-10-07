@@ -15,18 +15,14 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +36,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.AutocompleteContainSearch;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.VehicleNoListAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.VehicleQrIdListAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaHouseAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaPointAdapterClass;
@@ -50,14 +45,12 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.GarbageCollec
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleNoListAdapterRepo;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.GarbageTypePopUp;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaPointPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionDumpYardPointPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GarbageCollectionPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GcResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.ImagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.OfflineGarbageColectionPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationMonitoringService;
@@ -66,6 +59,13 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.BeepManager;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.MyProgressDialog;
 import com.riaylibrary.utils.LocaleHelper;
@@ -73,25 +73,27 @@ import com.riaylibrary.utils.LocaleHelper;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
-import me.dm7.barcodescanner.zbar.Result;
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
+
 /****
  * Created by Rahul Rokade
  * */
-public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler, GarbageTypePopUp.GarbagePopUpDialogListener {
+public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements /*ZBarScannerView.ResultHandler,*/ GarbageTypePopUp.GarbagePopUpDialogListener {
 
     private final static String TAG = "QRcodeScannerDumpSuperActivity";
     private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 100;
     GarbageCollectionPojo garbageCollectionPojo;
     private Context mContext;
     private Toolbar toolbar;
-    private ZBarScannerView scannerView;
+   // private ZBarScannerView scannerView;
+   private DecoratedBarcodeView scannerView;
     private FabSpeedDial fabSpeedDial;
     private AutoCompleteTextView vehicleAutoComplete;
     private TextInputLayout idIpLayout, vehicleLayout;
@@ -118,7 +120,9 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
     private ArrayList<Integer> mSelectedIndices;
 
     private String EmpType, gcType;
-    private String areaType;
+    private String areaType, lastText;
+    private BeepManager beepManager;
+    private boolean isFlashOn;
 
     LocationMonitoringService locationMonitoringService;
     Location location;
@@ -321,6 +325,9 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
 
         idIpLayout = findViewById(R.id.txt_id_layout);
 
+        beepManager = new BeepManager(QRcodeScannerDumpSuperActivity.this);
+        scannerView = findViewById(R.id.qr_scanner1);
+
         submitBtn = findViewById(R.id.submit_button);
         permissionBtn = findViewById(R.id.grant_permission);
         contentView = findViewById(R.id.scanner_view);
@@ -330,10 +337,17 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
         isScanQr = true;
 
         ViewGroup contentFrame = findViewById(R.id.qr_scanner);
-        scannerView = new ZBarScannerView(mContext);
+        /*scannerView = new ZBarScannerView(mContext);
         scannerView.setLaserColor(getResources().getColor(R.color.colorPrimary));
         scannerView.setBorderColor(getResources().getColor(R.color.colorPrimary));
-        contentFrame.addView(scannerView);
+        contentFrame.addView(scannerView);*/
+
+        Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
+        scannerView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
+        scannerView.initializeFromIntent(getIntent());
+        scannerView.decodeContinuous(callback);
+
+
         vehicleAutoComplete.setVisibility(View.GONE);
         vehicleNoListAdapterRepo = VehicleNoListAdapterRepo.getInstance();
 
@@ -356,6 +370,26 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
         vehicleLayout.setVisibility(View.GONE);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
+
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult barcodeResult) {
+            if (barcodeResult.getText() == null || barcodeResult.getText().equals(lastText)) {
+                // Prevent duplicate scans
+                return;
+            }
+
+            Log.e(TAG, "barcodeResult: " + barcodeResult.getText() + ", Bitmap: " + barcodeResult.getBitmap());
+            lastText = barcodeResult.getText();
+            scannerView.setStatusText(barcodeResult.getText());
+            beepManager.playBeepSoundAndVibrate();
+            handleResult(barcodeResult);
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+        }
+    };
 
     protected void registerEvents() {
         Log.d(TAG, "registerEvents Id : " + idAutoComplete.getText().toString());
@@ -426,7 +460,7 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
             }
         });
 
-        fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
+        /*fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (scannerView.getFlash()) {
@@ -435,6 +469,26 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
                 } else {
                     scannerView.setFlash(true);
                     fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
+                }
+            }
+        });*/
+
+        fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (hasFlash()) {
+                    if (isFlashOn) {
+                        isFlashOn = false;
+                        scannerView.setTorchOff();
+                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
+                    } else {
+                        isFlashOn = true;
+                        scannerView.setTorchOn();
+                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on_indicator));
+                    }
+
+                } else {
+                    fabSpeedDial.setVisibility(View.GONE);
                 }
             }
         });
@@ -692,7 +746,7 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
         idAutoComplete.clearFocus();
         idAutoComplete.setText("");
        idIpLayout.setHint("Enter Vehicle Id");
-        scannerView.setAutoFocus(true);
+       // scannerView.setAutoFocus(true);
 
 
     }
@@ -727,9 +781,9 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
         }
     }
 
-    public void handleResult(Result result) {
+    public void handleResult(BarcodeResult result) {
         Log.d(TAG, "handleResult: " + new Gson().toJson(result));
-        submitQRcode(result.getContents());
+        submitQRcode(result.getText());
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -741,7 +795,7 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
 //        restartPreview();
     }
 
-    private void startPreview() {
+   /* private void startPreview() {
 //        areaAutoComplete.setVisibility(View.GONE);
         scannerView.startCamera();
         scannerView.resumeCameraPreview(this);
@@ -758,6 +812,28 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
 
     private void stopCamera() {
         scannerView.stopCamera();
+    }
+
+    private void restartPreview() {
+
+        stopPreview();
+        startPreview();
+    }*/
+
+    private void startPreview() {
+        scannerView.resume();
+    }
+
+    private void stopPreview() {
+        scannerView.pause();
+    }
+
+    private void startCamera() {
+        scannerView.resume();
+    }
+
+    private void stopCamera() {
+        scannerView.pause();
     }
 
     private void restartPreview() {
@@ -1068,5 +1144,10 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
             }
         });
 
+    }
+
+    private boolean hasFlash() {
+        return getApplicationContext().getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 }

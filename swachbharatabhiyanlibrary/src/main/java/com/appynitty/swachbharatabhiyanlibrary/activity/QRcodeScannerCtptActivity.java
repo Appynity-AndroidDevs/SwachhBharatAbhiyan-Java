@@ -901,35 +901,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
 //        restartPreview();
     }
 
-
-   /* private void startPreview() {
-//        areaAutoComplete.setVisibility(View.GONE);
-        scannerView.startCamera();
-        scannerView.resumeCameraPreview(this);
-    }
-
-    private void stopPreview() {
-        scannerView.stopCameraPreview();
-        scannerView.stopCamera();
-    }
-
-    private void startCamera() {
-        scannerView.startCamera();
-    }
-
-    private void stopCamera() {
-        scannerView.stopCamera();
-    }
-
-    private void restartPreview() {
-
-        stopPreview();
-        startPreview();
-    }
-    */
-
     private void startPreview() {
-//        areaAutoComplete.setVisibility(View.GONE);
         scannerView.resume();
     }
 
@@ -985,11 +957,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
             v.vibrate(500);
         }
 
-//        if(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
-//            mAdapter.submitQR(garbageCollectionPojo);
-//        } else {
         insertToDB(garbageCollectionPojo);
-//        }
     }
 
     private void getDumpYardDetails(final String houseNo) {
@@ -1206,9 +1174,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
             entity.setIsOffline(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext));
 
             if (isActivityData) {
-//            entity.setAfterImage(imagePojo.getAfterImage());
-//            entity.setBeforeImage(imagePojo.getBeforeImage());
-//            entity.setComment(imagePojo.getComment());
 
                 try {
                     if (imagePojo.getImage1() != null && imagePojo.getImage2() != null) {
@@ -1233,13 +1198,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
                 }
             }
 
-
-//        SyncServerRepository   mSyncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
-//
-//
-//        Type type = new TypeToken<OfflineGarbageColectionPojo>() {}.getType(); //TODO
-//        mSyncServerRepository.insertSyncServerEntity(new Gson().toJson(entity, type)); //TODO
-
             syncOfflineRepository.insertCollection(entity);
             Prefs.remove(AUtils.BEFORE_IMAGE);
             Prefs.remove(AUtils.AFTER_IMAGE);
@@ -1247,71 +1205,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
             showOfflinePopup(garbageCollectionPojo.getId(), entity.getGcType());
         }
 
-        /*OfflineGarbageColectionPojo entity = new OfflineGarbageColectionPojo();
-
-        entity.setReferenceID(garbageCollectionPojo.getId());
-
-        if ((gcType.equalsIgnoreCase("10")) && gcType.matches("10")) {
-            getIntent().getStringArrayExtra("CTPT");
-            entity.setGcType(String.valueOf(AUtils.CTPT_GC_TYPE));
-        }
-        entity.setNote(garbageCollectionPojo.getComment());
-        entity.setTNS(garbageCollectionPojo.getTNS());
-        entity.setTOT(garbageCollectionPojo.getTOT());
-        entity.setGarbageType(String.valueOf(garbageCollectionPojo.getGarbageType()));
-        entity.setTotalGcWeight(String.valueOf(garbageCollectionPojo.getWeightTotal()));
-        entity.setTotalDryWeight(String.valueOf(garbageCollectionPojo.getWeightTotalDry()));
-        entity.setTotalWetWeight(String.valueOf(garbageCollectionPojo.getWeightTotalWet()));
-        //entity.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
-        entity.setVehicleNumber("1");
-        entity.setLong(Prefs.getString(AUtils.LONG, ""));
-        entity.setLat(Prefs.getString(AUtils.LAT, ""));
-//        entity.setGcDate(AUtils.getServerDateTime());
-        entity.setGcDate(AUtils.getServerDateTimeLocal());
-        entity.setDistance(String.valueOf(garbageCollectionPojo.getDistance()));
-        *//*entity.setGcType(gcType);*//*
-        entity.setIsOffline(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext));
-
-        if (isActivityData) {
-//            entity.setAfterImage(imagePojo.getAfterImage());
-//            entity.setBeforeImage(imagePojo.getBeforeImage());
-//            entity.setComment(imagePojo.getComment());
-
-            try {
-                if (imagePojo.getImage1() != null && imagePojo.getImage2() != null) {
-                    entity.setGpBeforImage(AUtils.getEncodedImage(imagePojo.getImage1(), this));
-                    entity.setGpAfterImage(AUtils.getEncodedImage(imagePojo.getImage2(), this));
-                    entity.setGpBeforImageTime("11:11:55 am");
-                    entity.setGpBeforImageTime(Prefs.getString(AUtils.BEFORE_IMAGE_TIME, null));
-                    Log.e(TAG, "Images are there!");
-                } else if (!Prefs.getString(AUtils.BEFORE_IMAGE, null).isEmpty() || !AUtils.isNullString(Prefs.getString(AUtils.BEFORE_IMAGE, null))) {
-                    entity.setGpBeforImage(AUtils.getEncodedImage(Prefs.getString(AUtils.BEFORE_IMAGE, null), this));
-                    entity.setGpAfterImage(AUtils.getEncodedImage(Prefs.getString(AUtils.AFTER_IMAGE, null), this));
-                    entity.setGpBeforImageTime(Prefs.getString(AUtils.BEFORE_IMAGE_TIME, null));
-                } else {
-                    entity.setGpBeforImage("");
-                    entity.setGpAfterImage("");
-                    Log.e(TAG, "Images are null!");
-                }
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-//        SyncServerRepository   mSyncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
-//
-//
-//        Type type = new TypeToken<OfflineGarbageColectionPojo>() {}.getType(); //TODO
-//        mSyncServerRepository.insertSyncServerEntity(new Gson().toJson(entity, type)); //TODO
-
-        syncOfflineRepository.insertCollection(entity);
-        Prefs.remove(AUtils.BEFORE_IMAGE);
-        Prefs.remove(AUtils.AFTER_IMAGE);
-        Prefs.remove(AUtils.BEFORE_IMAGE_TIME);
-        showOfflinePopup(garbageCollectionPojo.getId(), entity.getGcType());*/
     }
 
     private void showOfflinePopup(String pojo, String garbageType) {
@@ -1334,36 +1227,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
         ownerName.setText(pojo);
         String value = "";
 
-        /*switch (garbageType) {
-            case "1":
-                value = "House Id";
-                break;
-
-            case "2":
-                value = "Garbage Point Id";
-                break;
-            case "3":
-                value = "Dump yard Id  ";
-                break;
-            case "10":
-                value = "CT/PT Id  ";
-                collectionStatus.setText(R.string.cleaned_successful);
-                break;
-            case "-1":
-                if (EmpType.matches("L"))
-                    value = "Liquid waste Id  ";
-                else if (EmpType.matches("S"))
-                    value = "Street waste Id  ";
-                else if (EmpType.matches("N"))
-                    value = "House Id";
-                break;
-            *//*case "4":
-                value = "Liquid waste Id  ";
-                break;
-            case "5":
-                value = "Street waste Id  ";
-                break;*//*
-        }*/
         value = getResources().getString(R.string.string_ctpt_waste_id);
         collectionStatus.setText(getResources().getString(R.string.cleaned_successful));
         houseTitle.setText(value);
@@ -1385,13 +1248,6 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
         });
 
     }
-
-   /* @Override
-    public void onToiletTypePopUpDismissed(String toiletId, String toiletType) {
-        Log.e(TAG, "onEmpSWMTypePopUpDialogDismissed: " + toiletType);
-        startSubmitQRAsyncTask(toiletId, -1, gcType, null, imagePojo.getTNS(), toiletType);
-
-    }*/
 
     private boolean hasFlash() {
         return getApplicationContext().getPackageManager()

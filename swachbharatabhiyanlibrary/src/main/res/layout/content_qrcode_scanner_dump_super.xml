@@ -13,7 +13,17 @@
     <FrameLayout
         android:id="@+id/qr_scanner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/qr_scanner1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:visibility="visible">
+
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
 
     <io.github.kobakei.materialfabspeeddial.FabSpeedDial

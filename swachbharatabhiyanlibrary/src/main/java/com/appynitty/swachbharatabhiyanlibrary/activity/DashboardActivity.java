@@ -1295,6 +1295,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             AUtils.setInPunchDate(Calendar.getInstance());
             Log.i(TAG, AUtils.getInPunchDate());
             AUtils.setIsOnduty(true);
+            AUtils.success(mContext, getString(R.string.shif_start));
         } else if (empType.matches("D")){
 
         }

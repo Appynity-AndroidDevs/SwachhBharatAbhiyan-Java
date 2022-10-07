@@ -45,7 +45,7 @@ public class HistoryAdapterClass {
     }
 
     public void fetchHistory(final String year, final String month) {
-        new MyAsyncTask(AUtils.currentContextConstant, true, new MyAsyncTask.AsynTaskListener() {
+        new MyAsyncTask(AUtils.currentContextConstant, false, new MyAsyncTask.AsynTaskListener() {
             @Override
             public void doInBackgroundOpration(SyncServer syncServer) {
                 Boolean isSuccess = syncServer.pullWorkHistoryListFromServer(year, month);

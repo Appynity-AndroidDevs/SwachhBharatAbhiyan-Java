@@ -159,4 +159,16 @@ public class SyncOfflineActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        alertDialog.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        alertDialog.dismiss();
+    }
 }

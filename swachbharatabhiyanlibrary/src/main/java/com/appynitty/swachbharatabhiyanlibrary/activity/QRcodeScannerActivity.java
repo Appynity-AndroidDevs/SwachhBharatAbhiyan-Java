@@ -68,7 +68,6 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.pixplicity.easyprefs.library.Prefs;
-import com.riaylibrary.custom_component.MyProgressDialog;
 import com.riaylibrary.utils.LocaleHelper;
 
 import java.io.IOException;
@@ -338,7 +337,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
             idAutoComplete.setHint(getResources().getString(R.string.hp_gp_id_hint));
             radioSelection = AUtils.RADIO_SELECTED_HP;
             houseCollectionRadio.setText(R.string.waste_collection_radio);
-        }else if (EmpType.matches("D")) {
+        } else if (EmpType.matches("D")) {
             idAutoComplete.setHint(getResources().getString(R.string.hp_gp_id_hint));
             radioSelection = AUtils.RADIO_SELECTED_DY;
             houseCollectionRadio.setText(R.string.dump_collection_radio);
@@ -773,11 +772,10 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
             } else if (houseid.substring(0, 2).matches("^[GgPp]+$")) {
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.gp_qr_alert), null);
             } else if (houseid.substring(0, 2).matches("^[DdYy]+$")) {
-               AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.dy_qr_alert), null);
+                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.dy_qr_alert), null);
                 //getDumpYardDetails(houseid);
             }
-        }
-        else {
+        } else {
             if (houseid.substring(0, 2).matches("^[HhPp]+$"))
                 validateTypeOfCollection(houseid);
            /* else if (houseid.substring(0, 2).matches("^[GgPp]+$"))
@@ -1051,14 +1049,14 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
     }
 
     private void getDumpYardSuperDetails(final String houseNo, @Nullable final int garbageType, @Nullable final String gcType, @Nullable final String comment) {
-        String allData = houseNo+","+garbageType+","+gcType+","+comment;
+        String allData = houseNo + "," + garbageType + "," + gcType + "," + comment;
         stopCamera();
-        Log.e(TAG, "all data :- " +allData);
+        Log.e(TAG, "all data :- " + allData);
         setGarbageCollectionPojo(houseNo, garbageType, gcType, comment);
         Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
-  //      insertToDB(garbageCollectionPojo);
+        //      insertToDB(garbageCollectionPojo);
 
-        Log.e(TAG,"Dumyard Supervisor : "+houseNo);
+        Log.e(TAG, "Dumyard Supervisor : " + houseNo);
         Intent intent = new Intent(mContext, DumpYardWeightActivity.class);
         intent.putExtra(AUtils.dumpYardId, houseNo);
         startActivityForResult(intent, DUMP_YARD_DETAILS_REQUEST_CODE);
@@ -1245,7 +1243,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
             entity.setGcType("4");
         } else if (garbageCollectionPojo.getId().substring(0, 2).matches("^[SsSs]+$")) {
             entity.setGcType("5");
-        }else if (garbageCollectionPojo.getId().substring(0, 2).matches("^[VvQqRr]+$")) {
+        } else if (garbageCollectionPojo.getId().substring(0, 2).matches("^[VvQqRr]+$")) {
             entity.setGcType("6");
         }
         entity.setNote(garbageCollectionPojo.getComment());
@@ -1302,6 +1300,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
         Prefs.remove(AUtils.BEFORE_IMAGE);
         Prefs.remove(AUtils.AFTER_IMAGE);
         showOfflinePopup(garbageCollectionPojo.getId(), entity.getGcType());
+
     }
 
     private void showOfflinePopup(String pojo, String garbageType) {

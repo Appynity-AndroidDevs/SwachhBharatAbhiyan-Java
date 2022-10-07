@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.connection;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
@@ -80,8 +81,10 @@ public class SyncServer {
 
             e.printStackTrace();
         }
+        Log.d(TAG, "saveLoginDetails: "+resultPojo);
         return resultPojo;
     }
+
 
     public GcResultPojo saveGarbageCollection(GarbageCollectionPojo garbageCollectionPojo) {
 

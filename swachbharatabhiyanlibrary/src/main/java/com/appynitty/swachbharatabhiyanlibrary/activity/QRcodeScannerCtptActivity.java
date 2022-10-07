@@ -23,13 +23,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,13 +33,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ListPopupWindow;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.AutocompleteContainSearch;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.VehicleNoListAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaHouseAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AreaPointAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.CollectionAreaAdapterClass;
@@ -53,13 +47,11 @@ import com.appynitty.swachbharatabhiyanlibrary.dialogs.GarbageTypePopUp;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.ToiletTypePopUp;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaPointPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionDumpYardPointPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GarbageCollectionPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GcResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.ImagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.OfflineGarbageColectionPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -67,6 +59,13 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.BeepManager;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.MyProgressDialog;
 import com.riaylibrary.utils.LocaleHelper;
@@ -74,23 +73,24 @@ import com.riaylibrary.utils.LocaleHelper;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
-import me.dm7.barcodescanner.zbar.Result;
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
 /******  Rahul Rokade 24/09/22 **************/
-public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler, GarbageTypePopUp.GarbagePopUpDialogListener/*, ToiletTypePopUp.ToiletTypePopUpDialogListener*/ {
+public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZBarScannerView.ResultHandler,*/ GarbageTypePopUp.GarbagePopUpDialogListener/*, ToiletTypePopUp.ToiletTypePopUpDialogListener*/ {
 
     private final static String TAG = "QRcodeScannerCtptActivity";
     private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 100;
     GarbageCollectionPojo garbageCollectionPojo;
     private Context mContext;
     private Toolbar toolbar;
-    private ZBarScannerView scannerView;
+    //private ZBarScannerView scannerView;
+    private DecoratedBarcodeView scannerView;
     private FabSpeedDial fabSpeedDial;
     private TextInputLayout idIpLayout;
     private AutoCompleteTextView idAutoComplete;
@@ -117,9 +117,11 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
     private ToiletTypePopUp toiletTypePopUp;
     TextView collectionStatus;
     private String EmpType, gcType;
-    private String areaType;
+    private String areaType, lastText;
     private Uri uri;
     private String CtptId;
+    private BeepManager beepManager;
+    private boolean isFlashOn;
 
 
 
@@ -314,6 +316,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         idAutoComplete.setSingleLine();
 
         idIpLayout = findViewById(R.id.txt_id_layout);
+        beepManager = new BeepManager(QRcodeScannerCtptActivity.this);
 
         setHints();
 
@@ -321,15 +324,22 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         permissionBtn = findViewById(R.id.grant_permission);
         contentView = findViewById(R.id.scanner_view);
 
+        scannerView = findViewById(R.id.qr_scanner1);
+
         imagePojo = null;
         isActivityData = false;
         isScanQr = true;
 
         ViewGroup contentFrame = findViewById(R.id.qr_scanner);
-        scannerView = new ZBarScannerView(mContext);
+        /*scannerView = new ZBarScannerView(mContext);
         scannerView.setLaserColor(getResources().getColor(R.color.colorPrimary));
         scannerView.setBorderColor(getResources().getColor(R.color.colorPrimary));
-        contentFrame.addView(scannerView);
+        contentFrame.addView(scannerView);*/
+
+        Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
+        scannerView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
+        scannerView.initializeFromIntent(getIntent());
+        scannerView.decodeContinuous(callback);
 
         EmpType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null); //added by Swapnil
         gcType = "";
@@ -351,6 +361,26 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
+
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult barcodeResult) {
+            if (barcodeResult.getText() == null || barcodeResult.getText().equals(lastText)) {
+                // Prevent duplicate scans
+                return;
+            }
+
+            Log.e(TAG, "barcodeResult: " + barcodeResult.getText() + ", Bitmap: " + barcodeResult.getBitmap());
+            lastText = barcodeResult.getText();
+            scannerView.setStatusText(barcodeResult.getText());
+            beepManager.playBeepSoundAndVibrate();
+            handleResult(barcodeResult);
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+        }
+    };
 
     protected void registerEvents() {
         Log.d(TAG, "registerEvents Id : " + idAutoComplete.getText().toString());
@@ -461,7 +491,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
             }
         });
 
-        fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
+        /*fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (scannerView.getFlash()) {
@@ -472,7 +502,28 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
                     fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
                 }
             }
+        });*/
+
+        fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (hasFlash()) {
+                    if (isFlashOn) {
+                        isFlashOn = false;
+                        scannerView.setTorchOff();
+                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
+                    } else {
+                        isFlashOn = true;
+                        scannerView.setTorchOn();
+                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on_indicator));
+                    }
+
+                } else {
+                    fabSpeedDial.setVisibility(View.GONE);
+                }
+            }
         });
+
 
         mHpAdapter.setAreaHouseListener(new AreaHouseAdapterClass.AreaHouseListener() {
             @Override
@@ -800,7 +851,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 
         idAutoComplete.clearFocus();
         idAutoComplete.setText("");
-        scannerView.setAutoFocus(true);
+       // scannerView.setAutoFocus(true);
 
 
     }
@@ -831,14 +882,14 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         }
     }
 
-    public void handleResult(Result result) {
+    public void handleResult(BarcodeResult result) {
 
         Log.d(TAG, "handleResult: " + new Gson().toJson(result));
         uri = Uri.parse(String.valueOf(result));
         CtptId = uri.getQueryParameter("sid");
         Log.e(TAG,"CTPT id is: "+CtptId);
 
-        submitQRcode(result.getContents());
+        submitQRcode(result.getText());
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -850,7 +901,8 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
 //        restartPreview();
     }
 
-    private void startPreview() {
+
+   /* private void startPreview() {
 //        areaAutoComplete.setVisibility(View.GONE);
         scannerView.startCamera();
         scannerView.resumeCameraPreview(this);
@@ -874,6 +926,31 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         stopPreview();
         startPreview();
     }
+    */
+
+    private void startPreview() {
+//        areaAutoComplete.setVisibility(View.GONE);
+        scannerView.resume();
+    }
+
+    private void stopPreview() {
+        scannerView.pause();
+    }
+
+    private void startCamera() {
+        scannerView.resume();
+    }
+
+    private void stopCamera() {
+        scannerView.pause();
+    }
+
+    private void restartPreview() {
+
+        stopPreview();
+        startPreview();
+    }
+
 
     private void validateTypeOfCollection(String houseid) {
         if (Prefs.getBoolean(AUtils.PREFS.IS_GT_FEATURE, false)) {
@@ -1315,4 +1392,9 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements ZBar
         startSubmitQRAsyncTask(toiletId, -1, gcType, null, imagePojo.getTNS(), toiletType);
 
     }*/
+
+    private boolean hasFlash() {
+        return getApplicationContext().getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    }
 }

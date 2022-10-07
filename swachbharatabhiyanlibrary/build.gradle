@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 23
@@ -69,6 +69,7 @@ dependencies {
 
     /** QR code scanner */
     implementation('me.dm7.barcodescanner:zbar:1.9.13')
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 
     /** Material Fab Button */
     implementation 'com.github.kobakei:MaterialFabSpeedDial:1.2.0'

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 31
     defaultConfig {
         applicationId "com.appynitty.swachbharatabhiyan"
-        minSdkVersion 23
+        minSdk 24
         targetSdkVersion 31
         //for vengurla 4 version
         versionCode 1

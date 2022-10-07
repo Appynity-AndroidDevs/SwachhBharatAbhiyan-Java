@@ -75,11 +75,12 @@ public class AUtils extends CommonUtils {
     /*****
      * CTPT URL : http://202.65.157.254:6510/
      * shrirampur app id 3111
-     *
+     * live url - http://202.65.157.254:5049
      *Username : ttest
      * Password : ttest
      * */
     public static final String SERVER_URL = "http://202.65.157.254:6510/";
+   // public static final String SERVER_URL = "http://202.65.157.254:5049";
 
 
     /**

@@ -183,3 +183,5 @@ build/intermediates/lint-cache/typos-en.txt-2.bin
 
 /.idea/
 /.idea/libraries/
+/app/release/
+/.idea/libraries/

@@ -7,6 +7,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0ed202c41dc873fe231269f57def6795/transformed/jetified-md-toast-0.9.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0ed202c41dc873fe231269f57def6795/transformed/jetified-md-toast-0.9.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0ed202c41dc873fe231269f57def6795/transformed/jetified-md-toast-0.9.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d41f7d3155a1e7eca88df9450385080e/transformed/jetified-md-toast-0.9.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d41f7d3155a1e7eca88df9450385080e/transformed/jetified-md-toast-0.9.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d41f7d3155a1e7eca88df9450385080e/transformed/jetified-md-toast-0.9.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.valdesekamdem.library/md-toast/0.9.0/8f1735b03afa949e52b87763cd8eaffe22fe13c9/md-toast-0.9.0-javadoc.jar!/" />

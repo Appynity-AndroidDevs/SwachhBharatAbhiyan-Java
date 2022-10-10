@@ -113,7 +113,15 @@ public class SyncOfflineAdapterClass {
                             else
                                 areaWarningListener.onError(result.getMessage());
 
+                        } else {
+                            syncOfflineList.clear();
+                            syncOfflineRepository.deleteCompleteSyncTableData();
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                AUtils.error(mContext, result.getMessageMar());
+                            else
+                                AUtils.error(mContext, result.getMessage());
                         }
+
                     }
 
                     if (Integer.parseInt(result.getID()) != 0) {

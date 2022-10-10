@@ -63,7 +63,7 @@ public class LocationService extends Service {
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
     private static final int LOCATION_SERVICE_NOTIF_ID = 1001;
     private static final String CHANNEL_ID = "my_service";
-    private static final String TAG = "LocationUpdateService";
+    private static final String TAG = "LocationService";
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
     private LocationSettingsRequest locationSettingsRequest;
@@ -184,8 +184,9 @@ public class LocationService extends Service {
     private void initData() {
 
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+//        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setSmallestDisplacement(1);  //in meters
 
         LocationSettingsRequest.Builder builder = new
                 LocationSettingsRequest.Builder();
@@ -202,7 +203,7 @@ public class LocationService extends Service {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-
+                    Log.e(TAG, "onLocationResult: Lat: " + location.getLatitude() + ", Long: " + location.getLongitude());
                     Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
                     Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
 
@@ -228,10 +229,7 @@ public class LocationService extends Service {
     private class TimerTaskToSendLocation extends TimerTask {
         @Override
         public void run() {
-
             sendLocation();
-
-
         }
     }
 

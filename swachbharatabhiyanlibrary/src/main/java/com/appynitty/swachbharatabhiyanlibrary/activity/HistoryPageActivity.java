@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -125,6 +126,8 @@ public class HistoryPageActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position > 0 && yearSpinner.getSelectedItemPosition() > 0) {
+                    String month = String.valueOf(position);
+                    Log.d(TAG, "onItemSelected: "+month);
                     mAdapter.fetchHistory(
                             yearSpinner.getSelectedItem().toString(),
                             String.valueOf(position)
@@ -145,6 +148,9 @@ public class HistoryPageActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position > 0 && monthSpinner.getSelectedItemPosition() > 0) {
+
+                    String sMonth = String.valueOf(monthSpinner.getSelectedItemPosition());
+                    Log.d(TAG, "onItemSelected: "+sMonth);
                     mAdapter.fetchHistory(
                             yearSpinner.getSelectedItem().toString(),
                             String.valueOf(monthSpinner.getSelectedItemPosition())
@@ -199,11 +205,11 @@ public class HistoryPageActivity extends AppCompatActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-
+//
                                 findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
                                 noInternetErrorLayout.setVisibility(View.GONE);
-                                mAdapter.fetchHistory(String.valueOf(AUtils.getCurrentYear()),
-                                        String.valueOf(AUtils.getCurrentMonth()));
+//                                mAdapter.fetchHistory(String.valueOf(AUtils.getCurrentYear()),
+//                                        String.valueOf(AUtils.getCurrentMonth())+1);
                             }
                         });
 
@@ -237,6 +243,10 @@ public class HistoryPageActivity extends AppCompatActivity {
                 R.layout.layout_simple_white_textview, AUtils.getMonthList());
         monthSpinner.setAdapter(spinnerAdapter);
         monthSpinner.setSelection((AUtils.getCurrentMonth() + 1), true);
+
+        int currentMonth = AUtils.getCurrentMonth() + 1;
+        Log.d(TAG, "setMonthSpinner: " + currentMonth);
+
     }
 
     public void setYearSpinner(Spinner yearSpinner) {
@@ -251,6 +261,7 @@ public class HistoryPageActivity extends AppCompatActivity {
         noInternetErrorLayout.setVisibility(View.GONE);
         historyPojoList = mAdapter.getworkHistoryTypePojoList();
 
+        Log.d(TAG, "setHistoryData: "+historyPojoList);
         if (!AUtils.isNull(historyPojoList) && !historyPojoList.isEmpty()) {
             historyGrid.setVisibility(View.VISIBLE);
             noDataErrorLayout.setVisibility(View.GONE);

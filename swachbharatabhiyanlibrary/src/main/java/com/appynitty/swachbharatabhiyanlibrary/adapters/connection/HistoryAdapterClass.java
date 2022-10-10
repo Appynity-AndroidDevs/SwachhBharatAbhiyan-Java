@@ -16,7 +16,6 @@ public class HistoryAdapterClass {
     private List<TableDataCountPojo.WorkHistory> workHistoryPojoList;
 
 
-
     private static final Gson gson = new Gson();
 
     private HistoryListener mListener;
@@ -54,9 +53,9 @@ public class HistoryAdapterClass {
             @Override
             public void onFinished() {
 
-                if(!AUtils.isNull(getworkHistoryTypePojoList()) && !getworkHistoryTypePojoList().isEmpty()){
+                if (!AUtils.isNull(getworkHistoryTypePojoList()) && !getworkHistoryTypePojoList().isEmpty()) {
                     mListener.onSuccessCallBack();
-                }else{
+                } else {
                     mListener.onFailureCallBack();
                 }
             }

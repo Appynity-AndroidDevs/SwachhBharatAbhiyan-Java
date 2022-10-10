@@ -778,7 +778,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
             }
         }
         else {
-            if (houseid.substring(0, 2).matches("^[HhPp]+$"))
+            if (houseid.substring(0,5).matches("^[HhPpSsBbAa]+$"))
                 validateTypeOfCollection(houseid);
            /* else if (houseid.substring(0, 2).matches("^[GgPp]+$"))
                 startSubmitQRAsyncTask(houseid, -1, null);*/

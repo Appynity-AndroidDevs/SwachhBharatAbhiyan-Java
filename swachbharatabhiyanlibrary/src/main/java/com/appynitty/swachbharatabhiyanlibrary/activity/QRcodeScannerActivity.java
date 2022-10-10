@@ -108,7 +108,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
     private DumpYardAdapterClass mDyAdapter;
     private CollectionAreaAdapterClass mAreaAdapter;
     private GarbageCollectionAdapterClass mAdapter;
-    //        private SyncServerRepository syncServerRepository; //TODO
+    //        private SyncServerRepository syncServerRepository; //
     private SyncOfflineRepository syncOfflineRepository;
     private SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
 
@@ -134,6 +134,10 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 
         initComponents();
 
+        String lat = Prefs.getString(AUtils.LAT, null);
+        String longi = Prefs.getString(AUtils.LONG, null);
+
+        Log.d(TAG, "onCreate: " + lat + "   " + longi);
     }
 
     @Override
@@ -371,7 +375,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 
         initToolbar();
 
-//        syncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext()); //TODO
+//        syncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext()); //
         syncOfflineRepository = new SyncOfflineRepository(AUtils.mainApplicationConstant.getApplicationContext());
         syncOfflineAttendanceRepository = new SyncOfflineAttendanceRepository(AUtils.mainApplicationConstant.getApplicationContext());
 
@@ -394,6 +398,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
                 // Prevent duplicate scans
                 return;
             }
+
 
             Log.e(TAG, "barcodeResult: " + result.getText() + ", Bitmap: " + result.getBitmap());
             lastText = result.getText();
@@ -731,6 +736,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 
     private void submitQRcode(String houseid) {
 
+        Log.i("SANATH", "barcodeResult: " + houseid);
         //Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null
         if (EmpType.matches("L")) {
 
@@ -776,18 +782,24 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
                 //getDumpYardDetails(houseid);
             }
         } else {
-            if (houseid.substring(0, 2).matches("^[HhPp]+$"))
-                validateTypeOfCollection(houseid);
+            if (houseid.length() >= 5) {
+
+                if (houseid.substring(0, 2).matches("^[HhPp]+$"))
+                    validateTypeOfCollection(houseid);
            /* else if (houseid.substring(0, 2).matches("^[GgPp]+$"))
                 startSubmitQRAsyncTask(houseid, -1, null);*/
-            else if (houseid.substring(0, 2).matches("^[DdYy]+$"))
-                getDumpYardDetails(houseid);
-            else if (houseid.substring(0, 2).matches("^[LlWw]+$")) {
+                else if (houseid.substring(0, 2).matches("^[DdYy]+$"))
+                    getDumpYardDetails(houseid);
+                else if (houseid.substring(0, 2).matches("^[LlWw]+$")) {
 //                AUtils.warning(QRcodeScannerActivity.this, "For scanning Liquid Waste Collection QR,\nkindly login with liquid waste cleaning id", 16);
-                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.lwc_qr_alert), null);
-            } else if (houseid.substring(0, 2).matches("^[SsSs]+$")) {
+                    AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.lwc_qr_alert), null);
+                } else if (houseid.substring(0, 2).matches("^[SsSs]+$")) {
 //                AUtils.warning(QRcodeScannerActivity.this, "For scanning Liquid Waste Collection QR,\nkindly login with liquid waste cleaning id", 16);
-                AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.ssc_qr_warning), null);
+                    AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.ssc_qr_warning), null);
+                } else {
+                    AUtils.warning(QRcodeScannerActivity.this, mContext.getResources().getString(R.string.qr_error));
+                    restartPreview();
+                }
             } else {
                 AUtils.warning(QRcodeScannerActivity.this, mContext.getResources().getString(R.string.qr_error));
                 restartPreview();
@@ -807,6 +819,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
         View view = View.inflate(mContext, R.layout.layout_qr_result, null);
         builder.setView(view);
         final AlertDialog dialog = builder.create();
+
         if (!dialog.isShowing()) {
 
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -816,9 +829,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
                 //deprecated in API 26
                 v.vibrate(500);
             }
-
             dialog.show();
-
         }
 
         final String responseStatus = pojo.getStatus();
@@ -964,6 +975,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
     public void handleResult(BarcodeResult result) {
         Log.d(TAG, "handleResult: " + new Gson().toJson(result));
         submitQRcode(result.getText());
+
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -1016,8 +1028,16 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 //            mAdapter.submitQR(garbageCollectionPojo);
 //        }
 //        else {
+
+        // TODO : PUT IF CONDITION TO CHECK IF LAT LONG IS AVAILABLE OR NOT
         Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
-        insertToDB(garbageCollectionPojo);
+
+        if (Prefs.getString(AUtils.LAT, null) != null && Prefs.getString(AUtils.LONG, null) != null) {
+            insertToDB(garbageCollectionPojo);
+        } else {
+            AUtils.warning(QRcodeScannerActivity.this, getResources().getString(R.string.no_location_found));
+        }
+
 //        }
     }
 
@@ -1034,6 +1054,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
             v.vibrate(500);
         }
 
+        Log.d(TAG, "startSubmitQRAsyncTask: " + map);
 //        if(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
 //            mAdapter.submitQR(garbageCollectionPojo);
 //        } else {
@@ -1293,8 +1314,8 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 //        SyncServerRepository   mSyncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
 //
 //
-//        Type type = new TypeToken<OfflineGarbageColectionPojo>() {}.getType(); //TODO
-//        mSyncServerRepository.insertSyncServerEntity(new Gson().toJson(entity, type)); //TODO
+//        Type type = new TypeToken<OfflineGarbageColectionPojo>() {}.getType(); //
+//        mSyncServerRepository.insertSyncServerEntity(new Gson().toJson(entity, type)); //
 
         syncOfflineRepository.insertCollection(entity);
         Prefs.remove(AUtils.BEFORE_IMAGE);

@@ -96,7 +96,7 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                                 }
                             }
                         } else {
-                            Toast.makeText(context, "Hello, there!", Toast.LENGTH_SHORT).show();
+                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
                         }
                     } else {
                         AUtils.warning(context, context.getResources().getString(R.string.be_no_duty));

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 //           Prefs.putString(AUtils.APP_ID, "3041");
 //        Prefs.putString(AUtils.APP_ID, "1003");
 //        Prefs.putInt(AUtils.VERSION_CODE, BuildConfig.VERSION_CODE);
-        Prefs.putInt(AUtils.VERSION_CODE, BuildConfig.VERSION_CODE);
+        Prefs.putInt(AUtils.VERSION_CODE, 2);
 //        initLanguageList();
 
         startActivity(new Intent(MainActivity.this, WelcomeActivity.class));

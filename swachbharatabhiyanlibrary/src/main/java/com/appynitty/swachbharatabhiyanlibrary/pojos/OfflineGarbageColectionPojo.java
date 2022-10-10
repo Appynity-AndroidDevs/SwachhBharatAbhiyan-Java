@@ -3,37 +3,21 @@ package com.appynitty.swachbharatabhiyanlibrary.pojos;
 public class OfflineGarbageColectionPojo {
 
     private String note;
-
     private String empType;
-
     private String totalDryWeight;
-
     private String totalGcWeight;
-
     private String ReferenceID;
-
     private String garbageType;
-
     private String OfflineID;
-
     private String Long;
-
     private String gcType;
-
     private String vehicleNumber;
-
     private String totalWetWeight;
-
     private String userId;
-
     private String Lat;
-
     private String gcDate;
-
     private String distance;
-
     private Boolean isOffline;
-
     private String gpBeforImage;
     private String gpBeforImageTime;
     private String gpAfterImage;

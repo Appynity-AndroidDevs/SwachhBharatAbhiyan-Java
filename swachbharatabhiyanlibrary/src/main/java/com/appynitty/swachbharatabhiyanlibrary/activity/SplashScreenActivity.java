@@ -52,11 +52,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         setDefaultLanguage();
 
-        if(AUtils.isInternetAvailable())
+        /*if(AUtils.isInternetAvailable())
             mAdapter.checkVersionDetails();
         else
-            loadNextPage();
-
+            loadNextPage();*/
+        loadNextPage();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mAdapter.setVersionDetailsListener(new VersionDetailsAdapterClass.VersionDetailsListener() {

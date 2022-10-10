@@ -207,8 +207,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         AUtils.currentContextConstant = mContext;
         checkIsFromLogin();
         initUserDetails();
-
-
     }
 
     @Override

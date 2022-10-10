@@ -234,8 +234,6 @@ public class LocationMonitoringService implements LocationListener, GpsStatus.Li
                         Log.d(TAG, "updated Time ==== " + updatedTime);
 
                     }
-
-
 //                      sendLocation();
 
                 }

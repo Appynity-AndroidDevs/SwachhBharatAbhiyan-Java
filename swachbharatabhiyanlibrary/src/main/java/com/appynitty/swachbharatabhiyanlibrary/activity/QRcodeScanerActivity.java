@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -644,6 +645,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
                 areaAutoComplete.requestFocus();
                 idAutoComplete.clearListSelection();
                 inflateAreaAutoComplete(mAreaAdapter.getAreaPojoList());
+                inflateAreaAutoCompleteA(mAreaAdapter.getAreaPojoList());
 
             }
 
@@ -658,6 +660,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
             @Override
             public void onSuccessCallBack() {
                 inflateHpAutoComplete(mHpAdapter.getHpPojoList());
+                inflateHpAutoCompleteHouse(mHpAdapter.getHpPojoList());
             }
 
             @Override
@@ -851,7 +854,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
                 collectionStatus.setText(getResources().getString(R.string.garbage_deposit_completed));
             }
 
-            houseId.setText(id);
+            houseId.setText(id.trim());
 //            ownerName.setText(pojo.getName());
 //            ownerMobile.setText(pojo.getMobile());
 
@@ -1088,6 +1091,45 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
 
     }
 
+    private void inflateAreaAutoCompleteA(List<CollectionAreaPojo> pojoList) {
+
+        areaHash = new HashMap<>();
+        ArrayList<String> keyList = new ArrayList<>();
+        for (CollectionAreaPojo pojo : pojoList) {
+            areaHash.put(pojo.getArea().toLowerCase()/**/, pojo.getId());
+            keyList.add(pojo.getArea().trim());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+        /*areaAutoComplete.setThreshold(0);
+        areaAutoComplete.setAdapter(adapter);
+        if (!areaAutoComplete.isFocused()) {
+            areaAutoComplete.requestFocus();
+        }*/
+
+        areaAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (keyList.size() >0){
+                    if (areaAutoComplete.getText().toString().equals("")){
+                        if (adapter != null){
+                            adapter.getFilter().filter(areaAutoComplete.toString());
+                        }
+                        //adapter.getFilter().filter(null);
+                        areaAutoComplete.showDropDown();
+                        areaAutoComplete.setThreshold(0);
+                        areaAutoComplete.setAdapter(adapter);
+                        areaAutoComplete.requestFocus();
+
+                    }
+                }
+                return false;
+            }
+        });
+
+    }
+
     private void inflateHpAutoComplete(List<CollectionAreaHousePojo> pojoList) {
 
         idHash = new HashMap<>();
@@ -1102,6 +1144,43 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
         idAutoComplete.setThreshold(0);
         idAutoComplete.setAdapter(adapter);
         idAutoComplete.requestFocus();
+    }
+
+    private void inflateHpAutoCompleteHouse(List<CollectionAreaHousePojo> pojoList) {
+
+        idHash = new HashMap<>();
+        ArrayList<String> keyList = new ArrayList<>();
+        for (CollectionAreaHousePojo pojo : pojoList) {
+            idHash.put(pojo.getHouseNumber().toLowerCase(), pojo.getHouseid());
+            keyList.add(pojo.getHouseNumber().trim());
+        }
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+        AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+        /*idAutoComplete.setThreshold(0);
+        idAutoComplete.setAdapter(adapter);
+        idAutoComplete.requestFocus();*/
+
+        idAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (keyList.size() >0){
+                    if (idAutoComplete.getText().toString().equals("")){
+                        if (adapter != null){
+                            adapter.getFilter().filter(idAutoComplete.toString());
+                        }
+                        //adapter.getFilter().filter(null);
+                        idAutoComplete.showDropDown();
+                        idAutoComplete.setThreshold(0);
+                        idAutoComplete.setAdapter(adapter);
+                        idAutoComplete.requestFocus();
+
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void inflateGpAutoComplete(List<CollectionAreaPointPojo> pojoList) {

@@ -1411,7 +1411,20 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 if (AUtils.isNull(vehicleTypePojoList)) {
                     vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
                 }
-                for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+                if (vehicleTypePojoList != null){
+                    for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+
+                        if (Prefs.getString(AUtils.VEHICLE_ID, "").equals(vehicleTypePojoList.get(i).getVtId())) {
+                            //rahul
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                vehicleName = vehicleTypePojoList.get(i).getDescriptionMar();
+                            else
+                                vehicleName = vehicleTypePojoList.get(i).getDescription();
+                        }
+                    }
+                }
+
+                /*for (int i = 0; i < vehicleTypePojoList.size(); i++) {
 
                     if (Prefs.getString(AUtils.VEHICLE_ID, "").equals(vehicleTypePojoList.get(i).getVtId())) {
                         //rahul
@@ -1420,7 +1433,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         else
                             vehicleName = vehicleTypePojoList.get(i).getDescription();
                     }
-                }
+                }*/
 
                 if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, ""))) {
 

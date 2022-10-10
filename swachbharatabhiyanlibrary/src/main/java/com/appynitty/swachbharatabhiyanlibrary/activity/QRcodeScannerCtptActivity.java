@@ -626,7 +626,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
 
             if (houseid.substring(0, 2).matches("^[LlWw]+$")) {
                 startSubmitQRAsyncTask(houseid, -1, gcType, null, null, null);
-            } else if (houseid.substring(0, 2).matches("^[HhPp]+$")) {
+            } else if (houseid.substring(0, 5).matches("^[HhPpSsBbAa]+$")) {
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.house_qr_alert), null);
             } else if (houseid.substring(0, 2).matches("^[GgPp]+$")) {
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.gp_qr_alert), null);
@@ -641,7 +641,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
 
             if (houseid.substring(0, 2).matches("^[SsSs]+$")) {
                 startSubmitQRAsyncTask(houseid, -1, gcType, null, null, null);
-            } else if (houseid.substring(0, 2).matches("^[HhPp]+$")) {
+            } else if (houseid.substring(0, 5).matches("^[HhPpSsBbAa]+$")) {
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.house_qr_alert), null);
             } else if (houseid.substring(0, 2).matches("^[GgPp]+$")) {
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.gp_qr_alert), null);
@@ -693,7 +693,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
             } else if (houseid.substring(0, 2).matches("^[SsSs]+$")) {
 //                AUtils.warning(QRcodeScannerActivity.this, "For scanning Liquid Waste Collection QR,\nkindly login with liquid waste cleaning id", 16);
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.ssc_qr_warning), null);
-            }else if (houseid.substring(0, 2).matches("^[HhPp]+$")) {
+            }else if (houseid.substring(0, 5).matches("^[HhPpSsBbAa]+$")) {
                 AUtils.showDialog(mContext, getResources().getString(R.string.alert), getResources().getString(R.string.house_qr_alert), null);
             }
 
@@ -752,7 +752,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
                 ownerName.setText(pojo.getName());
             }
 
-            if (id.substring(0, 2).matches("^[HhPp]+$")) {
+            if (id.substring(0, 5).matches("^[HhPpSsBbAa]+$")) {
                 ownerMobile.setText(pojo.getMobile());
             } else if (id.substring(0, 2).matches("^[CcTtPpTt]+$")) {
                 ownerMobile.setText(pojo.getMobile());

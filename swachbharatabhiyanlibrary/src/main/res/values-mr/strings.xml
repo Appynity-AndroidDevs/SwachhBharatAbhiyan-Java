@@ -213,5 +213,7 @@
     <string name="shift_end">शिफ्ट संपली</string>
     <string name="out_of_area_msg">तुम्ही स्कॅनिंग क्षेत्राच्या बाहेर आहात. कृपया परिसरात जा आणि पुन्हा प्रयत्न करा</string>
     <string name="usr_name_pwd_mismatch_warning">वापरकर्ता नाव किंवा पासवर्ड जुळत नाही</string>
+    <string name="perminssion_needed_title">परमिशन आवश्यक!</string>
+    <string name="loc_allow_all_time_txt">बॅकग्राऊंड लोकेशन परमिशन आवश्यक आहे!, पुढील स्क्रीनवर  Allow all the time वर टॅप करा</string>
 
 </resources>

@@ -538,7 +538,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 //                .checkSelfPermission(LoginActivity.this,
 //                        Manifest.permission.ACCESS_BACKGROUND_LOCATION)
 
-                +ActivityCompat
+                ActivityCompat
 
 
                         .checkSelfPermission(LoginActivity.this,

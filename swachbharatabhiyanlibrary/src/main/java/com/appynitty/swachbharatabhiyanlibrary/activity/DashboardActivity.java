@@ -4,6 +4,7 @@ import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.getAppGeoArea
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,9 +31,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -104,6 +107,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private static final int REQUEST_CAMERA = 22;
     private static final int SELECT_FILE = 33;
+    private static final int BACKGROUND_LOCATION_PERMISSION_CODE = 127;
 
     private Context mContext;
     private FabSpeedDial fab;
@@ -231,14 +235,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             } else if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                 AUtils.showPermissionDialog(mContext, "This service is using Location Service", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.Q)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            requestPermissions(new String[]{
-                                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                                    AUtils.MY_PERMISSIONS_REQUEST_LOCATION);
-                        }
+                        requestPermissions(new String[]{
+                                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                                AUtils.MY_PERMISSIONS_REQUEST_LOCATION);
                     }
                 });
             } else {
@@ -399,6 +402,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private void initComponents() {
         isView = true;
+        checkPermission();
         getPermission();
         generateId();
         registerEvents();
@@ -1356,6 +1360,75 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         isView = false;
         isDeviceMatch = false;
         super.onDestroy();
+    }
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // Fine Location permission is granted
+            // Check if current android version >= 11, if >= 11 check for Background Location permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (ContextCompat.checkSelfPermission(DashboardActivity.this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    // Background Location Permission is granted so do your work here
+                } else {
+                    // Ask for Background Location Permission
+                    askPermissionForBackgroundUsage();
+                }
+            }
+        } else {
+            // Fine Location Permission is not granted so ask for permission
+            askForLocationPermission();
+        }
+    }
+
+    private void askForLocationPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission Needed!")
+                    .setMessage("Location Permission Needed!")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(DashboardActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, AUtils.MY_PERMISSIONS_REQUEST_LOCATION);
+                        }
+                    })
+                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Permission is denied by the user
+                        }
+                    })
+                    .create().show();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, AUtils.MY_PERMISSIONS_REQUEST_LOCATION);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private void askPermissionForBackgroundUsage() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getResources().getString(R.string.perminssion_needed_title))
+                    .setMessage(getResources().getString(R.string.loc_allow_all_time_txt))
+                    .setPositiveButton(getResources().getString(R.string.ok_txt), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(DashboardActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_CODE);
+                        }
+                    })
+                    .setNegativeButton(getResources().getString(R.string.cancel_txt), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // User declined for Background Location Permission.
+                        }
+                    })
+                    .create().show();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_CODE);
+        }
     }
 
 }

@@ -1446,6 +1446,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         if (ActivityCompat.shouldShowRequestPermissionRationale(DashboardActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             new AlertDialog.Builder(this)
                     .setTitle("Permission Needed!")
+                    .setCancelable(false)
                     .setMessage("Location Permission Needed!")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -1473,6 +1474,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             new AlertDialog.Builder(this)
                     .setTitle(getResources().getString(R.string.perminssion_needed_title))
                     .setMessage(getResources().getString(R.string.loc_allow_all_time_txt))
+                    .setCancelable(false)
                     .setPositiveButton(getResources().getString(R.string.ok_txt), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

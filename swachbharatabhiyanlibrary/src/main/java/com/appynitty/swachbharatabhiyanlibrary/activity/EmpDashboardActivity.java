@@ -36,7 +36,6 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpAttendance
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpCheckAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetailAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.LocalityAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
@@ -583,44 +582,58 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         if (AUtils.isInternetAvailable()) {
 
-            boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
-            Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
-            if (isAreaActive) {
-                if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && AUtils.isValidArea()) {
-                    if (AUtils.isNull(empInPunchPojo)) {
-                        empInPunchPojo = new EmpInPunchPojo();
+            AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
+                @Override
+                public void onResponse() {
+
+                    boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
+                    Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
+                    if (isAreaActive) {
+                        if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && AUtils.isValidArea()) {
+                            if (AUtils.isNull(empInPunchPojo)) {
+                                empInPunchPojo = new EmpInPunchPojo();
+                            }
+
+                            empInPunchPojo.setStartDate(AUtils.getServerDate());
+                            empInPunchPojo.setStartTime(AUtils.getServerTime());
+
+                            try {
+                                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                markAttendance.setChecked(false);
+                                AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                            }
+                        } else {
+                            markAttendance.setChecked(AUtils.isIsOnduty());
+                            AUtils.error(mContext, getResources().getString(R.string.out_of_area_msg));
+                        }
+                    } else {
+                        if (AUtils.isNull(empInPunchPojo)) {
+                            empInPunchPojo = new EmpInPunchPojo();
+                        }
+
+                        empInPunchPojo.setStartDate(AUtils.getServerDate());
+                        empInPunchPojo.setStartTime(AUtils.getServerTime());
+
+                        try {
+                            mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            markAttendance.setChecked(false);
+                            AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                        }
                     }
 
-                    empInPunchPojo.setStartDate(AUtils.getServerDate());
-                    empInPunchPojo.setStartTime(AUtils.getServerTime());
-
-                    try {
-                        mAttendanceAdapter.MarkInPunch(empInPunchPojo);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        markAttendance.setChecked(false);
-                        AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
-                    }
-                } else {
-                    markAttendance.setChecked(AUtils.isIsOnduty());
-                    AUtils.error(mContext, getResources().getString(R.string.out_of_area_msg));
-                }
-            } else {
-                if (AUtils.isNull(empInPunchPojo)) {
-                    empInPunchPojo = new EmpInPunchPojo();
                 }
 
-                empInPunchPojo.setStartDate(AUtils.getServerDate());
-                empInPunchPojo.setStartTime(AUtils.getServerTime());
-
-                try {
-                    mAttendanceAdapter.MarkInPunch(empInPunchPojo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    markAttendance.setChecked(false);
-                    AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                @Override
+                public void onFailure(Throwable throwable) {
+                    Log.e(TAG, "onFailure: " + throwable.getMessage());
                 }
-            }
+            });
+
+
         } else {
             AUtils.warning(mContext, mContext.getString(R.string.no_internet_error));
             markAttendance.setChecked(false);

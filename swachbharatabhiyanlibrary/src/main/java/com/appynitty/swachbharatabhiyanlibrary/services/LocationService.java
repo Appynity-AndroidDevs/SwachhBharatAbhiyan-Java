@@ -185,9 +185,9 @@ public class LocationService extends Service {
     private void initData() {
 
         locationRequest = LocationRequest.create();
-//        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setSmallestDisplacement(1);  //in meters
+//        locationRequest.setSmallestDisplacement(1);  //in meters
 
         LocationSettingsRequest.Builder builder = new
                 LocationSettingsRequest.Builder();

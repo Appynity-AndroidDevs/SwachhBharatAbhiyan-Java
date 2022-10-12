@@ -1200,7 +1200,7 @@ public class AUtils extends CommonUtils {
             @Override
             public void onFailure(Throwable throwable) {
                 if (geoAreaRequestListener != null)
-                    geoAreaRequestListener.onFailure();
+                    geoAreaRequestListener.onFailure(throwable);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });
@@ -1209,7 +1209,7 @@ public class AUtils extends CommonUtils {
     public interface geoAreaRequestListener {
         void onResponse();
 
-        void onFailure();
+        void onFailure(Throwable throwable);
     }
 
     public static boolean isValidArea() {

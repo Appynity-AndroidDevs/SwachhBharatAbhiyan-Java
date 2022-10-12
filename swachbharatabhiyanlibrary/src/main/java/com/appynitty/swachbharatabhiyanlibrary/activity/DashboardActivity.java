@@ -772,6 +772,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         onSwitchStatus(isChecked);
                     } else {
                         markAttendance.setChecked(AUtils.isIsOnduty());
+                        AUtils.warning(DashboardActivity.this , getResources().getString(R.string.no_internet_error));
                     }
                 }
             }

@@ -35,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Prefs.putString(AUtils.APP_ID, "3098");       //for Appynitty ULB APP_ID - 3098
+        Prefs.putString(AUtils.APP_ID, "3128"); // chimur
+       // Prefs.putString(AUtils.APP_ID, "3127");
+       // Prefs.putString(AUtils.APP_ID, "3098");       //for Appynitty ULB APP_ID - 3098
        // Prefs.putString(AUtils.APP_ID, "3122");       //for Appynitty ULB APP_ID - 3098
        // Prefs.putString(AUtils.APP_ID, "3111");       //for Shrirampur ULB APP_ID - 3111
         //Prefs.putString(AUtils.APP_ID, "3127");       //for Akot ULB APP_ID - 3127
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 //           Prefs.putString(AUtils.APP_ID, "3041");
 //        Prefs.putString(AUtils.APP_ID, "1003");
 //        Prefs.putInt(AUtils.VERSION_CODE, BuildConfig.VERSION_CODE);
-        Prefs.putInt(AUtils.VERSION_CODE, 2);
+        Prefs.putInt(AUtils.VERSION_CODE, BuildConfig.VERSION_CODE);
 //        initLanguageList();
 
         startActivity(new Intent(MainActivity.this, WelcomeActivity.class));

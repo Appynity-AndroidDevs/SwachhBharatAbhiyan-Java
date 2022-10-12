@@ -28,7 +28,8 @@ public class AppGeoAreaAdapter {
             @Override
             public void onResponse(Call<AppGeoArea> call, Response<AppGeoArea> response) {
 //                Log.e(TAG, "onResponse: GeoVertices: " + response.body().getAreaGeoVertices());
-                appGeoListener.onResponse(response.body());
+                if (response.body() != null)
+                    appGeoListener.onResponse(response.body());
             }
 
             @Override

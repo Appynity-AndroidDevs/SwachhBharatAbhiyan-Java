@@ -76,10 +76,14 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                                 AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
                                     @Override
                                     public void onResponse() {
-                                        if (AUtils.isValidArea()) {
-                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                        if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
+                                            if (AUtils.isValidArea()) {
+                                                context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                            } else {
+                                                AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                            }
                                         } else {
-                                            AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
                                         }
                                     }
 

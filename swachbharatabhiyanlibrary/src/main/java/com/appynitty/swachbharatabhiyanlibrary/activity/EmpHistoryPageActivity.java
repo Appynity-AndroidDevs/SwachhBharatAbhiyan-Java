@@ -190,8 +190,8 @@ public class EmpHistoryPageActivity extends AppCompatActivity {
 
                                 findViewById(R.id.historyProgressBar).setVisibility(View.GONE);
                                 noInternetErrorLayout.setVisibility(View.GONE);
-                                mAdapter.fetchHistory(String.valueOf(AUtils.getCurrentYear()),
-                                        String.valueOf(AUtils.getCurrentMonth()));
+//                                mAdapter.fetchHistory(String.valueOf(AUtils.getCurrentYear()),
+//                                        String.valueOf(AUtils.getCurrentMonth()));
                             }
                         });
 

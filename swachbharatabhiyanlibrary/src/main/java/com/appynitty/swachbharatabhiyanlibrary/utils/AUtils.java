@@ -76,7 +76,7 @@ public class AUtils extends CommonUtils {
 //    public static final String SERVER_URL = "http://192.168.200.3:6560/";
 
     //  Advanced Ghanta Gadi Live URL
-   // public static final String SERVER_URL = "http://202.65.157.253:6560";
+    // public static final String SERVER_URL = "http://202.65.157.253:6560";
 //    public static final String SERVER_URL = "http://202.65.157.254:6560";
 
 
@@ -85,8 +85,8 @@ public class AUtils extends CommonUtils {
      * https://akot.ictsbm.com/
      * akot special
      * app Id : 3127
-     * ***/
-   // public static final String SERVER_URL = "http://202.65.157.254:6590"; //akot
+     ***/
+    // public static final String SERVER_URL = "http://202.65.157.254:6590"; //akot
 
     /*//Nagpur staging server url
     public static final String SERVER_URL = "http://183.177.126.33:6561";*/
@@ -95,7 +95,8 @@ public class AUtils extends CommonUtils {
     public static final String SERVER_URL = "http://202.65.157.253:6561";*/
 
 
-        public static final String SERVER_URL = "https://ictsbm.com:30443";
+    public static final String SERVER_URL = "https://ictsbm.com:30443";
+    //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
     /***
      * Staging portap
@@ -394,15 +395,15 @@ public class AUtils extends CommonUtils {
         }
     }
 
-    public static String getDumpSuperId(String dumpId){
+    public static String getDumpSuperId(String dumpId) {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
 
-       /* bundle = getIntent().getExtras();*/
+        /* bundle = getIntent().getExtras();*/
 
         if (bundle != null) {
             dumpId = bundle.getString(AUtils.dumpYardSuperId);
-            System.out.println("Dumpster Scan Id: "+dumpId);
+            System.out.println("Dumpster Scan Id: " + dumpId);
 
         }
         return "";
@@ -1157,6 +1158,7 @@ public class AUtils extends CommonUtils {
                 return "none";
         }
     }
+
     public static void getAppGeoArea(geoAreaRequestListener geoAreaRequestListener) {
 
         AppGeoAreaAdapter.getInstance().getAppGeoArea(new AppGeoAreaAdapter.AppGeoListener() {
@@ -1226,11 +1228,17 @@ public class AUtils extends CommonUtils {
 
         prefList = gson.fromJson(json, type);
 
-        boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
+        if (prefList != null) {
+            boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
 
-        Log.e(TAG, "current latlng= " + asdf
-                + ", isValidArea: " + isPointInPolygon);
-        return isPointInPolygon;
+            Log.e(TAG, "current latlng= " + asdf
+                    + ", isValidArea: " + isPointInPolygon);
+
+            return isPointInPolygon;
+        } else {
+
+            return false;
+        }
     }
 }
 

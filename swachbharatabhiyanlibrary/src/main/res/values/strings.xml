@@ -253,6 +253,7 @@
     <string name="shift_end">Shift ended successfully</string>
     <string name="out_of_area_msg">You\'re out of the scanning area. Please go inside the area and try again</string>
     <string name="usr_name_pwd_mismatch_warning">UserName or Passward not Match.</string>
+    <string name="no_location_found">No Location found</string>
 
 
 </resources>

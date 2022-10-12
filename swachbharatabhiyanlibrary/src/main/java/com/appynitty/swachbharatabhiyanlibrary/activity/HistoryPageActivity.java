@@ -127,7 +127,7 @@ public class HistoryPageActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position > 0 && yearSpinner.getSelectedItemPosition() > 0) {
                     String month = String.valueOf(position);
-                    Log.d(TAG, "onItemSelected: "+month);
+                    Log.d(TAG, "onItemSelected: " + month);
                     mAdapter.fetchHistory(
                             yearSpinner.getSelectedItem().toString(),
                             String.valueOf(position)
@@ -150,7 +150,7 @@ public class HistoryPageActivity extends AppCompatActivity {
                 if (position > 0 && monthSpinner.getSelectedItemPosition() > 0) {
 
                     String sMonth = String.valueOf(monthSpinner.getSelectedItemPosition());
-                    Log.d(TAG, "onItemSelected: "+sMonth);
+                    Log.d(TAG, "onItemSelected: " + sMonth);
                     mAdapter.fetchHistory(
                             yearSpinner.getSelectedItem().toString(),
                             String.valueOf(monthSpinner.getSelectedItemPosition())
@@ -193,41 +193,45 @@ public class HistoryPageActivity extends AppCompatActivity {
 //        }
 
         if (AUtils.isInternetAvailable()) {
-            findViewById(R.id.workHistoryProgressBar).setVisibility(View.VISIBLE);
-            final Executor executor = Executors.newSingleThreadExecutor();
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
+            if (AUtils.isConnectedFast(getApplicationContext())) {
 
-                    if (InternetWorking.internetIsConnected()) {
+                findViewById(R.id.workHistoryProgressBar).setVisibility(View.VISIBLE);
+                final Executor executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
 
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
+                        if (InternetWorking.isOnline()) {
+
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
 //
-                                findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
-                                noInternetErrorLayout.setVisibility(View.GONE);
+                                    findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
+                                    noInternetErrorLayout.setVisibility(View.GONE);
 //                                mAdapter.fetchHistory(String.valueOf(AUtils.getCurrentYear()),
 //                                        String.valueOf(AUtils.getCurrentMonth())+1);
-                            }
-                        });
+                                }
+                            });
 
-                    } else {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
+                        } else {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
-                                AUtils.warning(HistoryPageActivity.this, getResources().getString(R.string.no_internet_error));
-                                noInternetErrorLayout.setVisibility(View.VISIBLE);
-                            }
-                        });
+                                    findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
+                                    AUtils.warning(HistoryPageActivity.this, getResources().getString(R.string.no_internet_error));
+                                    noInternetErrorLayout.setVisibility(View.VISIBLE);
+                                }
+                            });
 
+                        }
                     }
-                }
-            });
-
+                });
+            } else {
+                AUtils.warning(HistoryPageActivity.this, getResources().getString(R.string.slow_internet));
+            }
         } else {
             noInternetErrorLayout.setVisibility(View.VISIBLE);
         }
@@ -261,7 +265,7 @@ public class HistoryPageActivity extends AppCompatActivity {
         noInternetErrorLayout.setVisibility(View.GONE);
         historyPojoList = mAdapter.getworkHistoryTypePojoList();
 
-        Log.d(TAG, "setHistoryData: "+historyPojoList);
+        Log.d(TAG, "setHistoryData: " + historyPojoList);
         if (!AUtils.isNull(historyPojoList) && !historyPojoList.isEmpty()) {
             historyGrid.setVisibility(View.VISIBLE);
             noDataErrorLayout.setVisibility(View.GONE);

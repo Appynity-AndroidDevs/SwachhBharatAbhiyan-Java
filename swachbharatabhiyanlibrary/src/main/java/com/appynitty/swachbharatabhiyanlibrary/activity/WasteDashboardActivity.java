@@ -419,7 +419,7 @@ public class WasteDashboardActivity extends AppCompatActivity implements EmpPopU
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_waste_history), R.drawable.ic_history, WasteHistoryActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_waste_sync_offline), R.drawable.ic_sync, WasteSyncOfflineActivity.class, false));
 
-        DashboardMenuAdapter dashboardMenuAdapter = new DashboardMenuAdapter(mContext);
+        DashboardMenuAdapter dashboardMenuAdapter = new DashboardMenuAdapter(mContext , findViewById(R.id.wasteActivityProgressBar));
         dashboardMenuAdapter.setMenuList(menuPojoList);
         menuGridView.setAdapter(dashboardMenuAdapter);
 

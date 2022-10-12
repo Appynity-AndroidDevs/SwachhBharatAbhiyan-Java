@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -56,6 +57,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAd
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
+import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
@@ -91,6 +93,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 import okhttp3.ResponseBody;
@@ -105,6 +109,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
     private final static String TAG = "DashboardActivity";
 
+    final Executor executor = Executors.newSingleThreadExecutor();
     private static final int REQUEST_CAMERA = 22;
     private static final int SELECT_FILE = 33;
     private static final int BACKGROUND_LOCATION_PERMISSION_CODE = 127;
@@ -431,7 +436,23 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private void isUserLoginValidIMEINumber() {
 
         //syncOfflineData();
-        syncOfflineData(isSync);
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (InternetWorking.isOnline()) {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            syncOfflineData(isSync);
+                        }
+                    });
+                }
+
+            }
+        });
+
 
 //        JSONObject jsonObject = new JSONObject();
 //        try {
@@ -767,12 +788,51 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AUtils.gpsStatusCheck(DashboardActivity.this);
 
+
                 if (!empType.matches("D")) {
                     if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
-                        onSwitchStatus(isChecked);
+
+                        if (AUtils.isConnectedFast(getApplicationContext())) {
+
+                            progressBar.setVisibility(View.VISIBLE);
+
+                            executor.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (InternetWorking.isOnline()) {
+
+                                        Handler handler = new Handler(Looper.getMainLooper());
+                                        handler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                progressBar.setVisibility(View.GONE);
+                                                onSwitchStatus(isChecked);
+                                            }
+                                        });
+
+                                    } else {
+                                        Handler handler = new Handler(Looper.getMainLooper());
+                                        handler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                progressBar.setVisibility(View.GONE);
+                                                markAttendance.setChecked(AUtils.isIsOnduty());
+                                                AUtils.warning(DashboardActivity.this, getResources().getString(R.string.no_internet_error));
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+
+                        } else {
+                            markAttendance.setChecked(AUtils.isIsOnduty());
+                            AUtils.warning(DashboardActivity.this, getResources().getString(R.string.slow_internet));
+                        }
+
                     } else {
                         markAttendance.setChecked(AUtils.isIsOnduty());
-                        AUtils.warning(DashboardActivity.this , getResources().getString(R.string.no_internet_error));
+                        AUtils.warning(DashboardActivity.this, getResources().getString(R.string.no_internet_error));
                     }
                 }
             }
@@ -859,7 +919,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
 
-        DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(mContext);
+        DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(mContext, progressBar);
         mainMenuAdaptor.setMenuList(menuPojoList);
         menuGridView.setAdapter(mainMenuAdaptor);
 
@@ -1000,6 +1060,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.VEHICLE_ID);
 
         startActivity(new Intent(context, providedClass));
+
     }
 
     private void changeLanguage() {

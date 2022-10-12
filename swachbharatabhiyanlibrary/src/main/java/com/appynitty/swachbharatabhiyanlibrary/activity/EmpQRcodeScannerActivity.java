@@ -23,6 +23,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
@@ -46,6 +48,7 @@ import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpQrLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.ChooseActionPopUp;
+import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -74,12 +77,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 
 public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     private final static String TAG = "EmpQRcodeScannerActivity";
+    final Executor executor = Executors.newSingleThreadExecutor();
     /**
      * permission code
      */
@@ -705,8 +711,26 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         myProgressDialog.show();
         pojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
         if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
-            empQrLocationAdapter.saveQrLocation(pojo);
-            stopCamera();
+
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (InternetWorking.isOnline()){
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                empQrLocationAdapter.saveQrLocation(pojo);
+                                stopCamera();
+                            }
+                        });
+
+                    }else{
+                        insertToDB(pojo);
+                    }
+                }
+            });
+
         } else {
             insertToDB(pojo);
         }

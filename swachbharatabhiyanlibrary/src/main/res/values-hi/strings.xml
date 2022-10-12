@@ -154,6 +154,7 @@
     <string name="image_add_error">छवि जोड़ने में असमर्थ</string>
     <string name="household_collection">"वेस्ट कलेक्शन मॉनिटरिंग टेक्नोलॉजी "</string>
     <string name="street_sweeping">स्ट्रीट स्वीपिंग मॉनिटरिंग सिस्टम</string>
+    <string name="street_sweep">स्ट्रीट स्वीपिंग</string>
     <string name="liquid_waste_cleaning">लिक्विड वेस्ट क्लीनिंग मॉनिटरिंग सिस्टम</string>
     <string name="select_employee_type">कर्मचारी प्रकार चुनें</string>
     <string name="house_qr_alert">हाउस क्यूआर स्कैन करने के लिए कृपया Waste Collection आईडी से लॉगिन करें।</string>
@@ -168,6 +169,7 @@
     <string name="plz_slct_emp_type">कृपया कर्मचारी प्रकार चुनें</string>
     <string name="ssc_qr_warning">स्ट्रीट क्यूआर स्कैन करने के लिए, कृपया स्ट्रीट स्वीपिंग आईडी से लॉगिन करें!</string>
     <string name="lwc_title">लिक्विड वेस्ट कलेक्शन</string>
+    <string name="liquid_waste">लिक्विड वेस्ट</string>
     <string name="lw_dy_id_hint">लिक्विड वेस्ट आईडी दर्ज करें</string>
     <string name="sw_dy_id_hint">स्ट्रीट आईडी दर्ज करें</string>
     <string name="liquid_number_hint">लिक्विड वेस्ट आईडी दर्ज करें</string>
@@ -193,4 +195,5 @@
     <string name="perminssion_needed_title">परमिशन आवश्यक!</string>
     <string name="loc_allow_all_time_txt">बैकग्राउंड लोकेशन परमिशन की आवश्यकता है!, अगली स्क्रीन पे Allow all the time पर टैप करें</string>
 
+    <string name="dump_yard">डंप यार्ड</string>
 </resources>

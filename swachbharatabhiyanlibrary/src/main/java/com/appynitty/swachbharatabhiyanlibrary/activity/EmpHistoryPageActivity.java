@@ -181,7 +181,7 @@ public class EmpHistoryPageActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
-                    if (InternetWorking.internetIsConnected()) {
+                    if (InternetWorking.isOnline()) {
 
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {

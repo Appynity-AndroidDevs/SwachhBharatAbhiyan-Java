@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
+import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -58,6 +60,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 
@@ -65,7 +69,7 @@ import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpDialog.PopUpDialogListener {
 
     private final static String TAG = "EmpDashboardActivity";
-
+    final Executor executor = Executors.newSingleThreadExecutor();
     private Context mContext;
     private FabSpeedDial fab;
     private RecyclerView menuGridView;
@@ -294,6 +298,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         AUtils.currentContextConstant = mContext;
         checkIsFromLogin();
         progressBar = findViewById(R.id.empProgress_layout);
+        rProgress = findViewById(R.id.progress_cir_bar);
         mCheckAttendanceAdapter = new EmpCheckAttendanceAdapterClass();
         mAttendanceAdapter = new EmpAttendanceAdapterClass();
         mUserDetailAdapter = new EmpUserDetailAdapterClass();
@@ -423,7 +428,48 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         markAttendance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onSwitchStatus(isChecked);
+                if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+
+                    if (AUtils.isConnectedFast(getApplicationContext())) {
+
+                        rProgress.setVisibility(View.VISIBLE);
+                        executor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (InternetWorking.isOnline()) {
+
+                                    Handler handler = new Handler(Looper.getMainLooper());
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            rProgress.setVisibility(View.GONE);
+                                            onSwitchStatus(isChecked);
+                                        }
+                                    });
+
+                                } else {
+                                    Handler handler = new Handler(Looper.getMainLooper());
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            rProgress.setVisibility(View.GONE);
+                                            markAttendance.setChecked(AUtils.isIsOnduty());
+                                            AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.no_internet_error));
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        markAttendance.setChecked(AUtils.isIsOnduty());
+                        AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.slow_internet));
+                    }
+
+                } else {
+                    markAttendance.setChecked(AUtils.isIsOnduty());
+                    AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.no_internet_error));
+                }
+
             }
         });
 
@@ -453,7 +499,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, EmpHistoryPageActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, EmpSyncOfflineActivity.class, false));
 
-        DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(EmpDashboardActivity.this);
+        DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(EmpDashboardActivity.this, rProgress);
         mainMenuAdaptor.setMenuList(menuPojoList);
         menuGridView.setAdapter(mainMenuAdaptor);
 

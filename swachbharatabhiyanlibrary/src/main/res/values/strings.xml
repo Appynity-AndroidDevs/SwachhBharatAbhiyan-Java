@@ -220,6 +220,7 @@
     <string name="image_add_error">Unable to add image</string>
     <string name="household_collection">Waste Collection Monitoring Technology</string>
     <string name="street_sweeping">Street Sweeping Monitoring System</string>
+    <string name="street_sweep">Street Sweeping</string>
     <string name="liquid_waste_cleaning">Liquid Waste Cleaning Monitoring System</string>
     <string name="select_employee_type">Select Employee Type</string>
     <string name="house_qr_alert">For scanning House QR, kindly login with waste collection id.</string>
@@ -231,6 +232,7 @@
     <string name="street_collection">Street Collection</string>
     <string name="ssc_qr_warning">For scanning Street QR, Kindly login with Street Sweeping Id!</string>
     <string name="lwc_title">Liquid Waste Collection</string>
+    <string name="liquid_waste">Liquid Waste</string>
     <string name="lw_dy_id_hint">Enter Liquid Waste ID</string>
     <string name="sw_dy_id_hint">Enter Street ID</string>
     <string name="liquid_number_hint">Enter Liquid Waste ID</string>
@@ -258,7 +260,7 @@
 
     <string name="perminssion_needed_title">Permission Needed!</string>
     <string name="loc_allow_all_time_txt"><br>Background Location Permission Needed!,</br><br> tap "Allow all the time" in the next screen</br></string>
-
+    <string name="dump_yard">Dump Yard</string>
 
 
 

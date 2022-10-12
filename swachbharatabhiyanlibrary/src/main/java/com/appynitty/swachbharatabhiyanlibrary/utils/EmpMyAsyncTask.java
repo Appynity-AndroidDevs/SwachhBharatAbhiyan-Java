@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.connection.EmpSyncServer;
+import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.riaylibrary.custom_component.MyProgressDialog;
 
 public class EmpMyAsyncTask extends AsyncTask {
@@ -38,13 +39,16 @@ public class EmpMyAsyncTask extends AsyncTask {
     protected Object doInBackground(Object[] objects) {
 
         if (AUtils.isInternetAvailable()) {
-            try {
+            if (InternetWorking.isOnline()){
+                try {
 
-                isNetworkAvail = true;
-                asynTaskListener.doInBackgroundOpration(empSyncServer);
-            } catch (Exception e) {
-                e.printStackTrace();
+                    isNetworkAvail = true;
+                    asynTaskListener.doInBackgroundOpration(empSyncServer);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
         }
         return null;
     }

@@ -204,7 +204,7 @@ public class LocationService extends Service {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    Log.e(TAG, "onLocationResult: Lat: " + location.getLatitude() + ", Long: " + location.getLongitude());
+//                    Log.e(TAG, "onLocationResult: Lat: " + location.getLatitude() + ", Long: " + location.getLongitude());
                     Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
                     Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
 

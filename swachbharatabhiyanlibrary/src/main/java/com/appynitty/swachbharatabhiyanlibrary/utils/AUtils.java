@@ -93,6 +93,7 @@ public class AUtils extends CommonUtils {
 
     /*//Nagpur live server url
     public static final String SERVER_URL = "http://202.65.157.253:6561";*/
+//    public static final String SERVER_URL = "http://202.65.157.254:6561";
 
 
     public static final String SERVER_URL = "https://ictsbm.com:30443";
@@ -1201,7 +1202,7 @@ public class AUtils extends CommonUtils {
             @Override
             public void onFailure(Throwable throwable) {
                 if (geoAreaRequestListener != null)
-                    geoAreaRequestListener.onFailure();
+                    geoAreaRequestListener.onFailure(throwable);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });
@@ -1210,7 +1211,7 @@ public class AUtils extends CommonUtils {
     public interface geoAreaRequestListener {
         void onResponse();
 
-        void onFailure();
+        void onFailure(Throwable throwable);
     }
 
     public static boolean isValidArea() {

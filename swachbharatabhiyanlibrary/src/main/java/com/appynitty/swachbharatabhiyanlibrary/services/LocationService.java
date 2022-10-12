@@ -69,7 +69,8 @@ public class LocationService extends Service {
     private LocationSettingsRequest locationSettingsRequest;
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
-    long notify_interval = 1000 * 60 * 10;
+//    long notify_interval = 1000 * 60; //for one minute
+    long notify_interval = 1000 * 60 * 10;//for 10 minutes
 
 
     private final LocationRepository mLocationRepository;
@@ -184,9 +185,9 @@ public class LocationService extends Service {
     private void initData() {
 
         locationRequest = LocationRequest.create();
-//        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setSmallestDisplacement(1);  //in meters
+//        locationRequest.setSmallestDisplacement(1);  //in meters
 
         LocationSettingsRequest.Builder builder = new
                 LocationSettingsRequest.Builder();

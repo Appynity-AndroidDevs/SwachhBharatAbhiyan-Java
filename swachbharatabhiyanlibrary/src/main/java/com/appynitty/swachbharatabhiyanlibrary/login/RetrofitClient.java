@@ -3,6 +3,10 @@ package com.appynitty.swachbharatabhiyanlibrary.login;
 import com.appynitty.swachbharatabhiyanlibrary.login.network.LoginInterface;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -13,11 +17,19 @@ public class RetrofitClient {
 
     private RetrofitClient() {
 
-        Retrofit retrofit = new Retrofit.Builder()
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient httpClient = new OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .addInterceptor(interceptor).build();
+
+        Retrofit.Builder builder = new Retrofit.Builder()
                 //   .baseUrl(AUtils.SERVER_URL)
                 .baseUrl(AUtils.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.client(httpClient).build();
 
         loginAPI = retrofit.create(LoginInterface.class);
 

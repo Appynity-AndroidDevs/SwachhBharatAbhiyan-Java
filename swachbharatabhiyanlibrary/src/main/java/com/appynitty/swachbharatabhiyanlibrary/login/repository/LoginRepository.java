@@ -1,5 +1,9 @@
 package com.appynitty.swachbharatabhiyanlibrary.login.repository;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.appynitty.swachbharatabhiyanlibrary.login.RetrofitClient;
 import com.appynitty.swachbharatabhiyanlibrary.login.network.LoginInterface;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginDetailsPojo;
@@ -15,7 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginRepository {
-
+    private static final String TAG = "LoginRepository";
     private LoginInterface loginAPI = RetrofitClient.getInstance().getLoginAPI();
     private final Executor executor = Executors.newSingleThreadExecutor();
     private LoginUserCallBacks loginUserCallBacks;
@@ -37,8 +41,10 @@ public class LoginRepository {
 
                 call.enqueue(new Callback<LoginDetailsPojo>() {
                     @Override
-                    public void onResponse(Call<LoginDetailsPojo> call, Response<LoginDetailsPojo> response) {
+                    public void onResponse(Call<LoginDetailsPojo> call, @NonNull Response<LoginDetailsPojo> response) {
                         loginUserCallBacks.onLoginResponseSuccess(response.body());
+                        if (!AUtils.isNull(response))
+                            Log.e(TAG, "onResponse: " + response.body());
                     }
 
                     @Override

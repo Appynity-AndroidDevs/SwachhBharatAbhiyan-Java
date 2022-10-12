@@ -1,20 +1,24 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.UI;
 
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.gpsStatusCheck;
+
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.activity.EmpQRcodeScannerActivity;
+import com.appynitty.swachbharatabhiyanlibrary.activity.QRcodeScannerActivity;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -85,11 +89,12 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                                         } else {
                                             context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
                                         }
+
                                     }
 
                                     @Override
-                                    public void onFailure() {
-
+                                    public void onFailure(Throwable throwable) {
+                                        Log.e(TAG, "onFailure: " + throwable.getMessage());
                                     }
                                 });
                             } else {
@@ -98,6 +103,13 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                                 } else {
                                     AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
                                 }
+                            }
+                        } else if (menuPojo.getNextIntentClass().equals(QRcodeScannerActivity.class)) {
+                            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                            } else {
+                                gpsStatusCheck(context);
                             }
                         } else {
                             context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));

@@ -93,6 +93,7 @@ public class AUtils extends CommonUtils {
 
     /*//Nagpur live server url
     public static final String SERVER_URL = "http://202.65.157.253:6561";*/
+//    public static final String SERVER_URL = "http://202.65.157.254:6561";
 
 
         public static final String SERVER_URL = "https://ictsbm.com:30443";

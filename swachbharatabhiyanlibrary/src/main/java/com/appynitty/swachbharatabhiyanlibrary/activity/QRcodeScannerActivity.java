@@ -1,5 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.gpsStatusCheck;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -13,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -779,7 +780,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
                     //getDumpYardDetails(houseid);
                 }
             } else {
-                if (houseid.substring(0, 5).matches("^[HhPpSsBbAa]+$")/*houseid.substring(0, 2).matches("^[HhPp]+$")*/)
+                if (/*houseid.substring(0, 5).matches("^[HhPpSsBbAa]+$")*/houseid.substring(0, 2).matches("^[HhPp]+$"))
                     validateTypeOfCollection(houseid);
            /* else if (houseid.substring(0, 2).matches("^[GgPp]+$"))
                 startSubmitQRAsyncTask(houseid, -1, null);*/
@@ -961,7 +962,8 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
             boolean GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             if (!GpsStatus) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+//                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                gpsStatusCheck(mContext);
             }//else{
             // AUtils.saveLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
             // }

@@ -234,5 +234,8 @@
     <string name="ctpt_validation">कृपया वैध सीटीपीटी क्रमांक निवडा</string>
     <string name="str_ctpt_id"> सीटीपीटी आयडी निवडा</string>
 
+    <string name="perminssion_needed_title">परमिशन आवश्यक!</string>
+    <string name="loc_allow_all_time_txt">बॅकग्राऊंड लोकेशन परमिशन आवश्यक आहे!, पुढील स्क्रीनवर  Allow all the time वर टॅप करा</string>
+
 
 </resources>

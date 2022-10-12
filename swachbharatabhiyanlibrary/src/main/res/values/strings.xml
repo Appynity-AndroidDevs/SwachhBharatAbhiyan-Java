@@ -274,6 +274,9 @@
     <string name="ctpt_validation">Please Select Valid CTPT Id</string>
     <string name="str_ctpt_id"> Select CTPT Id</string>
 
+    <string name="perminssion_needed_title">Permission Needed!</string>
+    <string name="loc_allow_all_time_txt"><br>Background Location Permission Needed!,</br><br> tap "Allow all the time" in the next screen</br></string>
+
 
 
 </resources>

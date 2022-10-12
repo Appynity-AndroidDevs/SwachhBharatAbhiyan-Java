@@ -98,11 +98,16 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                                     }
                                 });
                             } else {
-                                if (AUtils.isValidArea()) {
-                                    context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
+                                    if (AUtils.isValidArea()) {
+                                        context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                    } else {
+                                        AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                    }
                                 } else {
-                                    AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                    context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
                                 }
+
                             }
                         } else if (menuPojo.getNextIntentClass().equals(QRcodeScannerActivity.class)) {
                             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

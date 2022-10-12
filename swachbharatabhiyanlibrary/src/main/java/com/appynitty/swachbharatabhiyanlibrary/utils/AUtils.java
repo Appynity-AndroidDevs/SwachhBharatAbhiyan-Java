@@ -1220,7 +1220,7 @@ public class AUtils extends CommonUtils {
         double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
         LatLng asdf = new LatLng(lat, lon);
 
-        List<LatLng> prefList;
+        List<LatLng> prefList = new ArrayList<>();
         String json = Prefs.getString(AUtils.PREFS.AREA_VERTICES, null);
 
         Gson gson = new Gson();
@@ -1229,6 +1229,7 @@ public class AUtils extends CommonUtils {
 
         prefList = gson.fromJson(json, type);
 
+        Log.d(TAG, "isValidArea: "+prefList);
         if (prefList != null) {
             boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
 

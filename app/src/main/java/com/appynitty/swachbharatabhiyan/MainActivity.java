@@ -35,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Prefs.putString(AUtils.APP_ID, "3128"); // chimur
+
+        Prefs.putString(AUtils.APP_ID, "3124"); // nagbhid
+     //   Prefs.putString(AUtils.APP_ID, "3128"); // chimur
        // Prefs.putString(AUtils.APP_ID, "3127");
        // Prefs.putString(AUtils.APP_ID, "3098");       //for Appynitty ULB APP_ID - 3098
        // Prefs.putString(AUtils.APP_ID, "3122");       //for Appynitty ULB APP_ID - 3098

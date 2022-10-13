@@ -92,6 +92,8 @@ public class SyncOfflineActivity extends AppCompatActivity {
         btnSyncOfflineData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!alertDialog.isShowing())
+                    alertDialog.show();
 
                 executor.execute(new Runnable() {
                     @Override
@@ -102,19 +104,17 @@ public class SyncOfflineActivity extends AppCompatActivity {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (!alertDialog.isShowing())
-                                        alertDialog.show();
+
                                 }
                             });
                         } else {
+                            if (alertDialog.isShowing())
+                                alertDialog.hide();
 
                             Handler handler = new Handler(Looper.getMainLooper());
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-
-                                    if (alertDialog.isShowing())
-                                        alertDialog.hide();
                                     AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
                                 }
                             });
@@ -129,27 +129,36 @@ public class SyncOfflineActivity extends AppCompatActivity {
         syncOfflineAdapter.setSyncOfflineListener(new SyncOfflineAdapterClass.SyncOfflineListener() {
             @Override
             public void onSuccessCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.hide();
-                runOnUiThread(() -> AUtils.success(mContext, getString(R.string.success_offline_sync), Toast.LENGTH_LONG));
+
+                runOnUiThread(() -> {
+                    AUtils.success(mContext, getString(R.string.success_offline_sync), Toast.LENGTH_LONG);
+                    if (alertDialog.isShowing())
+                        alertDialog.hide();
+                });
 
                 inflateData();
             }
 
             @Override
             public void onFailureCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.hide();
 
-                runOnUiThread(() -> AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime)));
+
+                runOnUiThread(() -> {
+                    AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
+                    if (alertDialog.isShowing())
+                        alertDialog.hide();
+                });
 
             }
 
             @Override
             public void onErrorCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.hide();
-                runOnUiThread(() -> AUtils.warning(mContext, getResources().getString(R.string.serverError)));
+
+                runOnUiThread(() -> {
+                    AUtils.warning(mContext, getResources().getString(R.string.serverError));
+                    if (alertDialog.isShowing())
+                        alertDialog.hide();
+                });
 
             }
         });

@@ -96,7 +96,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (InternetWorking.isOnline()){
+                        if (InternetWorking.isOnline()) {
                             syncOfflineAdapter.SyncOfflineData();
                             Handler handler = new Handler(Looper.getMainLooper());
                             handler.post(new Runnable() {
@@ -106,7 +106,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
                                         alertDialog.show();
                                 }
                             });
-                        }else{
+                        } else {
 
                             Handler handler = new Handler(Looper.getMainLooper());
                             handler.post(new Runnable() {
@@ -131,7 +131,8 @@ public class SyncOfflineActivity extends AppCompatActivity {
             public void onSuccessCallback() {
                 if (alertDialog.isShowing())
                     alertDialog.hide();
-                AUtils.success(mContext, getString(R.string.success_offline_sync), Toast.LENGTH_LONG);
+                runOnUiThread(() -> AUtils.success(mContext, getString(R.string.success_offline_sync), Toast.LENGTH_LONG));
+
                 inflateData();
             }
 
@@ -139,14 +140,17 @@ public class SyncOfflineActivity extends AppCompatActivity {
             public void onFailureCallback() {
                 if (alertDialog.isShowing())
                     alertDialog.hide();
-                AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
+
+                runOnUiThread(() -> AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime)));
+
             }
 
             @Override
             public void onErrorCallback() {
                 if (alertDialog.isShowing())
                     alertDialog.hide();
-                AUtils.warning(mContext, getResources().getString(R.string.serverError));
+                runOnUiThread(() -> AUtils.warning(mContext, getResources().getString(R.string.serverError)));
+
             }
         });
     }
@@ -166,9 +170,12 @@ public class SyncOfflineActivity extends AppCompatActivity {
             Log.e(TAG, "inflateData:- " + "OfflineWorkHistory=> " + workHistoryList);
             gridOfflineData.setAdapter(historyAdapter);
         } else {
-            gridOfflineData.setVisibility(View.GONE);
-            btnSyncOfflineData.setVisibility(View.GONE);
-            layoutNoOfflineData.setVisibility(View.VISIBLE);
+            runOnUiThread(() -> {
+                gridOfflineData.setVisibility(View.GONE);
+                btnSyncOfflineData.setVisibility(View.GONE);
+                layoutNoOfflineData.setVisibility(View.VISIBLE);
+            });
+
 
         }
     }
@@ -181,7 +188,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    if (InternetWorking.isOnline()){
+                    if (InternetWorking.isOnline()) {
 
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {
@@ -190,7 +197,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
                                 AUtils.hideSnackBar();
                             }
                         });
-                    }else{
+                    } else {
 
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {

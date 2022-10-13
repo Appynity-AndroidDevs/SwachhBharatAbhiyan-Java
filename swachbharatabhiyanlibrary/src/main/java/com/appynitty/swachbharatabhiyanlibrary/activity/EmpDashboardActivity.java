@@ -635,7 +635,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                     boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
                     Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
                     if (isAreaActive) {
-                        if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && AUtils.isValidArea()) {
+                        if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("") && AUtils.isValidArea()) {
                             if (AUtils.isNull(empInPunchPojo)) {
                                 empInPunchPojo = new EmpInPunchPojo();
                             }

@@ -95,6 +95,7 @@ public class AUtils extends CommonUtils {
     public static final String SERVER_URL = "http://202.65.157.253:6561";*/
 //    public static final String SERVER_URL = "http://202.65.157.254:6561";
 
+    //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
     public static final String SERVER_URL = "https://ictsbm.com:30443";
     //   public static final String SERVER_URL = "http://202.65.157.254:6590";
@@ -1229,7 +1230,7 @@ public class AUtils extends CommonUtils {
 
         prefList = gson.fromJson(json, type);
 
-        Log.d(TAG, "isValidArea: "+prefList);
+        Log.d(TAG, "isValidArea: " + prefList);
         if (prefList != null) {
             boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
 

@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -202,7 +203,29 @@ public class LocationService extends Service {
                 }
                 for (Location location : locationResult.getLocations()) {
 
-                    Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
+                    if (location != null){
+
+                        Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
+                        Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
+
+                        if (Prefs.getBoolean(AUtils.PREFS.IS_ON_DUTY, false)) {
+                            if (updatedTime == 0) {
+                                updatedTime = System.currentTimeMillis();
+                                Log.d(TAG, "updated Time ==== " + updatedTime);
+                            }
+
+                            if ((updatedTime + AUtils.LOCATION_INTERVAL_MINUTES) <= System.currentTimeMillis()) {
+                                updatedTime = System.currentTimeMillis();
+                                Log.d(TAG, "updated Time ==== " + updatedTime);
+
+                            }
+
+                        }
+                    }else {
+                        Toast.makeText(LocationService.this, "Your network range very low please open first google map, then application open", Toast.LENGTH_SHORT).show();
+                    }
+
+                    /*Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
                     Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
 
                     if (Prefs.getBoolean(AUtils.PREFS.IS_ON_DUTY, false)) {
@@ -217,7 +240,7 @@ public class LocationService extends Service {
 
                         }
 
-                    }
+                    }*/
                 }
             }
         };

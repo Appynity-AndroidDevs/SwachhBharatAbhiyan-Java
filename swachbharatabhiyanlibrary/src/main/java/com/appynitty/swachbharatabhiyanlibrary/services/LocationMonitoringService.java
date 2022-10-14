@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.activity.DashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
@@ -223,7 +224,25 @@ public class LocationMonitoringService implements LocationListener, GpsStatus.Li
                 Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
                 Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
 
-                if (Prefs.getBoolean(AUtils.PREFS.IS_ON_DUTY, false)) {
+                if (Prefs.getString(AUtils.LAT, "") != null && Prefs.getString(AUtils.LONG, "") != null ) {
+
+                    if (Prefs.getBoolean(AUtils.PREFS.IS_ON_DUTY, false)) {
+                        if (updatedTime == 0) {
+                            updatedTime = System.currentTimeMillis();
+                            Log.d(TAG, "updated Time ==== " + updatedTime);
+                        }
+
+                        if ((updatedTime + AUtils.LOCATION_INTERVAL_MINUTES) <= System.currentTimeMillis()) {
+                            updatedTime = System.currentTimeMillis();
+                            Log.d(TAG, "updated Time ==== " + updatedTime);
+
+                        }
+//                      sendLocation();
+
+                    }
+                }
+
+                /*if (Prefs.getBoolean(AUtils.PREFS.IS_ON_DUTY, false)) {
                     if (updatedTime == 0) {
                         updatedTime = System.currentTimeMillis();
                         Log.d(TAG, "updated Time ==== " + updatedTime);
@@ -238,10 +257,12 @@ public class LocationMonitoringService implements LocationListener, GpsStatus.Li
 
 //                      sendLocation();
 
-                }
+                }*/
             }
         } else {
             Log.d(TAG, "onLocationChanged:  no location found !!");
+            Toast.makeText(mContext, "Your network range very low please open first google map, then application open", Toast.LENGTH_SHORT).show();
+
         }
     }
 

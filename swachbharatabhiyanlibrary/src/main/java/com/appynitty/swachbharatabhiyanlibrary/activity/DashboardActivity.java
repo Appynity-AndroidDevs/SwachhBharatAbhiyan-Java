@@ -784,18 +784,35 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                     if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
                     }
                     if (!AUtils.isIsOnduty()) {
                         progressBar.setVisibility(View.VISIBLE);
                         ctptEmpAttendanceRepo.setCtptEmpAttendanceIn(/*refId,*/ new CtptEmpAttendanceRepo.ICtptEmpAttendanceResponse() {
                             @Override
                             public void onResponse(ResultPojo attendanceResponse) {
-                                //progressStatusLiveData.setValue(View.GONE);
                                 progressBar.setVisibility(View.GONE);
+                                if (attendanceResponse != null){
+                                    Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
+                                    // ctptEmpCheckInMutableLiveData.setValue(attendanceResponse);
+
+                                    onInPunchSuccess();
+                                    if (attendanceResponse.hashCode() == 500){
+                                        AUtils.info(mContext, "Data not fetching, please remove background app, then duty on");
+
+                                    }
+
+                                }else {
+                                     onOutPunchSuccess();
+                                    AUtils.info(mContext, "Data not fetching, please remove background app, then duty on");
+                                }
+
+                                //progressStatusLiveData.setValue(View.GONE);
+                                /*progressBar.setVisibility(View.GONE);
                                 Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
                                // ctptEmpCheckInMutableLiveData.setValue(attendanceResponse);
 
-                                onInPunchSuccess();
+                                onInPunchSuccess();*/
                             }
 
                             @Override
@@ -803,99 +820,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                                 //progressStatusLiveData.setValue(View.GONE);
                                 progressBar.setVisibility(View.GONE);
                                 Log.e(TAG, "onFailure: " + throwable.getMessage());
-                               // ctptEmpAttendanceError.setValue(throwable);
+                                AUtils.info(mContext, "Data not fetching, please remove background app, then duty on");
+                                // ctptEmpAttendanceError.setValue(throwable);
                             }
                         });
-
-                        /*ctptEmpAttendanceVM.getCtptEmpCheckInLiveData().observe(DashboardActivity.this, new Observer<ResultPojo>() {
-                            @Override
-                            public void onChanged(ResultPojo resultPojo) {
-                                Log.e(TAG, "CtptEmpCheckInLiveData: " + resultPojo.getMessage());
-                                if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                        AUtils.success(mContext, resultPojo.getMessageMar());
-                                    } else {
-                                        AUtils.success(mContext, resultPojo.getMessage());
-                                    }
-
-                                    onInPunchSuccess();
-                                }
-                            }
-                        });
-
-                        ctptEmpAttendanceVM.getCtptEmpAttendanceError().observe(DashboardActivity.this, new Observer<Throwable>() {
-                            @Override
-                            public void onChanged(Throwable throwable) {
-                                AUtils.error(mContext, throwable.getMessage());
-                            }
-                        });
-
-                        ctptEmpAttendanceVM.getProgressStatusLiveData().observe(DashboardActivity.this, new Observer<Integer>() {
-                            @Override
-                            public void onChanged(Integer status) {
-                                progressBar.setVisibility(status);
-                            }
-                        });*/
-
-
-
                     }
-
-
-                    /*ctptEmpAttendanceVM.getCtptEmpCheckInLiveData().observe(this, new Observer<ResultPojo>() {
-                        @Override
-                        public void onChanged(ResultPojo resultPojo) {
-                            Log.e(TAG, "CtptEmpCheckInLiveData: " + resultPojo.getMessage());
-                            if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                    AUtils.success(mContext, resultPojo.getMessageMar());
-                                } else {
-                                    AUtils.success(mContext, resultPojo.getMessage());
-                                }
-
-                                onInPunchSuccess();
-                            }
-                        }
-                    });
-
-                    ctptEmpAttendanceVM.getCtptEmpCheckOutLiveData().observe(this, new Observer<ResultPojo>() {
-                        @Override
-                        public void onChanged(ResultPojo resultPojo) {
-                            if (resultPojo.getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                    AUtils.success(mContext, resultPojo.getMessageMar());
-                                } else {
-                                    AUtils.success(mContext, resultPojo.getMessage());
-                                }
-                                onOutPunchSuccess();
-                                if (AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
-                                    ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
-                                }
-                            } else if (resultPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
-                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                    AUtils.warning(mContext, resultPojo.getMessageMar());
-                                } else {
-                                    AUtils.warning(mContext, resultPojo.getMessage());
-                                }
-                                // markAttendance.setChecked(AUtils.isIsOnduty());
-                                markAttendance.setChecked(false);
-                            }
-                        }
-                    });
-
-                    ctptEmpAttendanceVM.getCtptEmpAttendanceError().observe(this, new Observer<Throwable>() {
-                        @Override
-                        public void onChanged(Throwable throwable) {
-                            AUtils.error(mContext, throwable.getMessage());
-                        }
-                    });
-
-                    ctptEmpAttendanceVM.getProgressStatusLiveData().observe(this, new Observer<Integer>() {
-                        @Override
-                        public void onChanged(Integer status) {
-                            progressBar.setVisibility(status);
-                        }
-                    });*/
                 }
 
             }//end of onclick
@@ -1130,6 +1059,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         }
 
                         onInPunchSuccess();
+                    }else if (resultPojo.getStatus().matches(AUtils.STATUS_ERROR)) {
+                        onOutPunchSuccess();
+                        AUtils.info(mContext, "Data not fetching, please remove background app, then duty on");
                     }
                 }
             });
@@ -1248,15 +1180,26 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private void onSwitchStatus(boolean isChecked) {
 
         isSwitchOn = isChecked;
+        if (Prefs.getString(AUtils.LAT, "") != null && Prefs.getString(AUtils.LONG, "") != null ) {
+            if (isChecked) {
+                playsound();
+                onSwitchOn();
+            } else {
+                playsound();
+                onSwitchOff();
 
-        if (isChecked) {
+            }
+        }else {
+            AUtils.info(mContext, "Data not fetching, please remove background app, then duty on");
+        }
+        /*if (isChecked) {
             playsound();
             onSwitchOn();
         } else {
             playsound();
             onSwitchOff();
 
-        }
+        }*/
 
     }
 

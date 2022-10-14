@@ -35,7 +35,37 @@ public class DumpEmpAttendanceRepo {
         inPunchBody.setReferanceId(refId);
         inPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
 
-        PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
+        if (inPunchBody.getEmpType() != null &&
+                inPunchBody.getUserId() != null &&
+                inPunchBody.getStartLat() != null &&
+                inPunchBody.getStartLong() != null &&
+                inPunchBody.getDaDate() != null &&
+                inPunchBody.getStartTime() != null &&
+                inPunchBody.getVehicleNumber() != null &&
+                inPunchBody.getVtId() != null &&
+                inPunchBody.getReferanceId() != null)   {
+
+            PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
+            Call<ResultPojo> punchInCall = punchWebService.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, null), AUtils.CONTENT_TYPE,
+                    AUtils.getBatteryStatus(),
+                    inPunchBody);
+
+            punchInCall.enqueue(new Callback<ResultPojo>() {
+                @Override
+                public void onResponse(Call<ResultPojo> call, Response<ResultPojo> response) {
+                    Log.e(TAG, "onResponse: " + response.body().getMessage());
+                    iDumpEmpAttendanceResponse.onResponse(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<ResultPojo> call, Throwable t) {
+                    Log.e(TAG, "onFailure: " + t.getMessage());
+                    iDumpEmpAttendanceResponse.onFailure(t);
+                }
+            });
+        }
+
+       /* PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
         Call<ResultPojo> punchInCall = punchWebService.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, null), AUtils.CONTENT_TYPE,
                 AUtils.getBatteryStatus(),
                 inPunchBody);
@@ -52,7 +82,7 @@ public class DumpEmpAttendanceRepo {
                 Log.e(TAG, "onFailure: " + t.getMessage());
                 iDumpEmpAttendanceResponse.onFailure(t);
             }
-        });
+        });*/
     }
 
     public void setDumpEmpAttendanceOut(String refId, IDumpEmpAttendanceResponse iDumpEmpAttendanceResponse) {
@@ -68,7 +98,37 @@ public class DumpEmpAttendanceRepo {
         outPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
         outPunchBody.setReferanceId(refId);
 
-        PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
+        if (outPunchBody.getEmpType() != null &&
+                outPunchBody.getUserId() != null &&
+                outPunchBody.getEndLat() != null &&
+                outPunchBody.getEndLong() != null &&
+                outPunchBody.getDaDate() != null &&
+                outPunchBody.getEndTime() != null &&
+                outPunchBody.getVehicleNumber() != null &&
+                outPunchBody.getVtId() != null &&
+                outPunchBody.getReferanceId() != null)   {
+
+            PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
+            Call<ResultPojo> punchOutCall = punchWebService.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, null),
+                    AUtils.CONTENT_TYPE, AUtils.getBatteryStatus(),
+                    outPunchBody);
+
+            punchOutCall.enqueue(new Callback<ResultPojo>() {
+                @Override
+                public void onResponse(Call<ResultPojo> call, Response<ResultPojo> response) {
+                    Log.e(TAG, "onResponse: " + response.body().getMessage());
+                    iDumpEmpAttendanceResponse.onResponse(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<ResultPojo> call, Throwable t) {
+                    Log.e(TAG, "onFailure: " + t.getMessage());
+                    iDumpEmpAttendanceResponse.onFailure(t);
+                }
+            });
+        }
+
+        /*PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
         Call<ResultPojo> punchOutCall = punchWebService.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, null),
                 AUtils.CONTENT_TYPE, AUtils.getBatteryStatus(),
                 outPunchBody);
@@ -85,7 +145,7 @@ public class DumpEmpAttendanceRepo {
                 Log.e(TAG, "onFailure: " + t.getMessage());
                 iDumpEmpAttendanceResponse.onFailure(t);
             }
-        });
+        });*/
     }
 
     public interface IDumpEmpAttendanceResponse {

@@ -204,10 +204,24 @@ public class SyncServer {
             Type type = new TypeToken<InPunchPojo>() {
             }.getType();
             Prefs.putString(AUtils.PREFS.IN_PUNCH_POJO, gson.toJson(inPunchPojo, type));
+            if (
+                    inPunchPojo.getUserId() != null &&
+                    inPunchPojo.getStartLat() != null &&
+                    inPunchPojo.getStartLong() != null &&
+                    inPunchPojo.getVtId() != null &&
+                    inPunchPojo.getReferanceId() != null){
 
-            resultPojo = service.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
+                resultPojo = service.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
+                        AUtils.getBatteryStatus(), inPunchPojo).execute().body();
+
+            }else {
+                AUtils.info(this.context, "Data not fetching, please remove background app, then duty on");
+
+            }
+
+            /*resultPojo = service.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
                     AUtils.getBatteryStatus(), inPunchPojo).execute().body();
-
+*/
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -227,8 +241,19 @@ public class SyncServer {
             outPunchPojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
              outPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID, ""));
 
-            resultPojo = service.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
-                    AUtils.getBatteryStatus(), outPunchPojo).execute().body();
+            if (outPunchPojo.getEmpType() != null &&
+                    outPunchPojo.getUserId() != null &&
+                    outPunchPojo.getEndLat() != null &&
+                    outPunchPojo.getEndLong() != null &&
+                    outPunchPojo.getDaDate() != null &&
+                    outPunchPojo.getReferanceId() != null)   {
+
+                resultPojo = service.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
+                        AUtils.getBatteryStatus(), outPunchPojo).execute().body();
+            }
+
+            /*resultPojo = service.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
+                    AUtils.getBatteryStatus(), outPunchPojo).execute().body();*/
 
         } catch (Exception e) {
 

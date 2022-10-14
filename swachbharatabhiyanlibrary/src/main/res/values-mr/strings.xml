@@ -236,6 +236,7 @@
 
     <string name="perminssion_needed_title">परमिशन आवश्यक!</string>
     <string name="loc_allow_all_time_txt">बॅकग्राऊंड लोकेशन परमिशन आवश्यक आहे!, पुढील स्क्रीनवर  Allow all the time वर टॅप करा</string>
+    <string name="str_err_fetching_data">माहिती आणत नाही, कृपया बैकग्राउंड अॅप काढा, नंतर ड्युटी सुरू करा.</string>
 
 
 </resources>

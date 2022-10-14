@@ -276,7 +276,7 @@
 
     <string name="perminssion_needed_title">Permission Needed!</string>
     <string name="loc_allow_all_time_txt"><br>Background Location Permission Needed!,</br><br> tap "Allow all the time" in the next screen</br></string>
-
+    <string name="str_err_fetching_data">Information not fetching, please remove background app, then duty on.</string>
 
 
 </resources>

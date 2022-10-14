@@ -798,7 +798,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                                     onInPunchSuccess();
                                     if (attendanceResponse.hashCode() == 500){
-                                        AUtils.info(mContext, "Data not fetching, please remove background app, then duty on");
+                                        AUtils.info(mContext, getResources().getString(R.string.str_err_fetching_data), 1000*60);
 
                                     }
 

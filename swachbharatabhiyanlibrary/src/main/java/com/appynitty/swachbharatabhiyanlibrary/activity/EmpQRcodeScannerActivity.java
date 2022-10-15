@@ -49,7 +49,9 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpQrLocation
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.ChooseActionPopUp;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
+import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -126,6 +128,12 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity /*implements ZBa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
+        }
+
         initComponents();
 
     }

@@ -176,6 +176,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         super.onCreate(savedInstanceState);
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
+        if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
+        }
         onSwitchStatus(AUtils.isIsOnduty());
     }
 
@@ -793,18 +797,29 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             public void onResponse(ResultPojo attendanceResponse) {
                                 progressBar.setVisibility(View.GONE);
                                 if (attendanceResponse != null){
-                                    Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
+                                    if (attendanceResponse.getStatus().equals(AUtils.STATUS_SUCCESS)){
+                                        Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
+                                        // ctptEmpCheckInMutableLiveData.setValue(attendanceResponse);
+
+                                        onInPunchSuccess();
+                                    }else if (attendanceResponse.getStatus().equals(AUtils.STATUS_ERROR)){
+                                        onOutPunchSuccess();
+                                        AUtils.info(mContext, getResources().getString(R.string.str_err_fetching_data), 1000*60);
+                                    }
+
+                                    /*Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
                                     // ctptEmpCheckInMutableLiveData.setValue(attendanceResponse);
 
                                     onInPunchSuccess();
                                     if (attendanceResponse.hashCode() == 500){
                                         AUtils.info(mContext, getResources().getString(R.string.str_err_fetching_data), 1000*60);
 
-                                    }
+                                    }*/
 
                                 }else {
                                      onOutPunchSuccess();
-                                    AUtils.info(mContext, "Data not fetching, please remove background app, then duty on");
+                                    AUtils.info(mContext, getResources().getString(R.string.str_err_fetching_data), 1000*60);
+
                                 }
 
                                 //progressStatusLiveData.setValue(View.GONE);
@@ -822,6 +837,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                                 Log.e(TAG, "onFailure: " + throwable.getMessage());
                                 AUtils.info(mContext, "Data not fetching, please remove background app, then duty on");
                                 // ctptEmpAttendanceError.setValue(throwable);
+                                onOutPunchSuccess();
                             }
                         });
                     }
@@ -834,7 +850,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AUtils.gpsStatusCheck(DashboardActivity.this);
+                AUtils.gpsStatusCheck(mContext);
 
                 if (empType.matches("D")) {
                     if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {

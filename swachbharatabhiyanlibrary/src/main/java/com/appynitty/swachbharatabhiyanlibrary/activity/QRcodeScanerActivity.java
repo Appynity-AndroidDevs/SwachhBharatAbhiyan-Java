@@ -57,6 +57,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.OfflineGarbageColectionPojo
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationMonitoringService;
+import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
@@ -143,7 +144,10 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
 
+        }
         initComponents();
 
     }

@@ -109,6 +109,11 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
+            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
+        }
+
         initComponents();
     }
 

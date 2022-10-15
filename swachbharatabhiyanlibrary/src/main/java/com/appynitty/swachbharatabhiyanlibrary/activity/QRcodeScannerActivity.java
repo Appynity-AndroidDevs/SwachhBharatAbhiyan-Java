@@ -84,6 +84,7 @@ import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 
 public class QRcodeScannerActivity extends AppCompatActivity implements GarbageTypePopUp.GarbagePopUpDialogListener {
 
+
     private final static String TAG = "QRcodeScannerActivity";
     private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 100;
     GarbageCollectionPojo garbageCollectionPojo;
@@ -712,9 +713,14 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 
         checkCameraPermission();
 
-        if (!AUtils.isConnectedFast(mContext)) {
-            AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+        if (AUtils.isInternetAvailable()){
+            if (!AUtils.isConnectedFast(mContext)) {
+                AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+            }
+        }else{
+            AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
         }
+
 
         mAreaAdapter.fetchAreaList(getAreaType(), false);
 
@@ -1033,6 +1039,8 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
     private void startSubmitQRAsyncTask(HashMap<String, String> map) {
 
         stopCamera();
+
+
         setGarbageCollectionPojo(map);
 
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -1351,7 +1359,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
                 break;
             /*case "4":
                 value = "Liquid waste Id  ";
-                break;
+                breaks
             case "5":
                 value = "Street waste Id  ";
                 break;*/

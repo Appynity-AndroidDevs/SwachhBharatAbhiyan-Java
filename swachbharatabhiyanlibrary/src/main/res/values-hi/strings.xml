@@ -190,7 +190,8 @@
     <string name="out_of_area_msg">आप स्कैनिंग क्षेत्र से बाहर हैं। कृपया क्षेत्र के अंदर जाएं और पुनः प्रयास करें</string>
     <string name="usr_name_pwd_mismatch_warning">उपयोगकर्ता नाम या पासवर्ड मेल नहीं खाता</string>
     <string name="no_location_found">कोई लोकेशन नहीं मिला</string>
-
+    <string name="no_location_found_cant_save">कोई लोकेशन नहीं मिला, सबमिट नहीं कर सकते</string>
+    <string name="fetching_location">कृपया लोकेशन प्राप्त करने की प्रतीक्षा करें</string>
 
     <string name="perminssion_needed_title">परमिशन आवश्यक!</string>
     <string name="loc_allow_all_time_txt">बैकग्राउंड लोकेशन परमिशन की आवश्यकता है!, अगली स्क्रीन पे Allow all the time पर टैप करें</string>

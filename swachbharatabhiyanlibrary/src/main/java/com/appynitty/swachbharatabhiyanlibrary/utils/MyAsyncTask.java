@@ -2,6 +2,9 @@ package com.appynitty.swachbharatabhiyanlibrary.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.connection.SyncServer;
@@ -52,9 +55,21 @@ public class MyAsyncTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (!AUtils.isNull(myProgressDialog) && myProgressDialog.isShowing()) {
+                    myProgressDialog.dismiss();
+                }
+            }
+        });
+        Log.i("appynitty12", "onPostExecute: ");
         if (!AUtils.isNull(myProgressDialog) && myProgressDialog.isShowing()) {
             myProgressDialog.dismiss();
         }
+
+
         if (isNetworkAvail) {
 
             asynTaskListener.onFinished();

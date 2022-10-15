@@ -7,6 +7,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9b67cf4229529ce44678fcbb979c8d48/transformed/jetified-MaterialFabSpeedDial-1.2.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9b67cf4229529ce44678fcbb979c8d48/transformed/jetified-MaterialFabSpeedDial-1.2.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9b67cf4229529ce44678fcbb979c8d48/transformed/jetified-MaterialFabSpeedDial-1.2.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/789a7f3bf780de5803527d90f0e2d383/transformed/jetified-MaterialFabSpeedDial-1.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/789a7f3bf780de5803527d90f0e2d383/transformed/jetified-MaterialFabSpeedDial-1.2.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/789a7f3bf780de5803527d90f0e2d383/transformed/jetified-MaterialFabSpeedDial-1.2.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kobakei/MaterialFabSpeedDial/1.2.0/bff81e362a385751d3f432e53f561abfd7045b36/MaterialFabSpeedDial-1.2.0-javadoc.jar!/" />

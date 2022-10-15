@@ -256,6 +256,8 @@
     <string name="out_of_area_msg">You\'re out of the scanning area. Please go inside the area and try again</string>
     <string name="usr_name_pwd_mismatch_warning">UserName or Passward not Match.</string>
     <string name="no_location_found">No Location found</string>
+    <string name="no_location_found_cant_save">No Location found , Cannot submit</string>
+    <string name="fetching_location">please wait fetching the location</string>
 
 
     <string name="perminssion_needed_title">Permission Needed!</string>

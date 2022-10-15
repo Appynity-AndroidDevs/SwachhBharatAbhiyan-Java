@@ -5,6 +5,7 @@ import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.getAppGeoArea
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -181,6 +182,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         super.onCreate(savedInstanceState);
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
+        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
         onSwitchStatus(AUtils.isIsOnduty());
     }
 
@@ -436,22 +439,24 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private void isUserLoginValidIMEINumber() {
 
         //syncOfflineData();
+        syncOfflineData(isSync);
 
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (InternetWorking.isOnline()) {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            syncOfflineData(isSync);
-                        }
-                    });
-                }
-
-            }
-        });
+        //TODO
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (InternetWorking.isOnline()) {
+//                    Handler handler = new Handler(Looper.getMainLooper());
+//                    handler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    });
+//                }
+//
+//            }
+//        });
 
 
 //        JSONObject jsonObject = new JSONObject();
@@ -791,44 +796,49 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 if (!empType.matches("D")) {
                     if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+//
+                        progressBar.setVisibility(View.GONE);
+                        onSwitchStatus(isChecked);
+//                        if (AUtils.isConnectedFast(getApplicationContext())) {
 
-                        if (AUtils.isConnectedFast(getApplicationContext())) {
+                        //TODO
 
-                            progressBar.setVisibility(View.VISIBLE);
-
-                            executor.execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (InternetWorking.isOnline()) {
-
-                                        Handler handler = new Handler(Looper.getMainLooper());
-                                        handler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                progressBar.setVisibility(View.GONE);
-                                                onSwitchStatus(isChecked);
-                                            }
-                                        });
-
-                                    } else {
-                                        Handler handler = new Handler(Looper.getMainLooper());
-                                        handler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                progressBar.setVisibility(View.GONE);
-                                                markAttendance.setChecked(AUtils.isIsOnduty());
-                                                AUtils.warning(DashboardActivity.this, getResources().getString(R.string.no_internet_error));
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-
-
-                        } else {
-                            markAttendance.setChecked(AUtils.isIsOnduty());
-                            AUtils.warning(DashboardActivity.this, getResources().getString(R.string.slow_internet));
-                        }
+//                            progressBar.setVisibility(View.VISIBLE);
+//
+//                            executor.execute(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    if (InternetWorking.isOnline()) {
+//
+//                                        Handler handler = new Handler(Looper.getMainLooper());
+//                                        handler.post(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//
+//                                                progressBar.setVisibility(View.GONE);
+//                                                onSwitchStatus(isChecked);
+//                                            }
+//                                        });
+//
+//                                    } else {
+//                                        Handler handler = new Handler(Looper.getMainLooper());
+//                                        handler.post(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                progressBar.setVisibility(View.GONE);
+//                                                markAttendance.setChecked(AUtils.isIsOnduty());
+//                                                AUtils.warning(DashboardActivity.this, getResources().getString(R.string.no_internet_error));
+//                                            }
+//                                        });
+//                                    }
+//                                }
+//                            });
+//
+//
+//                        } else {
+//                            markAttendance.setChecked(AUtils.isIsOnduty());
+//                            AUtils.warning(DashboardActivity.this, getResources().getString(R.string.slow_internet));
+//                        }
 
                     } else {
                         markAttendance.setChecked(AUtils.isIsOnduty());
@@ -870,15 +880,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 *//*if (!messageMar.isEmpty())
                     AUtils.success(mContext, messageMar);*//*
             }
-
             @Override
             public void onFailureCallback() {
-
             }
-
             @Override
             public void onErrorCallback() {
-
             }
         });*/
 
@@ -1003,18 +1009,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         double lat = Double.parseDouble(Prefs.getString(AUtils.LAT, null));
         double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
         LatLng currentLatlong = new LatLng(lat, lon);
-
         List<LatLng> prefList;
         String json = Prefs.getString(AUtils.PREFS.AREA_VERTICES, null);
-
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<LatLng>>() {
         }.getType();
-
         prefList = gson.fromJson(json, type);
-
         boolean isPointInPolygon = PolyUtil.containsLocation(currentLatlong, prefList, false);
-
         Log.e(TAG, "initData: latlng= " + currentLatlong
                 + " isPointInPolygon: " + isPointInPolygon);
     }*/
@@ -1093,6 +1094,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         isSwitchOn = isChecked;
 
+//        Prefs.putString(AUtils.LAT, "");
+//        if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
         if (isChecked) {
             playsound();
             onSwitchOn();
@@ -1100,11 +1103,54 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             playsound();
             onSwitchOff();
 
-
         }
+//        } else {
+//            //     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//            //        markAttendance.setChecked(AUtils.isIsOnduty());
+//
+////
+//            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+////         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+//            ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+//            mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+//            mProgressDialog.show();
+//
+//
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    boolean isLocationFound = false;
+//                    while (!isLocationFound) {
+//                        if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+//                            isLocationFound = true;
+//                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    if (isChecked) {
+//                                        playsound();
+//                                        onSwitchOn();
+//                                    } else {
+//                                        playsound();
+//                                        onSwitchOff();
+//
+//                                    }
+//                                    mProgressDialog.dismiss();
+//                                }
+//                            });
+//
+//                        }
+//                    }
+//                }
+//            });
+//
+
 
     }
 
+    /**
+     * METHOD TO SAVE ATTENDANCE ON ( API CALL FLOW AND SQL CALL FLOW HERE )
+     */
     private void onVehicleTypeDialogClose(Object listItemSelected, String vehicleNo) {
 
         if (!AUtils.isNull(vehicleNo) && !vehicleNo.isEmpty()) {
@@ -1119,13 +1165,53 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
 
             try {
-                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
-                onInPunchSuccess();
-                if (AUtils.isInternetAvailable()) {
-                    if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
-                        mOfflineAttendanceAdapter.SyncOfflineData();
-                    AUtils.success(mContext, getString(R.string.shif_start));
+
+
+                if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                    syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+                    onInPunchSuccess();
+                    if (AUtils.isInternetAvailable()) {
+                        if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
+                            mOfflineAttendanceAdapter.SyncOfflineData();
+                        AUtils.success(mContext, getString(R.string.shif_start));
+
+                    }
+                } else {
+
+                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                    ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                    mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                    mProgressDialog.setCancelable(false);
+                    mProgressDialog.show();
+
+
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            boolean isLocationFound = false;
+                            while (!isLocationFound) {
+                                if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                    isLocationFound = true;
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+                                            onInPunchSuccess();
+                                            if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
+                                                mOfflineAttendanceAdapter.SyncOfflineData();
+                                            AUtils.success(mContext, getString(R.string.shif_start));
+                                            mProgressDialog.dismiss();
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                    });
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 markAttendance.setChecked(false);
@@ -1350,6 +1436,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         }
     }
 
+
+    /**
+     * METHOD TO SAVE ATTENDANCE OFF ( SQL AND API FLOW HERE )
+     */
     private void onSwitchOff() {
 
         if (AUtils.isIsOnduty()) {
@@ -1362,12 +1452,51 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             if (AUtils.isNull(attendancePojo))
                                 attendancePojo = new AttendancePojo();
 
-                            syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
-                            onOutPunchSuccess();
 
-                            if (AUtils.isInternetAvailable()) {
-                                mOfflineAttendanceAdapter.SyncOfflineData();
+                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                                onOutPunchSuccess();
+
+                                if (AUtils.isInternetAvailable()) {
+                                    mOfflineAttendanceAdapter.SyncOfflineData();
+                                }
+                            } else {
+
+                                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                                ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                                mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                                mProgressDialog.setCancelable(false);
+                                mProgressDialog.show();
+
+
+                                executor.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        boolean isLocationFound = false;
+                                        while (!isLocationFound) {
+                                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                                isLocationFound = true;
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                                                        onOutPunchSuccess();
+
+                                                        if (AUtils.isInternetAvailable()) {
+                                                            mOfflineAttendanceAdapter.SyncOfflineData();
+                                                        }
+                                                        mProgressDialog.dismiss();
+                                                    }
+                                                });
+
+                                            }
+                                        }
+                                    }
+                                });
                             }
+
                         }
                     }, new DialogInterface.OnClickListener() {
                         @Override

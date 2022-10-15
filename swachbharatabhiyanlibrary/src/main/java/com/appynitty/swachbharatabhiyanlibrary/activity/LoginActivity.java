@@ -243,14 +243,15 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
                 if (AUtils.isInternetAvailable()) {
 
-                    if (AUtils.isConnectedFast(getApplicationContext())) {
-                        findViewById(R.id.loginProgressBar).setVisibility(View.VISIBLE);
-                        onLogin();
-
-                    } else {
-                        findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
-                        AUtils.warning(LoginActivity.this, getResources().getString(R.string.slow_internet));
-                    }
+                    onLogin();
+//                    if (AUtils.isConnectedFast(getApplicationContext())) {
+//                        findViewById(R.id.loginProgressBar).setVisibility(View.VISIBLE);
+//                        onLogin();
+//
+//                    } else {
+//                        findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
+//                        AUtils.warning(LoginActivity.this, getResources().getString(R.string.slow_internet));
+//                    }
 
                 } else {
                     // findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
@@ -331,96 +332,96 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
         if (validateForm()) {
             getFormData();
+//
+//            final Executor executor = Executors.newSingleThreadExecutor();
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    if (InternetWorking.isOnline()) {
+//
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
 
-            final Executor executor = Executors.newSingleThreadExecutor();
-            executor.execute(new Runnable() {
+            loginViewModel.loginUser(loginPojo);
+            loginViewModel.getLoginDetailsSuccessLiveData().observe(LoginActivity.this, new Observer<LoginDetailsPojo>() {
                 @Override
-                public void run() {
+                public void onChanged(LoginDetailsPojo loginDetailsPojo) {
 
-                    if (InternetWorking.isOnline()) {
+                    findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
+                    if (!AUtils.isNull(loginDetailsPojo) && !AUtils.isNull((loginDetailsPojo).getStatus())) {
 
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
+                        if (loginDetailsPojo.getStatus().equals(AUtils.STATUS_SUCCESS)) {
 
-                                loginViewModel.loginUser(loginPojo);
-                                loginViewModel.getLoginDetailsSuccessLiveData().observe(LoginActivity.this, new Observer<LoginDetailsPojo>() {
-                                    @Override
-                                    public void onChanged(LoginDetailsPojo loginDetailsPojo) {
+                            Prefs.putString(AUtils.PREFS.USER_ID, loginDetailsPojo.getUserId());
+                            Prefs.putString(AUtils.PREFS.USER_TYPE, loginDetailsPojo.getType());
+                            Prefs.putString(AUtils.PREFS.USER_TYPE_ID, loginDetailsPojo.getTypeId());
+                            Prefs.putString(AUtils.PREFS.EMPLOYEE_TYPE, loginDetailsPojo.getEmpType());
+                            Prefs.putBoolean(AUtils.PREFS.IS_GT_FEATURE, loginDetailsPojo.getGtFeatures());
+                            Log.e("LoginActivity", "empType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
+                            Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, true);
 
-                                        findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
-                                        if (!AUtils.isNull(loginDetailsPojo) && !AUtils.isNull((loginDetailsPojo).getStatus())) {
+                            Intent intent;
+                            String userType = loginDetailsPojo.getTypeId();
+                            intent = new Intent(LoginActivity.this, AUtils.getDashboardClass(userType));
 
-                                            if (loginDetailsPojo.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                            intent.putExtra(AUtils.isFromLogin, true);
+                            startActivity(intent);
+                            LoginActivity.this.finish();
+                        } else {
 
-                                                Prefs.putString(AUtils.PREFS.USER_ID, loginDetailsPojo.getUserId());
-                                                Prefs.putString(AUtils.PREFS.USER_TYPE, loginDetailsPojo.getType());
-                                                Prefs.putString(AUtils.PREFS.USER_TYPE_ID, loginDetailsPojo.getTypeId());
-                                                Prefs.putString(AUtils.PREFS.EMPLOYEE_TYPE, loginDetailsPojo.getEmpType());
-                                                Prefs.putBoolean(AUtils.PREFS.IS_GT_FEATURE, loginDetailsPojo.getGtFeatures());
-                                                Log.e("LoginActivity", "empType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
-                                                Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, true);
+                            String message;
 
-                                                Intent intent;
-                                                String userType = loginDetailsPojo.getTypeId();
-                                                intent = new Intent(LoginActivity.this, AUtils.getDashboardClass(userType));
-
-                                                intent.putExtra(AUtils.isFromLogin, true);
-                                                startActivity(intent);
-                                                LoginActivity.this.finish();
-                                            } else {
-
-                                                String message;
-
-                                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equalsIgnoreCase(AUtils.LanguageConstants.MARATHI)) {
-                                                    message = loginDetailsPojo.getMessageMar();
-                                                } else {
-                                                    message = loginDetailsPojo.getMessage();
-                                                    Log.e(TAG, "onSuccessFailureCallBack: " + message);
-                                                }
-
-                                                Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
-
-                                                AUtils.error(mContext, message, Toast.LENGTH_SHORT);
-                                            }
-
-                                        } else {
-
-                                            Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
-                                            AUtils.error(mContext, "" + mContext.getString(R.string.serverError), Toast.LENGTH_SHORT);
-
-                                        }
-                                    }
-                                });
-                                loginViewModel.getLoginDetailsErrorLiveData().observe(LoginActivity.this, new Observer<Throwable>() {
-                                    @Override
-                                    public void onChanged(Throwable throwable) {
-                                        AUtils.warning(LoginActivity.this, throwable.getMessage());
-
-                                        Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
-                                        findViewById(R.id.loginProgressBar).setVisibility(View.GONE);
-
-                                    }
-                                });
-
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equalsIgnoreCase(AUtils.LanguageConstants.MARATHI)) {
+                                message = loginDetailsPojo.getMessageMar();
+                            } else {
+                                message = loginDetailsPojo.getMessage();
+                                Log.e(TAG, "onSuccessFailureCallBack: " + message);
                             }
-                        });
+
+                            Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
+
+                            AUtils.error(mContext, message, Toast.LENGTH_SHORT);
+                        }
 
                     } else {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
 
-                                findViewById(R.id.loginProgressBar).setVisibility(View.GONE);
-                                AUtils.warning(LoginActivity.this, getResources().getString(R.string.no_internet_error));
-                                //    noInternetErrorLayout.setVisibility(View.VISIBLE);
-                            }
-                        });
+                        Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
+                        AUtils.error(mContext, "" + mContext.getString(R.string.serverError), Toast.LENGTH_SHORT);
 
                     }
                 }
             });
+            loginViewModel.getLoginDetailsErrorLiveData().observe(LoginActivity.this, new Observer<Throwable>() {
+                @Override
+                public void onChanged(Throwable throwable) {
+                    AUtils.warning(LoginActivity.this, throwable.getMessage());
+
+                    Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
+                    findViewById(R.id.loginProgressBar).setVisibility(View.GONE);
+
+                }
+            });
+
+//                            }
+//                        });
+//
+//                    } else {
+//                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                                findViewById(R.id.loginProgressBar).setVisibility(View.GONE);
+//                                AUtils.warning(LoginActivity.this, getResources().getString(R.string.no_internet_error));
+//                                //    noInternetErrorLayout.setVisibility(View.VISIBLE);
+//                            }
+//                        });
+//
+//                    }
+//                }
+//            });
 
         }
 

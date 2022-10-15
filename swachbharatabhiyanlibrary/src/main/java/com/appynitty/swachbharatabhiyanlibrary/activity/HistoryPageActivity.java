@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,15 +18,12 @@ import androidx.appcompat.widget.Toolbar;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.InflateHistoryAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.HistoryAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.riaylibrary.utils.LocaleHelper;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class HistoryPageActivity extends AppCompatActivity {
 
@@ -61,7 +55,7 @@ public class HistoryPageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -81,9 +75,11 @@ public class HistoryPageActivity extends AppCompatActivity {
 
         AUtils.currentContextConstant = mContext;
 
-        if (AUtils.isInternetAvailable()) {
+        if(AUtils.isInternetAvailable())
+        {
             AUtils.hideSnackBar();
-        } else {
+        }
+        else {
             AUtils.showSnackBar(findViewById(R.id.parent));
         }
     }
@@ -125,15 +121,12 @@ public class HistoryPageActivity extends AppCompatActivity {
         monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (position > 0 && yearSpinner.getSelectedItemPosition() > 0) {
-                    String month = String.valueOf(position);
-                    Log.d(TAG, "onItemSelected: " + month);
+                if(position > 0 && yearSpinner.getSelectedItemPosition() > 0){
                     mAdapter.fetchHistory(
                             yearSpinner.getSelectedItem().toString(),
                             String.valueOf(position)
                     );
-                    findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
-                } else {
+                }else{
                     AUtils.warning(mContext, getResources().getString(R.string.select_month_year_warn));
                 }
             }
@@ -147,17 +140,12 @@ public class HistoryPageActivity extends AppCompatActivity {
         yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (position > 0 && monthSpinner.getSelectedItemPosition() > 0) {
-
-                    String sMonth = String.valueOf(monthSpinner.getSelectedItemPosition());
-                    Log.d(TAG, "onItemSelected: " + sMonth);
+                if(position > 0 && monthSpinner.getSelectedItemPosition() > 0){
                     mAdapter.fetchHistory(
                             yearSpinner.getSelectedItem().toString(),
                             String.valueOf(monthSpinner.getSelectedItemPosition())
-
                     );
-                    findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
-                } else {
+                }else{
                     AUtils.info(mContext, getResources().getString(R.string.select_month_year_warn));
                 }
             }
@@ -182,59 +170,15 @@ public class HistoryPageActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        initSpinner();
-//
-//        if(AUtils.isInternetAvailable()){
-//            noInternetErrorLayout.setVisibility(View.GONE);
-//            mAdapter.fetchHistory(String.valueOf(AUtils.getCurrentYear()),
-//                    String.valueOf(AUtils.getCurrentMonth()));
-//        }else{
-//            noInternetErrorLayout.setVisibility(View.VISIBLE);
-//        }
 
-        if (AUtils.isInternetAvailable()) {
-            if (AUtils.isConnectedFast(getApplicationContext())) {
-
-                findViewById(R.id.workHistoryProgressBar).setVisibility(View.VISIBLE);
-                final Executor executor = Executors.newSingleThreadExecutor();
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        if (InternetWorking.isOnline()) {
-
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-//
-                                    findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
-                                    noInternetErrorLayout.setVisibility(View.GONE);
-//                                mAdapter.fetchHistory(String.valueOf(AUtils.getCurrentYear()),
-//                                        String.valueOf(AUtils.getCurrentMonth())+1);
-                                }
-                            });
-
-                        } else {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
-                                    AUtils.warning(HistoryPageActivity.this, getResources().getString(R.string.no_internet_error));
-                                    noInternetErrorLayout.setVisibility(View.VISIBLE);
-                                }
-                            });
-
-                        }
-                    }
-                });
-            } else {
-                AUtils.warning(HistoryPageActivity.this, getResources().getString(R.string.slow_internet));
-            }
-        } else {
+        if(AUtils.isInternetAvailable()){
+            noInternetErrorLayout.setVisibility(View.GONE);
+            mAdapter.fetchHistory(String.valueOf(AUtils.getCurrentYear()),
+                    String.valueOf(AUtils.getCurrentMonth()));
+        }else{
             noInternetErrorLayout.setVisibility(View.VISIBLE);
         }
+        initSpinner();
     }
 
     private void initSpinner() {
@@ -246,11 +190,7 @@ public class HistoryPageActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(mContext,
                 R.layout.layout_simple_white_textview, AUtils.getMonthList());
         monthSpinner.setAdapter(spinnerAdapter);
-        monthSpinner.setSelection((AUtils.getCurrentMonth() + 1), true);
-
-        int currentMonth = AUtils.getCurrentMonth() + 1;
-        Log.d(TAG, "setMonthSpinner: " + currentMonth);
-
+        monthSpinner.setSelection((AUtils.getCurrentMonth()+1), true);
     }
 
     public void setYearSpinner(Spinner yearSpinner) {
@@ -261,22 +201,20 @@ public class HistoryPageActivity extends AppCompatActivity {
     }
 
     private void setHistoryData() {
-        findViewById(R.id.workHistoryProgressBar).setVisibility(View.GONE);
         noInternetErrorLayout.setVisibility(View.GONE);
         historyPojoList = mAdapter.getworkHistoryTypePojoList();
 
-        Log.d(TAG, "setHistoryData: " + historyPojoList);
-        if (!AUtils.isNull(historyPojoList) && !historyPojoList.isEmpty()) {
+        if(!AUtils.isNull(historyPojoList) && !historyPojoList.isEmpty()){
             historyGrid.setVisibility(View.VISIBLE);
             noDataErrorLayout.setVisibility(View.GONE);
             initGrid();
-        } else {
+        }else{
             historyGrid.setVisibility(View.GONE);
             noDataErrorLayout.setVisibility(View.VISIBLE);
         }
     }
 
-    private void initGrid() {
+    private void initGrid(){
         InflateHistoryAdapter adapter = new InflateHistoryAdapter(mContext, historyPojoList);
         historyGrid.setAdapter(adapter);
     }

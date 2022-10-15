@@ -52,6 +52,7 @@ import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -693,7 +694,15 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             qrLocationPojo.setGcType(getGCType(id));
             qrLocationPojo.setDate(AUtils.getServerDateTime());
             qrLocationPojo.setQRCodeImage("data:image/jpeg;base64," + encodedImage);
-            startSubmitQRAsyncTask(qrLocationPojo);
+
+            //SANATH : Checking lat before saving ( if lat is null or empty string )
+            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                startSubmitQRAsyncTask(qrLocationPojo);
+            } else {
+                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                AUtils.warning(mContext, getResources().getString(R.string.no_location_found_cant_save));
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -715,17 +724,18 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    if (InternetWorking.isOnline()){
+                    if (InternetWorking.isOnline()) {
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                empQrLocationAdapter.saveQrLocation(pojo);
+                                insertToDB(pojo);
+                                //     empQrLocationAdapter.saveQrLocation(pojo);
                                 stopCamera();
                             }
                         });
 
-                    }else{
+                    } else {
                         insertToDB(pojo);
                     }
                 }
@@ -794,6 +804,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         if (isChecked) {
             if (!AUtils.isInternetAvailable()) {
                 Toast.makeText(mContext, "Submitted successfully", Toast.LENGTH_SHORT).show();
+            }else{
+                AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
             }
         } else {
             AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
@@ -1135,6 +1147,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         return density;
     }
+
     public void switchFlashlight(View view) {
         if (turn_on_flashlight) {
             scannerView.setTorchOn();

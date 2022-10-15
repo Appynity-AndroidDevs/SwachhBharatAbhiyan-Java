@@ -36,6 +36,7 @@ import java.util.concurrent.Executors;
  * Created by Ayan Dey on 22/1/20.
  */
 public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdapter.WasteMenuViewHolder> {
+
     private static final String TAG = "DashboardMenuAdapter";
     private final Context context;
     final Executor executor = Executors.newSingleThreadExecutor();
@@ -43,7 +44,7 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
     private final VerifyDataAdapterClass verifyDataAdapterClass;
     private ProgressBar progressBar;
 
-    public DashboardMenuAdapter(Context context , ProgressBar progressBar) {
+    public DashboardMenuAdapter(Context context, ProgressBar progressBar) {
         this.context = context;
         verifyDataAdapterClass = new VerifyDataAdapterClass(context);
         this.progressBar = progressBar;
@@ -172,6 +173,8 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
 
                             }
                         } else if (menuPojo.getNextIntentClass().equals(QRcodeScannerActivity.class)) {
+//                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+//                            Prefs.putString(AUtils.LAT , "");
                             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
                             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                                 context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));

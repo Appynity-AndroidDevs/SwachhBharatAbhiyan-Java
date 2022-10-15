@@ -93,34 +93,41 @@ public class SyncOfflineActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (InternetWorking.isOnline()){
-                            syncOfflineAdapter.SyncOfflineData();
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (!alertDialog.isShowing())
-                                        alertDialog.show();
-                                }
-                            });
-                        }else{
-
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    if (alertDialog.isShowing())
-                                        alertDialog.hide();
-                                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
-                                }
-                            });
-                        }
-                    }
-                });
+                syncOfflineAdapter.SyncOfflineData();
+                if (!alertDialog.isShowing())
+                    alertDialog.show();
+                else
+                    alertDialog.hide();
+//
+//                executor.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (InternetWorking.isOnline()) {
+//
+//                            Handler handler = new Handler(Looper.getMainLooper());
+//                            handler.post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    syncOfflineAdapter.SyncOfflineData();
+//                                    if (!alertDialog.isShowing())
+//                                        alertDialog.show();
+//                                }
+//                            });
+//                        } else {
+//
+//                            Handler handler = new Handler(Looper.getMainLooper());
+//                            handler.post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//
+//                                    if (alertDialog.isShowing())
+//                                        alertDialog.hide();
+//                                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
 
 
             }
@@ -130,7 +137,8 @@ public class SyncOfflineActivity extends AppCompatActivity {
             @Override
             public void onSuccessCallback() {
                 if (alertDialog.isShowing())
-                    alertDialog.hide();
+                    alertDialog.dismiss();
+
                 AUtils.success(mContext, getString(R.string.success_offline_sync), Toast.LENGTH_LONG);
                 inflateData();
             }
@@ -178,30 +186,30 @@ public class SyncOfflineActivity extends AppCompatActivity {
         super.onPostResume();
         if (AUtils.isInternetAvailable()) {
 
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    if (InternetWorking.isOnline()){
-
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                AUtils.hideSnackBar();
-                            }
-                        });
-                    }else{
-
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                AUtils.showSnackBar(findViewById(R.id.parent));
-                            }
-                        });
-                    }
-                }
-            });
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (InternetWorking.isOnline()) {
+//
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                AUtils.hideSnackBar();
+//                            }
+//                        });
+//                    } else {
+//
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                AUtils.showSnackBar(findViewById(R.id.parent));
+//                            }
+//                        });
+//                    }
+//                }
+//            });
 
 
         } else {

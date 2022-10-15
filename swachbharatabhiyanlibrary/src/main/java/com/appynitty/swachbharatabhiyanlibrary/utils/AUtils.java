@@ -597,7 +597,7 @@ public class AUtils extends CommonUtils {
 
     public static AlertDialog getUploadingAlertDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        return builder.setView(R.layout.layout_progress_bar).setCancelable(false).create();
+        return builder.setView(R.layout.layout_progress_bar).setCancelable(true).create();
     }
 
     public static double calculateDistance(Context context, double newlat, double newLng) {

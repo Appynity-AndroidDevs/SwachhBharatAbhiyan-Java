@@ -2,6 +2,7 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,6 +46,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
@@ -582,7 +584,14 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
                     if (!AUtils.isIsOnduty()) {
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
+                        //    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                         onChangeDutyStatus();
+//                        }else{
+//                            markAttendance.setChecked(false);
+//                            AUtils.warning(mContext , getResources().getString(R.string.no_location_found));
+//                        }
+
                     }
                 } else {
                     markAttendance.setChecked(false);
@@ -600,7 +609,44 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
-                                    mAttendanceAdapter.MarkOutPunch();
+                                    Prefs.putString(AUtils.LAT, "");
+                                    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                        mAttendanceAdapter.MarkOutPunch();
+                                    } else {
+                                        //       markAttendance.setChecked(true);
+
+                                        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                                        ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                                        mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                                        mProgressDialog.setCancelable(false);
+                                        mProgressDialog.show();
+
+
+                                        executor.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                boolean isLocationFound = false;
+                                                while (!isLocationFound) {
+                                                    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                                        isLocationFound = true;
+                                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+
+                                                                if (AUtils.isInternetAvailable()) {
+                                                                    mAttendanceAdapter.MarkOutPunch();
+                                                                }
+                                                                mProgressDialog.dismiss();
+                                                            }
+                                                        });
+
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
                                 }
                             }, new DialogInterface.OnClickListener() {
                                 @Override
@@ -631,11 +677,11 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
                 @Override
                 public void onResponse() {
-
+                    Prefs.putString(AUtils.LAT, "");
                     boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
                     Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
                     if (isAreaActive) {
-                        if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("") && AUtils.isValidArea()) {
+                        if (AUtils.isValidArea()) {
                             if (AUtils.isNull(empInPunchPojo)) {
                                 empInPunchPojo = new EmpInPunchPojo();
                             }
@@ -643,8 +689,47 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                             empInPunchPojo.setStartDate(AUtils.getServerDate());
                             empInPunchPojo.setStartTime(AUtils.getServerTime());
 
+
                             try {
-                                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+
+                                if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                    mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                                } else {
+                                    //       markAttendance.setChecked(true);
+
+                                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                                    ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                                    mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                                    mProgressDialog.setCancelable(false);
+                                    mProgressDialog.show();
+
+
+                                    executor.execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            boolean isLocationFound = false;
+                                            while (!isLocationFound) {
+                                                if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                                    isLocationFound = true;
+                                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+
+                                                            if (AUtils.isInternetAvailable()) {
+                                                                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                                                            }
+                                                            mProgressDialog.dismiss();
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 markAttendance.setChecked(false);
@@ -663,7 +748,44 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                         empInPunchPojo.setStartTime(AUtils.getServerTime());
 
                         try {
-                            mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                            } else {
+                                //       markAttendance.setChecked(true);
+
+                                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                                ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                                mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                                mProgressDialog.setCancelable(false);
+                                mProgressDialog.show();
+
+
+                                executor.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        boolean isLocationFound = false;
+                                        while (!isLocationFound) {
+                                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                                isLocationFound = true;
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        if (AUtils.isInternetAvailable()) {
+                                                            mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                                                        }
+                                                        mProgressDialog.dismiss();
+                                                    }
+                                                });
+
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             markAttendance.setChecked(false);
@@ -725,6 +847,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     private void getPermission() {
 
         isLocationPermission = AUtils.isLocationPermissionGiven(EmpDashboardActivity.this);
+        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
     }
 
     private void initUserDetails() {

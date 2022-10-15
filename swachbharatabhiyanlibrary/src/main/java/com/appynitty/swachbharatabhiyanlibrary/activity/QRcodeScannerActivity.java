@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -62,6 +63,13 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.BeepManager;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.MyProgressDialog;
 import com.riaylibrary.utils.LocaleHelper;
@@ -69,22 +77,23 @@ import com.riaylibrary.utils.LocaleHelper;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
-import me.dm7.barcodescanner.zbar.Result;
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
-public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler, GarbageTypePopUp.GarbagePopUpDialogListener {
+public class QRcodeScannerActivity extends AppCompatActivity implements /*ZBarScannerView.ResultHandler,*/ GarbageTypePopUp.GarbagePopUpDialogListener {
 
     private final static String TAG = "QRcodeScannerActivity";
     private final static int DUMP_YARD_DETAILS_REQUEST_CODE = 100;
     GarbageCollectionPojo garbageCollectionPojo;
     private Context mContext;
     private Toolbar toolbar;
-    private ZBarScannerView scannerView;
+    //private ZBarScannerView scannerView;
+    private DecoratedBarcodeView scannerView;
     private FabSpeedDial fabSpeedDial;
     private AutoCompleteTextView areaAutoComplete;
     private TextInputLayout idIpLayout, areaLayout;
@@ -112,7 +121,9 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
     private ArrayList<Integer> mSelectedIndices;
 
     private String EmpType, gcType;
-    private String areaType;
+    private String areaType, lastText;
+    private BeepManager beepManager;
+    private boolean isFlashOn;
 
     LocationMonitoringService locationMonitoringService;
     Location location;
@@ -317,6 +328,8 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         idAutoComplete.setSingleLine();
 
         idIpLayout = findViewById(R.id.txt_id_layout);
+        beepManager = new BeepManager(QRcodeScannerActivity.this);
+        scannerView = findViewById(R.id.qr_scanner1);
 
         collectionRadioGroup = findViewById(R.id.collection_radio_group);
         houseCollectionRadio = findViewById(R.id.house_collection_radio);
@@ -354,10 +367,16 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         isScanQr = true;
 
         ViewGroup contentFrame = findViewById(R.id.qr_scanner);
-        scannerView = new ZBarScannerView(mContext);
+        /*scannerView = new ZBarScannerView(mContext);
         scannerView.setLaserColor(getResources().getColor(R.color.colorPrimary));
         scannerView.setBorderColor(getResources().getColor(R.color.colorPrimary));
-        contentFrame.addView(scannerView);
+        contentFrame.addView(scannerView);*/
+
+        Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
+        scannerView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
+        scannerView.initializeFromIntent(getIntent());
+        scannerView.decodeContinuous(callback);
+
         areaAutoComplete.setVisibility(View.GONE);
 
         EmpType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null); //added by Swapnil
@@ -379,6 +398,26 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         areaLayout.setVisibility(View.GONE);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
+
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult barcodeResult) {
+            if (barcodeResult.getText() == null || barcodeResult.getText().equals(lastText)) {
+                // Prevent duplicate scans
+                return;
+            }
+
+            Log.e(TAG, "barcodeResult: " + barcodeResult.getText() + ", Bitmap: " + barcodeResult.getBitmap());
+            lastText = barcodeResult.getText();
+            scannerView.setStatusText(barcodeResult.getText());
+            beepManager.playBeepSoundAndVibrate();
+            handleResult(barcodeResult);
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+        }
+    };
 
     protected void registerEvents() {
         Log.d(TAG, "registerEvents Area: " + areaAutoComplete.getText().toString());
@@ -580,7 +619,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
             }
         });
 
-        fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
+        /*fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (scannerView.getFlash()) {
@@ -589,6 +628,26 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
                 } else {
                     scannerView.setFlash(true);
                     fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
+                }
+            }
+        });*/
+
+        fabSpeedDial.getMainFab().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (hasFlash()) {
+                    if (isFlashOn) {
+                        isFlashOn = false;
+                        scannerView.setTorchOff();
+                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
+                    } else {
+                        isFlashOn = true;
+                        scannerView.setTorchOn();
+                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on_indicator));
+                    }
+
+                } else {
+                    fabSpeedDial.setVisibility(View.GONE);
                 }
             }
         });
@@ -600,6 +659,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
                 areaAutoComplete.requestFocus();
                 idAutoComplete.clearListSelection();
                 inflateAreaAutoComplete(mAreaAdapter.getAreaPojoList());
+                inflateAreaAutoCompleteA(mAreaAdapter.getAreaPojoList());
 
             }
 
@@ -614,6 +674,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
             @Override
             public void onSuccessCallBack() {
                 inflateHpAutoComplete(mHpAdapter.getHpPojoList());
+                inflateHpAutoCompleteHouse(mHpAdapter.getHpPojoList());
             }
 
             @Override
@@ -805,7 +866,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
             } else {
                 collectionStatus.setText(pojo.getMessage());
             }
-            ownerName.setText(id.toUpperCase());
+            ownerName.setText(id.trim().toUpperCase());
             ownerMobile.setText(null);
         } else if (responseStatus.equals(AUtils.STATUS_SUCCESS)) {
             if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals("2")) {
@@ -823,7 +884,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
                 collectionStatus.setText(getResources().getString(R.string.garbage_deposit_completed));
             }
 
-            houseId.setText(id);
+            houseId.setText(id.trim());
 //            ownerName.setText(pojo.getName());
 //            ownerMobile.setText(pojo.getMobile());
 
@@ -879,7 +940,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         idAutoComplete.clearFocus();
         idAutoComplete.setText("");
 //        idIpLayout.setHint(getResources().getString(R.string.hp_gp_id_hint));
-        scannerView.setAutoFocus(true);
+        //scannerView.setAutoFocus(true);
 
 
     }
@@ -928,9 +989,9 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         }
     }
 
-    public void handleResult(Result result) {
+    public void handleResult(BarcodeResult result) {
         Log.d(TAG, "handleResult: " + new Gson().toJson(result));
-        submitQRcode(result.getContents());
+        submitQRcode(result.getText());
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -942,7 +1003,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
 //        restartPreview();
     }
 
-    private void startPreview() {
+    /*private void startPreview() {
 //        areaAutoComplete.setVisibility(View.GONE);
         scannerView.startCamera();
         scannerView.resumeCameraPreview(this);
@@ -965,6 +1026,29 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
 
         stopPreview();
         startPreview();
+    }*/
+
+    private void startPreview() {
+//        areaAutoComplete.setVisibility(View.GONE);
+        scannerView.resume();
+    }
+
+    private void stopPreview() {
+        scannerView.pause();
+    }
+
+    private void startCamera() {
+        scannerView.resume();
+    }
+
+    private void stopCamera() {
+        scannerView.pause();
+    }
+
+    private void restartPreview() {
+
+        stopPreview();
+        startPreview();
     }
 
     private void validateTypeOfCollection(String houseid) {
@@ -973,7 +1057,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
             dialog.show();
         } else {
             gcType = "1";
-            startSubmitQRAsyncTask(houseid, 3, gcType, null);
+            startSubmitQRAsyncTask(houseid.trim(), 3, gcType, null);
         }
     }
 
@@ -1050,6 +1134,40 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
 
     }
 
+    private void inflateAreaAutoCompleteA(List<CollectionAreaPojo> pojoList) {
+
+        areaHash = new HashMap<>();
+        ArrayList<String> keyList = new ArrayList<>();
+        for (CollectionAreaPojo pojo : pojoList) {
+            areaHash.put(pojo.getArea().toLowerCase()/**/, pojo.getId());
+            keyList.add(pojo.getArea().trim());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+
+        areaAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (keyList.size() >0){
+                    if (areaAutoComplete.getText().toString().equals("")){
+                        if (adapter != null){
+                            adapter.getFilter().filter(areaAutoComplete.toString());
+                        }
+                        //adapter.getFilter().filter(null);
+                        areaAutoComplete.showDropDown();
+                        areaAutoComplete.setThreshold(0);
+                        areaAutoComplete.setAdapter(adapter);
+                        areaAutoComplete.requestFocus();
+
+                    }
+                }
+                return false;
+            }
+        });
+
+    }
+
     private void inflateHpAutoComplete(List<CollectionAreaHousePojo> pojoList) {
 
         idHash = new HashMap<>();
@@ -1064,6 +1182,42 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
         idAutoComplete.setThreshold(0);
         idAutoComplete.setAdapter(adapter);
         idAutoComplete.requestFocus();
+    }
+
+    private void inflateHpAutoCompleteHouse(List<CollectionAreaHousePojo> pojoList) {
+
+        idHash = new HashMap<>();
+        ArrayList<String> keyList = new ArrayList<>();
+        for (CollectionAreaHousePojo pojo : pojoList) {
+            idHash.put(pojo.getHouseNumber().toLowerCase(), pojo.getHouseid());
+            keyList.add(pojo.getHouseNumber().trim());
+        }
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+        AutocompleteContainSearch adapter = new AutocompleteContainSearch(mContext, android.R.layout.simple_dropdown_item_1line, keyList);
+
+        idAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (keyList.size() >0){
+                    if (idAutoComplete.getText().toString().equals("")){
+                        if (adapter != null){
+                            adapter.getFilter().filter(idAutoComplete.toString());
+                        }
+                        //adapter.getFilter().filter(null);
+                        idAutoComplete.showDropDown();
+                        idAutoComplete.setThreshold(0);
+                        idAutoComplete.setAdapter(adapter);
+                        idAutoComplete.requestFocus();
+
+                    }
+                }
+                return false;
+            }
+        });
+
+
     }
 
     private void inflateGpAutoComplete(List<CollectionAreaPointPojo> pojoList) {
@@ -1335,5 +1489,10 @@ public class QRcodeScannerActivity extends AppCompatActivity implements ZBarScan
             }
         });
 
+    }
+
+    private boolean hasFlash() {
+        return getApplicationContext().getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 }

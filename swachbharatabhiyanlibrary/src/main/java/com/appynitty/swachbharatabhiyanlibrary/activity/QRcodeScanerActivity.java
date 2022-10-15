@@ -1032,7 +1032,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
             dialog.show();
         } else {
             gcType = "1";
-            startSubmitQRAsyncTask(houseid, 3, gcType, null);
+            startSubmitQRAsyncTask(houseid.trim(), 3, gcType, null);
         }
     }
 

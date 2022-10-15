@@ -341,7 +341,7 @@ public class TakePhotoActivity extends AppCompatActivity {
             if (getFormData()) {
 
                 startActivity(new Intent(TakePhotoActivity.this,
-                        QRcodeScannerActivity.class).putExtra(AUtils.REQUEST_CODE, AUtils.MY_RESULT_REQUEST_QR));
+                        QRcodeScanerActivity.class).putExtra(AUtils.REQUEST_CODE, AUtils.MY_RESULT_REQUEST_QR));
                 TakePhotoActivity.this.finish();
             }
         }

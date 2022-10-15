@@ -79,8 +79,16 @@ public class AUtils extends CommonUtils {
      *Username : ttest
      * Password : ttest
      * */
-    public static final String SERVER_URL = "http://202.65.157.254:6510/";
-   // public static final String SERVER_URL = "http://202.65.157.254:5049";
+   // public static final String SERVER_URL = "http://202.65.157.254:6510/";
+    //public static final String SERVER_URL = "http://202.65.157.254:5049";
+
+    /***
+     * new server api url demo app
+     * app id : 3098
+     * 114.143.244.133:6560
+     * cms : http://114.143.244.133:6550
+     * */
+    public static final String SERVER_URL = "http://114.143.244.133:6560";
 
 
     /**

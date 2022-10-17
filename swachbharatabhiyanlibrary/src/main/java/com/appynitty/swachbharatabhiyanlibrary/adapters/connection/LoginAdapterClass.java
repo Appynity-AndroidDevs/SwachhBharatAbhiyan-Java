@@ -41,12 +41,19 @@ public class LoginAdapterClass {
             public void onFinished() {
 
                 if (!AUtils.isNull(getLoginDetailsPojo())) {
+                    if (getLoginDetailsPojo() != null){
 
-                    if (getLoginDetailsPojo().getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                        if (getLoginDetailsPojo().getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                            mListener.onSuccessCallBack();
+                        } else {
+                            mListener.onSuccessFailureCallBack();
+                        }
+                    }
+                    /*if (getLoginDetailsPojo().getStatus().equals(AUtils.STATUS_SUCCESS)) {
                         mListener.onSuccessCallBack();
                     } else {
                         mListener.onSuccessFailureCallBack();
-                    }
+                    }*/
                 } else {
                     mListener.onFailureCallBack();
                 }

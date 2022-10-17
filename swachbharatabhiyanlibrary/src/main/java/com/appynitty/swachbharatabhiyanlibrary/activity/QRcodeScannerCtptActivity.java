@@ -55,6 +55,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.OfflineGarbageColectionPojo
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
+import com.appynitty.swachbharatabhiyanlibrary.services.SoundManager;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
@@ -62,7 +63,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
-import com.google.zxing.client.android.BeepManager;
+
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
@@ -121,7 +122,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
     private String areaType, lastText;
     private Uri uri;
     private String CtptId;
-    private BeepManager beepManager;
+    private SoundManager soundManager;
     private boolean isFlashOn;
 
 
@@ -320,7 +321,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
         idAutoComplete.setSingleLine();
 
         idIpLayout = findViewById(R.id.txt_id_layout);
-        beepManager = new BeepManager(QRcodeScannerCtptActivity.this);
+        soundManager = new SoundManager(QRcodeScannerCtptActivity.this);
 
         setHints();
 
@@ -377,7 +378,7 @@ public class QRcodeScannerCtptActivity extends AppCompatActivity implements /*ZB
             Log.e(TAG, "barcodeResult: " + barcodeResult.getText() + ", Bitmap: " + barcodeResult.getBitmap());
             lastText = barcodeResult.getText();
             scannerView.setStatusText(barcodeResult.getText());
-            beepManager.playBeepSoundAndVibrate();
+            soundManager.playBeepSoundAndVibrate();
             handleResult(barcodeResult);
         }
 

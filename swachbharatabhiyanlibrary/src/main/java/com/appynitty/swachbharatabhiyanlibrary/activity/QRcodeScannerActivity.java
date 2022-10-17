@@ -58,6 +58,7 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceR
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationMonitoringService;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
+import com.appynitty.swachbharatabhiyanlibrary.services.SoundManager;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
@@ -65,7 +66,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
-import com.google.zxing.client.android.BeepManager;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
@@ -122,7 +122,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements /*ZBarSc
 
     private String EmpType, gcType;
     private String areaType, lastText;
-    private BeepManager beepManager;
+    private SoundManager soundManager;
     private boolean isFlashOn;
 
     LocationMonitoringService locationMonitoringService;
@@ -328,7 +328,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements /*ZBarSc
         idAutoComplete.setSingleLine();
 
         idIpLayout = findViewById(R.id.txt_id_layout);
-        beepManager = new BeepManager(QRcodeScannerActivity.this);
+        soundManager = new SoundManager(QRcodeScannerActivity.this);
         scannerView = findViewById(R.id.qr_scanner1);
 
         collectionRadioGroup = findViewById(R.id.collection_radio_group);
@@ -410,7 +410,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements /*ZBarSc
             Log.e(TAG, "barcodeResult: " + barcodeResult.getText() + ", Bitmap: " + barcodeResult.getBitmap());
             lastText = barcodeResult.getText();
             scannerView.setStatusText(barcodeResult.getText());
-            beepManager.playBeepSoundAndVibrate();
+            soundManager.playBeepSoundAndVibrate();
             handleResult(barcodeResult);
         }
 

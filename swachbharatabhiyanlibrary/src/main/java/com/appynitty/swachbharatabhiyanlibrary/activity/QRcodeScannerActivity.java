@@ -1031,7 +1031,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 //            mAdapter.submitQR(garbageCollectionPojo);
 //        }
 //        else {
-        Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
+     //   Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
         insertToDB(garbageCollectionPojo);
 //        }
     }

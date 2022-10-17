@@ -692,7 +692,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             qrLocationPojo.setQRCodeImage("data:image/jpeg;base64," + encodedImage);
 
             //SANATH : Checking lat before saving ( if lat is null or empty string )
-           // Prefs.putString(AUtils.LAT, null);
+            // Prefs.putString(AUtils.LAT, null);
             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                 startSubmitQRAsyncTask(qrLocationPojo);
             } else {

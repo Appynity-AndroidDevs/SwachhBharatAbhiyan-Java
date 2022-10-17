@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -19,9 +21,13 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 public class GarbageTypePopUp extends Dialog {
 
     public Dialog d;
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     private final Context mContext;
     private final String mHouseId;
@@ -133,23 +139,43 @@ public class GarbageTypePopUp extends Dialog {
 
     private void popUpDismiss() {
 
+      //  Prefs.putString(AUtils.LAT, null);
+
         if (isSubmit) {
             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                 mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment);
             } else {
 
-                boolean isLocationFound = false;
+
                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+             //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                 ProgressDialog mProgressDialog = new ProgressDialog(mContext);
-                mProgressDialog.setMessage("");
+                mProgressDialog.setMessage(mContext.getResources().getString(R.string.fetching_location));
                 mProgressDialog.show();
-                while (!isLocationFound){
-                    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")){
-                        isLocationFound = true;
-                        mProgressDialog.dismiss();
+
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        boolean isLocationFound = false;
+                        while (!isLocationFound) {
+                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                isLocationFound = true;
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mProgressDialog.dismiss();
+                                        mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment);
+                                    }
+                                });
+
+                            }
+                        }
+
                     }
-                }
+                });
+
 
             }
 

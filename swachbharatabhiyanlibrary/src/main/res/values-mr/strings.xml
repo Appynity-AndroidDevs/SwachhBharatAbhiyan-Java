@@ -217,7 +217,7 @@
     <string name="usr_name_pwd_mismatch_warning">वापरकर्ता नाव किंवा पासवर्ड जुळत नाही</string>
     <string name="no_location_found">कोणतेही लोकेशन सापडले नाही</string>
     <string name="no_location_found_cant_save">कोणतेही लोकेशन सापडले नाही, सबमिट करू शकत नाही</string>
-    <string name="fetching_location">कृपया लोकेशन आणण्यासाठी प्रतीक्षा करा</string>
+    <string name="fetching_location">कृपया प्रतीक्षा करा आम्ही लोकेशन प्राप्त करत आहोत</string>
 
     <string name="perminssion_needed_title">परमिशन आवश्यक!</string>
     <string name="loc_allow_all_time_txt">बॅकग्राऊंड लोकेशन परमिशन आवश्यक आहे!, पुढील स्क्रीनवर  Allow all the time वर टॅप करा</string>

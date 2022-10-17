@@ -434,35 +434,40 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
                     if (AUtils.isConnectedFast(getApplicationContext())) {
 
-                        rProgress.setVisibility(View.VISIBLE);
-                        executor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (InternetWorking.isOnline()) {
+                        rProgress.setVisibility(View.GONE);
+                        onSwitchStatus(isChecked);
 
-                                    Handler handler = new Handler(Looper.getMainLooper());
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            rProgress.setVisibility(View.GONE);
-                                            onSwitchStatus(isChecked);
-                                        }
-                                    });
-
-                                } else {
-                                    Handler handler = new Handler(Looper.getMainLooper());
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            rProgress.setVisibility(View.GONE);
-                                            markAttendance.setChecked(AUtils.isIsOnduty());
-                                            AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.no_internet_error));
-                                        }
-                                    });
-                                }
-                            }
-                        });
+//                        rProgress.setVisibility(View.VISIBLE);
+//                        executor.execute(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (InternetWorking.isOnline()) {
+//
+//                                    Handler handler = new Handler(Looper.getMainLooper());
+//                                    handler.post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            rProgress.setVisibility(View.GONE);
+//                                            onSwitchStatus(isChecked);
+//                                        }
+//                                    });
+//
+//                                } else {
+//                                    Handler handler = new Handler(Looper.getMainLooper());
+//                                    handler.post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            rProgress.setVisibility(View.GONE);
+//                                            markAttendance.setChecked(AUtils.isIsOnduty());
+//                                            AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.no_internet_error));
+//                                        }
+//                                    });
+//                                }
+//                            }
+//                        });
                     } else {
+//                        rProgress.setVisibility(View.GONE);
+//                        onSwitchStatus(isChecked);
                         markAttendance.setChecked(AUtils.isIsOnduty());
                         AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.slow_internet));
                     }
@@ -586,6 +591,8 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
 
                         //    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+
+                  //      Prefs.putString(AUtils.LAT , null);
                         onChangeDutyStatus();
 //                        }else{
 //                            markAttendance.setChecked(false);
@@ -609,7 +616,8 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
-                                    Prefs.putString(AUtils.LAT, "");
+
+                              //      Prefs.putString(AUtils.LAT, "");
                                     if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                                         mAttendanceAdapter.MarkOutPunch();
                                     } else {
@@ -677,7 +685,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
                 @Override
                 public void onResponse() {
-                    Prefs.putString(AUtils.LAT, "");
+                 //   Prefs.putString(AUtils.LAT, "");
                     boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
                     Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
                     if (isAreaActive) {

@@ -5,6 +5,7 @@ import static android.os.Environment.DIRECTORY_PICTURES;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,6 +52,7 @@ import com.appynitty.swachbharatabhiyanlibrary.dialogs.ChooseActionPopUp;
 import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
+import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
@@ -413,8 +415,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         idAutoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean isFocused) {
-                if (isFocused)
-                    AUtils.showKeyboard((Activity) mContext);
+                if (isFocused) AUtils.showKeyboard((Activity) mContext);
 
                 if (isFocused && isScanQr) {
                     hideQR();
@@ -550,11 +551,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         Log.e(TAG, "validSubmitId: " + id);
         /* if (Prefs.getBoolean(AUtils.PREFS.IS_SAME_LOCALITY, false)) {*/
-        return id.substring(0, 2).matches("^[HhPp]+$")
-                || id.matches("gpsba[0-9]+$")
-                || id.matches("lwsba[0-9]+$")
-                || id.matches("sssba[0-9]+$")
-                || id.matches("dysba[0-9]+$");
+        return id.substring(0, 2).matches("^[HhPp]+$") || id.matches("gpsba[0-9]+$") || id.matches("lwsba[0-9]+$") || id.matches("sssba[0-9]+$") || id.matches("dysba[0-9]+$");
        /* } else {
             return false;
         }*/
@@ -672,8 +669,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             chooseActionPopUp.show();
 
 
-        } else
-            AUtils.error(mContext, getResources().getString(R.string.invalid_qr_error));
+        } else AUtils.error(mContext, getResources().getString(R.string.invalid_qr_error));
     }
 
     private void submitOnSkip(String id) {
@@ -696,11 +692,42 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             qrLocationPojo.setQRCodeImage("data:image/jpeg;base64," + encodedImage);
 
             //SANATH : Checking lat before saving ( if lat is null or empty string )
+           // Prefs.putString(AUtils.LAT, null);
             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                 startSubmitQRAsyncTask(qrLocationPojo);
             } else {
                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                AUtils.warning(mContext, getResources().getString(R.string.no_location_found_cant_save));
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+
+
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        boolean isLocationFound = false;
+                        while (!isLocationFound) {
+                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                isLocationFound = true;
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        startSubmitQRAsyncTask(qrLocationPojo);
+                                        mProgressDialog.dismiss();
+
+                                    }
+                                });
+
+                            }
+                        }
+                    }
+                });
+
+                //  AUtils.warning(mContext, getResources().getString(R.string.no_location_found_cant_save));
             }
 
         } catch (Exception e) {
@@ -721,28 +748,33 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         pojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
         if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
 
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    if (InternetWorking.isOnline()) {
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                insertToDB(pojo);
-                                //     empQrLocationAdapter.saveQrLocation(pojo);
-                                stopCamera();
-                            }
-                        });
+            insertToDB(pojo);
+            //     empQrLocationAdapter.saveQrLocation(pojo);
+            stopCamera();
 
-                    } else {
-                        insertToDB(pojo);
-                    }
-                }
-            });
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (InternetWorking.isOnline()) {
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                insertToDB(pojo);
+//                                //     empQrLocationAdapter.saveQrLocation(pojo);
+//                                stopCamera();
+//                            }
+//                        });
+//
+//                    } else {
+//                        insertToDB(pojo);
+//                    }
+//                }
+//            });
 
         } else {
             insertToDB(pojo);
+            stopCamera();
         }
     }
 
@@ -779,18 +811,12 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     }
 
     private String getGCType(String refId) {
-        if (refId.substring(0, 2).toLowerCase().matches("^[hp]+$"))
-            return "1";
-        else if (refId.substring(0, 2).toLowerCase().matches("^[gp]+$"))
-            return "2";
-        else if (refId.substring(0, 2).toLowerCase().matches("^[dy]+$"))
-            return "3";
-        else if (refId.substring(0, 2).toLowerCase().matches("^[lw]+$"))
-            return "4";
-        else if (refId.substring(0, 2).toLowerCase().matches("^[ss]+$"))
-            return "5";
-        else
-            return "0";
+        if (refId.substring(0, 2).toLowerCase().matches("^[hp]+$")) return "1";
+        else if (refId.substring(0, 2).toLowerCase().matches("^[gp]+$")) return "2";
+        else if (refId.substring(0, 2).toLowerCase().matches("^[dy]+$")) return "3";
+        else if (refId.substring(0, 2).toLowerCase().matches("^[lw]+$")) return "4";
+        else if (refId.substring(0, 2).toLowerCase().matches("^[ss]+$")) return "5";
+        else return "0";
     }
 
     private void insertToDB(QrLocationPojo pojo) {
@@ -804,7 +830,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         if (isChecked) {
             if (!AUtils.isInternetAvailable()) {
                 Toast.makeText(mContext, "Submitted successfully", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
             }
         } else {
@@ -983,8 +1009,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         try {
             exif = new ExifInterface(filePath);
 
-            int orientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, 0);
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
             Log.d("EXIF", "Exif: " + orientation);
             Matrix matrix = new Matrix();
             if (orientation == 6) {
@@ -997,9 +1022,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                 matrix.postRotate(270);
                 Log.d("EXIF", "Exif: " + orientation);
             }
-            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
-                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
-                    true);
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1157,7 +1180,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     }
 
     private boolean hasFlash() {
-        return getApplicationContext().getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+        return getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 }

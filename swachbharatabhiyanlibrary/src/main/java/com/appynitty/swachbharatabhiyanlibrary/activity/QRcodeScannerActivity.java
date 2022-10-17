@@ -713,11 +713,11 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 
         checkCameraPermission();
 
-        if (AUtils.isInternetAvailable()){
+        if (AUtils.isInternetAvailable()) {
             if (!AUtils.isConnectedFast(mContext)) {
-                AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+              //  AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
             }
-        }else{
+        } else {
             AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
         }
 

@@ -129,7 +129,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private TextView empId, txtEmpId;
     public boolean isSync = true;
     String vehicleType = null;
-    String empType = Prefs.getString(AUtils.EMP_TYPE, null);
+    String empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
     String vehicle_no = null;
     private AttendancePojo attendancePojo = null;
 
@@ -794,6 +794,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 AUtils.gpsStatusCheck(DashboardActivity.this);
 
 
+                Log.d(TAG, "onCheckedChanged: " + empType);
                 if (!empType.matches("D")) {
                     if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
 //
@@ -1167,6 +1168,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             try {
 
 
+             //   Prefs.putString(AUtils.LAT , "");
                 if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                     syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                     onInPunchSuccess();
@@ -1452,7 +1454,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             if (AUtils.isNull(attendancePojo))
                                 attendancePojo = new AttendancePojo();
 
-
+                            Prefs.putString(AUtils.LAT , "");
                             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
                                 onOutPunchSuccess();

@@ -1168,7 +1168,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             try {
 
 
-             //   Prefs.putString(AUtils.LAT , "");
+                //   Prefs.putString(AUtils.LAT , "");
                 if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                     syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                     onInPunchSuccess();
@@ -1340,23 +1340,27 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 if (AUtils.isNull(vehicleTypePojoList)) {
                     vehicleTypePojoList = mVehicleTypeAdapter.getVehicleTypePojoList();
                 }
-                for (int i = 0; i < vehicleTypePojoList.size(); i++) {
 
-                    if (Prefs.getString(AUtils.VEHICLE_ID, "").equals(vehicleTypePojoList.get(i).getVtId())) {
-                        //rahul
-                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
-                            vehicleName = vehicleTypePojoList.get(i).getDescriptionMar();
-                        else
-                            vehicleName = vehicleTypePojoList.get(i).getDescription();
+                if (vehicleTypePojoList != null) {
+                    for (int i = 0; i < vehicleTypePojoList.size(); i++) {
+
+                        if (Prefs.getString(AUtils.VEHICLE_ID, "").equals(vehicleTypePojoList.get(i).getVtId())) {
+                            //rahul
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                vehicleName = vehicleTypePojoList.get(i).getDescriptionMar();
+                            else
+                                vehicleName = vehicleTypePojoList.get(i).getDescription();
+                        }
+                    }
+
+                    if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, ""))) {
+
+                        vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.hyphen), Prefs.getString(AUtils.VEHICLE_NO, ""), this.getResources().getString(R.string.closing_round_bracket)));
+                    } else {
+                        vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.closing_round_bracket)));
                     }
                 }
 
-                if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, ""))) {
-
-                    vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.hyphen), Prefs.getString(AUtils.VEHICLE_NO, ""), this.getResources().getString(R.string.closing_round_bracket)));
-                } else {
-                    vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.closing_round_bracket)));
-                }
             } else {
 
             }
@@ -1454,7 +1458,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             if (AUtils.isNull(attendancePojo))
                                 attendancePojo = new AttendancePojo();
 
-                            Prefs.putString(AUtils.LAT , "");
+                        //    Prefs.putString(AUtils.LAT, "");
                             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
                                 onOutPunchSuccess();

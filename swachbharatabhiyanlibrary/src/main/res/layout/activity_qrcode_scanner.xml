@@ -27,6 +27,7 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:paddingStart="@dimen/dim_6_dp"
+            android:visibility="gone"
             android:paddingTop="@dimen/dim_6_dp"
             android:paddingEnd="@dimen/dim_6_dp"
             android:paddingBottom="@dimen/dim_20_dp">

@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.InflateHistoryAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.InflateOfflineWorkAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncOfflineAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
@@ -27,9 +26,12 @@ import com.riaylibrary.utils.LocaleHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class SyncOfflineActivity extends AppCompatActivity {
 
+    private Executor executor = Executors.newSingleThreadExecutor();
     private static final String TAG = "SyncOfflineActivity";
     private Context mContext;
     private LinearLayout layoutNoOfflineData;
@@ -87,9 +89,44 @@ public class SyncOfflineActivity extends AppCompatActivity {
         btnSyncOfflineData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                syncOfflineAdapter.SyncOfflineData();
                 if (!alertDialog.isShowing())
                     alertDialog.show();
-                syncOfflineAdapter.SyncOfflineData();
+                else
+                    alertDialog.hide();
+//
+//                executor.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (InternetWorking.isOnline()) {
+//
+//                            Handler handler = new Handler(Looper.getMainLooper());
+//                            handler.post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    syncOfflineAdapter.SyncOfflineData();
+//                                    if (!alertDialog.isShowing())
+//                                        alertDialog.show();
+//                                }
+//                            });
+//                        } else {
+//
+//                            Handler handler = new Handler(Looper.getMainLooper());
+//                            handler.post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//
+//                                    if (alertDialog.isShowing())
+//                                        alertDialog.hide();
+//                                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+
+
             }
         });
 
@@ -97,7 +134,8 @@ public class SyncOfflineActivity extends AppCompatActivity {
             @Override
             public void onSuccessCallback() {
                 if (alertDialog.isShowing())
-                    alertDialog.hide();
+                    alertDialog.dismiss();
+
                 AUtils.success(mContext, getString(R.string.success_offline_sync), Toast.LENGTH_LONG);
                 inflateData();
             }
@@ -106,7 +144,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
             public void onFailureCallback() {
                 if (alertDialog.isShowing())
                     alertDialog.hide();
-                AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
+//                AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
             }
 
             @Override
@@ -144,7 +182,33 @@ public class SyncOfflineActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         if (AUtils.isInternetAvailable()) {
-            AUtils.hideSnackBar();
+
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (InternetWorking.isOnline()) {
+//
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                AUtils.hideSnackBar();
+//                            }
+//                        });
+//                    } else {
+//
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                AUtils.showSnackBar(findViewById(R.id.parent));
+//                            }
+//                        });
+//                    }
+//                }
+//            });
+
+
         } else {
             AUtils.showSnackBar(findViewById(R.id.parent));
         }
@@ -158,5 +222,17 @@ public class SyncOfflineActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        alertDialog.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        alertDialog.dismiss();
     }
 }

@@ -32,7 +32,6 @@ public class ShareLocationAdapterClass {
     private final LocationRepository mLocationRepository;
 
     private final String empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
-    ;
 
     private final List<UserLocationPojo> userLocationPojoList;
 
@@ -79,9 +78,9 @@ public class ShareLocationAdapterClass {
 
 
         service.saveUserLocation(Prefs.getString(AUtils.APP_ID, "1"),
-                AUtils.CONTENT_TYPE,
-                Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0"), empType,
-                AUtils.getBatteryStatus(), userLocationPojos)
+                        AUtils.CONTENT_TYPE,
+                        Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0"), empType,
+                        AUtils.getBatteryStatus(), userLocationPojos)
                 .enqueue(new Callback<List<UserLocationResultPojo>>() {
                     @Override
                     public void onResponse(Call<List<UserLocationResultPojo>> call, Response<List<UserLocationResultPojo>> response) {
@@ -142,7 +141,8 @@ public class ShareLocationAdapterClass {
 
                 UserLocationWebService service = Connection.createService(UserLocationWebService.class, AUtils.SERVER_URL);
 
-                service.saveUserLocation(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE, Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0"), empType, AUtils.getBatteryStatus(), userLocationPojoList).enqueue(new Callback<List<UserLocationResultPojo>>() {
+                service.saveUserLocation(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE
+                        , Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0"), empType, AUtils.getBatteryStatus(), userLocationPojoList).enqueue(new Callback<List<UserLocationResultPojo>>() {
                     @Override
                     public void onResponse(Call<List<UserLocationResultPojo>> call, Response<List<UserLocationResultPojo>> response) {
 

@@ -15,6 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DumpEmpAttendanceRepo {
+
     private static final String TAG = "DumpEmpAttendanceRepo";
     private static final DumpEmpAttendanceRepo instance = new DumpEmpAttendanceRepo();
 
@@ -33,7 +34,7 @@ public class DumpEmpAttendanceRepo {
         inPunchBody.setVehicleNumber("");
         inPunchBody.setVtId("");
         inPunchBody.setReferanceId(refId);
-        inPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
+        inPunchBody.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
 
         PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
         Call<ResultPojo> punchInCall = punchWebService.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, null), AUtils.CONTENT_TYPE,
@@ -65,7 +66,7 @@ public class DumpEmpAttendanceRepo {
         outPunchBody.setDaDate(AUtils.getLocalDate());
         outPunchBody.setVehicleNumber("");
         outPunchBody.setVtId("");
-        outPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
+        outPunchBody.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
         outPunchBody.setReferanceId(refId);
 
         PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);

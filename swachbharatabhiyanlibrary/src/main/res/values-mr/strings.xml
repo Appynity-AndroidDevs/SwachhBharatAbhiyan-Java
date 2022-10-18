@@ -155,6 +155,7 @@
     <string name="success_message">यशस्वीरित्या अपलोड केले</string>
 
     <string name="title_activity_sync_offline">ऑफलाइन समक्रमित करा</string>
+    <string name="offline_work_is_being_synced">ऑफलाइन कार्य समक्रमित केले जात आहे.</string>
     <string name="success_offline_sync">डेटा समक्रमण यशस्वी झाले</string>
     <string name="hint_first_sync">प्रथम, कृपया ऑफलाइन डेटा संकालित करा</string>
     <string name="image_add_error">प्रतिमा जोडण्यात अक्षम</string>
@@ -180,12 +181,14 @@
     <string name="waste_management_added_txt">कचरा तपशील</string>
     <string name="household_collection">"वेस्ट कलेक्शन मॉनिटरिंग टेक्नोलॉजी "</string>
     <string name="street_sweeping">स्ट्रीट स्वीपिंग मॉनिटरिंग सिस्टम</string>
+    <string name="street_sweep">स्ट्रीट स्वीपिंग</string>
     <string name="liquid_waste_cleaning">लिक्विड वेस्ट क्लीनिंग मॉनिटरिंग सिस्टम</string>
     <string name="select_employee_type">कर्मचारी प्रकार निवडा</string>
     <string name="house_qr_alert">हाऊस QR स्कॅन करण्यासाठी कृपया waste collection आयडी ने लॉगिन करा.</string>
     <string name="gp_qr_alert">गार्बेज पॉईंट QR स्कॅन करण्यासाठी कृपया Waste Collection आयडी ने लॉग इन करा.</string>
     <string name="dy_qr_alert">डंप यार्ड क्यूआर स्कॅन करण्यासाठी, कृपया Waste Collection आयडी ने  लॉग इन करा.</string>
     <string name="lwc_qr_alert">लिक्विड वेस्ट क्यूआर स्कॅन करण्यासाठी, कृपया लिक्विड वेस्ट क्लीनिंग आयडी ने  लॉग इन करा.</string>
+    <string name="liquid_waste">लिक्विड वेस्ट</string>
     <string name="alert">अलर्ट !</string>
     <string name="liquid_collection">लिक्विड कलेक्शन</string>
     <string name="street_collection">"स्ट्रीट स्विपिंग कलेक्शन "</string>
@@ -211,5 +214,15 @@
     <string name="str_note_vehicle">क्षमस्व! तुमचे वाहन नोंदणीकृत नाही, कृपया वाहन क्रमांक प्रविष्ट करा.</string>
     <string name="shif_start">शिफ्ट सुरू</string>
     <string name="shift_end">शिफ्ट संपली</string>
+    <string name="out_of_area_msg">तुम्ही स्कॅनिंग क्षेत्राच्या बाहेर आहात. कृपया परिसरात जा आणि पुन्हा प्रयत्न करा</string>
+    <string name="usr_name_pwd_mismatch_warning">वापरकर्ता नाव किंवा पासवर्ड जुळत नाही</string>
+    <string name="no_location_found">कोणतेही लोकेशन सापडले नाही</string>
+    <string name="no_location_found_cant_save">कोणतेही लोकेशन सापडले नाही, सबमिट करू शकत नाही</string>
+    <string name="fetching_location">कृपया प्रतीक्षा करा आम्ही लोकेशन प्राप्त करत आहोत</string>
+
+    <string name="perminssion_needed_title">परमिशन आवश्यक!</string>
+    <string name="loc_allow_all_time_txt">बॅकग्राऊंड लोकेशन परमिशन आवश्यक आहे!, पुढील स्क्रीनवर  Allow all the time वर टॅप करा</string>
+
+    <string name="dump_yard">डंप यार्ड</string>
 
 </resources>

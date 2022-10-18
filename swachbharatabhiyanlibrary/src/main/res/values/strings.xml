@@ -197,6 +197,7 @@
     <string name="feature_unavailable_error">This feature is unavailable due to slow internet.</string>
     <string name="success_message">Uploaded successfully</string>
     <string name="title_activity_sync_offline">Sync Offline</string>
+    <string name="offline_work_is_being_synced">Offline work is being synced.</string>
     <string name="success_offline_sync">Data Sync is Done Successful</string>
     <string name="hint_first_sync">Firstly, Please Sync Offline Data</string>
     <string name="title_activity_waste_add_details">Add Waste Details</string>
@@ -220,6 +221,7 @@
     <string name="image_add_error">Unable to add image</string>
     <string name="household_collection">Waste Collection Monitoring Technology</string>
     <string name="street_sweeping">Street Sweeping Monitoring System</string>
+    <string name="street_sweep">Street Sweeping</string>
     <string name="liquid_waste_cleaning">Liquid Waste Cleaning Monitoring System</string>
     <string name="select_employee_type">Select Employee Type</string>
     <string name="house_qr_alert">For scanning House QR, kindly login with waste collection id.</string>
@@ -231,6 +233,7 @@
     <string name="street_collection">Street Collection</string>
     <string name="ssc_qr_warning">For scanning Street QR, Kindly login with Street Sweeping Id!</string>
     <string name="lwc_title">Liquid Waste Collection</string>
+    <string name="liquid_waste">Liquid Waste</string>
     <string name="lw_dy_id_hint">Enter Liquid Waste ID</string>
     <string name="sw_dy_id_hint">Enter Street ID</string>
     <string name="liquid_number_hint">Enter Liquid Waste ID</string>
@@ -251,6 +254,17 @@
     <string name="str_note_vehicle">Sorry ! your vehicle not registered, please enter vehicle number.</string>
     <string name="shif_start">Shift started successfully</string>
     <string name="shift_end">Shift ended successfully</string>
+    <string name="out_of_area_msg">You\'re out of the scanning area. Please go inside the area and try again</string>
+    <string name="usr_name_pwd_mismatch_warning">UserName or Passward not Match.</string>
+    <string name="no_location_found">No Location found</string>
+    <string name="no_location_found_cant_save">No Location found , Cannot submit</string>
+    <string name="fetching_location">please wait fetching the location</string>
+
+
+    <string name="perminssion_needed_title">Permission Needed!</string>
+    <string name="loc_allow_all_time_txt"><br>Background Location Permission Needed!,</br><br> tap "Allow all the time" in the next screen</br></string>
+    <string name="dump_yard">Dump Yard</string>
+
 
 
 </resources>

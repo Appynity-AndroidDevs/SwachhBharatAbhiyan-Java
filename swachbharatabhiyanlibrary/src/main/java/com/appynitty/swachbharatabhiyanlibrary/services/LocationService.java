@@ -39,6 +39,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,13 +63,14 @@ public class LocationService extends Service {
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
     private static final int LOCATION_SERVICE_NOTIF_ID = 1001;
     private static final String CHANNEL_ID = "my_service";
-    private static final String TAG = "LocationUpdateService";
+    private static final String TAG = "LocationService";
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
     private LocationSettingsRequest locationSettingsRequest;
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
-    long notify_interval = 1000 * 60;
+//    long notify_interval = 1000 * 60; //for one minute
+    long notify_interval = 1000 * 60 * 10;//for 10 minutes
 
 
     private final LocationRepository mLocationRepository;
@@ -184,7 +186,8 @@ public class LocationService extends Service {
 
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
+//        locationRequest.setSmallestDisplacement(1);  //in meters
 
         LocationSettingsRequest.Builder builder = new
                 LocationSettingsRequest.Builder();
@@ -201,7 +204,7 @@ public class LocationService extends Service {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-
+//                    Log.e(TAG, "onLocationResult: Lat: " + location.getLatitude() + ", Long: " + location.getLongitude());
                     Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
                     Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
 
@@ -227,10 +230,7 @@ public class LocationService extends Service {
     private class TimerTaskToSendLocation extends TimerTask {
         @Override
         public void run() {
-
             sendLocation();
-
-
         }
     }
 

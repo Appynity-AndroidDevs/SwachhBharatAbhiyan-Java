@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.connection;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
@@ -42,6 +43,8 @@ import com.pixplicity.easyprefs.library.Prefs;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -53,6 +56,7 @@ public class SyncServer {
     private static Gson gson;
     private final Context context;
     private static String empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     public SyncServer(Context context) {
 
@@ -80,8 +84,10 @@ public class SyncServer {
 
             e.printStackTrace();
         }
+        Log.d(TAG, "saveLoginDetails: "+resultPojo);
         return resultPojo;
     }
+
 
     public GcResultPojo saveGarbageCollection(GarbageCollectionPojo garbageCollectionPojo) {
 
@@ -324,12 +330,15 @@ public class SyncServer {
 
 //        Log.e("SyncServer.class", empTyp);
 
+
         try {
+
 
             WorkHistoryWebService service = Connection.createService(WorkHistoryWebService.class, AUtils.SERVER_URL);
             workHistoryPojoList = service.pullWorkHistoryList(Prefs.getString(AUtils.APP_ID, ""),
                     Prefs.getString(AUtils.PREFS.USER_ID, null), year, month, empTyp).execute().body();
 
+            Log.d(TAG, "pullWorkHistoryListFromServer: "+workHistoryPojoList);
             if (!AUtils.isNull(workHistoryPojoList)) {
 
                 Type type = new TypeToken<List<TableDataCountPojo>>() {
@@ -406,7 +415,8 @@ public class SyncServer {
         try {
 
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
-            areaPojoList = areaHousePointService.fetchCollectionArea(Prefs.getString(AUtils.APP_ID, ""), areaType, Prefs.getString(AUtils.EMP_TYPE, loginPojo.getEmployeeType()))
+            areaPojoList = areaHousePointService.fetchCollectionArea(Prefs.getString(AUtils.APP_ID, ""), areaType
+                            , Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, loginPojo.getEmployeeType()))
                     .execute().body();
 
         } catch (Exception e) {
@@ -423,7 +433,7 @@ public class SyncServer {
         try {
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
             areaPojoList = areaHousePointService.fetchCollectionAreaHouse(
-                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId, Prefs.getString(AUtils.EMP_TYPE, loginPojo.getEmployeeType()))
+                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId, Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, loginPojo.getEmployeeType()))
                     .execute().body();
 
         } catch (Exception e) {

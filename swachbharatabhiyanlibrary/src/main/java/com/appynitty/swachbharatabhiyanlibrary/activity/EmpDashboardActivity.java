@@ -2,6 +2,7 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,18 +33,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.DashboardMenuAdapter;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpCheckAttendanceAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetailAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.LocalityAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
+import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
@@ -57,6 +62,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 
@@ -64,7 +71,7 @@ import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
 public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpDialog.PopUpDialogListener {
 
     private final static String TAG = "EmpDashboardActivity";
-
+    final Executor executor = Executors.newSingleThreadExecutor();
     private Context mContext;
     private FabSpeedDial fab;
     private RecyclerView menuGridView;
@@ -75,6 +82,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     private TextView userName;
     private TextView empId;
     private ImageView profilePic;
+    private ProgressBar rProgress;
     /*int AppId = 0;
     String locality;*/
     FrameLayout progressBar;
@@ -93,6 +101,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
     private EmpUserDetailAdapterClass mUserDetailAdapter;
 
+    private AppGeoAreaAdapter mAppGeoAreaAdapter;
 //    private LocalityAdapterClass mLocalityAdapter;
 
     private boolean isFromAttendanceChecked = false;
@@ -291,9 +300,11 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         AUtils.currentContextConstant = mContext;
         checkIsFromLogin();
         progressBar = findViewById(R.id.empProgress_layout);
+        rProgress = findViewById(R.id.progress_cir_bar);
         mCheckAttendanceAdapter = new EmpCheckAttendanceAdapterClass();
         mAttendanceAdapter = new EmpAttendanceAdapterClass();
         mUserDetailAdapter = new EmpUserDetailAdapterClass();
+        mAppGeoAreaAdapter = AppGeoAreaAdapter.getInstance();
 //        mLocalityAdapter = new LocalityAdapterClass(mContext);
 
         fab = findViewById(R.id.fab_setting);
@@ -419,7 +430,53 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         markAttendance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onSwitchStatus(isChecked);
+                if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+
+                    if (AUtils.isConnectedFast(getApplicationContext())) {
+
+                        rProgress.setVisibility(View.GONE);
+                        onSwitchStatus(isChecked);
+
+//                        rProgress.setVisibility(View.VISIBLE);
+//                        executor.execute(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (InternetWorking.isOnline()) {
+//
+//                                    Handler handler = new Handler(Looper.getMainLooper());
+//                                    handler.post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            rProgress.setVisibility(View.GONE);
+//                                            onSwitchStatus(isChecked);
+//                                        }
+//                                    });
+//
+//                                } else {
+//                                    Handler handler = new Handler(Looper.getMainLooper());
+//                                    handler.post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            rProgress.setVisibility(View.GONE);
+//                                            markAttendance.setChecked(AUtils.isIsOnduty());
+//                                            AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.no_internet_error));
+//                                        }
+//                                    });
+//                                }
+//                            }
+//                        });
+                    } else {
+//                        rProgress.setVisibility(View.GONE);
+//                        onSwitchStatus(isChecked);
+                        markAttendance.setChecked(AUtils.isIsOnduty());
+                        AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.slow_internet));
+                    }
+
+                } else {
+                    markAttendance.setChecked(AUtils.isIsOnduty());
+                    AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.no_internet_error));
+                }
+
             }
         });
 
@@ -449,7 +506,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, EmpHistoryPageActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, EmpSyncOfflineActivity.class, false));
 
-        DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(EmpDashboardActivity.this);
+        DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(EmpDashboardActivity.this, rProgress);
         mainMenuAdaptor.setMenuList(menuPojoList);
         menuGridView.setAdapter(mainMenuAdaptor);
 
@@ -532,7 +589,16 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
                     if (!AUtils.isIsOnduty()) {
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+
+                        //    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+
+                  //      Prefs.putString(AUtils.LAT , null);
                         onChangeDutyStatus();
+//                        }else{
+//                            markAttendance.setChecked(false);
+//                            AUtils.warning(mContext , getResources().getString(R.string.no_location_found));
+//                        }
+
                     }
                 } else {
                     markAttendance.setChecked(false);
@@ -550,7 +616,45 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
-                                    mAttendanceAdapter.MarkOutPunch();
+
+                              //      Prefs.putString(AUtils.LAT, "");
+                                    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                        mAttendanceAdapter.MarkOutPunch();
+                                    } else {
+                                        //       markAttendance.setChecked(true);
+
+                                        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                                        ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                                        mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                                        mProgressDialog.setCancelable(false);
+                                        mProgressDialog.show();
+
+
+                                        executor.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                boolean isLocationFound = false;
+                                                while (!isLocationFound) {
+                                                    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                                        isLocationFound = true;
+                                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+
+                                                                if (AUtils.isInternetAvailable()) {
+                                                                    mAttendanceAdapter.MarkOutPunch();
+                                                                }
+                                                                mProgressDialog.dismiss();
+                                                            }
+                                                        });
+
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
                                 }
                             }, new DialogInterface.OnClickListener() {
                                 @Override
@@ -578,20 +682,134 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         if (AUtils.isInternetAvailable()) {
 
-            if (AUtils.isNull(empInPunchPojo)) {
-                empInPunchPojo = new EmpInPunchPojo();
-            }
+            AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
+                @Override
+                public void onResponse() {
+                 //   Prefs.putString(AUtils.LAT, "");
+                    boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
+                    Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
+                    if (isAreaActive) {
+                        if (AUtils.isValidArea()) {
+                            if (AUtils.isNull(empInPunchPojo)) {
+                                empInPunchPojo = new EmpInPunchPojo();
+                            }
 
-            empInPunchPojo.setStartDate(AUtils.getServerDate());
-            empInPunchPojo.setStartTime(AUtils.getServerTime());
+                            empInPunchPojo.setStartDate(AUtils.getServerDate());
+                            empInPunchPojo.setStartTime(AUtils.getServerTime());
 
-            try {
-                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
-            } catch (Exception e) {
-                e.printStackTrace();
-                markAttendance.setChecked(false);
-                AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
-            }
+
+                            try {
+
+                                if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                    mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                                } else {
+                                    //       markAttendance.setChecked(true);
+
+                                    ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                                    ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                                    mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                                    mProgressDialog.setCancelable(false);
+                                    mProgressDialog.show();
+
+
+                                    executor.execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            boolean isLocationFound = false;
+                                            while (!isLocationFound) {
+                                                if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                                    isLocationFound = true;
+                                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+
+                                                            if (AUtils.isInternetAvailable()) {
+                                                                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                                                            }
+                                                            mProgressDialog.dismiss();
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                markAttendance.setChecked(false);
+                                AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                            }
+                        } else {
+                            markAttendance.setChecked(AUtils.isIsOnduty());
+                            AUtils.error(mContext, getResources().getString(R.string.out_of_area_msg));
+                        }
+                    } else {
+                        if (AUtils.isNull(empInPunchPojo)) {
+                            empInPunchPojo = new EmpInPunchPojo();
+                        }
+
+                        empInPunchPojo.setStartDate(AUtils.getServerDate());
+                        empInPunchPojo.setStartTime(AUtils.getServerTime());
+
+                        try {
+                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                            } else {
+                                //       markAttendance.setChecked(true);
+
+                                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                                ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                                mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+                                mProgressDialog.setCancelable(false);
+                                mProgressDialog.show();
+
+
+                                executor.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        boolean isLocationFound = false;
+                                        while (!isLocationFound) {
+                                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                                isLocationFound = true;
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        if (AUtils.isInternetAvailable()) {
+                                                            mAttendanceAdapter.MarkInPunch(empInPunchPojo);
+                                                        }
+                                                        mProgressDialog.dismiss();
+                                                    }
+                                                });
+
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            markAttendance.setChecked(false);
+                            AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Throwable throwable) {
+                    Log.e(TAG, "onFailure: " + throwable.getMessage());
+                }
+            });
+
+
         } else {
             AUtils.warning(mContext, mContext.getString(R.string.no_internet_error));
             markAttendance.setChecked(false);
@@ -637,6 +855,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     private void getPermission() {
 
         isLocationPermission = AUtils.isLocationPermissionGiven(EmpDashboardActivity.this);
+        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
     }
 
     private void initUserDetails() {
@@ -669,7 +888,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
-        AUtils.info(mContext,"Language selected is : "+((LanguagePojo) listItemSelected).getLanguage());
+        AUtils.info(mContext, "Language selected is : " + ((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void checkDutyStatus() {

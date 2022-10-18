@@ -49,6 +49,7 @@
                 android:id="@+id/progress_circular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="visible"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dim_20_dp" />
 
@@ -72,5 +73,15 @@
         app:fab_menu="@menu/emp_menu"
         app:fab_miniFabTextBackground="@drawable/rounded_white_button"
         app:fab_miniFabTextColor="@color/colorAccent" />
+
+
+
+    <ProgressBar
+        android:id="@+id/progress_cir_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dim_20_dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

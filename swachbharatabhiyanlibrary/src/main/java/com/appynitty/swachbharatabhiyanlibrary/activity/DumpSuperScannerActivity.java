@@ -305,7 +305,7 @@ public class DumpSuperScannerActivity extends AppCompatActivity implements ZBarS
         isActivityData = false;
         isScanQr = true;
 
-        ViewGroup contentFrame = findViewById(R.id.qr_scanner);
+        ViewGroup contentFrame = findViewById(R.id.qr_scanner1);
         scannerView = new ZBarScannerView(mContext);
         scannerView.setLaserColor(getResources().getColor(R.color.colorPrimary));
         scannerView.setBorderColor(getResources().getColor(R.color.colorPrimary));

@@ -88,6 +88,6 @@
 
     <include
         android:id="@+id/scanner_view"
-        layout="@layout/content_qrcode_scanner" />
+        layout="@layout/content_dump_scanner" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

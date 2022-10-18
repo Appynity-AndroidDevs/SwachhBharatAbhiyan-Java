@@ -35,4 +35,11 @@
         app:fab_miniFabTextBackground="@drawable/rounded_white_button"
         app:fab_fabDrawable="@drawable/ic_repairing_service"/>
 
+    <ProgressBar
+        android:id="@+id/wasteActivityProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_gravity="center"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

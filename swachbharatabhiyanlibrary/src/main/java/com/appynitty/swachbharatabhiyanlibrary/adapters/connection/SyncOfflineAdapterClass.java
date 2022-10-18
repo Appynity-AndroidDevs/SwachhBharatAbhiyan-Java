@@ -28,6 +28,7 @@ import retrofit2.Response;
 public class SyncOfflineAdapterClass {
 
     private SyncOfflineListener syncOfflineListener;
+    private AreaWarningListener areaWarningListener;
     private final Context mContext;
     private final SyncOfflineRepository syncOfflineRepository;
     private String offset = "0";
@@ -44,6 +45,10 @@ public class SyncOfflineAdapterClass {
         this.syncOfflineListener = syncOfflineListener;
     }
 
+    public void setAreaErrorListener(AreaWarningListener areaWarningListener) {
+        this.areaWarningListener = areaWarningListener;
+    }
+
     public void SyncOfflineData() {
         if (!AUtils.isSyncOfflineDataRequestEnable) {
 
@@ -56,9 +61,10 @@ public class SyncOfflineAdapterClass {
                 GarbageCollectionWebService service = Connection.createService(GarbageCollectionWebService.class, AUtils.SERVER_URL);
 
                 service.syncOfflineData(Prefs.getString(AUtils.APP_ID, ""),
-                        Prefs.getString(AUtils.PREFS.USER_TYPE_ID, ""),
-                        AUtils.getBatteryStatus(), AUtils.CONTENT_TYPE, syncOfflineList)
+                                Prefs.getString(AUtils.PREFS.USER_TYPE_ID, ""),
+                                AUtils.getBatteryStatus(), AUtils.CONTENT_TYPE, syncOfflineList)
                         .enqueue(new Callback<List<OfflineGcResultPojo>>() {
+
                             @Override
                             public void onResponse(Call<List<OfflineGcResultPojo>> call,
                                                    Response<List<OfflineGcResultPojo>> response) {
@@ -66,8 +72,11 @@ public class SyncOfflineAdapterClass {
                                 if (response.code() == 200) {
                                     onResponseReceived(response.body());
                                     SyncOfflineData();
+
                                 } else {
-                                    Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + response.code());
+                                    Log.d(TAG, "onResponse: " + response);
+                                    Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.code());
+                                    Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.message());
                                     AUtils.isSyncOfflineDataRequestEnable = false;
                                     syncOfflineListener.onFailureCallback();
                                 }
@@ -79,6 +88,7 @@ public class SyncOfflineAdapterClass {
                                 AUtils.isSyncOfflineDataRequestEnable = false;
                                 syncOfflineListener.onErrorCallback();
                             }
+
                         });
             } else {
                 if (syncOfflineListener != null)
@@ -102,7 +112,21 @@ public class SyncOfflineAdapterClass {
                 if (result.getStatus().equals(AUtils.STATUS_SUCCESS) || result.getStatus().equals(AUtils.STATUS_ERROR)) {
 
                     if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_ERROR)) {
-                        AUtils.warning(mContext, results.get(0).getMessage());
+                        if (result.getMessage().contains("outside")) {
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                areaWarningListener.onError(result.getMessageMar());
+                            else
+                                areaWarningListener.onError(result.getMessage());
+
+                        } else {
+                            syncOfflineList.clear();
+                            syncOfflineRepository.deleteCompleteSyncTableData();
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                AUtils.error(mContext, result.getMessageMar());
+                            else
+                                AUtils.error(mContext, result.getMessage());
+                        }
+
                     }
 
                     if (Integer.parseInt(result.getID()) != 0) {
@@ -150,5 +174,9 @@ public class SyncOfflineAdapterClass {
         void onFailureCallback();
 
         void onErrorCallback();
+    }
+
+    public interface AreaWarningListener {
+        void onError(String s);
     }
 }

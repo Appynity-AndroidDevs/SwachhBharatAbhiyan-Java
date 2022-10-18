@@ -4,13 +4,13 @@ package com.appynitty.swachbharatabhiyanlibrary.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -25,6 +25,7 @@ public class ChooseActionPopUp extends Dialog {
 
     private Button addDetailsBtn, skipBtn;
     ImageView ivQR_image;
+    TextView tvTextQR;
     private Object data;
     private String mId, mPath;
     public static final int SKIP_BUTTON_CLICKED = 0;
@@ -73,10 +74,11 @@ public class ChooseActionPopUp extends Dialog {
         skipBtn = findViewById(R.id.btn_skip);
         addDetailsBtn = findViewById(R.id.btn_add_details);
         ivQR_image = findViewById(R.id.imgQRimg);
+        tvTextQR = findViewById(R.id.txt_houseId);
     }
 
     private void initData() throws IOException {
-
+        tvTextQR.setText(mId);
         if (mPath != null && !mPath.trim().isEmpty()) {
             uri = Uri.fromFile(new File(mPath));
 //            Bitmap btmap = AUtils.writeOnImage(mContext, AUtils.getDateAndTime(), mId, mPath);

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,11 +23,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.LoginAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
+import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
+import com.appynitty.swachbharatabhiyanlibrary.login.viewmodel.LoginViewModel;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginDetailsPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,12 +41,15 @@ import com.riaylibrary.utils.LocaleHelper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Richali Pradhan Gupte on 24-10-2018.
  */
 public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopUpDialogListener {
 
+    private static final String TAG = "LoginActivity";
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     private Context mContext = null;
 
@@ -53,8 +63,9 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
     private LoginPojo loginPojo = null;
 
     private LoginAdapterClass mAdapter;
+    private LoginViewModel loginViewModel;
 
-    String AppId =  Prefs.getString(AUtils.APP_ID, "");
+    String AppId = Prefs.getString(AUtils.APP_ID, "");
 
 //    private PopupMenu popup;
     //spinner employee types
@@ -73,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initComponents();
+
     }
 
     @Override
@@ -140,6 +152,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
         getPermission();
 
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         mContext = LoginActivity.this;
         AUtils.currentContextConstant = mContext;
 
@@ -225,7 +238,27 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onLogin();
+
+                findViewById(R.id.loginProgressBar).setVisibility(View.VISIBLE);
+
+                if (AUtils.isInternetAvailable()) {
+
+                    onLogin();
+//                    if (AUtils.isConnectedFast(getApplicationContext())) {
+//                        findViewById(R.id.loginProgressBar).setVisibility(View.VISIBLE);
+//                        onLogin();
+//
+//                    } else {
+//                        findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
+//                        AUtils.warning(LoginActivity.this, getResources().getString(R.string.slow_internet));
+//                    }
+
+                } else {
+                    // findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
+                    AUtils.warning(LoginActivity.this, getResources().getString(R.string.no_internet_error));
+                }
+
             }
         });
 
@@ -274,6 +307,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
                     message = mAdapter.getLoginDetailsPojo().getMessageMar();
                 } else {
                     message = mAdapter.getLoginDetailsPojo().getMessage();
+                    Log.e(TAG, "onSuccessFailureCallBack: " + message);
                 }
 
                 Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
@@ -298,14 +332,105 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
         if (validateForm()) {
             getFormData();
+//
+//            final Executor executor = Executors.newSingleThreadExecutor();
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    if (InternetWorking.isOnline()) {
+//
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
 
-            mAdapter.onLogin(loginPojo);
+            loginViewModel.loginUser(loginPojo);
+            loginViewModel.getLoginDetailsSuccessLiveData().observe(LoginActivity.this, new Observer<LoginDetailsPojo>() {
+                @Override
+                public void onChanged(LoginDetailsPojo loginDetailsPojo) {
+
+                    findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
+                    if (!AUtils.isNull(loginDetailsPojo) && !AUtils.isNull((loginDetailsPojo).getStatus())) {
+
+                        if (loginDetailsPojo.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+
+                            Prefs.putString(AUtils.PREFS.USER_ID, loginDetailsPojo.getUserId());
+                            Prefs.putString(AUtils.PREFS.USER_TYPE, loginDetailsPojo.getType());
+                            Prefs.putString(AUtils.PREFS.USER_TYPE_ID, loginDetailsPojo.getTypeId());
+                            Prefs.putString(AUtils.PREFS.EMPLOYEE_TYPE, loginDetailsPojo.getEmpType());
+                            Prefs.putBoolean(AUtils.PREFS.IS_GT_FEATURE, loginDetailsPojo.getGtFeatures());
+                            Log.e("LoginActivity", "empType- " + Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
+                            Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, true);
+
+                            Intent intent;
+                            String userType = loginDetailsPojo.getTypeId();
+                            intent = new Intent(LoginActivity.this, AUtils.getDashboardClass(userType));
+
+                            intent.putExtra(AUtils.isFromLogin, true);
+                            startActivity(intent);
+                            LoginActivity.this.finish();
+                        } else {
+
+                            String message;
+
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equalsIgnoreCase(AUtils.LanguageConstants.MARATHI)) {
+                                message = loginDetailsPojo.getMessageMar();
+                            } else {
+                                message = loginDetailsPojo.getMessage();
+                                Log.e(TAG, "onSuccessFailureCallBack: " + message);
+                            }
+
+                            Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
+
+                            AUtils.error(mContext, message, Toast.LENGTH_SHORT);
+                        }
+
+                    } else {
+
+                        Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
+                        AUtils.error(mContext, "" + mContext.getString(R.string.serverError), Toast.LENGTH_SHORT);
+
+                    }
+                }
+            });
+            loginViewModel.getLoginDetailsErrorLiveData().observe(LoginActivity.this, new Observer<Throwable>() {
+                @Override
+                public void onChanged(Throwable throwable) {
+                    AUtils.warning(LoginActivity.this, throwable.getMessage());
+
+                    Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
+                    findViewById(R.id.loginProgressBar).setVisibility(View.GONE);
+
+                }
+            });
+
+//                            }
+//                        });
+//
+//                    } else {
+//                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                                findViewById(R.id.loginProgressBar).setVisibility(View.GONE);
+//                                AUtils.warning(LoginActivity.this, getResources().getString(R.string.no_internet_error));
+//                                //    noInternetErrorLayout.setVisibility(View.VISIBLE);
+//                            }
+//                        });
+//
+//                    }
+//                }
+//            });
+
         }
 
     }
 
-    private boolean validateForm() {
 
+    private boolean validateForm() {
+        String strUsrName = txtUserName.getText().toString().trim();
+        String strPwd = txtUserPwd.getText().toString().trim();
 
         if (EtEmpType.getText().toString().isEmpty()) {
             AUtils.warning(mContext, mContext.getString(R.string.plz_slct_emp_type));
@@ -322,6 +447,10 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
             return false;
         }
 
+        if (strUsrName.contains(" ") || strPwd.contains(" ")) {
+            AUtils.warning(mContext, getString(R.string.usr_name_pwd_mismatch_warning));
+            return false;
+        }
         return true;
     }
 
@@ -334,8 +463,8 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         loginPojo.setType("");
         loginPojo.setUserId("");*/
         String empType = EtEmpType.getText().toString();
-        String userName = txtUserName.getText().toString().replaceAll("\\s", "");
-        String password = txtUserPwd.getText().toString().replaceAll("\\s", "");
+        String userName = txtUserName.getText().toString().replaceAll("\\s", "").trim();
+        String password = txtUserPwd.getText().toString().replaceAll("\\s", "").trim();
         loginPojo.setUserLoginId(userName);
         loginPojo.setUserPassword(password);
 
@@ -348,7 +477,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         } else if (empType.matches(getResources().getString(R.string.liquid_waste_cleaning))) {
             loginPojo.setEmployeeType("L");
 
-        }else if (empType.matches(getResources().getString(R.string.dump_yard_supervisor))) {
+        } else if (empType.matches(getResources().getString(R.string.dump_yard_supervisor))) {
             loginPojo.setEmployeeType("D");
 
         }
@@ -383,7 +512,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 //                .checkSelfPermission(LoginActivity.this,
 //                        Manifest.permission.ACCESS_BACKGROUND_LOCATION)
 
-                +ActivityCompat
+                ActivityCompat
 
 
                         .checkSelfPermission(LoginActivity.this,
@@ -445,7 +574,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
         LanguagePojo languagePojo = (LanguagePojo) listItemSelected;
         changeLanguage(AUtils.setLanguage(languagePojo.getLanguage()));
-        AUtils.info(mContext,"Selected language is : "+((LanguagePojo) listItemSelected).getLanguage());
+        AUtils.info(mContext, "Selected language is : " + ((LanguagePojo) listItemSelected).getLanguage());
     }
 
     private void changeLanguage() {
@@ -467,8 +596,15 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
     public void changeLanguage(String type) {
 
         AUtils.changeLanguage(this, type);
-        recreate();
-        generateId();
+//        recreate();
+//        generateId();
+
+
+        Intent intent = getIntent();
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+        overridePendingTransition(0, 0);
 
     }
 

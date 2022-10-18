@@ -30,10 +30,12 @@ import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.activity.DashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.activity.EmpDashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.activity.WasteDashboardActivity;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.entity.LastLocationEntity;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.AppGeoArea;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.LastLocationRepository;
 import com.google.android.gms.common.api.ApiException;
@@ -43,7 +45,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.maps.android.PolyUtil;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.utils.CommonUtils;
 import com.valdesekamdem.library.mdtoast.MDToast;
@@ -52,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class AUtils extends CommonUtils {
@@ -68,8 +76,8 @@ public class AUtils extends CommonUtils {
 //    public static final String SERVER_URL = "http://192.168.200.3:6560/";
 
     //  Advanced Ghanta Gadi Live URL
-   // public static final String SERVER_URL = "http://202.65.157.253:6560";
-    //public static final String SERVER_URL = "http://202.65.157.254:6560";
+    // public static final String SERVER_URL = "http://202.65.157.253:6560";
+//    public static final String SERVER_URL = "http://202.65.157.254:6560";
 
 
     /**
@@ -77,17 +85,20 @@ public class AUtils extends CommonUtils {
      * https://akot.ictsbm.com/
      * akot special
      * app Id : 3127
-     * ***/
-   // public static final String SERVER_URL = "http://202.65.157.254:6590"; //akot
+     ***/
+    // public static final String SERVER_URL = "http://202.65.157.254:6590"; //akot
 
     /*//Nagpur staging server url
     public static final String SERVER_URL = "http://183.177.126.33:6561";*/
 
     /*//Nagpur live server url
     public static final String SERVER_URL = "http://202.65.157.253:6561";*/
+//    public static final String SERVER_URL = "http://202.65.157.254:6561";
 
+    //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
-        public static final String SERVER_URL = "https://ictsbm.com:30443";
+    public static final String SERVER_URL = "https://ictsbm.com:30443";
+    //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
     /***
      * Staging portap
@@ -158,7 +169,7 @@ public class AUtils extends CommonUtils {
 
     public static final String SERVER_DATE_FORMATE = "MM-dd-yyyy";
     public static final String SERVER_DATE_FORMATE_LOCAL = "yyyy-MM-dd";
-    public static final String EMP_TYPE = "EmpType";
+    // public static final String EMP_TYPE = "EmpType";
     private static final String EMP_SERVER_DATE_FORMATE = "dd-MM-yyyy";
 
     private static final String TITLE_DATE_FORMATE = "dd MMM yyyy";
@@ -236,6 +247,7 @@ public class AUtils extends CommonUtils {
         String USER_TYPE_ID = "UserTypeId";
         String IS_GT_FEATURE = "isGtFeature";
         String IS_ON_DUTY = "isOnDuty";
+        String IS_AREA_ACTIVE = "IsAreaActive";
         String IS_SAME_LOCALITY = "isSameLocality";
         String IN_PUNCH_DATE = "IN_PUNCH_DATE";
 
@@ -248,6 +260,7 @@ public class AUtils extends CommonUtils {
         String WORK_HISTORY_POJO_LIST = "WorkHistoryPullList";
         String WORK_HISTORY_DETAIL_POJO_LIST = "WorkHistoryDetailPullList";
         String LANGUAGE_POJO_LIST = "LanguagePullList";
+        String AREA_VERTICES = "areaVertices";
         String VEHICLE_NUMBER_LIST = "VehicleNumberList";
 
         String EMPLOYEE_TYPE = "EmpType";
@@ -384,15 +397,15 @@ public class AUtils extends CommonUtils {
         }
     }
 
-    public static String getDumpSuperId(String dumpId){
+    public static String getDumpSuperId(String dumpId) {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
 
-       /* bundle = getIntent().getExtras();*/
+        /* bundle = getIntent().getExtras();*/
 
         if (bundle != null) {
             dumpId = bundle.getString(AUtils.dumpYardSuperId);
-            System.out.println("Dumpster Scan Id: "+dumpId);
+            System.out.println("Dumpster Scan Id: " + dumpId);
 
         }
         return "";
@@ -584,7 +597,7 @@ public class AUtils extends CommonUtils {
 
     public static AlertDialog getUploadingAlertDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        return builder.setView(R.layout.layout_progress_bar).setCancelable(false).create();
+        return builder.setView(R.layout.layout_progress_bar).setCancelable(true).create();
     }
 
     public static double calculateDistance(Context context, double newlat, double newLng) {
@@ -1148,5 +1161,87 @@ public class AUtils extends CommonUtils {
         }
     }
 
+    public static void getAppGeoArea(geoAreaRequestListener geoAreaRequestListener) {
+
+        AppGeoAreaAdapter.getInstance().getAppGeoArea(new AppGeoAreaAdapter.AppGeoListener() {
+            @Override
+            public void onResponse(AppGeoArea appGeoArea) {
+                Log.e(TAG, "onResponse: IsAreaActive: " + appGeoArea.getIsAreaActive() + ", List of vertices: " + appGeoArea.getAreaGeoVertices());
+
+                Prefs.putBoolean(AUtils.PREFS.IS_AREA_ACTIVE, appGeoArea.getIsAreaActive());
+                /*if (geoAreaRequestListener != null)
+                    geoAreaRequestListener.onResponse();*/
+
+                String s = appGeoArea.getAreaGeoVertices();
+                if (s != null) {
+                    String[] splitString = s.split(";");
+                    List<LatLng> prefList = new ArrayList<>();
+
+                    for (String value : splitString) {
+                        String[] splitSubString = value.split(",");
+                        double lat = Double.parseDouble(splitSubString[0]);
+                        double lon = Double.parseDouble(splitSubString[1]);
+                        LatLng asdf = new LatLng(lat, lon);
+                        prefList.add(asdf);
+                    }
+
+                    Gson gson = new Gson();
+
+                    String json = gson.toJson(prefList);
+
+                    Prefs.putString(AUtils.PREFS.AREA_VERTICES, json);
+
+                    if (geoAreaRequestListener != null)
+                        geoAreaRequestListener.onResponse();
+//                checkLocationValidity();
+                } else {
+                    if (geoAreaRequestListener != null)
+                        geoAreaRequestListener.onResponse();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                if (geoAreaRequestListener != null)
+                    geoAreaRequestListener.onFailure(throwable);
+                Log.e(TAG, "onFailure: " + throwable.getMessage());
+            }
+        });
+    }
+
+    public interface geoAreaRequestListener {
+        void onResponse();
+
+        void onFailure(Throwable throwable);
+    }
+
+    public static boolean isValidArea() {
+        Log.e(TAG, "isValidArea: lat: " + Prefs.getString(AUtils.LAT, null));
+        double lat = Double.parseDouble(Prefs.getString(AUtils.LAT, null));
+        double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
+        LatLng asdf = new LatLng(lat, lon);
+
+        List<LatLng> prefList = new ArrayList<>();
+        String json = Prefs.getString(AUtils.PREFS.AREA_VERTICES, null);
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<LatLng>>() {
+        }.getType();
+
+        prefList = gson.fromJson(json, type);
+
+        Log.d(TAG, "isValidArea: " + prefList);
+        if (prefList != null) {
+            boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
+
+            Log.e(TAG, "current latlng= " + asdf
+                    + ", isValidArea: " + isPointInPolygon);
+
+            return isPointInPolygon;
+        } else {
+
+            return false;
+        }
+    }
 }
 

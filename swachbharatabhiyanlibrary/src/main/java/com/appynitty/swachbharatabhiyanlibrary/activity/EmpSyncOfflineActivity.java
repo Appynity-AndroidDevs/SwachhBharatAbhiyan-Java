@@ -3,6 +3,8 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.EmpInflateOfflineHist
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.entity.EmpSyncServerEntity;
+import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpOfflineCollectionCount;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
@@ -33,6 +36,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Swapnil Lanjewar on 08/01/2022.
@@ -40,6 +45,7 @@ import java.util.Objects;
 
 public class EmpSyncOfflineActivity extends AppCompatActivity {
 
+    private Executor executor = Executors.newSingleThreadExecutor();
     private final String TAG = EmpSyncOfflineActivity.class.getSimpleName();
 
     private Context mContext;
@@ -159,7 +165,32 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         btnSyncOfflineData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadToServer();
+
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (InternetWorking.isOnline()){
+
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    uploadToServer();
+                                }
+                            });
+                        }else{
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AUtils.showSnackBar(findViewById(R.id.parent));
+                                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
+                                }
+                            });
+                        }
+                    }
+                });
+
             }
         });
 
@@ -225,11 +256,35 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if (AUtils.isInternetAvailable()) {
-            AUtils.hideSnackBar();
-            if (empSyncServerRepository.getOfflineCount() > 0) {
-                uploadToServer();
-            }
+        if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(getApplicationContext())) {
+
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (InternetWorking.isOnline()) {
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                AUtils.hideSnackBar();
+                                if (empSyncServerRepository.getOfflineCount() > 0) {
+                                    uploadToServer();
+                                }
+                            }
+                        });
+                    } else {
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                AUtils.showSnackBar(findViewById(R.id.parent));
+                            }
+                        });
+                    }
+                }
+            });
 
         } else {
             AUtils.showSnackBar(findViewById(R.id.parent));

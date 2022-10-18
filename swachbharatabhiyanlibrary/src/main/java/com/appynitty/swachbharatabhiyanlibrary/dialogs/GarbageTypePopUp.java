@@ -1,30 +1,33 @@
 package com.appynitty.swachbharatabhiyanlibrary.dialogs;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.DialogAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
+import com.pixplicity.easyprefs.library.Prefs;
 
-import java.util.HashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class GarbageTypePopUp extends Dialog {
 
     public Dialog d;
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     private final Context mContext;
     private final String mHouseId;
@@ -71,9 +74,9 @@ public class GarbageTypePopUp extends Dialog {
         rb_mixed = findViewById(R.id.rb_mixed_garbage);
         rb_no = findViewById(R.id.rb_no_garbage);
 
-       txtComent = findViewById(R.id.txt_garbage_comments);
+        txtComent = findViewById(R.id.txt_garbage_comments);
 
-       btnSubmit = findViewById(R.id.btn_garbage_submit);
+        btnSubmit = findViewById(R.id.btn_garbage_submit);
     }
 
     private void initData() {
@@ -92,8 +95,7 @@ public class GarbageTypePopUp extends Dialog {
         rb_bifurcate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
+                if (isChecked) {
                     mGarbageType = 1;
                 }
             }
@@ -102,8 +104,7 @@ public class GarbageTypePopUp extends Dialog {
         rb_mixed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
+                if (isChecked) {
                     mGarbageType = 0;
                 }
             }
@@ -112,8 +113,7 @@ public class GarbageTypePopUp extends Dialog {
         rb_no.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
+                if (isChecked) {
                     mGarbageType = 2;
                 }
             }
@@ -127,21 +127,58 @@ public class GarbageTypePopUp extends Dialog {
         });
     }
 
-    private void onSubmitClick()
-    {
+    private void onSubmitClick() {
         mComment = txtComent.getText().toString();
-        if(mGarbageType != -1) {
+        if (mGarbageType != -1) {
             this.dismiss();
             isSubmit = true;
-        }else {
-            AUtils.warning(mContext,mContext.getResources().getString(R.string.garbage_error));
+        } else {
+            AUtils.warning(mContext, mContext.getResources().getString(R.string.garbage_error));
         }
     }
 
-    private void popUpDismiss()
-    {
-        if(isSubmit) {
-            mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment);
+    private void popUpDismiss() {
+
+        //  Prefs.putString(AUtils.LAT, null);
+
+        if (isSubmit) {
+            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment);
+            } else {
+
+
+                ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+                //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+                mProgressDialog.setMessage(mContext.getResources().getString(R.string.fetching_location));
+                mProgressDialog.show();
+
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        boolean isLocationFound = false;
+                        while (!isLocationFound) {
+                            if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+                                isLocationFound = true;
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mProgressDialog.dismiss();
+                                        mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment);
+                                    }
+                                });
+
+                            }
+                        }
+
+                    }
+                });
+
+
+            }
+
         } else {
             mListener.onGarbagePopUpDismissed(mHouseId, -1, mComment);
         }

@@ -204,7 +204,15 @@ public class PopUpDialog extends Dialog {
                 }
             };
 
-
+            autoTxtVehicleNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (b == true){
+                        autoTxtVehicleNum.showDropDown();
+                        openSoftKeyboard();
+                    }
+                }
+            });
         }
 
 //        autoTxtVehicleNum.setOnTouchListener(new View.OnTouchListener() {
@@ -223,15 +231,7 @@ public class PopUpDialog extends Dialog {
 //            }
 //        });
 
-        autoTxtVehicleNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b == true){
-                    autoTxtVehicleNum.showDropDown();
-                    openSoftKeyboard();
-                }
-            }
-        });
+
 
 
         mItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

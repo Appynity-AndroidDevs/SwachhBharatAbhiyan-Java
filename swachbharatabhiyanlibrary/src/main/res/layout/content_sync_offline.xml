@@ -39,6 +39,7 @@
             android:text="@string/no_offline_data_error"
             android:textColor="@color/text_color_no_data"
             android:textSize="@dimen/dim_25_sp"
+            android:layout_marginHorizontal="@dimen/dim_16_dp"
             android:gravity="center"
             android:layout_marginTop="@dimen/dim_12_dp"
             android:layout_gravity="center_vertical"/>

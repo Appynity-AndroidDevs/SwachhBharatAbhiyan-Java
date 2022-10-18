@@ -170,7 +170,6 @@ public class HistoryPageActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        initSpinner();
 
         if(AUtils.isInternetAvailable()){
             noInternetErrorLayout.setVisibility(View.GONE);
@@ -179,6 +178,7 @@ public class HistoryPageActivity extends AppCompatActivity {
         }else{
             noInternetErrorLayout.setVisibility(View.VISIBLE);
         }
+        initSpinner();
     }
 
     private void initSpinner() {

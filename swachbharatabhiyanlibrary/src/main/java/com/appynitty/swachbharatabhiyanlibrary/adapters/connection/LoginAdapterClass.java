@@ -1,5 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.connection;
 
+import android.util.Log;
+
 import com.appynitty.swachbharatabhiyanlibrary.connection.SyncServer;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginDetailsPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
@@ -8,6 +10,7 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.MyAsyncTask;
 
 public class LoginAdapterClass {
 
+    private static final String TAG = "LoginAdapterClass";
     public LoginDetailsPojo loginDetailsPojo = null;
 
     private LoginListener mListener;
@@ -40,7 +43,7 @@ public class LoginAdapterClass {
             @Override
             public void onFinished() {
 
-                if (!AUtils.isNull(getLoginDetailsPojo())) {
+                if (!AUtils.isNull(getLoginDetailsPojo()) && !AUtils.isNull(getLoginDetailsPojo().getStatus())) {
 
                     if (getLoginDetailsPojo().getStatus().equals(AUtils.STATUS_SUCCESS)) {
                         mListener.onSuccessCallBack();
@@ -54,7 +57,7 @@ public class LoginAdapterClass {
             }
             @Override
             public void onInternetLost() {
-
+                Log.e(TAG, "onInternetLost: " );
             }
         }).execute();
     }

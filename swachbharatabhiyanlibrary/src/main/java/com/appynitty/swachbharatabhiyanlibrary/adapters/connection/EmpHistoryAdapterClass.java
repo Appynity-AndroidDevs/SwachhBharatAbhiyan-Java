@@ -43,7 +43,7 @@ public class EmpHistoryAdapterClass {
     }
 
     public void fetchHistory(final String year, final String month) {
-        new EmpMyAsyncTask(AUtils.currentContextConstant, true, new EmpMyAsyncTask.AsynTaskListener() {
+        new EmpMyAsyncTask(AUtils.currentContextConstant, false, new EmpMyAsyncTask.AsynTaskListener() {
             @Override
             public void doInBackgroundOpration(EmpSyncServer empSyncServer) {
                 Boolean isSuccess = empSyncServer.pullWorkHistoryListFromServer(year, month);

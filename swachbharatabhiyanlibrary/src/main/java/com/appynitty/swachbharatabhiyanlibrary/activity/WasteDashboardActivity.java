@@ -124,10 +124,12 @@ public class WasteDashboardActivity extends AppCompatActivity implements EmpPopU
     public boolean onOptionsItemSelected(MenuItem item) {
         if (R.id.action_id_card == item.getItemId()) {
             if (!AUtils.isNull(userDetailPojo)) {
+
 //                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals("2")) {
 //                    IdCardDialog cardDialog = new IdCardDialog(mContext, userDetailPojo.getNameMar(), userDetailPojo.getUserId(), userDetailPojo.getProfileImage());
 //                    cardDialog.show();
 //                } else {
+
                 IdCardDialog cardDialog = new IdCardDialog(mContext, userDetailPojo.getName(), userDetailPojo.getUserId(), userDetailPojo.getProfileImage(), userDetailPojo.getType());
                 cardDialog.show();
 //                }
@@ -417,7 +419,7 @@ public class WasteDashboardActivity extends AppCompatActivity implements EmpPopU
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_waste_history), R.drawable.ic_history, WasteHistoryActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_waste_sync_offline), R.drawable.ic_sync, WasteSyncOfflineActivity.class, false));
 
-        DashboardMenuAdapter dashboardMenuAdapter = new DashboardMenuAdapter(mContext);
+        DashboardMenuAdapter dashboardMenuAdapter = new DashboardMenuAdapter(mContext , findViewById(R.id.wasteActivityProgressBar));
         dashboardMenuAdapter.setMenuList(menuPojoList);
         menuGridView.setAdapter(dashboardMenuAdapter);
 

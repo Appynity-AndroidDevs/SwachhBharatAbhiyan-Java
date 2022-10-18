@@ -139,7 +139,7 @@ public class GarbageTypePopUp extends Dialog {
 
     private void popUpDismiss() {
 
-      //  Prefs.putString(AUtils.LAT, null);
+        //  Prefs.putString(AUtils.LAT, null);
 
         if (isSubmit) {
             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
@@ -148,7 +148,7 @@ public class GarbageTypePopUp extends Dialog {
 
 
                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-             //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+                //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                 ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                 mProgressDialog.setMessage(mContext.getResources().getString(R.string.fetching_location));
                 mProgressDialog.show();

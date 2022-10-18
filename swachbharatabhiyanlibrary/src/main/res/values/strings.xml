@@ -197,6 +197,7 @@
     <string name="feature_unavailable_error">This feature is unavailable due to slow internet.</string>
     <string name="success_message">Uploaded successfully</string>
     <string name="title_activity_sync_offline">Sync Offline</string>
+    <string name="offline_work_is_being_synced">Offline work is being synced.</string>
     <string name="success_offline_sync">Data Sync is Done Successful</string>
     <string name="hint_first_sync">Firstly, Please Sync Offline Data</string>
     <string name="title_activity_waste_add_details">Add Waste Details</string>

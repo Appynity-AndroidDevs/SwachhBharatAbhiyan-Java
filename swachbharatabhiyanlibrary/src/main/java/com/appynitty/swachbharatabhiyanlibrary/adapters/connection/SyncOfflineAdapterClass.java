@@ -64,6 +64,7 @@ public class SyncOfflineAdapterClass {
                                 Prefs.getString(AUtils.PREFS.USER_TYPE_ID, ""),
                                 AUtils.getBatteryStatus(), AUtils.CONTENT_TYPE, syncOfflineList)
                         .enqueue(new Callback<List<OfflineGcResultPojo>>() {
+
                             @Override
                             public void onResponse(Call<List<OfflineGcResultPojo>> call,
                                                    Response<List<OfflineGcResultPojo>> response) {
@@ -71,8 +72,11 @@ public class SyncOfflineAdapterClass {
                                 if (response.code() == 200) {
                                     onResponseReceived(response.body());
                                     SyncOfflineData();
+
                                 } else {
-                                    Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + response.code());
+                                    Log.d(TAG, "onResponse: " + response);
+                                    Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.code());
+                                    Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.message());
                                     AUtils.isSyncOfflineDataRequestEnable = false;
                                     syncOfflineListener.onFailureCallback();
                                 }
@@ -84,6 +88,7 @@ public class SyncOfflineAdapterClass {
                                 AUtils.isSyncOfflineDataRequestEnable = false;
                                 syncOfflineListener.onErrorCallback();
                             }
+
                         });
             } else {
                 if (syncOfflineListener != null)

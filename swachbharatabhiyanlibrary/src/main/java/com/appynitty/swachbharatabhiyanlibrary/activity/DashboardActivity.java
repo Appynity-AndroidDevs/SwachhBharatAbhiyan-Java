@@ -495,6 +495,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         });
 
+        Log.i("IsSyncing", "syncOfflineData: " + isSync);
+
         offlineAdapterClasss.setAreaErrorListener(new SyncOfflineAdapterClass.AreaWarningListener() {
             @Override
             public void onError(String s) {
@@ -1458,7 +1460,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             if (AUtils.isNull(attendancePojo))
                                 attendancePojo = new AttendancePojo();
 
-                        //    Prefs.putString(AUtils.LAT, "");
+                            //    Prefs.putString(AUtils.LAT, "");
                             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                                 syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
                                 onOutPunchSuccess();

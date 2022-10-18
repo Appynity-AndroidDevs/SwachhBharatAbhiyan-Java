@@ -155,6 +155,7 @@
     <string name="success_message">यशस्वीरित्या अपलोड केले</string>
 
     <string name="title_activity_sync_offline">ऑफलाइन समक्रमित करा</string>
+    <string name="offline_work_is_being_synced">ऑफलाइन कार्य समक्रमित केले जात आहे.</string>
     <string name="success_offline_sync">डेटा समक्रमण यशस्वी झाले</string>
     <string name="hint_first_sync">प्रथम, कृपया ऑफलाइन डेटा संकालित करा</string>
     <string name="image_add_error">प्रतिमा जोडण्यात अक्षम</string>

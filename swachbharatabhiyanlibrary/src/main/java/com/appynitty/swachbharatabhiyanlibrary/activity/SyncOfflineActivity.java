@@ -146,14 +146,14 @@ public class SyncOfflineActivity extends AppCompatActivity {
             @Override
             public void onFailureCallback() {
                 if (alertDialog.isShowing())
-                    alertDialog.hide();
-                AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
+                    alertDialog.dismiss();
+                //    AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
             }
 
             @Override
             public void onErrorCallback() {
                 if (alertDialog.isShowing())
-                    alertDialog.hide();
+                    alertDialog.dismiss();
                 AUtils.warning(mContext, getResources().getString(R.string.serverError));
             }
         });

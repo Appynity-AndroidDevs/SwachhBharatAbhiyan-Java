@@ -102,7 +102,7 @@ public class SyncOfflineAdapterClass {
                 if (result.getStatus().equals(AUtils.STATUS_SUCCESS) || result.getStatus().equals(AUtils.STATUS_ERROR)) {
 
                     if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_ERROR)) {
-                        /*AUtils.warning(mContext, results.get(0).getMessage());*/
+                        AUtils.warning(mContext, results.get(0).getMessage());
                     }
 
                     if (Integer.parseInt(result.getID()) != 0) {
@@ -117,6 +117,7 @@ public class SyncOfflineAdapterClass {
                             break;
                         }
                     }
+                    AUtils.success(mContext, results.get(0).getMessage());
                 } else
                     offset = String.valueOf(Integer.parseInt(offset) + 1);
             }

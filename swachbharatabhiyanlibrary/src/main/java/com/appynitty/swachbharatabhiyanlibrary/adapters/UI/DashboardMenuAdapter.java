@@ -78,9 +78,9 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                         break;
                     case AUtils.USER_TYPE.USER_TYPE_GHANTA_GADI:
                     default:
-                        if (!AUtils.isSyncOfflineDataRequestEnable) {
+                        /*if (!AUtils.isSyncOfflineDataRequestEnable) {
                             verifyDataAdapterClass.verifyOfflineSync();
-                        }
+                        }*/
                         break;
                 }
                 if (menuPojo.getCheckAttendance()) {

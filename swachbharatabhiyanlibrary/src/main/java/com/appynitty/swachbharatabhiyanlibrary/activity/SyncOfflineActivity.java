@@ -3,8 +3,6 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +18,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.InflateOfflineWorkAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncOfflineAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -146,14 +143,14 @@ public class SyncOfflineActivity extends AppCompatActivity {
             @Override
             public void onFailureCallback() {
                 if (alertDialog.isShowing())
-                    alertDialog.dismiss();
-                //    AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
+                    alertDialog.hide();
+//                AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
             }
 
             @Override
             public void onErrorCallback() {
                 if (alertDialog.isShowing())
-                    alertDialog.dismiss();
+                    alertDialog.hide();
                 AUtils.warning(mContext, getResources().getString(R.string.serverError));
             }
         });

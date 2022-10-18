@@ -736,6 +736,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
         }
     }
 
+    //
     private void submitQRcode(String houseid) {
 
         if (houseid.length() >= 5) {

@@ -579,6 +579,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         }
     }
 
+    //
     private void scanQR() {
         isScanQr = true;
         startCamera();

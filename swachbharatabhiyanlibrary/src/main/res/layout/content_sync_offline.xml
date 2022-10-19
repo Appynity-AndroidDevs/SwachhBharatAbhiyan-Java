@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/show_error_offline_data"
         android:layout_marginTop="@dimen/dim_100_dp"
+        android:layout_marginHorizontal="@dimen/dim_10_dp"
         android:visibility="gone"
         android:gravity="center_horizontal"
         android:orientation="vertical">

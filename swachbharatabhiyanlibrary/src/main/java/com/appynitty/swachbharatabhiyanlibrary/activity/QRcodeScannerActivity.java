@@ -716,7 +716,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
         if (AUtils.isInternetAvailable()) {
             mAreaAdapter.fetchAreaList(getAreaType(), false);
             if (!AUtils.isConnectedFast(mContext)) {
-              //  AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+                //  AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
             }
         } /*else {
             AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
@@ -1033,7 +1033,7 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 //            mAdapter.submitQR(garbageCollectionPojo);
 //        }
 //        else {
-     //   Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
+        //   Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
         insertToDB(garbageCollectionPojo);
 //        }
     }

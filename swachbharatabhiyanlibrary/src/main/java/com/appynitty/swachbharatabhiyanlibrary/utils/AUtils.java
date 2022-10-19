@@ -1,5 +1,6 @@
 package com.appynitty.swachbharatabhiyanlibrary.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +23,8 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -120,8 +123,6 @@ public class AUtils extends CommonUtils {
 
     //Testingserver
 //    public static final String SERVER_URL = "http://202.65.157.254:4055/";
-
-
     //    General Constant
     public static final String STATUS_SUCCESS = "success";
 
@@ -221,6 +222,8 @@ public class AUtils extends CommonUtils {
     public static boolean isEmpSyncServerRequestEnable = false;
     public static boolean isSyncOfflineDataRequestEnable = false;
     public static boolean isSyncOfflineWasteManagementDataRequestEnable = false;
+
+    public static String isSyncingOn = "isSyncingOn";
 
     private static ArrayList<LanguagePojo> languagePojoList;
 
@@ -595,9 +598,12 @@ public class AUtils extends CommonUtils {
         return format.format(calendar.getTime());
     }
 
-    public static AlertDialog getUploadingAlertDialog(Context context) {
+    public static View getUploadingAlertDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        return builder.setView(R.layout.layout_progress_bar).setCancelable(true).create();
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") final View alertlayout = inflater.inflate(R.layout.layout_progress_bar, null);
+        return alertlayout;
+     //   return builder.setView(R.layout.layout_progress_bar).setCancelable(true).create();
     }
 
     public static double calculateDistance(Context context, double newlat, double newLng) {

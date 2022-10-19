@@ -52,6 +52,7 @@
     <string name="hp_gp_id_hint">हाउस आईडी/डंप यार्ड आईडी दर्ज करें</string>
     <string name="hp_validation">कृपया वेलिड हाउस नंबर चुनें</string>
     <string name="invalid_qr_error">अमान्य स्कॅनिफाय</string>
+    <string name="remaining">शेष है</string>
     <string name="lodin_success">सफलतापूर्ण प्रवेश!</string>
     <string name="login_error">लॉग इन करने में असमर्थ रहा। बाद में पुन: प्रयास करें!</string>
     <string name="login_title">लॉग इन</string>

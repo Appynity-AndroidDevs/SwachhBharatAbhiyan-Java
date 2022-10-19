@@ -184,8 +184,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         AUtils.gpsStatusCheck(DashboardActivity.this);
         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
 
+        Log.i("DashboardLifecycle", "onCreate: ");
         onSwitchStatus(AUtils.isIsOnduty());
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,6 +219,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     protected void onResume() {
         super.onResume();
         AUtils.currentContextConstant = mContext;
+        Log.i("DashboardLifecycle", "onResume: ");
         checkIsFromLogin();
         initUserDetails();
     }
@@ -422,8 +425,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i("DashboardLifecycle", "onStart: ");
+
         isUserLoginValidIMEINumber();
     }
+
 
     /**
      * Call this method first of page for found any user login with the diffrent mobile to avoid to conflit in data
@@ -439,7 +445,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private void isUserLoginValidIMEINumber() {
 
         //syncOfflineData();
-        syncOfflineData(isSync);
+        if (AUtils.isInternetAvailable()) {
+            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                syncOfflineData(isSync);
+            }
+
+        }
+
 
         //TODO
 //        executor.execute(new Runnable() {
@@ -473,6 +485,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void syncOfflineData(final boolean isSync) {
+
         SyncOfflineAdapterClass offlineAdapterClasss = new SyncOfflineAdapterClass(this);
         offlineAdapterClasss.SyncOfflineData();
 
@@ -480,6 +493,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             @Override
             public void onSuccessCallback() {
                 DashboardActivity.this.isSync = true;
+                Log.d(TAG, "onSuccessCallback: " + isSync);
+
             }
 
             @Override
@@ -1558,7 +1573,14 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     protected void onDestroy() {
         isView = false;
         isDeviceMatch = false;
+        Log.i("DashboardLifecycle", "onDestroy: ");
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("DashboardLifecycle", "onStop: ");
     }
 
     private void checkPermission() {

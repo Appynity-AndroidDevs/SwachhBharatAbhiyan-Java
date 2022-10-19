@@ -97,7 +97,14 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         btnSyncOfflineData = findViewById(R.id.btn_sync_data);
         uploadDialog = findViewById(R.id.upload_progressBar);
         gridOfflineData = findViewById(R.id.grid_offline_data);
-        alertDialog = AUtils.getUploadingAlertDialog(mContext);
+
+        // ALERT DIALOG CREATION TO SHOW SYNCING STATUS
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setCancelable(true);
+        alertDialog = builder.create();
+        View view = AUtils.getUploadingAlertDialog(mContext);
+        alertDialog.setView(view);
+
 
         empSyncServerRepository = new EmpSyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
         locationPojoList = new ArrayList<>();

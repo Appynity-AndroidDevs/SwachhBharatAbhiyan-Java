@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.connection;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -50,7 +51,12 @@ public class VerifyDataAdapterClass {
     public void setRequiredParameters(Class<?> nextClass, boolean killPrevActivity) {
         this.mClass = nextClass;
         this.mKillActivity = killPrevActivity;
-        alertDialog = AUtils.getUploadingAlertDialog(this.mContext);
+        // ALERT DIALOG CREATION TO SHOW SYNCING STATUS
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setCancelable(true);
+        alertDialog = builder.create();
+        View view = AUtils.getUploadingAlertDialog(mContext);
+        alertDialog.setView(view);
     }
 
     private void registerListener() {

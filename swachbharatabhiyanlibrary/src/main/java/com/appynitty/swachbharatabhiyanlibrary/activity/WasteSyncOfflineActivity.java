@@ -89,7 +89,12 @@ public class WasteSyncOfflineActivity extends AppCompatActivity {
         syncWasteManagementRepository = new SyncWasteManagementRepository(context);
 
         adapterClass = new SyncOfflineWasteManagementAdapterClass(context);
-        alertDialog = AUtils.getUploadingAlertDialog(context);
+        // ALERT DIALOG CREATION TO SHOW SYNCING STATUS
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(true);
+        alertDialog = builder.create();
+        View view = AUtils.getUploadingAlertDialog(context);
+        alertDialog.setView(view);
     }
 
     private void registerEvents() {

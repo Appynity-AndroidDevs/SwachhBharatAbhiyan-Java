@@ -38,7 +38,7 @@ public class SyncOfflineAdapterClass {
     private String offset = "0";
     private final List<SyncOfflinePojo> syncOfflineList;
     private final static String TAG = "SyncOfflineAdapterClass";
-    private Executor executor = Executors.newSingleThreadExecutor();
+
 
     public SyncOfflineAdapterClass(Context context) {
         this.mContext = context;

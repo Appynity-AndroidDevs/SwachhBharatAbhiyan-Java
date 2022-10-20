@@ -1,8 +1,10 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.connection;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
+import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.entity.EmpSyncServerEntity;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.OfflineGcResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
@@ -33,11 +35,14 @@ public class EmpSyncServerAdapterClass {
     private final List<QrLocationPojo> locationPojoList;
     private final Gson gson;
     private final EmpSyncServerRepository empSyncServerRepository;
+    private Context mContext;
 
-    public EmpSyncServerAdapterClass() {
+
+    public EmpSyncServerAdapterClass(Context mContext) {
         empSyncServerRepository = new EmpSyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
         locationPojoList = new ArrayList<>();
         gson = new Gson();
+        this.mContext = mContext;
     }
 
     public void setSyncOfflineListener(EmpSyncServerAdapterClass.EmpSyncOfflineListener empSyncOfflineListener) {
@@ -65,6 +70,7 @@ public class EmpSyncServerAdapterClass {
                     Log.e(TAG, "syncServer: offlineDataCount: " + empSyncServerRepository.getOfflineCount());
 
                     AUtils.isEmpSyncServerRequestEnable = true;
+                    Prefs.putBoolean(AUtils.isSyncingOn, true);
 
                     Collections.reverse(locationPojoList);
 
@@ -85,6 +91,7 @@ public class EmpSyncServerAdapterClass {
                             } else {
                                 Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + response.code());
                                 AUtils.isEmpSyncServerRequestEnable = false;
+                                Prefs.putBoolean(AUtils.isSyncingOn, false);
                                 empSyncOfflineListener.onFailureCallback();
                             }
                         }
@@ -93,6 +100,7 @@ public class EmpSyncServerAdapterClass {
                         public void onFailure(Call<List<OfflineGcResultPojo>> call, Throwable t) {
                             Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + t.getMessage());
                             AUtils.isEmpSyncServerRequestEnable = false;
+                            Prefs.putBoolean(AUtils.isSyncingOn, false);
                             empSyncOfflineListener.onErrorCallback();
                         }
                     });
@@ -130,6 +138,11 @@ public class EmpSyncServerAdapterClass {
 
                 if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
 
+                    if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                        AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
+                    }
+
+
                     if (Integer.parseInt(result.getID()) != 0) {
                         empSyncServerRepository.deleteEmpSyncServerEntity(Integer.parseInt(result.getID()));
                     }
@@ -155,9 +168,24 @@ public class EmpSyncServerAdapterClass {
                 }
             }
         }
+        if (results.size() > 1) {
+            boolean isSuccess = false;
+            for (OfflineGcResultPojo result : results) {
+                if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                    isSuccess = true;
+                }
+            }
+            if (isSuccess) {
+                if (empSyncServerRepository.getOfflineCount() == 0)
+                    AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
+            }
+
+        }
         AUtils.isEmpSyncServerRequestEnable = false;
+        Prefs.putBoolean(AUtils.isSyncingOn, false);
         offlineCount = empSyncServerRepository.getOfflineCount();
 
+        Log.i("OFFLINECOUNT", "onResponseReceived: "+offlineCount);
     }
 
     public interface EmpSyncOfflineListener {

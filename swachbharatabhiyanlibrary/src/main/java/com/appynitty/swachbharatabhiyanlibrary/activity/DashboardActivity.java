@@ -186,6 +186,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         Log.i("DashboardLifecycle", "onCreate: ");
         onSwitchStatus(AUtils.isIsOnduty());
+
+        Prefs.putBoolean(AUtils.isSyncingOn, false);
     }
 
 

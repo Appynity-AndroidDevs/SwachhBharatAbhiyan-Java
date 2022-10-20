@@ -86,78 +86,93 @@ public class DashboardMenuAdapter extends RecyclerView.Adapter<DashboardMenuAdap
                 if (menuPojo.getCheckAttendance()) {
                     if (AUtils.isIsOnduty()) {
                         if (menuPojo.getNextIntentClass().equals(EmpQRcodeScannerActivity.class)) {
-                            if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(context)) {
-                                progressBar.setVisibility(View.VISIBLE);
-                                executor.execute(new Runnable() {
+                            if (AUtils.isInternetAvailable()) {
+
+                                AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
                                     @Override
-                                    public void run() {
-                                        if (InternetWorking.isOnline()) {
-
-                                            Handler handler = new Handler(Looper.getMainLooper());
-                                            handler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    progressBar.setVisibility(View.GONE);
-                                                    AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
-                                                        @Override
-                                                        public void onResponse() {
-                                                            if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
-                                                                if (AUtils.isValidArea()) {
-                                                                    context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                                                                } else {
-                                                                    AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
-                                                                }
-                                                            } else {
-                                                                context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                                                            }
-
-                                                        }
-
-                                                        @Override
-                                                        public void onFailure(Throwable throwable) {
-                                                            Log.e(TAG, "onFailure: " + throwable.getMessage());
-                                                            progressBar.setVisibility(View.GONE);
-                                                            Handler handler = new Handler(Looper.getMainLooper());
-                                                            handler.post(new Runnable() {
-                                                                @Override
-                                                                public void run() {
-                                                                    if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
-                                                                        if (AUtils.isValidArea()) {
-                                                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                                                                        } else {
-                                                                            AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
-                                                                        }
-                                                                    } else {
-                                                                        context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                                                                    }
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                }
-                                            });
-
+                                    public void onResponse() {
+                                        if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
+                                            if (AUtils.isValidArea()) {
+                                                context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                            } else {
+                                                AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                            }
                                         } else {
-                                            Handler handler = new Handler(Looper.getMainLooper());
-                                            handler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    progressBar.setVisibility(View.GONE);
-                                                    if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
-                                                        if (AUtils.isValidArea()) {
-                                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                                                        } else {
-                                                            AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
-                                                        }
-                                                    } else {
-                                                        context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
-                                                    }
-                                                }
-                                            });
+                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                        }
 
+                                    }
+
+                                    @Override
+                                    public void onFailure(Throwable throwable) {
+                                        Log.e(TAG, "onFailure: " + throwable.getMessage());
+
+                                        if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
+                                            if (AUtils.isValidArea()) {
+                                                context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+                                            } else {
+                                                AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+                                            }
+                                        } else {
+                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
                                         }
                                     }
                                 });
+
+//                                progressBar.setVisibility(View.VISIBLE);
+//                                executor.execute(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+
+//                                if (InternetWorking.isOnline()) {
+//
+//                                    Handler handler = new Handler(Looper.getMainLooper());
+//                                    handler.post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            progressBar.setVisibility(View.GONE);
+//                                            AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
+//                                                @Override
+//                                                public void onResponse() {
+//                                                    if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
+//                                                        if (AUtils.isValidArea()) {
+//                                                            context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+//                                                        } else {
+//                                                            AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+//                                                        }
+//                                                    } else {
+//                                                        context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+//                                                    }
+//
+//                                                }
+//
+//                                                @Override
+//                                                public void onFailure(Throwable throwable) {
+//                                                    Log.e(TAG, "onFailure: " + throwable.getMessage());
+//                                                    progressBar.setVisibility(View.GONE);
+//                                                    Handler handler = new Handler(Looper.getMainLooper());
+//                                                    handler.post(new Runnable() {
+//                                                        @Override
+//                                                        public void run() {
+//                                                            if (Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false)) {
+//                                                                if (AUtils.isValidArea()) {
+//                                                                    context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+//                                                                } else {
+//                                                                    AUtils.warning(context, context.getResources().getString(R.string.out_of_area_msg));
+//                                                                }
+//                                                            } else {
+//                                                                context.startActivity(new Intent(context, menuPojo.getNextIntentClass()));
+//                                                            }
+//                                                        }
+//                                                    });
+//                                                }
+//                                            });
+//                                        }
+//                                    });
+
+                                //   }
+                                //      }
+//                                });
 
 
                             } else {

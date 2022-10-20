@@ -10,8 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/black"
         android:text="@string/offline_work_is_being_synced"
-        android:textSize="@dimen/dim_25_sp"
+        android:textSize="@dimen/dim_20_sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/remaining_count_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dim_8_dp"
+        android:textSize="@dimen/dim_14_sp"
         android:textStyle="bold"/>
 
     <com.airbnb.lottie.LottieAnimationView

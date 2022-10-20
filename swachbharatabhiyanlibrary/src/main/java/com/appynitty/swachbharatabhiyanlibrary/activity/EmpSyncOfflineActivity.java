@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -26,10 +27,12 @@ import com.appynitty.swachbharatabhiyanlibrary.entity.EmpSyncServerEntity;
 import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpOfflineCollectionCount;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.utils.LocaleHelper;
 
 import java.lang.reflect.Type;
@@ -51,7 +54,6 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     private Context mContext;
     private LinearLayout layoutNoOfflineData;
     private Button btnSyncOfflineData;
-    CardView uploadDialog;
     private GridView gridOfflineData;
 
     private EmpSyncServerRepository empSyncServerRepository;
@@ -60,6 +62,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private int houseCount, dyCount, ssCount, lwcCount;
     EmpInflateOfflineHistoryAdapter historyAdapter;
+    private TextView remainingCountTv;
     List<EmpOfflineCollectionCount> countList;
 
     @Override
@@ -95,7 +98,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
 
         layoutNoOfflineData = findViewById(R.id.show_error_offline_data);
         btnSyncOfflineData = findViewById(R.id.btn_sync_data);
-        uploadDialog = findViewById(R.id.upload_progressBar);
+        // uploadDialog = findViewById(R.id.upload_progressBar);
         gridOfflineData = findViewById(R.id.grid_offline_data);
 
         // ALERT DIALOG CREATION TO SHOW SYNCING STATUS
@@ -104,7 +107,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         alertDialog = builder.create();
         View view = AUtils.getUploadingAlertDialog(mContext);
         alertDialog.setView(view);
-
+        remainingCountTv = view.findViewById(R.id.remaining_count_tv);
 
         empSyncServerRepository = new EmpSyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
         locationPojoList = new ArrayList<>();
@@ -156,6 +159,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     + ", ssCount: " + ssCount
                     + ", lwcCount: " + lwcCount);
 
+            countList.clear();
             countList.add(new EmpOfflineCollectionCount(
                     String.valueOf(houseCount),
                     String.valueOf(dyCount),
@@ -173,30 +177,11 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (InternetWorking.isOnline()){
 
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    uploadToServer();
-                                }
-                            });
-                        }else{
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    AUtils.showSnackBar(findViewById(R.id.parent));
-                                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
-                                }
-                            });
-                        }
-                    }
-                });
+                if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                    uploadToServer();
+                    showDialogWithCount();
+                }
 
             }
         });
@@ -205,31 +190,31 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     private void uploadToServer() {
-        final EmpSyncServerAdapterClass empSyncAdapter = new EmpSyncServerAdapterClass();
-        uploadDialog.setVisibility(View.VISIBLE);
+        final EmpSyncServerAdapterClass empSyncAdapter = new EmpSyncServerAdapterClass(this);
+        // uploadDialog.setVisibility(View.VISIBLE);
         empSyncAdapter.syncServer();
 
         empSyncAdapter.setSyncOfflineListener(new EmpSyncServerAdapterClass.EmpSyncOfflineListener() {
             @Override
             public void onSuccessCallback() {
-                uploadDialog.setVisibility(View.GONE);
-                AUtils.success(mContext, getString(R.string.success_offline_sync), Toast.LENGTH_LONG);
-                locationPojoList.clear();
-                countList.clear();
-                getDatabaseList();
-                historyAdapter.setNotifyOnChange(true);
-                inflateData();
+                // uploadDialog.setVisibility(View.GONE);
+                //  AUtils.success(mContext, getString(R.string.success_offline_sync), Toast.LENGTH_LONG);
+//                locationPojoList.clear();
+//                countList.clear();
+//                getDatabaseList();
+//                historyAdapter.setNotifyOnChange(true);
+                //  inflateData();
             }
 
             @Override
             public void onFailureCallback() {
-                uploadDialog.setVisibility(View.GONE);
+                //   uploadDialog.setVisibility(View.GONE);
                 AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
             }
 
             @Override
             public void onErrorCallback() {
-                uploadDialog.setVisibility(View.GONE);
+                //    uploadDialog.setVisibility(View.GONE);
                 AUtils.warning(mContext, getResources().getString(R.string.serverError));
             }
         });
@@ -239,24 +224,159 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        inflateData();
+        if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+            showDialogWithCount();
+            btnSyncOfflineData.setVisibility(View.GONE);
+        } else {
+            inflateData();
+        }
+    }
+
+
+    private void showDialogWithCount() {
+
+        if (!alertDialog.isShowing())
+            alertDialog.show();
+        else
+            alertDialog.hide();
+
+        if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+            //   if (syncOfflineRepository.fetchCollectionCount().size() > 0) {
+
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    final boolean[] isSyncing = {true};
+
+                    String syncCount = "0";
+                    String finalSyncCount = "0";
+
+                    while (isSyncing[0]) {
+
+//                        if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+
+                        getDatabaseList();
+                        List<EmpOfflineCollectionCount> mList = countList;
+                        int size = mList.size();
+                        Log.i("SyncCountTest", "run: " + size);
+
+                        if (mList.size() > 0) {
+                            syncCount = mList.get(0).getHouseCount();
+                            Log.i("SyncCountTest", "run: sizee if " + syncCount + "  " + finalSyncCount);
+                        } else {
+                            Log.i("SyncCountTest", "run: " + syncCount + "  " + finalSyncCount);
+                            syncCount = "0";
+                            finalSyncCount = "0";
+
+                        }
+
+//                        if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+//                            syncCount = "0";
+//                            finalSyncCount = "0";
+//                        }
+
+                        if (!Objects.equals(finalSyncCount, syncCount)) {
+
+                            String finalSyncCount1 = syncCount;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    StringBuffer stringBuffer = new StringBuffer();
+                                    stringBuffer.append(finalSyncCount1);
+                                    stringBuffer.append(" ");
+                                    stringBuffer.append(getResources().getString(R.string.remaining));
+                                    remainingCountTv.setText(stringBuffer);
+                                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                                        isSyncing[0] = false;
+
+                                    }
+                                    if (countList.size() == 0) {
+                                        isSyncing[0] = false;
+                                    }
+                                    inflateData();
+                                }
+                            });
+                        } else if (Integer.parseInt(finalSyncCount) == 0 && Integer.parseInt(syncCount) == 0) {
+
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    inflateData();
+
+                                }
+                            });
+
+                            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                                Log.i("SyncCountTest", "run: if " + finalSyncCount + "  " + syncCount);
+                                // isSyncing[0] = false;
+
+                                isSyncing[0] = false;
+                            } else {
+                                isSyncing[0] = true;
+                            }
+                            if (countList.size() == 0) {
+                                Log.i("SyncCountTest", "run: this if" + "  " + syncCount);
+                                isSyncing[0] = false;
+
+                            } else {
+                                isSyncing[0] = true;
+                            }
+
+
+                        }
+                        finalSyncCount = syncCount;
+
+                    }
+                }
+            });
+//            } else {
+//                inflateData();
+//            }
+        } else {
+            inflateData();
+        }
+
     }
 
     private void inflateData() {
-
+        countList.clear();
+        getDatabaseList();
         if (locationPojoList.size() > 0) {
-            gridOfflineData.setVisibility(View.VISIBLE);
-            btnSyncOfflineData.setVisibility(View.VISIBLE);
-            layoutNoOfflineData.setVisibility(View.GONE);
+            if (countList.size() > 0) {
+                if (Integer.parseInt(countList.get(0).getHouseCount()) > 0) {
+                    gridOfflineData.setVisibility(View.VISIBLE);
+                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                    }
 
-            historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                    layoutNoOfflineData.setVisibility(View.GONE);
+
+                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
 //            historyAdapter.setNotifyOnChange(true);
-            gridOfflineData.setAdapter(historyAdapter);
+                    gridOfflineData.setAdapter(historyAdapter);
+                } else {
+                    gridOfflineData.setVisibility(View.GONE);
+                    btnSyncOfflineData.setVisibility(View.GONE);
+                    layoutNoOfflineData.setVisibility(View.VISIBLE);
+                    if (alertDialog.isShowing())
+                        alertDialog.dismiss();
+                }
+            } else {
+                gridOfflineData.setVisibility(View.GONE);
+                btnSyncOfflineData.setVisibility(View.GONE);
+                layoutNoOfflineData.setVisibility(View.VISIBLE);
+                if (alertDialog.isShowing())
+                    alertDialog.dismiss();
+            }
+
         } else {
             gridOfflineData.setVisibility(View.GONE);
             btnSyncOfflineData.setVisibility(View.GONE);
             layoutNoOfflineData.setVisibility(View.VISIBLE);
-
+            if (alertDialog.isShowing())
+                alertDialog.dismiss();
         }
     }
 
@@ -265,33 +385,33 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         super.onPostResume();
         if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(getApplicationContext())) {
 
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    if (InternetWorking.isOnline()) {
-
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                AUtils.hideSnackBar();
-                                if (empSyncServerRepository.getOfflineCount() > 0) {
-                                    uploadToServer();
-                                }
-                            }
-                        });
-                    } else {
-
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                AUtils.showSnackBar(findViewById(R.id.parent));
-                            }
-                        });
-                    }
-                }
-            });
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (InternetWorking.isOnline()) {
+//
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                AUtils.hideSnackBar();
+//                                if (empSyncServerRepository.getOfflineCount() > 0) {
+//                                    uploadToServer();
+//                                }
+//                            }
+//                        });
+//                    } else {
+//
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                AUtils.showSnackBar(findViewById(R.id.parent));
+//                            }
+//                        });
+//                    }
+//                }
+//            });
 
         } else {
             AUtils.showSnackBar(findViewById(R.id.parent));

@@ -111,9 +111,9 @@ public class SyncOfflineAdapterClass {
 
                     if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                            AUtils.warning(mContext, results.get(0).getMessageMar());
+                            AUtils.success(mContext, results.get(0).getMessageMar());
                         } else {
-                            AUtils.warning(mContext, results.get(0).getMessage());
+                            AUtils.success(mContext, results.get(0).getMessage());
                         }
                     }
 

@@ -81,7 +81,11 @@ public class EmpSyncServerAdapterClass {
                         public void onResponse(Call<List<OfflineGcResultPojo>> call, Response<List<OfflineGcResultPojo>> response) {
 
                             if (response.code() == 200) {
+                                Log.i(TAG, "onResponse: " + response);
+
                                 onResponseReceived(response.body());
+                                syncServer();
+
                                 if (locationPojoList.size() > 0) {
 
                                 } else {
@@ -138,9 +142,9 @@ public class EmpSyncServerAdapterClass {
 
                 if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
 
-                    if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
-                        AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
-                    }
+//                    if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+//                        AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
+//                    }
 
 
                     if (Integer.parseInt(result.getID()) != 0) {
@@ -168,24 +172,29 @@ public class EmpSyncServerAdapterClass {
                 }
             }
         }
-        if (results.size() > 1) {
-            boolean isSuccess = false;
-            for (OfflineGcResultPojo result : results) {
-                if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
-                    isSuccess = true;
-                }
-            }
-            if (isSuccess) {
-                if (empSyncServerRepository.getOfflineCount() == 0)
-                    AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
-            }
-
-        }
+//        if (results.size() > 1) {
+//            boolean isSuccess = false;
+//            for (OfflineGcResultPojo result : results) {
+//                if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+//                    isSuccess = true;
+//                }
+//            }
         AUtils.isEmpSyncServerRequestEnable = false;
         Prefs.putBoolean(AUtils.isSyncingOn, false);
         offlineCount = empSyncServerRepository.getOfflineCount();
 
-        Log.i("OFFLINECOUNT", "onResponseReceived: "+offlineCount);
+//            if (isSuccess) {
+        if (offlineCount == 0) {
+            Log.i("EmpSyncCountTest", "onResponseReceived size 0: " + offlineCount);
+            AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
+        }
+
+//            }
+//
+//        }
+
+        Log.i("EmpSyncCountTest", "onResponseReceived: " + offlineCount);
+
     }
 
     public interface EmpSyncOfflineListener {

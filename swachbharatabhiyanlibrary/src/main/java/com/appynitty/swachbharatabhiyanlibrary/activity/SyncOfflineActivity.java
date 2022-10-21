@@ -276,6 +276,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
     }
 
     private void inflateData() {
+
         workHistoryList.clear();
         workHistoryList = syncOfflineRepository.fetchCollectionCount();
         int size = workHistoryList.size();

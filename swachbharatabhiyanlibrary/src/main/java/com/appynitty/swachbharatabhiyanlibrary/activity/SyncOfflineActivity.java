@@ -315,7 +315,6 @@ public class SyncOfflineActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         if (AUtils.isInternetAvailable()) {
-
 //            executor.execute(new Runnable() {
 //                @Override
 //                public void run() {

@@ -88,8 +88,10 @@ public class SyncOfflineAdapterClass {
                                     // AUtils.warning(mContext, response.message(), Toast.LENGTH_SHORT);
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.code());
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.message());
-                                    AUtils.isSyncOfflineDataRequestEnable = false;
-                                    Prefs.putBoolean(AUtils.isSyncingOn, false);
+//                                    AUtils.isSyncOfflineDataRequestEnable = false;
+//                                    Prefs.putBoolean(AUtils.isSyncingOn, false);
+
+                                    SyncOfflineData();
                                     syncOfflineListener.onFailureCallback();
                                 }
                             }
@@ -98,9 +100,10 @@ public class SyncOfflineAdapterClass {
                             public void onFailure(Call<List<OfflineGcResultPojo>> call, Throwable t) {
                                 Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + t.getMessage());
                                 AUtils.warning(mContext, t.getMessage(), Toast.LENGTH_SHORT);
-                                AUtils.isSyncOfflineDataRequestEnable = false;
-                                Prefs.putBoolean(AUtils.isSyncingOn, false);
+                                //   AUtils.isSyncOfflineDataRequestEnable = false;
+                                // Prefs.putBoolean(AUtils.isSyncingOn, false);
                                 syncOfflineListener.onErrorCallback();
+                                SyncOfflineData();
                                 Log.i("RESPONSE_CODE", "onResponse: " + t.getMessage());
 
                             }
@@ -183,14 +186,17 @@ public class SyncOfflineAdapterClass {
                 }
             }
             if (isSuccess) {
-                if (syncOfflineRepository.fetchCollectionCount().size() == 0)
+                if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
                     AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
+                    AUtils.isSyncOfflineDataRequestEnable = false;
+                    Prefs.putBoolean(AUtils.isSyncingOn, false);
+                }
+
             }
 
         }
 
-        AUtils.isSyncOfflineDataRequestEnable = false;
-        Prefs.putBoolean(AUtils.isSyncingOn, false);
+
     }
 
     private void setOfflineData() {

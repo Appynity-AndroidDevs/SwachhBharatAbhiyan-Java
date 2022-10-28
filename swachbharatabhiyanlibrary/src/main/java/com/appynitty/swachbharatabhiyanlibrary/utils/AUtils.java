@@ -79,7 +79,7 @@ public class AUtils extends CommonUtils {
      *Username : ttest
      * Password : ttest
      * */
-    public static final String SERVER_URL = "http://202.65.157.254:6510/";
+   // public static final String SERVER_URL = "http://202.65.157.254:6510/";
     //public static final String SERVER_URL = "http://202.65.157.254:5049";
 
     /***
@@ -106,7 +106,7 @@ public class AUtils extends CommonUtils {
     public static final String SERVER_URL = "http://202.65.157.253:6561";*/
 
 
-       // public static final String SERVER_URL = "https://ictsbm.com:30443";
+        public static final String SERVER_URL = "https://ictsbm.com:30443";
 
     /***
      * Staging portap
@@ -139,6 +139,7 @@ public class AUtils extends CommonUtils {
 
     public static final String APP_ID = "AppId";
     public static final String VERSION_CODE = "AppVersion";
+    public static String isSyncingOn = "isSyncingOn";
 
     public static final String DIALOG_TYPE_VEHICLE = "DialogTypeVehicle";
     public static final String DIALOG_NUMBER_VEHICLE = "DialogNumberVehicle";

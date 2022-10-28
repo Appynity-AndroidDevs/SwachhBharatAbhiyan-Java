@@ -448,7 +448,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         //syncOfflineData();
         if (AUtils.isInternetAvailable()) {
-            Prefs.putBoolean(AUtils.isSyncingOn, false);
+       //     Prefs.putBoolean(AUtils.isSyncingOn, false);
             if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
                 syncOfflineData(isSync);
             }

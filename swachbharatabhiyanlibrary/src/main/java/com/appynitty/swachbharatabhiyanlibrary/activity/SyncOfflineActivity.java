@@ -147,29 +147,30 @@ public class SyncOfflineActivity extends AppCompatActivity {
         syncOfflineAdapter.setSyncOfflineListener(new SyncOfflineAdapterClass.SyncOfflineListener() {
             @Override
             public void onSuccessCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.dismiss();
+//                if (alertDialog.isShowing())
+//                    alertDialog.dismiss();
 
-                inflateData();
+       //         inflateData();
             }
 
             @Override
             public void onFailureCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.hide();
+//                if (alertDialog.isShowing())
+//                    alertDialog.hide();
 //                AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
             }
 
             @Override
             public void onErrorCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.hide();
+//                if (alertDialog.isShowing())
+//                    alertDialog.hide();
                 //   AUtils.warning(mContext, getResources().getString(R.string.serverError));
             }
         });
     }
 
     private void initData() {
+
 
         if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
             showDialogWithCount();

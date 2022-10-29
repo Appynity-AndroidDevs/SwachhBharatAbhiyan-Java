@@ -95,7 +95,7 @@ public class EmpSyncServerAdapterClass {
                             } else {
                                 Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + response.code());
                                 AUtils.isEmpSyncServerRequestEnable = false;
-                                Prefs.putBoolean(AUtils.isSyncingOn, false);
+                             //   Prefs.putBoolean(AUtils.isSyncingOn, false);
                                 empSyncOfflineListener.onFailureCallback();
                             }
                         }
@@ -159,19 +159,29 @@ public class EmpSyncServerAdapterClass {
                     }
 
                 } else {
-                    if (Integer.parseInt(result.getID()) != 0) {
-                        empSyncServerRepository.deleteEmpSyncServerEntity(Integer.parseInt(result.getID()));
-                    }
 
-                    for (int i = 0; i < locationPojoList.size(); i++) {
-                        if (locationPojoList.get(i).getOfflineID().equals(result.getID())) {
-                            locationPojoList.remove(i);
-                            break;
+                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                        AUtils.error(mContext, result.getMessageMar());
+                    else
+                        AUtils.error(mContext, result.getMessage());
+
+                    if (!result.getMessage().contains("wrong")) {
+                        if (Integer.parseInt(result.getID()) != 0) {
+                            empSyncServerRepository.deleteEmpSyncServerEntity(Integer.parseInt(result.getID()));
+                        }
+
+                        for (int i = 0; i < locationPojoList.size(); i++) {
+                            if (locationPojoList.get(i).getOfflineID().equals(result.getID())) {
+                                locationPojoList.remove(i);
+                                break;
+                            }
                         }
                     }
+
                 }
             }
         }
+
 //        if (results.size() > 1) {
 //            boolean isSuccess = false;
 //            for (OfflineGcResultPojo result : results) {
@@ -179,6 +189,7 @@ public class EmpSyncServerAdapterClass {
 //                    isSuccess = true;
 //                }
 //            }
+
         AUtils.isEmpSyncServerRequestEnable = false;
         Prefs.putBoolean(AUtils.isSyncingOn, false);
         offlineCount = empSyncServerRepository.getOfflineCount();

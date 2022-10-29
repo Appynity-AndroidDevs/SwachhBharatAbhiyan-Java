@@ -167,7 +167,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     private void uploadToServer() {
-        final EmpSyncServerAdapterClass empSyncAdapter = new EmpSyncServerAdapterClass();
+        final EmpSyncServerAdapterClass empSyncAdapter = new EmpSyncServerAdapterClass(mContext);
         uploadDialog.setVisibility(View.VISIBLE);
         empSyncAdapter.syncServer();
 

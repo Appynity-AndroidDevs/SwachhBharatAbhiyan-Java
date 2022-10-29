@@ -248,7 +248,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             mCheckAttendanceAdapter.checkAttendance();
         }
 
-        EmpSyncServerAdapterClass empSyncServer = new EmpSyncServerAdapterClass();
+        EmpSyncServerAdapterClass empSyncServer = new EmpSyncServerAdapterClass(mContext);
         empSyncServer.syncServer();
 
         empSyncServer.setSyncOfflineListener(new EmpSyncServerAdapterClass.EmpSyncOfflineListener() {

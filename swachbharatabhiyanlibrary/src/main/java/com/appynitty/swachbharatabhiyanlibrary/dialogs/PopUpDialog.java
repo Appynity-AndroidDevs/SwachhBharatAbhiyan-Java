@@ -179,42 +179,6 @@ public class PopUpDialog extends Dialog {
             }
         });
 
-        if (mType.equals(AUtils.DIALOG_TYPE_VEHICLE)) {
-            //   loader.setVisibility(View.VISIBLE);
-
-            textWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    adapterN.getFilter().filter(charSequence.toString());
-
-//                    int test = autoTxtVehicleNum.getText().toString().length();
-//                    Log.d(TAG, "onTextChanged: "+test);
-//                    if (autoTxtVehicleNum.getText().toString().length() == 0){
-//                        autoTxtVehicleNum.showDropDown();
-//                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                }
-            };
-
-            autoTxtVehicleNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean b) {
-                    if (b == true){
-                        autoTxtVehicleNum.showDropDown();
-                        openSoftKeyboard();
-                    }
-                }
-            });
-        }
 
 //        autoTxtVehicleNum.setOnTouchListener(new View.OnTouchListener() {
 //            @Override

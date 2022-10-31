@@ -1,15 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: :retrofitconnectionlibrary-release:@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3e0d14b4f77b8cc648c6eba8da7174cb/transformed/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3e0d14b4f77b8cc648c6eba8da7174cb/transformed/jetified-retrofitconnectionlibrary-release/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3e0d14b4f77b8cc648c6eba8da7174cb/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b4089bada91c128aa2d65996c1b5bc3b/transformed/jetified-retrofitconnectionlibrary-release/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b4089bada91c128aa2d65996c1b5bc3b/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b4089bada91c128aa2d65996c1b5bc3b/transformed/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8457417cd1d437193926891599b05aa6/transformed/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8457417cd1d437193926891599b05aa6/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8457417cd1d437193926891599b05aa6/transformed/jetified-retrofitconnectionlibrary-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8457417cd1d437193926891599b05aa6/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

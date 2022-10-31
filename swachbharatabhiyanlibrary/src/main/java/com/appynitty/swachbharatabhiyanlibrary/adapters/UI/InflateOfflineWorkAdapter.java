@@ -35,6 +35,7 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
         super(context, android.R.layout.simple_list_item_1, objects);
         this.context = context;
         this.historyPojoList = objects;
+        Log.d(TAG, "InflateOfflineWorkAdapter: "+objects);
         Log.e("InflateHistoryAdapter", Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, ""));
     }
 

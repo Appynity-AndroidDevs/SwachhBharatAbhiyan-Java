@@ -513,11 +513,11 @@ public class DumpYardWeightActivity extends AppCompatActivity {
 
             if (!AUtils.isNullString(Prefs.getString(AUtils.BEFORE_IMAGE, null))) {
                 btnTakeDryPhoto.setImageURI(Uri.parse(Prefs.getString(AUtils.BEFORE_IMAGE, null)));
-                Log.e("Image1 from imagePojo: ", imagePojo.getImage1());
+                //   Log.e("Image1 from imagePojo: ", imagePojo.getImage1());
                 dryImageFilePath = imagePojo.getImage1();
             } else if (!AUtils.isNullString(imagePojo.getImage2())) {
                 btnTakeWetPhoto.setImageURI(Uri.parse(imagePojo.getImage2()));
-                Log.e("Image2 from imagePojo: ", imagePojo.getImage2());
+                //  Log.e("Image2 from imagePojo: ", imagePojo.getImage2());
                 wetImageFilePath = imagePojo.getImage2();
             }
         }

@@ -257,7 +257,6 @@ public class SyncOfflineActivity extends AppCompatActivity {
                                 });
                             }
 
-
                         }
                         finalSyncCount = syncCount;
 

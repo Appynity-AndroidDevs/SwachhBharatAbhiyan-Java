@@ -281,7 +281,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
         if (workHistoryList.size() > 0) {
             if (Integer.parseInt(workHistoryList.get(0).getHouseCollection()) > 0) {
                 gridOfflineData.setVisibility(View.VISIBLE);
-                if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                if (Integer.parseInt(workHistoryList.get(0).getHouseCollection()) == 0) {
                     btnSyncOfflineData.setVisibility(View.VISIBLE);
                 }
 

@@ -53,9 +53,6 @@ public class EmpSyncServerAdapterClass {
 
         offlineCount = empSyncServerRepository.getOfflineCount();
 
-
-//        do {
-
         for (int i = 0; i < offlineCount; i++) {
 
 
@@ -117,7 +114,7 @@ public class EmpSyncServerAdapterClass {
                     empSyncOfflineListener.onFailureCallback();
             }
         }
-//        } while (offlineCount > 0);
+
     }
 
     private void getDatabaseList() {
@@ -141,10 +138,6 @@ public class EmpSyncServerAdapterClass {
             for (OfflineGcResultPojo result : results) {
 
                 if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
-
-//                    if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
-//                        AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
-//                    }
 
 
                     if (Integer.parseInt(result.getID()) != 0) {

@@ -119,7 +119,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
 
     private List<EmpOfflineCollectionCount> getDatabaseList() {
 
-        clearCount();
+
         List<EmpSyncServerEntity> entityList = empSyncServerRepository.getAllEmpSyncServerEntity();
         locationPojoList.clear();
         clearCount();

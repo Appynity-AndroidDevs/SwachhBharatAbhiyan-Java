@@ -136,6 +136,7 @@ public class CameraActivity extends AppCompatActivity {
         textureView = (AutoFitTextureView) findViewById(R.id.textureView);
         //From Java 1.4 , you can use keyword 'assert' to check expression true or false
         assert textureView != null;
+
         textureView.setSurfaceTextureListener(textureListener);
         button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -451,6 +452,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         stopBackgroundThread();
+
         super.onPause();
     }
 

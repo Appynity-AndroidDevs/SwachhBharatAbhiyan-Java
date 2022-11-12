@@ -85,7 +85,7 @@ public class SyncOfflineAdapterClass {
 
                                 } else {
                                     Log.d(TAG, "onResponse: " + response);
-                                    AUtils.warning(mContext, response.message(), Toast.LENGTH_SHORT);
+                                    AUtils.warning(mContext, mContext.getResources().getString(R.string.connection_timeout), Toast.LENGTH_SHORT);
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.code());
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.message());
                                     AUtils.isSyncOfflineDataRequestEnable = false;

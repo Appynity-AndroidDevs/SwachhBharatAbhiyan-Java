@@ -260,6 +260,7 @@
     <string name="no_location_found">No Location found</string>
     <string name="no_location_found_cant_save">No Location found , Cannot submit</string>
     <string name="fetching_location">please wait fetching the location</string>
+    <string name="connection_timeout">connection timeout</string>
 
 
     <string name="perminssion_needed_title">Permission Needed!</string>

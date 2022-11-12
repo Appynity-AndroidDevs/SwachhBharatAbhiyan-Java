@@ -2,6 +2,7 @@ package com.appynitty.swachbharatabhiyanlibrary.adapters.connection;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.swachbharatabhiyanlibrary.R;
@@ -94,6 +95,8 @@ public class EmpSyncServerAdapterClass {
                                 AUtils.isEmpSyncServerRequestEnable = false;
                              //   Prefs.putBoolean(AUtils.isSyncingOn, false);
                                 empSyncOfflineListener.onFailureCallback();
+                                AUtils.warning(mContext, mContext.getResources().getString(R.string.connection_timeout), Toast.LENGTH_SHORT);
+
                             }
                         }
 

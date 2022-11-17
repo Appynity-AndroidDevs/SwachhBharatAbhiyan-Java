@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.databinding.LayoutHistoryCardBinding;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -43,24 +44,25 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         if (convertView == null) {
+            LayoutHistoryCardBinding binding = LayoutHistoryCardBinding.inflate((LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE));
 
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.layout_history_card, null);
+            view = binding.getRoot();
             final InflateOfflineWorkAdapter.ViewHolder viewHolder = new InflateOfflineWorkAdapter.ViewHolder();
-            viewHolder.date = view.findViewById(R.id.history_date_txt);
-            viewHolder.month = view.findViewById(R.id.history_month_txt);
-            viewHolder.houseCollection = view.findViewById(R.id.house_collection);
-            viewHolder.dyCollection = view.findViewById(R.id.dy_collection);
-            viewHolder.dyCollectionlbl = view.findViewById(R.id.dy_collection_lbl);
-            viewHolder.houseCollectionTitle = view.findViewById(R.id.house_collection_lbl);
-            viewHolder.liquidCollection = view.findViewById(R.id.lwc_collection);
-            viewHolder.liquidCollectionLbl = view.findViewById(R.id.lwc_collection_lbl);
-            viewHolder.streetCollection = view.findViewById(R.id.ss_collection);
-            viewHolder.streetCollectionLbl = view.findViewById(R.id.ss_collection_lbl);
+            viewHolder.date = binding.historyDateTxt;
+            viewHolder.month = binding.historyMonthTxt;
+            viewHolder.houseCollection = binding.houseCollection;
+            ;
+            viewHolder.dyCollection = binding.dyCollection;
+            viewHolder.dyCollectionlbl = binding.dyCollectionLbl;
+            viewHolder.houseCollectionTitle = binding.houseCollectionLbl;
+            viewHolder.liquidCollection = binding.lwcCollection;
+            viewHolder.liquidCollectionLbl = binding.lwcCollectionLbl;
+            viewHolder.streetCollection = binding.ssCollection;
+            viewHolder.streetCollectionLbl = binding.ssCollectionLbl;
             //dump yard supervisor - rahul
-            viewHolder.dumpSuperCollectionLbl = view.findViewById(R.id.ds_collection_lbl);
-            viewHolder.dumpSuperCollection = view.findViewById(R.id.ds_collection);
+            viewHolder.dumpSuperCollectionLbl = binding.dsCollectionLbl;
+            viewHolder.dumpSuperCollection = binding.dsCollection;
             view.setTag(viewHolder);
 
         } else {
@@ -111,7 +113,7 @@ public class InflateOfflineWorkAdapter extends ArrayAdapter<TableDataCountPojo.W
                 holder.streetCollectionLbl.setVisibility(View.GONE);
                 holder.dumpSuperCollection.setVisibility(View.GONE);
                 holder.dumpSuperCollectionLbl.setVisibility(View.GONE);
-            } else if (empType.matches("D")){
+            } else if (empType.matches("D")) {
 
                 holder.houseCollectionTitle.setText(R.string.dumpyard_plant_collection);
                 holder.date.setText(AUtils.extractDate(workHistoryPojo.getDate()));

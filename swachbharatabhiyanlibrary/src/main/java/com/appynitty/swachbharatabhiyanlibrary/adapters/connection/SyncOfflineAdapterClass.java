@@ -97,7 +97,7 @@ public class SyncOfflineAdapterClass {
                             @Override
                             public void onFailure(Call<List<OfflineGcResultPojo>> call, Throwable t) {
                                 Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + t.getMessage());
-                                AUtils.warning(mContext, t.getMessage(), Toast.LENGTH_SHORT);
+                                AUtils.warning(mContext, mContext.getResources().getString(R.string.connection_timeout), Toast.LENGTH_SHORT);
                                 AUtils.isSyncOfflineDataRequestEnable = false;
                                 Prefs.putBoolean(AUtils.isSyncingOn, false);
                                 syncOfflineListener.onErrorCallback();
@@ -221,6 +221,7 @@ public class SyncOfflineAdapterClass {
             Log.d(TAG, "setOfflineData: " + new Gson().toJson(offlinePojo));
             syncOfflineList.add(offlinePojo);
 
+            Log.d(TAG, "setOfflineData: "+syncOfflineList);
         }
     }
 

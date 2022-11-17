@@ -832,10 +832,10 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             if (!AUtils.isInternetAvailable()) {
                 Toast.makeText(mContext, "Submitted successfully", Toast.LENGTH_SHORT).show();
             } else {
-                AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
+                // AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
             }
         } else {
-            AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
+            //  AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
         }
 
         finish();

@@ -38,7 +38,7 @@ public class SyncOfflineAdapterClass {
     private String offset = "0";
     private final List<SyncOfflinePojo> syncOfflineList;
     private final static String TAG = "SyncOfflineAdapterClass";
-    private Executor executor = Executors.newSingleThreadExecutor();
+
 
     public SyncOfflineAdapterClass(Context context) {
         this.mContext = context;
@@ -85,11 +85,11 @@ public class SyncOfflineAdapterClass {
 
                                 } else {
                                     Log.d(TAG, "onResponse: " + response);
-                                    // AUtils.warning(mContext, response.message(), Toast.LENGTH_SHORT);
+                                    AUtils.warning(mContext, mContext.getResources().getString(R.string.connection_timeout), Toast.LENGTH_SHORT);
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.code());
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.message());
                                     AUtils.isSyncOfflineDataRequestEnable = false;
-                                    Prefs.putBoolean(AUtils.isSyncingOn, false);
+                                    //            Prefs.putBoolean(AUtils.isSyncingOn, false);
                                     syncOfflineListener.onFailureCallback();
                                 }
                             }
@@ -107,7 +107,7 @@ public class SyncOfflineAdapterClass {
 
                         });
             } else {
-                Prefs.putBoolean(AUtils.isSyncingOn, false);
+                //       Prefs.putBoolean(AUtils.isSyncingOn, false);
                 if (syncOfflineListener != null) {
                     syncOfflineListener.onSuccessCallback();
 
@@ -148,8 +148,8 @@ public class SyncOfflineAdapterClass {
                                 areaWarningListener.onError(result.getMessage());
 
                         } else {
-                            syncOfflineList.clear();
-                            syncOfflineRepository.deleteCompleteSyncTableData();
+                            //   syncOfflineList.clear();
+                            //    syncOfflineRepository.deleteCompleteSyncTableData();
                             if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
                                 AUtils.error(mContext, result.getMessageMar());
                             else
@@ -159,17 +159,29 @@ public class SyncOfflineAdapterClass {
                     }
 
                     if (Integer.parseInt(result.getID()) != 0) {
-                        int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());
-                        if (deleteCount == 0) {
-                            offset = String.valueOf(Integer.parseInt(offset) + 1);
+
+//                        if (result.getMessage().contains("scanned")) {
+//
+//                        } else if (result.getMessage().contains("Invalid")) {
+//
+//                        } else
+
+                        //CHANGES BY SANATH GOSAVI
+                        if (!result.getMessage().contains("wrong")) {
+                            int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());
+                            if (deleteCount == 0) {
+                                offset = String.valueOf(Integer.parseInt(offset) + 1);
+                            }
+                            for (int i = 0; i < syncOfflineList.size(); i++) {
+                                if (syncOfflineList.get(i).getOfflineID().equals(result.getID())) {
+                                    syncOfflineList.remove(i);
+                                    break;
+                                }
+                            }
                         }
+
                     }
-                    for (int i = 0; i < syncOfflineList.size(); i++) {
-                        if (syncOfflineList.get(i).getOfflineID().equals(result.getID())) {
-                            syncOfflineList.remove(i);
-                            break;
-                        }
-                    }
+
                 } else
                     offset = String.valueOf(Integer.parseInt(offset) + 1);
             }

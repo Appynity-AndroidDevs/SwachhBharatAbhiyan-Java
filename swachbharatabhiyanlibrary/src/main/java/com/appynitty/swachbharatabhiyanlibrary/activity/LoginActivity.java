@@ -333,6 +333,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         if (validateForm()) {
             getFormData();
 //
+            Log.d(TAG, "onLogin: "+loginPojo);
 //            final Executor executor = Executors.newSingleThreadExecutor();
 //            executor.execute(new Runnable() {
 //                @Override
@@ -485,7 +486,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 //        Log.d("TAG", "Employee Type: " + loginPojo.getEmployeeType());
         Log.d("TAG", "getFormData: " + loginPojo.getUserLoginId());
         Log.d("TAG", "getFormData: " + loginPojo.getUserPassword());
-        Log.d("LoginActivity", "Employee Type: " + loginPojo.getEmployeeType());
+        Log.d("LoginActivity", "Employee Type: " + loginPojo);
 
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 

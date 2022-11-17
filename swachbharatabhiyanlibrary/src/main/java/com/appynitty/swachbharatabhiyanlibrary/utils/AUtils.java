@@ -100,6 +100,8 @@ public class AUtils extends CommonUtils {
 
     //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
+    //NEW TESTING SERVER
+  //  public static final String SERVER_URL = "http://114.143.244.133:6560/";
     public static final String SERVER_URL = "https://ictsbm.com:30443";
     //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
@@ -600,10 +602,10 @@ public class AUtils extends CommonUtils {
 
     public static View getUploadingAlertDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") final View alertlayout = inflater.inflate(R.layout.layout_progress_bar, null);
         return alertlayout;
-     //   return builder.setView(R.layout.layout_progress_bar).setCancelable(true).create();
+        //   return builder.setView(R.layout.layout_progress_bar).setCancelable(true).create();
     }
 
     public static double calculateDistance(Context context, double newlat, double newLng) {

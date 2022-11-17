@@ -19,6 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginRepository {
+
     private static final String TAG = "LoginRepository";
     private LoginInterface loginAPI = RetrofitClient.getInstance().getLoginAPI();
     private final Executor executor = Executors.newSingleThreadExecutor();

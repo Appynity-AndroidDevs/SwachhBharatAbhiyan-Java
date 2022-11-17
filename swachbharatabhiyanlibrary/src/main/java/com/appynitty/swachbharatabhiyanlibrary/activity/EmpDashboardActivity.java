@@ -119,6 +119,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initComponents();
+        Prefs.putBoolean(AUtils.isSyncingOn, false);
     }
 
     @Override
@@ -252,25 +253,32 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             mCheckAttendanceAdapter.checkAttendance();
         }
 
-        EmpSyncServerAdapterClass empSyncServer = new EmpSyncServerAdapterClass();
-        empSyncServer.syncServer();
+        if (AUtils.isInternetAvailable()) {
+            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
 
-        empSyncServer.setSyncOfflineListener(new EmpSyncServerAdapterClass.EmpSyncOfflineListener() {
-            @Override
-            public void onSuccessCallback() {
+                EmpSyncServerAdapterClass empSyncServer = new EmpSyncServerAdapterClass(this);
+                empSyncServer.syncServer();
 
+                empSyncServer.setSyncOfflineListener(new EmpSyncServerAdapterClass.EmpSyncOfflineListener() {
+                    @Override
+                    public void onSuccessCallback() {
+
+                    }
+
+                    @Override
+                    public void onFailureCallback() {
+
+                    }
+
+                    @Override
+                    public void onErrorCallback() {
+
+                    }
+                });
             }
 
-            @Override
-            public void onFailureCallback() {
+        }
 
-            }
-
-            @Override
-            public void onErrorCallback() {
-
-            }
-        });
 
         ShareLocationAdapterClass shareLocationAdapterClass = new ShareLocationAdapterClass();
         shareLocationAdapterClass.shareLocation();
@@ -592,7 +600,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
                         //    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
 
-                  //      Prefs.putString(AUtils.LAT , null);
+                        //      Prefs.putString(AUtils.LAT , null);
                         onChangeDutyStatus();
 //                        }else{
 //                            markAttendance.setChecked(false);
@@ -617,7 +625,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
 
-                              //      Prefs.putString(AUtils.LAT, "");
+                                    //      Prefs.putString(AUtils.LAT, "");
                                     if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                                         mAttendanceAdapter.MarkOutPunch();
                                     } else {
@@ -685,7 +693,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
                 @Override
                 public void onResponse() {
-                 //   Prefs.putString(AUtils.LAT, "");
+                    //   Prefs.putString(AUtils.LAT, "");
                     boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
                     Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
                     if (isAreaActive) {

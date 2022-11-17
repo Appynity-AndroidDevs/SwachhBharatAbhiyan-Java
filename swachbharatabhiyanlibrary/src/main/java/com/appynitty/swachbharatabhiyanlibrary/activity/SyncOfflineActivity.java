@@ -147,29 +147,30 @@ public class SyncOfflineActivity extends AppCompatActivity {
         syncOfflineAdapter.setSyncOfflineListener(new SyncOfflineAdapterClass.SyncOfflineListener() {
             @Override
             public void onSuccessCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.dismiss();
+//                if (alertDialog.isShowing())
+//                    alertDialog.dismiss();
 
-                inflateData();
+                //         inflateData();
             }
 
             @Override
             public void onFailureCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.hide();
+//                if (alertDialog.isShowing())
+//                    alertDialog.hide();
 //                AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
             }
 
             @Override
             public void onErrorCallback() {
-                if (alertDialog.isShowing())
-                    alertDialog.hide();
+//                if (alertDialog.isShowing())
+//                    alertDialog.hide();
                 //   AUtils.warning(mContext, getResources().getString(R.string.serverError));
             }
         });
     }
 
     private void initData() {
+
 
         if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
             showDialogWithCount();
@@ -201,9 +202,14 @@ public class SyncOfflineActivity extends AppCompatActivity {
                     while (isSyncing[0]) {
 
 //                        if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+
                         List<TableDataCountPojo.WorkHistory> mList = syncOfflineRepository.fetchCollectionCount();
                         if (mList.size() > 0) {
-                            syncCount = mList.get(0).getHouseCollection();
+
+                            if (Integer.parseInt(mList.get(0).getDumpYardCollection()) > 0)
+                                syncCount = mList.get(0).getDumpYardCollection();
+                            else
+                                syncCount = mList.get(0).getHouseCollection();
                         } else {
                             Log.i("SyncCountTest", "run: " + syncCount + "  " + finalSyncCount);
                             syncCount = "0";
@@ -228,10 +234,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
                                     stringBuffer.append(" ");
                                     stringBuffer.append(getResources().getString(R.string.remaining));
                                     remainingCountTv.setText(stringBuffer);
-                                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-                                        isSyncing[0] = false;
 
-                                    }
                                     if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
                                         isSyncing[0] = false;
                                     }
@@ -240,8 +243,8 @@ public class SyncOfflineActivity extends AppCompatActivity {
                             });
                         } else if (Integer.parseInt(finalSyncCount) == 0 && Integer.parseInt(syncCount) == 0) {
 
-                            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-                                Log.i("SyncCountTest", "run: if " + finalSyncCount + "  " + syncCount);
+                            if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
+                                Log.i("SyncCountTest", "run: this if" + "  " + syncCount);
                                 isSyncing[0] = false;
 
                                 runOnUiThread(new Runnable() {
@@ -253,12 +256,6 @@ public class SyncOfflineActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-                            if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
-                                Log.i("SyncCountTest", "run: this if" + "  " + syncCount);
-                                isSyncing[0] = false;
-
-                            }
-
 
                         }
                         finalSyncCount = syncCount;
@@ -276,16 +273,29 @@ public class SyncOfflineActivity extends AppCompatActivity {
     }
 
     private void inflateData() {
+
         workHistoryList.clear();
         workHistoryList = syncOfflineRepository.fetchCollectionCount();
         int size = workHistoryList.size();
-        Log.i("WorkHistorySize", "inflateData: " + size);
+        Log.i("WorkHistorySize", "inflateData: " + workHistoryList);
         if (workHistoryList.size() > 0) {
             if (Integer.parseInt(workHistoryList.get(0).getHouseCollection()) > 0) {
+                gridOfflineData.setVisibility(View.VISIBLE);
+                if (Integer.parseInt(workHistoryList.get(0).getHouseCollection()) == 0) {
+                    btnSyncOfflineData.setVisibility(View.VISIBLE);
+                }
+
+
+                layoutNoOfflineData.setVisibility(View.GONE);
+                InflateOfflineWorkAdapter historyAdapter = new InflateOfflineWorkAdapter(mContext, workHistoryList);
+                Log.e(TAG, "inflateData:- " + "OfflineWorkHistory=> " + workHistoryList);
+                gridOfflineData.setAdapter(historyAdapter);
+            } else if (Integer.parseInt(workHistoryList.get(0).getDumpYardCollection()) > 0) {
                 gridOfflineData.setVisibility(View.VISIBLE);
                 if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
                     btnSyncOfflineData.setVisibility(View.VISIBLE);
                 }
+
 
                 layoutNoOfflineData.setVisibility(View.GONE);
                 InflateOfflineWorkAdapter historyAdapter = new InflateOfflineWorkAdapter(mContext, workHistoryList);
@@ -314,31 +324,6 @@ public class SyncOfflineActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         if (AUtils.isInternetAvailable()) {
-
-//            executor.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (InternetWorking.isOnline()) {
-//
-//                        Handler handler = new Handler(Looper.getMainLooper());
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                AUtils.hideSnackBar();
-//                            }
-//                        });
-//                    } else {
-//
-//                        Handler handler = new Handler(Looper.getMainLooper());
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                AUtils.showSnackBar(findViewById(R.id.parent));
-//                            }
-//                        });
-//                    }
-//                }
-//            });
 
         } else {
             AUtils.showSnackBar(findViewById(R.id.parent));

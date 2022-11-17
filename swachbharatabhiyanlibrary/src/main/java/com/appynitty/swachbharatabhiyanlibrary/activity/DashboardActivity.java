@@ -186,6 +186,8 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         Log.i("DashboardLifecycle", "onCreate: ");
         onSwitchStatus(AUtils.isIsOnduty());
+
+
     }
 
 
@@ -343,6 +345,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 if (!AUtils.isNull(attendancePojo)) {
                     markAttendance.setChecked(true);
+
                     onInPunchSuccess();
                 }
             }
@@ -446,6 +449,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         //syncOfflineData();
         if (AUtils.isInternetAvailable()) {
+            //     Prefs.putBoolean(AUtils.isSyncingOn, false);
             if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
                 syncOfflineData(isSync);
             }

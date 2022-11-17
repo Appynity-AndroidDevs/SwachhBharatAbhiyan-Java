@@ -91,6 +91,8 @@ public class MyApplication extends Application {
         } else {
             startService(intent);
         }
+
+
     }
 
     public void stopLocationTracking() {

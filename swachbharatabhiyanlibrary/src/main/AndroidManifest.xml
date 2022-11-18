@@ -182,6 +182,10 @@
             android:name=".services.NetworkSchedulerService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".services.GIS_LocationService"
+            android:enabled="true"
+            android:exported="true" />
 
         <receiver
             android:name=".services.RestarterBroadcastReceiver"

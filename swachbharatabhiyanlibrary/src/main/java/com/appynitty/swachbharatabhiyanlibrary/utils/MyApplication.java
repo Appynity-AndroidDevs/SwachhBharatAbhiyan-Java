@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.appynitty.swachbharatabhiyanlibrary.services.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.services.NetworkSchedulerService;
 import com.facebook.stetho.Stetho;
@@ -83,20 +84,35 @@ public class MyApplication extends Application {
     }
 
     public void startLocationTracking() {
-        Intent intent = new Intent(this, LocationService.class);
+        Intent mLocationServiceIntent = new Intent(this, LocationService.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            startForegroundService(intent);
+            startForegroundService(mLocationServiceIntent);
             Log.e(TAG, "startLocationTracking: " + Prefs.getString(AUtils.LAT, null) + ", " + Prefs.getString(AUtils.LONG, null));
         } else {
-            startService(intent);
+            startService(mLocationServiceIntent);
         }
 
 
     }
 
+    public void startGISService() {
+        Intent mGIS_ServiceIntent = new Intent(this, GIS_LocationService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            startForegroundService(mGIS_ServiceIntent);
+        } else {
+            startService(mGIS_ServiceIntent);
+        }
+    }
+
+
     public void stopLocationTracking() {
         stopService(new Intent(this, LocationService.class));
+
+    }
+
+    public void stopGISService() {
+        stopService(new Intent(this, GIS_LocationService.class));
     }
 
     private void scheduleJob() {

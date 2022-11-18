@@ -41,12 +41,11 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
-import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
-import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
+import com.appynitty.swachbharatabhiyanlibrary.services.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
@@ -850,10 +849,14 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         vehicleStatus.setText("");
 
         boolean isservicerunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
+        boolean isGIS_ServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class);
 
 //
         if (isservicerunning)
             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
+
+        if (isGIS_ServiceRunning)
+            ((MyApplication) AUtils.mainApplicationConstant).stopGISService();
 
         markAttendance.setChecked(false);
 
@@ -906,6 +909,11 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
             }
+
+            if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class)) {
+                ((MyApplication) AUtils.mainApplicationConstant).startGISService();
+            }
+
             markAttendance.setChecked(true);
 
             attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));

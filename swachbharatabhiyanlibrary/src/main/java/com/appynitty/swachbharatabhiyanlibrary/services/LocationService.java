@@ -1,15 +1,16 @@
 package com.appynitty.swachbharatabhiyanlibrary.services;
 
+import static com.appynitty.swachbharatabhiyanlibrary.utils.NotificationCreator.CHANNEL_ID;
+import static com.appynitty.swachbharatabhiyanlibrary.utils.NotificationCreator.getNotification;
+import static com.appynitty.swachbharatabhiyanlibrary.utils.NotificationCreator.getNotificationId;
+
 import android.Manifest;
 import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
@@ -20,9 +21,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 
-import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.activity.DashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
@@ -61,15 +60,12 @@ import java.util.TimerTask;
 public class LocationService extends Service {
 
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
-    private static final int LOCATION_SERVICE_NOTIF_ID = 1001;
-    private static final String CHANNEL_ID = "my_service";
     private static final String TAG = "LocationService";
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
-    private LocationSettingsRequest locationSettingsRequest;
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
-//    long notify_interval = 1000 * 60; //for one minute
+    //    long notify_interval = 1000 * 60; //for one minute
     long notify_interval = 1000 * 60 * 10;//for 10 minutes
 
 
@@ -153,6 +149,15 @@ public class LocationService extends Service {
                 this.locationCallback1, Looper.myLooper());
     }
 
+    protected LocationRequest createLocationRequest() {
+
+        return new LocationRequest.Builder(0)
+                .setIntervalMillis(3000)
+                .setMinUpdateIntervalMillis(5000)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
+
+    }
+
     private void prepareForegroundNotification() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -164,16 +169,7 @@ public class LocationService extends Service {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
         }
-        Bitmap largeBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentTitle(getString(R.string.app_notification_description))
-                .setSmallIcon(R.drawable.ic_noti_icon)
-                .setLargeIcon(largeBitmap)
-                .setColor(getResources().getColor(R.color.colorPrimary, getResources().newTheme()))
-                .setPriority(Notification.PRIORITY_MAX)
-                .build();
-        startForeground(LOCATION_SERVICE_NOTIF_ID, notification);
+        startForeground(getNotificationId(), getNotification(this));
     }
 
     @Nullable
@@ -184,10 +180,7 @@ public class LocationService extends Service {
 
     private void initData() {
 
-        locationRequest = LocationRequest.create();
-        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
-//        locationRequest.setSmallestDisplacement(1);  //in meters
+        locationRequest = createLocationRequest();
 
         LocationSettingsRequest.Builder builder = new
                 LocationSettingsRequest.Builder();

@@ -117,7 +117,12 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.7.1'
 
     implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
-    implementation 'com.google.maps.android:android-maps-utils:0.5'
+    implementation 'com.google.maps.android:android-maps-utils:2.4.0'
 
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    // Room components
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 }

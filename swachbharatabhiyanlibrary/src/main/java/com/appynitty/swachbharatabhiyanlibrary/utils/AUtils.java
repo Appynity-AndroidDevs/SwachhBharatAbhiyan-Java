@@ -888,7 +888,7 @@ public class AUtils extends CommonUtils {
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         return formattedDate;

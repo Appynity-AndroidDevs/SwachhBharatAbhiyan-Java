@@ -1,4 +1,4 @@
-package com.appynitty.swachbharatabhiyanlibrary.services;
+package com.appynitty.swachbharatabhiyanlibrary.gis;
 
 import static com.appynitty.swachbharatabhiyanlibrary.utils.NotificationCreator.CHANNEL_ID;
 import static com.appynitty.swachbharatabhiyanlibrary.utils.NotificationCreator.getNotification;
@@ -15,7 +15,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
-import android.widget.Toast;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -28,7 +28,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
 public class GIS_LocationService extends Service {
-
+    private static final String TAG = "GIS_LocationService";
     FusedLocationProviderClient fusedLocationClient;
     LocationRequest locationRequest;
     LocationCallback locationCallback;
@@ -70,9 +70,11 @@ public class GIS_LocationService extends Service {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
-                Toast.makeText(getApplicationContext(),
-                        "Lat: " + location.getLatitude() + '\n' +
-                                "Long: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+                if (location != null)
+                    Log.e(TAG, "onLocationResult: lat: " + location.getLatitude()
+                            + ", lon: " + location.getLongitude()
+                            + ", accuracy: " + location.getAccuracy());
+
             }
         };
         startLocationUpdates();

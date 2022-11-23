@@ -13,7 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.appynitty.swachbharatabhiyanlibrary.services.GIS_LocationService;
+import com.appynitty.swachbharatabhiyanlibrary.gis.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.services.NetworkSchedulerService;
 import com.facebook.stetho.Stetho;

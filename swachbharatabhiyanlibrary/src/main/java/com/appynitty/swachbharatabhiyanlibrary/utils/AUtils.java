@@ -101,7 +101,7 @@ public class AUtils extends CommonUtils {
     //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
     //NEW TESTING SERVER
-  //  public static final String SERVER_URL = "http://114.143.244.133:6560/";
+    //  public static final String SERVER_URL = "http://114.143.244.133:6560/";
     public static final String SERVER_URL = "https://ictsbm.com:30443";
     //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
@@ -185,6 +185,9 @@ public class AUtils extends CommonUtils {
 
     public static final String SERVER_DATE_TIME_FORMATE = "MM-dd-yyyy HH:mm:ss";
     public static final String SERVER_DATE_TIME_FORMATE_LOCAL = "yyyy-MM-dd HH:mm:ss.SSS";
+    public static final String GIS_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
+    public static final String GIS_START_TS = "startTs";
+    public static final String GIS_END_TS = "endTs";
 
     public static final long LOCATION_INTERVAL_MINUTES = 10 * 60 * 1000;
 
@@ -363,6 +366,11 @@ public class AUtils extends CommonUtils {
 
         SimpleDateFormat format = new SimpleDateFormat(AUtils.SERVER_DATE_TIME_FORMATE_LOCAL, Locale.ENGLISH);
         return format.format(Calendar.getInstance().getTime());
+    }
+
+    public static String getGisDateTime() {
+        SimpleDateFormat format = new SimpleDateFormat(AUtils.GIS_DATE_TIME_FORMAT, Locale.ENGLISH);
+        return format.format((Calendar.getInstance().getTime()));
     }
 
     public static Date parse(String date, String format) {

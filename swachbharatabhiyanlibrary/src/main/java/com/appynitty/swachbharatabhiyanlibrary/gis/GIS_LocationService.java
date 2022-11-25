@@ -22,6 +22,7 @@ import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.Observer;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -29,7 +30,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.pixplicity.easyprefs.library.Prefs;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,6 +49,7 @@ public class GIS_LocationService extends LifecycleService {
     FusedLocationProviderClient fusedLocationClient;
     LocationRequest locationRequest;
     LocationCallback locationCallback;
+    private UserDetailPojo userDetailPojo;
 
     private LocationRepository mLocationRepository;
     private List<LocationEntity> mAllLocations;
@@ -77,6 +83,11 @@ public class GIS_LocationService extends LifecycleService {
         mLocationRepository = new LocationRepository(getApplication());
         new Notification();
 
+        Type type = new TypeToken<UserDetailPojo>() {
+        }.getType();
+        userDetailPojo = new Gson().fromJson(
+                Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationRequest = createLocationRequest();
@@ -88,7 +99,8 @@ public class GIS_LocationService extends LifecycleService {
                 if (location != null) {
                     Log.e(TAG, "onLocationResult: lat: " + location.getLatitude()
                             + ", lon: " + location.getLongitude()
-                            + ", accuracy: " + location.getAccuracy());
+                            + ", accuracy: " + location.getAccuracy()
+                    );
 
                     LocationEntity locEntity = new LocationEntity();
                     locEntity.setLatLng(location.getLatitude() + " " + location.getLongitude());
@@ -113,7 +125,6 @@ public class GIS_LocationService extends LifecycleService {
     }
 
     private void sendLocations() {
-        Log.e(TAG, "sendLocations: At- " + AUtils.getDateAndTime());
         StringBuilder mLineString = new StringBuilder("Linestring (");
         if (mAllLocations != null && !mAllLocations.isEmpty()) {
             if (mAllLocations.size() > 2) {
@@ -126,17 +137,20 @@ public class GIS_LocationService extends LifecycleService {
                 Log.e(TAG, "sendLocations: LineString: " + mLineString);
 
                 GISRequestDTO gisRequest = new GISRequestDTO();
-                gisRequest.setStartTs("2022-11-23T16:54:29.9217753");
-                gisRequest.setEndTs(null);
-                gisRequest.setCreateUser("Swapy");
+                gisRequest.setStartTs(Prefs.getString(AUtils.GIS_START_TS, null));
+                gisRequest.setCreateUser(userDetailPojo.getName());
                 gisRequest.setGeom(mLineString.toString());
+                if (Prefs.contains(AUtils.GIS_END_TS)) {
+                    if (!AUtils.isNullString(Prefs.getString(AUtils.GIS_END_TS, null))
+                            || !Prefs.getString(AUtils.GIS_END_TS, null).isEmpty())
+                        gisRequest.setEndTs(Prefs.getString(AUtils.GIS_END_TS, null));
+                }
 
                 GISWebService service = Connection.createService(GISWebService.class, URL);
                 service.sendGISData(gisRequest).enqueue(new Callback<GISResponseDTO>() {
                     @Override
                     public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
                         if (response.body() != null) {
-                            Log.e(TAG, "onResponse: Status: " + response.body().getStatus());
                             if (response.body().getStatus().equals("Success"))
                                 mLocationRepository.delete();
                         }

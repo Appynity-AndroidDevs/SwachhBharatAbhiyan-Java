@@ -41,11 +41,11 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
+import com.appynitty.swachbharatabhiyanlibrary.gis.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
-import com.appynitty.swachbharatabhiyanlibrary.gis.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
@@ -131,13 +131,8 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     public boolean onOptionsItemSelected(MenuItem item) {
         if (R.id.action_id_card == item.getItemId()) {
             if (!AUtils.isNull(userDetailPojo)) {
-//                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals("2")) {
-//                    IdCardDialog cardDialog = new IdCardDialog(mContext, userDetailPojo.getNameMar(), userDetailPojo.getUserId(), userDetailPojo.getProfileImage());
-//                    cardDialog.show();
-//                } else {
                 IdCardDialog cardDialog = new IdCardDialog(mContext, userDetailPojo.getName(), userDetailPojo.getUserId(), userDetailPojo.getProfileImage(), userDetailPojo.getType());
                 cardDialog.show();
-//                }
             } else {
                 AUtils.warning(mContext, mContext.getResources().getString(R.string.try_after_sometime));
             }
@@ -165,8 +160,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     // All required changes were successfully made
-//                    Toast.makeText(DashboardActivity.this, "Turning on the GPS\nPlease wait..." + "", Toast.LENGTH_SHORT).show();
-
                     progressBar.setVisibility(View.VISIBLE);
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -179,8 +172,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 case Activity.RESULT_CANCELED:
                     // The user was asked to change settings, but chose not to
                     Toast.makeText(EmpDashboardActivity.this, "Canceled", Toast.LENGTH_SHORT).show();
-                       /* stopService();
-                        MainActivity.this.finishAndRemoveTask();*/
 
                     break;
                 default:
@@ -195,18 +186,18 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         if (requestCode == AUtils.MY_PERMISSIONS_REQUEST_LOCATION) {
             //check if all permissions are granted
-            boolean allgranted = false;
+            boolean allGranted = false;
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    allgranted = true;
+                    allGranted = true;
                 } else {
-                    allgranted = false;
+                    allGranted = false;
                     break;
                 }
             }
 
-            if (allgranted) {
-                isLocationPermission = allgranted;
+            if (allGranted) {
+                isLocationPermission = allGranted;
             } else if (ActivityCompat.shouldShowRequestPermissionRationale(EmpDashboardActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                 AUtils.showPermissionDialog(mContext, "Location Service", new DialogInterface.OnClickListener() {
@@ -278,7 +269,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         }
 
-
         ShareLocationAdapterClass shareLocationAdapterClass = new ShareLocationAdapterClass();
         shareLocationAdapterClass.shareLocation();
 
@@ -290,7 +280,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         locality = AUtils.getLocality(AppId);
         Log.e(TAG, "initComponents: AppId: " + Prefs.getString(AUtils.APP_ID, ""));
         Log.e(TAG, "initComponents: Ulb Name: " + AUtils.getLocality(AppId));*/
-
 
         getPermission();
 
@@ -313,7 +302,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         mUserDetailAdapter = new EmpUserDetailAdapterClass();
         mAppGeoAreaAdapter = AppGeoAreaAdapter.getInstance();
 //        mLocalityAdapter = new LocalityAdapterClass(mContext);
-
         fab = findViewById(R.id.fab_setting);
         menuGridView = findViewById(R.id.menu_grid);
         menuGridView.setLayoutManager(new GridLayoutManager(mContext, 2));
@@ -336,44 +324,13 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     }
 
     private void registerEvents() {
-
-
-        /*mLocalityAdapter.getCurrentLocality(Prefs.getString(AUtils.LAT, null), Prefs.getString(AUtils.LONG, null));
-        mLocalityAdapter.setLocalityListener(new LocalityAdapterClass.LocalityListener() {
-            @Override
-            public void onSuccessCallback(String message) {
-                Log.e(TAG, "onSuccessCallback: " + message);
-                if (message.matches(locality)) {
-                    Log.e(TAG, "onSuccessCallback: Same ULB!");
-                    Prefs.putBoolean(AUtils.PREFS.IS_SAME_LOCALITY, true);
-                } else {
-                    Prefs.putBoolean(AUtils.PREFS.IS_SAME_LOCALITY, false);
-                }
-            }
-
-            @Override
-            public void onFailureCallback(String message) {
-                Log.e(TAG, "onFailureCallBack" + message);
-            }
-
-            @Override
-            public void onErrorCallback() {
-
-            }
-        });*/
         mCheckAttendanceAdapter.setCheckAttendanceListener(new EmpCheckAttendanceAdapterClass.CheckAttendanceListener() {
             @Override
             public void onSuccessCallBack(boolean isAttendanceOff, String message, String messageMar) {
 
-
                 if (isAttendanceOff) {
                     isFromAttendanceChecked = true;
                     onOutPunchSuccess();
-                    /*if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageIDConstants.MARATHI)) {
-                        AUtils.info(mContext, messageMar, Toast.LENGTH_LONG);
-                    } else {
-                        AUtils.info(mContext, message, Toast.LENGTH_LONG);
-                    }*/
                 }
             }
 
@@ -397,7 +354,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 if (type == 1) {
                     onInPunchSuccess();
                 } else if (type == 2) {
-
                     onOutPunchSuccess();
                 }
             }
@@ -420,11 +376,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             public void onMenuItemClick(FloatingActionButton miniFab, @Nullable TextView label, int itemId) {
                 if (itemId == R.id.action_change_language) {
                     changeLanguage();
-                }
-//                else if (itemId == R.id.action_setting) {
-//                    startActivity(new Intent(mContext, SettingsActivity.class));
-//                }
-                else if (itemId == R.id.action_rate_app) {
+                } else if (itemId == R.id.action_rate_app) {
                     AUtils.rateApp(mContext);
                 } else if (itemId == R.id.action_share_app) {
                     AUtils.shareThisApp(mContext, null);
@@ -440,41 +392,9 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
 
                     if (AUtils.isConnectedFast(getApplicationContext())) {
-
                         rProgress.setVisibility(View.GONE);
                         onSwitchStatus(isChecked);
-
-//                        rProgress.setVisibility(View.VISIBLE);
-//                        executor.execute(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (InternetWorking.isOnline()) {
-//
-//                                    Handler handler = new Handler(Looper.getMainLooper());
-//                                    handler.post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            rProgress.setVisibility(View.GONE);
-//                                            onSwitchStatus(isChecked);
-//                                        }
-//                                    });
-//
-//                                } else {
-//                                    Handler handler = new Handler(Looper.getMainLooper());
-//                                    handler.post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            rProgress.setVisibility(View.GONE);
-//                                            markAttendance.setChecked(AUtils.isIsOnduty());
-//                                            AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.no_internet_error));
-//                                        }
-//                                    });
-//                                }
-//                            }
-//                        });
                     } else {
-//                        rProgress.setVisibility(View.GONE);
-//                        onSwitchStatus(isChecked);
                         markAttendance.setChecked(AUtils.isIsOnduty());
                         AUtils.warning(EmpDashboardActivity.this, getResources().getString(R.string.slow_internet));
                     }
@@ -498,7 +418,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
             }
         });
-
     }
 
     private void initData() {
@@ -593,19 +512,9 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         if (isChecked) {
             if (isLocationPermission) {
                 if (AUtils.isGPSEnable(AUtils.currentContextConstant)) {
-
                     if (!AUtils.isIsOnduty()) {
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-
-                        //    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
-
-                        //      Prefs.putString(AUtils.LAT , null);
                         onChangeDutyStatus();
-//                        }else{
-//                            markAttendance.setChecked(false);
-//                            AUtils.warning(mContext , getResources().getString(R.string.no_location_found));
-//                        }
-
                     }
                 } else {
                     markAttendance.setChecked(false);
@@ -624,14 +533,11 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
 
-                                    //      Prefs.putString(AUtils.LAT, "");
                                     if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                                         mAttendanceAdapter.MarkOutPunch();
                                     } else {
-                                        //       markAttendance.setChecked(true);
 
                                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                                         ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                                         mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
                                         mProgressDialog.setCancelable(false);
@@ -692,7 +598,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             AUtils.getAppGeoArea(new AUtils.geoAreaRequestListener() {
                 @Override
                 public void onResponse() {
-                    //   Prefs.putString(AUtils.LAT, "");
                     boolean isAreaActive = Prefs.getBoolean(AUtils.PREFS.IS_AREA_ACTIVE, false);
                     Log.e(TAG, "onChangeDutyStatus: isAreaActive:" + isAreaActive);
                     if (isAreaActive) {
@@ -704,21 +609,16 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                             empInPunchPojo.setStartDate(AUtils.getServerDate());
                             empInPunchPojo.setStartTime(AUtils.getServerTime());
 
-
                             try {
 
                                 if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                                     mAttendanceAdapter.MarkInPunch(empInPunchPojo);
                                 } else {
-                                    //       markAttendance.setChecked(true);
-
                                     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                                     ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                                     mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
                                     mProgressDialog.setCancelable(false);
                                     mProgressDialog.show();
-
 
                                     executor.execute(new Runnable() {
                                         @Override
@@ -738,7 +638,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                                             mProgressDialog.dismiss();
                                                         }
                                                     });
-
                                                 }
                                             }
                                         }
@@ -766,15 +665,11 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                                 mAttendanceAdapter.MarkInPunch(empInPunchPojo);
                             } else {
-                                //       markAttendance.setChecked(true);
-
                                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                                 ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                                 mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
                                 mProgressDialog.setCancelable(false);
                                 mProgressDialog.show();
-
 
                                 executor.execute(new Runnable() {
                                     @Override
@@ -787,27 +682,23 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                     @Override
                                                     public void run() {
-
                                                         if (AUtils.isInternetAvailable()) {
                                                             mAttendanceAdapter.MarkInPunch(empInPunchPojo);
                                                         }
                                                         mProgressDialog.dismiss();
                                                     }
                                                 });
-
                                             }
                                         }
                                     }
                                 });
                             }
-
                         } catch (Exception e) {
                             e.printStackTrace();
                             markAttendance.setChecked(false);
                             AUtils.error(mContext, mContext.getString(R.string.something_error), Toast.LENGTH_SHORT);
                         }
                     }
-
                 }
 
                 @Override
@@ -816,7 +707,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 }
             });
 
-
         } else {
             AUtils.warning(mContext, mContext.getString(R.string.no_internet_error));
             markAttendance.setChecked(false);
@@ -824,35 +714,27 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     }
 
     private void onInPunchSuccess() {
+        Prefs.putString(AUtils.GIS_START_TS, AUtils.getGisDateTime());
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-
-//        String vehicleType = null;
-//
-//        if (!AUtils.isNullString(empInPunchPojo.getVehicleNumber())) {
-//
-//            vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
-//                    this.getResources().getString(R.string.hyphen), empInPunchPojo.getVehicleNumber(),
-//                    this.getResources().getString(R.string.closing_round_bracket)));
-//        } else {
-//            vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
-//                    vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
-//        }
-
         AUtils.setIsOnduty(true);
     }
 
     private void onOutPunchSuccess() {
+
+        if (!isFromAttendanceChecked) {
+            Prefs.putString(AUtils.GIS_END_TS, AUtils.getGisDateTime());
+            Log.e(TAG, "onOutPunchSuccess- EndTs: " + Prefs.getString(AUtils.GIS_END_TS, null));
+        }
         attendanceStatus.setText(this.getResources().getString(R.string.status_off_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
 
         vehicleStatus.setText("");
 
-        boolean isservicerunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
+        boolean isServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
         boolean isGIS_ServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class);
 
-//
-        if (isservicerunning)
+        if (isServiceRunning)
             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
 
         if (isGIS_ServiceRunning)
@@ -874,9 +756,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         if (!AUtils.isNull(userDetailPojo)) {
 
-//            if(Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageIDConstants.MARATHI))
-//                userName.setText(userDetailPojo.getNameMar());
-//            else
             userName.setText(userDetailPojo.getName());
 
             empId.setText(userDetailPojo.getUserId());
@@ -919,14 +798,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
             attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
 
-//            String vehicleName = "";
-//
-//            if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO,""))) {
-//
-//                vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.hyphen), empInPunchPojo.getVehicleNumber(), this.getResources().getString(R.string.closing_round_bracket)));
-//            } else {
-//                vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleName, this.getResources().getString(R.string.closing_round_bracket)));
-//            }
         }
     }
 

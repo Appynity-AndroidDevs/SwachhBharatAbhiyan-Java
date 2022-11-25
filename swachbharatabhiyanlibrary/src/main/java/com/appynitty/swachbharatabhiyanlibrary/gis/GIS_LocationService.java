@@ -43,14 +43,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Created by Swapnil Lanjewar on 23-Nov-2022
+ */
+
 public class GIS_LocationService extends LifecycleService {
     private static final String TAG = "GIS_LocationService";
-    private final String URL = "http://114.143.244.130:9091";
     FusedLocationProviderClient fusedLocationClient;
     LocationRequest locationRequest;
     LocationCallback locationCallback;
     private UserDetailPojo userDetailPojo;
-
+    String userTypeId;
     private LocationRepository mLocationRepository;
     private List<LocationEntity> mAllLocations;
 
@@ -145,22 +148,39 @@ public class GIS_LocationService extends LifecycleService {
                             || !Prefs.getString(AUtils.GIS_END_TS, null).isEmpty())
                         gisRequest.setEndTs(Prefs.getString(AUtils.GIS_END_TS, null));
                 }
-
+                String URL = "http://114.143.244.130:9091";
                 GISWebService service = Connection.createService(GISWebService.class, URL);
-                service.sendHouseMapTrail(gisRequest).enqueue(new Callback<GISResponseDTO>() {
-                    @Override
-                    public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
-                        if (response.body() != null) {
-                            if (response.body().getStatus().equals("Success"))
-                                mLocationRepository.delete();
+                if (userTypeId.equals(AUtils.USER_TYPE.USER_TYPE_EMP_SCANNIFY)) {
+                    service.sendHouseMapTrail(gisRequest).enqueue(new Callback<GISResponseDTO>() {
+                        @Override
+                        public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
+                            if (response.body() != null) {
+                                if (response.body().getStatus().equals("Success"))
+                                    mLocationRepository.delete();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
-                        Log.e(TAG, "onFailure: " + t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+                        }
+                    });
+                } else {
+                    service.sendGarbageTrail(gisRequest).enqueue(new Callback<GISResponseDTO>() {
+                        @Override
+                        public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
+                            if (response.body() != null) {
+                                if (response.body().getStatus().equals("Success"))
+                                    mLocationRepository.delete();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+                        }
+                    });
+                }
             }
         }
     }
@@ -169,6 +189,7 @@ public class GIS_LocationService extends LifecycleService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
+        userTypeId = Prefs.getString(AUtils.PREFS.USER_TYPE_ID, AUtils.USER_TYPE.USER_TYPE_GHANTA_GADI);
         String channelName = "Location Service for GIS";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(

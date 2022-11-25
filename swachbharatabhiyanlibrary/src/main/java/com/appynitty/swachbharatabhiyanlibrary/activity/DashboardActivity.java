@@ -58,7 +58,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAd
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
-import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
+import com.appynitty.swachbharatabhiyanlibrary.gis.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
@@ -182,7 +182,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         super.onCreate(savedInstanceState);
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
-        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
 
         Log.i("DashboardLifecycle", "onCreate: ");
         onSwitchStatus(AUtils.isIsOnduty());
@@ -1126,48 +1125,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             onSwitchOff();
 
         }
-//        } else {
-//            //     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-//            //        markAttendance.setChecked(AUtils.isIsOnduty());
-//
-////
-//            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-////         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
-//            ProgressDialog mProgressDialog = new ProgressDialog(mContext);
-//            mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
-//            mProgressDialog.show();
-//
-//
-//            executor.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                    boolean isLocationFound = false;
-//                    while (!isLocationFound) {
-//                        if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
-//                            isLocationFound = true;
-//                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    if (isChecked) {
-//                                        playsound();
-//                                        onSwitchOn();
-//                                    } else {
-//                                        playsound();
-//                                        onSwitchOff();
-//
-//                                    }
-//                                    mProgressDialog.dismiss();
-//                                }
-//                            });
-//
-//                        }
-//                    }
-//                }
-//            });
-//
-
-
     }
 
     /**
@@ -1187,9 +1144,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
 
             try {
-
-
-                //   Prefs.putString(AUtils.LAT , "");
                 if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
                     syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                     onInPunchSuccess();
@@ -1202,7 +1156,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 } else {
 
                     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                     ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                     mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
                     mProgressDialog.setCancelable(false);
@@ -1246,6 +1199,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onInPunchSuccess() {
+        Prefs.putString(AUtils.GIS_START_TS, AUtils.getGisDateTime());
         getAppGeoArea(null);
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
@@ -1279,6 +1233,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             markAttendance.setChecked(true);
             Prefs.putString(AUtils.dumpYardSuperId, dumpRefId);
         }
+        ((MyApplication) AUtils.mainApplicationConstant).startGISService();
     }
 
     private void onOutPunchSuccess() {
@@ -1298,10 +1253,14 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void stopServiceIfRunning() {
-        boolean isservicerunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
+        boolean isServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
+        boolean isGIS_ServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class);
 
-        if (isservicerunning)
+        if (isServiceRunning)
             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
+
+        if (isGIS_ServiceRunning)
+            ((MyApplication) AUtils.mainApplicationConstant).stopGISService();
     }
 
     private void getPermission() {
@@ -1351,6 +1310,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
             }
+
+            if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class)) {
+                ((MyApplication) AUtils.mainApplicationConstant).startGISService();
+            }
+
             markAttendance.setChecked(true);
 
             attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));

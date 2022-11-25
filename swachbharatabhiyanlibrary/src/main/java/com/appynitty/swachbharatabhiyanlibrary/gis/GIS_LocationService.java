@@ -147,7 +147,7 @@ public class GIS_LocationService extends LifecycleService {
                 }
 
                 GISWebService service = Connection.createService(GISWebService.class, URL);
-                service.sendGISData(gisRequest).enqueue(new Callback<GISResponseDTO>() {
+                service.sendHouseMapTrail(gisRequest).enqueue(new Callback<GISResponseDTO>() {
                     @Override
                     public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
                         if (response.body() != null) {

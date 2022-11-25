@@ -1,10 +1,19 @@
 package com.appynitty.swachbharatabhiyanlibrary.gis;
 
 public class GISRequestDTO {
+    private Integer houseId;
     private String startTs;
     private String endTs;
     private String createUser;
     private String geom;
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
+    }
 
     public String getStartTs() {
         return startTs;

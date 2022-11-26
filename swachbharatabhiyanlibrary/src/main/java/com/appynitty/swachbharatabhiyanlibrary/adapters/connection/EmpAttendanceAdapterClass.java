@@ -46,6 +46,7 @@ public class EmpAttendanceAdapterClass {
                         if(!AUtils.isNull(mListener))
                         {
                             mListener.onSuccessCallBack(1);
+                            Prefs.putString(AUtils.GIS_START_TS, AUtils.getGisDateTime());
                         }
 
                         String message = null;

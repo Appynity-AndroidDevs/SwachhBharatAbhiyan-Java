@@ -4,7 +4,7 @@ public class OutPunchPojo {
 
     private String endLong;
 
-    private String daDate;
+    private String daendDate;
 
     private String userId;
 
@@ -36,12 +36,12 @@ public class OutPunchPojo {
         this.endLong = endLong;
     }
 
-    public String getDaDate() {
-        return daDate;
+    public String getDaendDate() {
+        return daendDate;
     }
 
-    public void setDaDate(String daDate) {
-        this.daDate = daDate;
+    public void setDaendDate(String daendDate) {
+        this.daendDate = daendDate;
     }
 
     public String getUserId() {
@@ -96,7 +96,7 @@ public class OutPunchPojo {
     public String toString() {
         return "OutPunchPojo{" +
                 "endLong='" + endLong + '\'' +
-                ", daDate='" + daDate + '\'' +
+                ", daDate='" + daendDate + '\'' +
                 ", userId='" + userId + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", endLat='" + endLat + '\'' +

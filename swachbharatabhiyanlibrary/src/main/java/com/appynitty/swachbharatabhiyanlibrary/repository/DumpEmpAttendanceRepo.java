@@ -63,7 +63,7 @@ public class DumpEmpAttendanceRepo {
         outPunchBody.setEndLat(Prefs.getString(AUtils.LAT, null));
         outPunchBody.setEndLong(Prefs.getString(AUtils.LONG, null));
         outPunchBody.setEndTime(AUtils.getServerTime());
-        outPunchBody.setDaDate(AUtils.getLocalDate());
+        outPunchBody.setDaendDate(AUtils.getLocalDate());
         outPunchBody.setVehicleNumber("");
         outPunchBody.setVtId("");
         outPunchBody.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));

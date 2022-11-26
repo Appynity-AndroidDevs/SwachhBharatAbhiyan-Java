@@ -353,6 +353,9 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
                 if (type == 1) {
                     onInPunchSuccess();
+                    if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class)) {
+                        ((MyApplication) AUtils.mainApplicationConstant).startGISService();
+                    }
                 } else if (type == 2) {
                     onOutPunchSuccess();
                 }
@@ -513,7 +516,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             if (isLocationPermission) {
                 if (AUtils.isGPSEnable(AUtils.currentContextConstant)) {
                     if (!AUtils.isIsOnduty()) {
-                        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//                        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
                         onChangeDutyStatus();
                     }
                 } else {
@@ -714,7 +717,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     }
 
     private void onInPunchSuccess() {
-        Prefs.putString(AUtils.GIS_START_TS, AUtils.getGisDateTime());
+
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
         AUtils.setIsOnduty(true);
@@ -734,8 +737,11 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         boolean isServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
         boolean isGIS_ServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class);
 
-        if (isServiceRunning)
+        if (isServiceRunning) {
             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
+            Prefs.remove(AUtils.LAT);
+            Prefs.remove(AUtils.LONG);
+        }
 
         if (isGIS_ServiceRunning)
             ((MyApplication) AUtils.mainApplicationConstant).stopGISService();
@@ -814,5 +820,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onPause() {
         super.onPause();
         getIntent().removeExtra(AUtils.isFromLogin);
+
     }
+
 }

@@ -84,7 +84,7 @@ public class SyncServer {
 
             e.printStackTrace();
         }
-        Log.d(TAG, "saveLoginDetails: "+resultPojo);
+        Log.d(TAG, "saveLoginDetails: " + resultPojo);
         return resultPojo;
     }
 
@@ -194,18 +194,22 @@ public class SyncServer {
         }
     }
 
-    public ResultPojo saveInPunch(InPunchPojo inPunchPojo) {
-
+    public ResultPojo saveInPunch() {
         ResultPojo resultPojo = null;
         try {
 
             PunchWebService service = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
-
+            InPunchPojo inPunchPojo = new InPunchPojo();
+            inPunchPojo.setStartTime(AUtils.getServerTime());
+            inPunchPojo.setDaDate(AUtils.getServerDate());
+            inPunchPojo.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
+            inPunchPojo.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
             inPunchPojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
             inPunchPojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "1")));
             inPunchPojo.setStartLat(Prefs.getString(AUtils.LAT, ""));
             inPunchPojo.setStartLong(Prefs.getString(AUtils.LONG, ""));
-             inPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START, ""));//added by rahul
+            if (Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null).equals("D"))
+                inPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID_START, ""));//added by rahul
 
             Type type = new TypeToken<InPunchPojo>() {
             }.getType();
@@ -221,18 +225,22 @@ public class SyncServer {
         return resultPojo;
     }
 
-    public ResultPojo saveOutPunch(OutPunchPojo outPunchPojo) {
+    public ResultPojo saveOutPunch() {
 
         ResultPojo resultPojo = null;
         try {
 
             PunchWebService service = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
-
+            OutPunchPojo outPunchPojo = new OutPunchPojo();
+            outPunchPojo.setDaendDate(AUtils.getServerDate());
+            outPunchPojo.setEndTime(AUtils.getServerTime());
             outPunchPojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
             outPunchPojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
             outPunchPojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
-             outPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID, ""));
-
+//            outPunchPojo.setReferanceId(Prefs.getString(AUtils.HOUSE_ID, ""));
+            outPunchPojo.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
+            outPunchPojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "1")));
+            outPunchPojo.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
             resultPojo = service.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
                     AUtils.getBatteryStatus(), outPunchPojo).execute().body();
 
@@ -338,7 +346,7 @@ public class SyncServer {
             workHistoryPojoList = service.pullWorkHistoryList(Prefs.getString(AUtils.APP_ID, ""),
                     Prefs.getString(AUtils.PREFS.USER_ID, null), year, month, empTyp).execute().body();
 
-            Log.d(TAG, "pullWorkHistoryListFromServer: "+workHistoryPojoList);
+            Log.d(TAG, "pullWorkHistoryListFromServer: " + workHistoryPojoList);
             if (!AUtils.isNull(workHistoryPojoList)) {
 
                 Type type = new TypeToken<List<TableDataCountPojo>>() {
@@ -451,7 +459,7 @@ public class SyncServer {
 
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
             areaPojoList = areaHousePointService.fetchCollectionAreaPoint(
-                    Prefs.getString(AUtils.APP_ID, ""), areaType, areaId)
+                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId)
                     .execute().body();
 
         } catch (Exception e) {
@@ -469,7 +477,7 @@ public class SyncServer {
 
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
             areaPojoList = areaHousePointService.fetchCollectionDyPoint(
-                    Prefs.getString(AUtils.APP_ID, ""), areaType, areaId)
+                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId)
                     .execute().body();
 
         } catch (Exception e) {

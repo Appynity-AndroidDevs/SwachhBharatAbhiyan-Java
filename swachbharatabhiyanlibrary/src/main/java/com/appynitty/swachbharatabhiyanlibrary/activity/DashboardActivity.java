@@ -359,11 +359,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             ex.printStackTrace();
         }
 
-        if (!AUtils.isNullString(vehicleType) && !AUtils.isNullString(vehicle_no)) {
-
-            vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
-                    this.getResources().getString(R.string.hyphen), vehicle_no,
-                    this.getResources().getString(R.string.closing_round_bracket)));
+        if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_DESC, null)) && !AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, null))) {
+            if (markAttendance.isChecked())
+                vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), Prefs.getString(AUtils.VEHICLE_DESC, null),
+                        this.getResources().getString(R.string.hyphen), Prefs.getString(AUtils.VEHICLE_NO, null),
+                        this.getResources().getString(R.string.closing_round_bracket)));
         } else {
             vehicleStatus.setText("");
         }
@@ -1079,6 +1079,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.LAT);
         Prefs.remove(AUtils.LONG);
         Prefs.remove(AUtils.VEHICLE_NO);
+        Prefs.remove(AUtils.VEHICLE_DESC);
         Prefs.remove(AUtils.VEHICLE_ID);
 
         startActivity(new Intent(context, providedClass));
@@ -1145,14 +1146,17 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
             try {
                 if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
-                    syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+                    /*syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                     onInPunchSuccess();
                     if (AUtils.isInternetAvailable()) {
                         if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                             mOfflineAttendanceAdapter.SyncOfflineData();
                         AUtils.success(mContext, getString(R.string.shif_start));
 
-                    }
+                    }*/
+
+                    mAttendanceAdapter.MarkInPunch();
+
                 } else {
 
                     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
@@ -1199,7 +1203,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onInPunchSuccess() {
-        Prefs.putString(AUtils.GIS_START_TS, AUtils.getGisDateTime());
+
         getAppGeoArea(null);
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
@@ -1211,13 +1215,14 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 //                    vehicleType = vehicleTypePojoList.get(i).getDescriptionMar();
 //                else
                     vehicleType = vehicleTypePojoList.get(i).getDescription();
+                    Prefs.putString(AUtils.VEHICLE_DESC, vehicleType);
                 }
             }
 
-            if (!AUtils.isNullString(attendancePojo.getVehicleNumber())) {
+            if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, ""))) {
 
                 vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
-                        this.getResources().getString(R.string.hyphen), attendancePojo.getVehicleNumber(),
+                        this.getResources().getString(R.string.hyphen), Prefs.getString(AUtils.VEHICLE_NO, ""),
                         this.getResources().getString(R.string.closing_round_bracket)));
                 vehicle_no = attendancePojo.getVehicleNumber();
             } else {
@@ -1245,7 +1250,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
-        AUtils.success(mContext, getString(R.string.shift_end));
+//        AUtils.success(mContext, getString(R.string.shift_end));
 
         attendancePojo = null;
         AUtils.removeInPunchDate();
@@ -1445,11 +1450,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                             //    Prefs.putString(AUtils.LAT, "");
                             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
-                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
-                                onOutPunchSuccess();
+                              /*  syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                                onOutPunchSuccess();*/
 
                                 if (AUtils.isInternetAvailable()) {
-                                    mOfflineAttendanceAdapter.SyncOfflineData();
+//                                    mOfflineAttendanceAdapter.SyncOfflineData();
+
+                                    mAttendanceAdapter.MarkOutPunch();
                                 }
                             } else {
 

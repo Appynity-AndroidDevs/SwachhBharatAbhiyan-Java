@@ -172,6 +172,7 @@ public class AUtils extends CommonUtils {
 
     public static final String SERVER_DATE_FORMATE = "MM-dd-yyyy";
     public static final String SERVER_DATE_FORMATE_LOCAL = "yyyy-MM-dd";
+    public static final String VEHICLE_DESC = "vehicleDesc";
     // public static final String EMP_TYPE = "EmpType";
     private static final String EMP_SERVER_DATE_FORMATE = "dd-MM-yyyy";
 

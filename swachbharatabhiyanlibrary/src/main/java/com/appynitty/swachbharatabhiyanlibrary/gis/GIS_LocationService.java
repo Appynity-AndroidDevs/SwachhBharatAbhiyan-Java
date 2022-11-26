@@ -21,7 +21,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.Observer;
 
-import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -148,8 +147,8 @@ public class GIS_LocationService extends LifecycleService {
                             || !Prefs.getString(AUtils.GIS_END_TS, null).isEmpty())
                         gisRequest.setEndTs(Prefs.getString(AUtils.GIS_END_TS, null));
                 }
-                String URL = "http://114.143.244.130:9091";
-                GISWebService service = Connection.createService(GISWebService.class, URL);
+
+                GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
                 if (userTypeId.equals(AUtils.USER_TYPE.USER_TYPE_EMP_SCANNIFY)) {
                     service.sendHouseMapTrail(gisRequest).enqueue(new Callback<GISResponseDTO>() {
                         @Override
@@ -203,7 +202,7 @@ public class GIS_LocationService extends LifecycleService {
         }
 
         startForeground(getNotificationId(), getNotification(this));
-
+        Log.e(TAG, "started successfully!");
 
         return START_STICKY;
     }

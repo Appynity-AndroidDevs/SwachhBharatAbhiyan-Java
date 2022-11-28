@@ -14,7 +14,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.ImageDecoder;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.hardware.Camera;
@@ -29,7 +28,6 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,10 +47,8 @@ import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpQrLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.ChooseActionPopUp;
-import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
-import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
 import com.google.android.material.textfield.TextInputLayout;
@@ -116,7 +112,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private String lastText;
     private BeepManager beepManager;
     boolean isChecked = true;
-    boolean turn_on_flashlight = false;
     private MyProgressDialog myProgressDialog;
     private ArrayList<Integer> mSelectedIndices;
     private boolean isFlashOn;
@@ -136,25 +131,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         initComponents();
 
     }
-
-//set format
-//public void setupFormats() {
-//    List<BarcodeFormat> formats = new ArrayList<BarcodeFormat>();
-//    if(mSelectedIndices == null || mSelectedIndices.isEmpty()) {
-//        mSelectedIndices = new ArrayList<Integer>();
-//        for(int i = 0; i < BarcodeFormat.ALL_FORMATS.size(); i++) {
-//            mSelectedIndices.add(i);
-//        }
-//    }
-//
-//    for(int index : mSelectedIndices) {
-//        formats.add(BarcodeFormat.ALL_FORMATS.get(index));
-//    }
-//    if(scannerView != null) {
-//       scannerView.setFormats(formats);
-//    }
-//}
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -493,7 +469,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             public void onSuccessCallback(ResultPojo resultPojo) {
                 myProgressDialog.dismiss();
                 String message = "";
-
                 if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals("2")) {
                     message = resultPojo.getMessageMar();
                 } else {
@@ -747,36 +722,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private void startSubmitQRAsyncTask(QrLocationPojo pojo) {
         myProgressDialog.show();
         pojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
-        if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
-
-            insertToDB(pojo);
-            //     empQrLocationAdapter.saveQrLocation(pojo);
-            stopCamera();
-
-//            executor.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (InternetWorking.isOnline()) {
-//                        Handler handler = new Handler(Looper.getMainLooper());
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                insertToDB(pojo);
-//                                //     empQrLocationAdapter.saveQrLocation(pojo);
-//                                stopCamera();
-//                            }
-//                        });
-//
-//                    } else {
-//                        insertToDB(pojo);
-//                    }
-//                }
-//            });
-
-        } else {
-            insertToDB(pojo);
-            stopCamera();
-        }
+        insertToDB(pojo);
+        stopCamera();
     }
 
     @Override
@@ -827,15 +774,10 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         empSyncServerRepository.insertEmpSyncServerEntity(gson.toJson(pojo, type));
 
         myProgressDialog.dismiss();
-        // AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
         if (isChecked) {
             if (!AUtils.isInternetAvailable()) {
                 Toast.makeText(mContext, "Submitted successfully", Toast.LENGTH_SHORT).show();
-            } else {
-                // AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
             }
-        } else {
-            //  AUtils.success(mContext, getString(R.string.success_message), Toast.LENGTH_LONG);
         }
 
         finish();
@@ -849,7 +791,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         Log.e(TAG, "onCaptureImageResult: compressedImagePath:- " + compressedImagePath);
         mImagePath = compressedImagePath;
         showActionPopUp(mHouse_id);
-        Bitmap bm = BitmapFactory.decodeFile(mImagePath);
         Bitmap newBitmap = AUtils.writeOnImage(mContext, AUtils.getDateAndTime(), mHouse_id, mImagePath);
 
 
@@ -877,10 +818,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) throws IOException {
-        /*ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);*/
 
         File tempDir = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES) + "/.temp/");
         tempDir.mkdir();
@@ -895,24 +832,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         fos.flush();
         fos.close();
         return Uri.fromFile(tempFile);
-    }
-
-    public Bitmap loadFromUri(Uri photoUri) {
-        Bitmap image = null;
-        try {
-            // check version of Android on device
-            if (Build.VERSION.SDK_INT > 27) {
-                // on newer versions of Android, use the new decodeBitmap method
-                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), photoUri);
-                image = ImageDecoder.decodeBitmap(source);
-            } else {
-                // support older versions of Android by using getBitmap
-                image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
     }
 
 
@@ -930,17 +849,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         int actualHeight = options.outHeight;
         int actualWidth = options.outWidth;
-
-//      max Height and width values of the compressed image is taken as 816x612
-
-        /*float maxHeight = 816.0f;
-        float maxWidth = 612.0f;*/
-        /*
-         * added by rahul to dim image size
-         * //1020*807 720*1080  or 770 * 1024
-         * */
-        /*float maxHeight = 800.0f;
-        float maxWidth = 640.0f;*/
 
         float maxHeight = 1280.0f;
         float maxWidth = 1707.0f;
@@ -1044,16 +952,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     }
 
-    public String getFilename() {
-        File file = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES)));
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        String uriSting = (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg");
-        return uriSting;
-
-    }
-
     private String getRealPathFromURI(String contentURI) {
         Uri contentUri = Uri.parse(contentURI);
         Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
@@ -1109,75 +1007,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         float xDpi = dm.xdpi;
         float yDpi = dm.ydpi;*/
         return dpi;
-    }
-
-    public int dpToPxx(int dp) {
-        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
-    public static String getScreenDensity(Context context) {
-        String density;
-        switch (context.getResources().getDisplayMetrics().densityDpi) {
-            case DisplayMetrics.DENSITY_LOW:
-                density = "LDPI";
-                break;
-            case DisplayMetrics.DENSITY_140:
-                density = "LDPI - MDPI";
-                break;
-            case DisplayMetrics.DENSITY_MEDIUM:
-                density = "MDPI";
-                break;
-            case DisplayMetrics.DENSITY_180:
-            case DisplayMetrics.DENSITY_200:
-            case DisplayMetrics.DENSITY_220:
-                density = "MDPI - HDPI";
-                break;
-            case DisplayMetrics.DENSITY_HIGH:
-                density = "HDPI";
-                break;
-            case DisplayMetrics.DENSITY_260:
-            case DisplayMetrics.DENSITY_280:
-            case DisplayMetrics.DENSITY_300:
-                density = "HDPI - XHDPI";
-                break;
-            case DisplayMetrics.DENSITY_XHIGH:
-                density = "XHDPI";
-                break;
-            case DisplayMetrics.DENSITY_340:
-            case DisplayMetrics.DENSITY_360:
-            case DisplayMetrics.DENSITY_400:
-            case DisplayMetrics.DENSITY_420:
-            case DisplayMetrics.DENSITY_440:
-                density = "XHDPI - XXHDPI";
-                break;
-            case DisplayMetrics.DENSITY_XXHIGH:
-                density = "XXHDPI";
-                break;
-            case DisplayMetrics.DENSITY_560:
-            case DisplayMetrics.DENSITY_600:
-                density = "XXHDPI - XXXHDPI";
-                break;
-            case DisplayMetrics.DENSITY_XXXHIGH:
-                density = "XXXHDPI";
-                break;
-            case DisplayMetrics.DENSITY_TV:
-                density = "TVDPI";
-                break;
-            default:
-                density = "UNKNOWN";
-                break;
-        }
-
-        return density;
-    }
-
-    public void switchFlashlight(View view) {
-        if (turn_on_flashlight) {
-            scannerView.setTorchOn();
-        } else {
-            scannerView.setTorchOff();
-        }
     }
 
     private boolean hasFlash() {

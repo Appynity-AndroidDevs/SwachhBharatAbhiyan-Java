@@ -17,7 +17,7 @@ public interface GISWebService {
     @POST("/garbage-trail/add")
     Call<GISResponseDTO> sendGarbageTrail(@Body GISRequestDTO locationReqDTO);
 
-    //for sending house point from House_Scanify
+    //for sending house point from House_Scanify employee
     @Headers({"Accept: application/json"})
     @POST("/house/add")
     Call<GISResponseDTO> sendHousePoint(@Body GISRequestDTO locationReqDTO);

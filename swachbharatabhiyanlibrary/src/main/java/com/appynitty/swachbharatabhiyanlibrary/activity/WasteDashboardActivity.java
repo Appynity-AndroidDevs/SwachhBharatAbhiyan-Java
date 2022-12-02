@@ -248,7 +248,7 @@ public class WasteDashboardActivity extends AppCompatActivity implements EmpPopU
             }
         }
 
-        if (!AUtils.isSyncOfflineDataRequestEnable) {
+        if (!AUtils.isSyncOfflineAttendanceDataRequestEnable) {
             verifyDataAdapterClass.verifyOfflineSync();
         }
 

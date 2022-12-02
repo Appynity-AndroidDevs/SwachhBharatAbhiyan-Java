@@ -206,7 +206,7 @@
     <string name="street_collection_radio">स्ट्रीट कलेक्शन</string>
     <string name="waste_collection_radio">"वेस्ट कलेक्शन "</string>
     <string name="turning_on_the_gps_n_please_wait">GPS चालू होत आहे\nकृपया प्रतीक्षा करा...</string>
-    <string name="please_wait">कृपया प्रतीक्षा करें...</string>
+    <string name="please_wait">कृपया थांबा...</string>
     <string name="colectnStatus">वजन नोंदणी पूर्ण झाली</string>
     <string name="dump_yard_supervisor">डंप यार्ड सुपरवाइज़र</string>
     <string name="dumpyard_plant_collection">डंपयार्ड प्लांट कलेक्शन</string>

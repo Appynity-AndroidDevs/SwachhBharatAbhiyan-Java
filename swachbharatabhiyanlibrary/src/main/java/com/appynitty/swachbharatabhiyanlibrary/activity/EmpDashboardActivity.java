@@ -41,12 +41,10 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
-import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
-import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineAttendanceRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
@@ -119,7 +117,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initComponents();
-        Prefs.putBoolean(AUtils.isSyncingOn, false);
     }
 
     @Override
@@ -151,6 +148,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     @Override
     protected void onResume() {
         super.onResume();
+
 
         AUtils.currentContextConstant = mContext;
         checkIsFromLogin();
@@ -254,6 +252,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         }
 
         if (AUtils.isInternetAvailable()) {
+            Prefs.putBoolean(AUtils.isSyncingOn, false);
             if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
 
                 EmpSyncServerAdapterClass empSyncServer = new EmpSyncServerAdapterClass(this);

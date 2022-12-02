@@ -222,7 +222,8 @@ public class AUtils extends CommonUtils {
     public static boolean isSyncServerRequestEnable = false;
     public static boolean isLocationRequestEnable = false;
     public static boolean isEmpSyncServerRequestEnable = false;
-    public static boolean isSyncOfflineDataRequestEnable = false;
+    public static boolean isSyncOfflineAttendanceDataRequestEnable = false;
+    public static boolean isSyncOfflineScanDataRequestEnable = false;
     public static boolean isSyncOfflineWasteManagementDataRequestEnable = false;
 
     public static String isSyncingOn = "isSyncingOn";

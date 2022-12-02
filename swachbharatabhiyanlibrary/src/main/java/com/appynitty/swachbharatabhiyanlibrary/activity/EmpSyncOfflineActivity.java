@@ -314,12 +314,18 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     private void initData() {
-
-        if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-            showDialogWithCount();
-            btnSyncOfflineData.setVisibility(View.GONE);
+        if (empSyncServerRepository.getOfflineCount() > 0) {
+            if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                showDialogWithCount();
+                btnSyncOfflineData.setVisibility(View.GONE);
+                Log.i("SANATH_SYNC", "initData: " + "isSyncingOn");
+            } else {
+                inflateData();
+                Log.i("SANATH_SYNC", "initData: " + "isSyncingOff");
+            }
         } else {
             inflateData();
+            Log.i("SANATH_SYNC", "initData: " + "isSyncingOff");
         }
     }
 

@@ -50,7 +50,8 @@ public class EmpSyncServerAdapterClass {
         this.empSyncOfflineListener = empSyncOfflineListener;
     }
 
-    public void syncServer() {
+    public void
+    syncServer() {
 
         offlineCount = empSyncServerRepository.getOfflineCount();
 
@@ -187,12 +188,13 @@ public class EmpSyncServerAdapterClass {
 //            }
 
         AUtils.isEmpSyncServerRequestEnable = false;
-        Prefs.putBoolean(AUtils.isSyncingOn, false);
+
         offlineCount = empSyncServerRepository.getOfflineCount();
 
 //            if (isSuccess) {
         if (offlineCount == 0) {
             Log.i("EmpSyncCountTest", "onResponseReceived size 0: " + offlineCount);
+            Prefs.putBoolean(AUtils.isSyncingOn, false);
             AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
         }
 

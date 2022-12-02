@@ -220,6 +220,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     @Override
     protected void onResume() {
         super.onResume();
+
         AUtils.currentContextConstant = mContext;
         Log.i("DashboardLifecycle", "onResume: ");
         checkIsFromLogin();
@@ -350,7 +351,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 }
             }
 
-            if (!AUtils.isSyncOfflineDataRequestEnable) {
+            if (!AUtils.isSyncOfflineAttendanceDataRequestEnable) {
                 verifyDataAdapterClass.verifyOfflineSync();
             }
             if (isView)
@@ -449,7 +450,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         //syncOfflineData();
         if (AUtils.isInternetAvailable()) {
-            //     Prefs.putBoolean(AUtils.isSyncingOn, false);
+            Prefs.putBoolean(AUtils.isSyncingOn, false);
             if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
                 syncOfflineData(isSync);
             }

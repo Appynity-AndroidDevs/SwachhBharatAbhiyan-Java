@@ -1308,17 +1308,20 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
             }
         }
 
+        Log.d(TAG, "insertToDB: " + entity);
 
-//        SyncServerRepository   mSyncServerRepository = new SyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
-//
-//
-//        Type type = new TypeToken<OfflineGarbageColectionPojo>() {}.getType(); //TODO
-//        mSyncServerRepository.insertSyncServerEntity(new Gson().toJson(entity, type)); //TODO
+        if (!AUtils.isNull(entity.getReferenceID()) && !AUtils.isNull(entity.getGcType())
+                && !AUtils.isNull(entity.getVehicleNumber()) && !AUtils.isNull(entity.getGcDate())) {
 
-        syncOfflineRepository.insertCollection(entity);
-        Prefs.remove(AUtils.BEFORE_IMAGE);
-        Prefs.remove(AUtils.AFTER_IMAGE);
-        showOfflinePopup(garbageCollectionPojo.getId(), entity.getGcType());
+            syncOfflineRepository.insertCollection(entity);
+            Prefs.remove(AUtils.BEFORE_IMAGE);
+            Prefs.remove(AUtils.AFTER_IMAGE);
+            showOfflinePopup(garbageCollectionPojo.getId(), entity.getGcType());
+
+        } else {
+            AUtils.warning(mContext, getResources().getString(R.string.invalid_qr_error));
+        }
+
     }
 
     private void showOfflinePopup(String pojo, String garbageType) {
@@ -1353,18 +1356,18 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
                 value = "Dump yard Id  ";
                 collectionStatus.setText(R.string.colectnStatus);
                 break;
-            case "-1":                              //added by Swapnil
-                if (EmpType.matches("L"))
-                    value = "Liquid waste Id  ";
-                else if (EmpType.matches("S"))
-                    value = "Street waste Id  ";
-                break;
-            /*case "4":
+//            case "-1":                              //added by Swapnil
+//                if (EmpType.matches("L"))
+//                    value = "Liquid waste Id  ";
+//                else if (EmpType.matches("S"))
+//                    value = "Street waste Id  ";
+//                break;
+            case "4":
                 value = "Liquid waste Id  ";
-                breaks
+                break;
             case "5":
                 value = "Street waste Id  ";
-                break;*/
+                break;
         }
 
         houseTitle.setText(value);

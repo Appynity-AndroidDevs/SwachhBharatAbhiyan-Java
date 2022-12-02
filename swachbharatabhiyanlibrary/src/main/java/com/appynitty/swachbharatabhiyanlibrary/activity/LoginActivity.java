@@ -398,7 +398,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
             loginViewModel.getLoginDetailsErrorLiveData().observe(LoginActivity.this, new Observer<Throwable>() {
                 @Override
                 public void onChanged(Throwable throwable) {
-                    AUtils.warning(LoginActivity.this, throwable.getMessage());
+                    AUtils.warning(LoginActivity.this, getResources().getString(R.string.connection_timeout));
 
                     Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
                     findViewById(R.id.loginProgressBar).setVisibility(View.GONE);

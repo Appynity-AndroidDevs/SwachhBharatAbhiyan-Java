@@ -54,7 +54,9 @@ public class GIS_LocationService extends LifecycleService {
     private UserDetailPojo userDetailPojo;
     String userTypeId;
     private LocationRepository mLocationRepository;
+    private HousePointRepo mHousePointRepo;
     private List<LocationEntity> mAllLocations;
+    private List<HouseLocationEntity> mAllHouses;
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -83,6 +85,8 @@ public class GIS_LocationService extends LifecycleService {
     public void onCreate() {
         super.onCreate();
         mLocationRepository = new LocationRepository(getApplication());
+        mHousePointRepo = new HousePointRepo(getApplication());
+
         new Notification();
 
         Type type = new TypeToken<UserDetailPojo>() {
@@ -121,6 +125,42 @@ public class GIS_LocationService extends LifecycleService {
                     }
                 });
 
+        mHousePointRepo.getAllHousePoint().observe(GIS_LocationService.this, new Observer<List<HouseLocationEntity>>() {
+            @Override
+            public void onChanged(List<HouseLocationEntity> houseLocationEntities) {
+                mAllHouses = houseLocationEntities;
+                for (HouseLocationEntity houseEntity :
+                        houseLocationEntities) {
+                    Log.e(TAG, "onChanged: houseId: "
+                            + houseEntity.getHouseId() +
+                            ", UserName: " + houseEntity.getUserName() +
+                            ", Latlng: " + houseEntity.getLocationPoint());
+                    GISRequestDTO housePointDto = new GISRequestDTO();
+                    housePointDto.setCreateUser(userDetailPojo.getName());
+                    housePointDto.setHouseId(Integer.parseInt(houseEntity.getHouseId()));
+                    housePointDto.setGeom("POINT (" + houseEntity.getLocationPoint() + ")");
+                    GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
+                    service.sendHousePoint(housePointDto).enqueue(new Callback<GISResponseDTO>() {
+                        @Override
+                        public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
+
+                            if (response.isSuccessful()) {
+                                if (response.body().getStatus().equals("Success")) {
+                                    mHousePointRepo.deleteHouse(houseEntity.getHouseId());
+                                }
+                            }
+                            Log.e(TAG, "onResponse: " + response.body());
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+                        }
+                    });
+                }
+            }
+        });
+
         Timer mTimer = new Timer();
         int nInterval = 1000 * 60 * 2;
         mTimer.schedule(new TtSendLocations(), 10, nInterval);
@@ -142,11 +182,12 @@ public class GIS_LocationService extends LifecycleService {
                 gisRequest.setStartTs(Prefs.getString(AUtils.GIS_START_TS, null));
                 gisRequest.setCreateUser(userDetailPojo.getName());
                 gisRequest.setGeom(mLineString.toString());
-                if (Prefs.contains(AUtils.GIS_END_TS)) {
+                /*if (Prefs.contains(AUtils.GIS_END_TS)) {
                     if (!AUtils.isNullString(Prefs.getString(AUtils.GIS_END_TS, null))
                             || !Prefs.getString(AUtils.GIS_END_TS, null).isEmpty())
                         gisRequest.setEndTs(Prefs.getString(AUtils.GIS_END_TS, null));
-                }
+                    Prefs.remove(AUtils.GIS_END_TS);
+                }*/
 
                 GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
                 if (userTypeId.equals(AUtils.USER_TYPE.USER_TYPE_EMP_SCANNIFY)) {

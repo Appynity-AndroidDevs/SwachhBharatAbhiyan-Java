@@ -9,9 +9,10 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {LocationEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {LocationEntity.class, HouseLocationEntity.class}, version = 2, exportSchema = false)
 abstract class LocationsRoomDB extends RoomDatabase {
     abstract LocationsDao locationsDao();
+    abstract HousePointDao housePointDao();
 
     private static volatile LocationsRoomDB INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

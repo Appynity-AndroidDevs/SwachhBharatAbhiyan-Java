@@ -47,7 +47,10 @@ import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpQrLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.ChooseActionPopUp;
+import com.appynitty.swachbharatabhiyanlibrary.gis.HouseLocationEntity;
+import com.appynitty.swachbharatabhiyanlibrary.gis.HousePointRepo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
@@ -107,6 +110,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 22;
     private static int CAMERA_FACING_BACK;
     private EmpSyncServerRepository empSyncServerRepository;
+    private HousePointRepo housePointRepo;
     private Gson gson;
     Camera mCamera;
     private String lastText;
@@ -115,6 +119,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private MyProgressDialog myProgressDialog;
     private ArrayList<Integer> mSelectedIndices;
     private boolean isFlashOn;
+    private UserDetailPojo userDetailPojo;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -265,6 +270,12 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         myProgressDialog = new MyProgressDialog(mContext, R.drawable.progress_bar, false);
 
         empSyncServerRepository = new EmpSyncServerRepository(mContext);
+        housePointRepo = new HousePointRepo(getApplication());
+
+        Type type = new TypeToken<UserDetailPojo>() {
+        }.getType();
+        userDetailPojo = new Gson().fromJson(
+                Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
         gson = new Gson();
 
         fabSpeedDial = findViewById(R.id.flash_toggle);
@@ -773,6 +784,17 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         }.getType();
         empSyncServerRepository.insertEmpSyncServerEntity(gson.toJson(pojo, type));
 
+
+        String str = pojo.getReferanceId();
+        String[] part = str.split("(?<=\\D)(?=\\d)");
+        System.out.println(part[0]);
+        System.out.println(part[1]);
+
+        HouseLocationEntity houseLocationEntity = new HouseLocationEntity();
+        houseLocationEntity.setHouseId(part[1]);
+        houseLocationEntity.setLocationPoint(pojo.getLat() + " " + pojo.getLong());
+        houseLocationEntity.setUserName(userDetailPojo.getName());
+        housePointRepo.insert(houseLocationEntity);
         myProgressDialog.dismiss();
         if (isChecked) {
             if (!AUtils.isInternetAvailable()) {
@@ -854,7 +876,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         float maxWidth = 1707.0f;
 
         int bounding = dpToPx(250);
-        Log.i("Test", "bounding = " + Integer.toString(bounding));
+        Log.i("Test", "bounding = " + bounding);
         float imgRatio = actualWidth / actualHeight;
         float maxRatio = maxWidth / maxHeight;
 

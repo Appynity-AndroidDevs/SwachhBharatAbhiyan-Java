@@ -58,7 +58,6 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAd
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
-import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
@@ -1048,16 +1047,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
                 if (!AUtils.isIsOnduty()) {
-                    if (AUtils.isInternetAvailable())
+                    if (AUtils.isInternetAvailable()) {
                         verifyOfflineData(LoginActivity.class, true);
-                    else
+                        Prefs.remove(AUtils.PREFS.EMPLOYEE_TYPE);
+                        Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
+                    } else
                         Log.d(TAG, "onClick: no internet!");
                     /* AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));*/
                 } else {
                     AUtils.info(mContext, getResources().getString(R.string.off_duty_warning));
                 }
-                Prefs.remove(AUtils.PREFS.EMPLOYEE_TYPE);
-
             }
 
         }, null);

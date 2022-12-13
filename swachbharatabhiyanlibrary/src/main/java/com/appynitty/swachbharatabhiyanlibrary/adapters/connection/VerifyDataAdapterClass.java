@@ -1,7 +1,10 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.connection;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -116,7 +119,7 @@ public class VerifyDataAdapterClass {
             @Override
             public void onFailureCallback() {
                 if (mClass != null) {
-                    if (alertDialog.isShowing()) alertDialog.hide();
+                    createOrHideDialog(true);
                     AUtils.warning(mContext, mContext.getResources().getString(R.string.try_after_sometime));
                 }
             }
@@ -124,7 +127,7 @@ public class VerifyDataAdapterClass {
             @Override
             public void onErrorCallback() {
                 if (mClass != null) {
-                    if (alertDialog.isShowing()) alertDialog.hide();
+                    createOrHideDialog(true);
                     AUtils.warning(mContext, mContext.getResources().getString(R.string.serverError));
                 }
             }
@@ -135,7 +138,7 @@ public class VerifyDataAdapterClass {
         TableDataCountPojo.LocationCollectionCount count = syncOfflineRepository.getLocationCollectionCount(AUtils.getLocalDate());
 
         if (count.getLocationCount() > 0 || count.getCollectionCount() > 0) {
-            if (!alertDialog.isShowing()) alertDialog.show();
+            createOrHideDialog(false);
             syncOfflineAdapterClass.SyncOfflineData();
         } else
             verifyAdapterListener.onDataVerification(mContext, mClass, mKillActivity);
@@ -149,6 +152,20 @@ public class VerifyDataAdapterClass {
 //        } else
 //            verifyAdapterListener.onDataVerification(mContext, mClass, mKillActivity);
 
+    }
+
+    private void createOrHideDialog(boolean isHide) {
+        if (!((Activity) mContext).isFinishing()) {
+            try {
+                if (isHide) {
+                    if (alertDialog.isShowing()) alertDialog.hide();
+                } else {
+                    if (!alertDialog.isShowing()) alertDialog.show();
+                }
+            } catch (WindowManager.BadTokenException e) {
+                Log.e("WindowManagerBad ", e.toString());
+            }
+        }
     }
 
     public void verifyOfflineSync() {

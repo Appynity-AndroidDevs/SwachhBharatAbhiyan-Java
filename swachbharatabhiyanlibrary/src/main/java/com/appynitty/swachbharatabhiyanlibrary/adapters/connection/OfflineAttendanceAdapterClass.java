@@ -49,13 +49,13 @@ public class OfflineAttendanceAdapterClass {
      * Add CurrentTime
      */
     public void SyncOfflineData() {
-        if (!AUtils.isSyncOfflineDataRequestEnable) {
+        if (!AUtils.isSyncOfflineAttendanceDataRequestEnable) {
 
             setOfflineData();
 
             if (syncOfflineList.size() > 0) {
 
-                AUtils.isSyncOfflineDataRequestEnable = true;
+                AUtils.isSyncOfflineAttendanceDataRequestEnable = true;
 
                 PunchWebService service = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
 
@@ -71,7 +71,7 @@ public class OfflineAttendanceAdapterClass {
                                     SyncOfflineData();
                                 } else {
                                     Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + response.code());
-                                    AUtils.isSyncOfflineDataRequestEnable = false;
+                                    AUtils.isSyncOfflineAttendanceDataRequestEnable = false;
                                     if (!AUtils.isNull(offlineAttendanceListener))
                                         offlineAttendanceListener.onFailureCallback();
                                 }
@@ -80,7 +80,7 @@ public class OfflineAttendanceAdapterClass {
                             @Override
                             public void onFailure(@NonNull Call<List<AttendanceResponsePojo>> call, @NonNull Throwable t) {
                                 Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + t.getMessage());
-                                AUtils.isSyncOfflineDataRequestEnable = false;
+                                AUtils.isSyncOfflineAttendanceDataRequestEnable = false;
                                 if (!AUtils.isNull(offlineAttendanceListener))
                                     offlineAttendanceListener.onErrorCallback();
                             }
@@ -128,7 +128,7 @@ public class OfflineAttendanceAdapterClass {
             }
         }
 
-        AUtils.isSyncOfflineDataRequestEnable = false;
+        AUtils.isSyncOfflineAttendanceDataRequestEnable = false;
     }
 
     private void setOfflineData() {

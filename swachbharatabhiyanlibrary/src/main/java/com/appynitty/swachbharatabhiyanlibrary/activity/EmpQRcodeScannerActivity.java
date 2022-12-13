@@ -537,7 +537,9 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         Log.e(TAG, "validSubmitId: " + id);
         /* if (Prefs.getBoolean(AUtils.PREFS.IS_SAME_LOCALITY, false)) {*/
-        return id.substring(0, 2).matches("^[HhPp]+$") || id.matches("gpsba[0-9]+$") || id.matches("lwsba[0-9]+$") || id.matches("sssba[0-9]+$") || id.matches("dysba[0-9]+$");
+        return id.substring(0, 2).matches("^[HhPp]+$") || id.matches("gpsba[0-9]+$")
+                || id.matches("lwsba[0-9]+$") || id.matches("sssba[0-9]+$")
+                || id.matches("dysba[0-9]+$");
        /* } else {
             return false;
         }*/
@@ -744,14 +746,16 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         if (requestCode == AUtils.ADD_DETAILS_REQUEST_KEY && resultCode == RESULT_OK) {
             finish();
         } else if (requestCode == REQUEST_CAMERA) {
-            assert data != null;
-            String message = data.getStringExtra("image_path");
-            Log.e(TAG, "onActivityResult: " + message);
-            try {
-                onCaptureImageResult(data);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (data != null) {
+                String message = data.getStringExtra("image_path");
+                Log.e(TAG, "onActivityResult: " + message);
+                try {
+                    onCaptureImageResult(data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
         }
 //        }
 

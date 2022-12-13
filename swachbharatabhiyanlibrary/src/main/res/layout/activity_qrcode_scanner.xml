@@ -27,10 +27,10 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:paddingStart="@dimen/dim_6_dp"
-            android:visibility="visible"
             android:paddingTop="@dimen/dim_6_dp"
             android:paddingEnd="@dimen/dim_6_dp"
-            android:paddingBottom="@dimen/dim_20_dp">
+            android:paddingBottom="@dimen/dim_20_dp"
+            android:visibility="gone">
 
             <RadioGroup
                 android:id="@+id/collection_radio_group"
@@ -102,8 +102,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-
                 android:theme="@style/TextLabel2">
+
                 <AutoCompleteTextView
                     android:id="@+id/txt_id_auto"
                     android:layout_width="match_parent"

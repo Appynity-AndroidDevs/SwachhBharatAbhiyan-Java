@@ -213,6 +213,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                             syncCount = "0";
                             finalSyncCount = "0";
                         }
+
 //                        } else {
 //                            syncCount = "0";
 //                            finalSyncCount = "0";
@@ -314,12 +315,18 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     private void initData() {
-
-        if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-            showDialogWithCount();
-            btnSyncOfflineData.setVisibility(View.GONE);
+        if (empSyncServerRepository.getOfflineCount() > 0) {
+            if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                showDialogWithCount();
+                btnSyncOfflineData.setVisibility(View.GONE);
+                Log.i("SANATH_SYNC", "initData: " + "isSyncingOn");
+            } else {
+                inflateData();
+                Log.i("SANATH_SYNC", "initData: " + "isSyncingOff");
+            }
         } else {
             inflateData();
+            Log.i("SANATH_SYNC", "initData: " + "isSyncingOff");
         }
     }
 
@@ -330,30 +337,55 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         if (locationPojoList.size() > 0) {
             if (countList.size() > 0) {
                 if (Integer.parseInt(countList.get(0).getHouseCount()) > 0) {
-                    if (empSyncServerRepository.getOfflineCount() > 0) {
-
-                        gridOfflineData.setVisibility(View.VISIBLE);
-                        if (!Prefs.getBoolean(AUtils.isSyncingOn, false))
-                            btnSyncOfflineData.setVisibility(View.VISIBLE);
-                        layoutNoOfflineData.setVisibility(View.GONE);
-
-                        historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
-//            historyAdapter.setNotifyOnChange(true);
-                        gridOfflineData.setAdapter(historyAdapter);
-                    } else {
-                        gridOfflineData.setVisibility(View.GONE);
-                        btnSyncOfflineData.setVisibility(View.GONE);
-                        layoutNoOfflineData.setVisibility(View.VISIBLE);
-                        if (alertDialog.isShowing())
-                            alertDialog.dismiss();
+                    gridOfflineData.setVisibility(View.VISIBLE);
+                    if (Integer.parseInt(countList.get(0).getHouseCount()) == 0) {
+                        btnSyncOfflineData.setVisibility(View.VISIBLE);
                     }
+
+                    layoutNoOfflineData.setVisibility(View.GONE);
+                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                    gridOfflineData.setAdapter(historyAdapter);
+
+                } else if (Integer.parseInt(countList.get(0).getStreetSweepCount()) > 0) {
+
+                    gridOfflineData.setVisibility(View.VISIBLE);
+                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                    }
+
+                    layoutNoOfflineData.setVisibility(View.GONE);
+                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                    gridOfflineData.setAdapter(historyAdapter);
+
+                } else if (Integer.parseInt(countList.get(0).getLiquidWasteCount()) > 0) {
+
+                    gridOfflineData.setVisibility(View.VISIBLE);
+                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                    }
+
+                    layoutNoOfflineData.setVisibility(View.GONE);
+                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                    gridOfflineData.setAdapter(historyAdapter);
+
+                } else if (Integer.parseInt(countList.get(0).getDumpYardCount()) > 0) {
+                    gridOfflineData.setVisibility(View.VISIBLE);
+                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                    }
+
+                    layoutNoOfflineData.setVisibility(View.GONE);
+                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                    gridOfflineData.setAdapter(historyAdapter);
                 } else {
+
                     gridOfflineData.setVisibility(View.GONE);
                     btnSyncOfflineData.setVisibility(View.GONE);
                     layoutNoOfflineData.setVisibility(View.VISIBLE);
                     if (alertDialog.isShowing())
                         alertDialog.dismiss();
                 }
+
 
             } else {
                 gridOfflineData.setVisibility(View.GONE);

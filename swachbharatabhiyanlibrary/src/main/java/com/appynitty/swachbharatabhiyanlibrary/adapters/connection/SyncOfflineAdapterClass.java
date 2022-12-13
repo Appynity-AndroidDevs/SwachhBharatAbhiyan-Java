@@ -19,8 +19,6 @@ import com.pixplicity.easyprefs.library.Prefs;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,13 +54,13 @@ public class SyncOfflineAdapterClass {
 
     public void SyncOfflineData() {
 
-        if (!AUtils.isSyncOfflineDataRequestEnable) {
+        if (!AUtils.isSyncOfflineScanDataRequestEnable) {
 
             setOfflineData();
 
             if (syncOfflineList.size() > 0) {
 
-                AUtils.isSyncOfflineDataRequestEnable = true;
+                AUtils.isSyncOfflineScanDataRequestEnable = true;
                 Prefs.putBoolean(AUtils.isSyncingOn, true);
 
                 GarbageCollectionWebService service = Connection.createService(GarbageCollectionWebService.class, AUtils.SERVER_URL);
@@ -88,7 +86,7 @@ public class SyncOfflineAdapterClass {
                                     AUtils.warning(mContext, mContext.getResources().getString(R.string.connection_timeout), Toast.LENGTH_SHORT);
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.code());
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.message());
-                                    AUtils.isSyncOfflineDataRequestEnable = false;
+                                    AUtils.isSyncOfflineScanDataRequestEnable = false;
                                     //            Prefs.putBoolean(AUtils.isSyncingOn, false);
                                     syncOfflineListener.onFailureCallback();
                                 }
@@ -97,8 +95,8 @@ public class SyncOfflineAdapterClass {
                             @Override
                             public void onFailure(Call<List<OfflineGcResultPojo>> call, Throwable t) {
                                 Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + t.getMessage());
-                                AUtils.warning(mContext, t.getMessage(), Toast.LENGTH_SHORT);
-                                AUtils.isSyncOfflineDataRequestEnable = false;
+                                AUtils.warning(mContext, mContext.getResources().getString(R.string.connection_timeout), Toast.LENGTH_SHORT);
+                                AUtils.isSyncOfflineScanDataRequestEnable = false;
                                 Prefs.putBoolean(AUtils.isSyncingOn, false);
                                 syncOfflineListener.onErrorCallback();
                                 Log.i("RESPONSE_CODE", "onResponse: " + t.getMessage());
@@ -133,14 +131,18 @@ public class SyncOfflineAdapterClass {
 
                 if (result.getStatus().equals(AUtils.STATUS_SUCCESS) || result.getStatus().equals(AUtils.STATUS_ERROR)) {
 
-                    if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
-                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
-                            AUtils.success(mContext, result.getMessageMar());
-                        else
-                            AUtils.success(mContext, result.getMessage());
+                    if (results.size() == 1) {
+                        if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                AUtils.success(mContext, result.getMessageMar());
+                            else
+                                AUtils.success(mContext, result.getMessage());
+                        }
                     }
 
-                    if (results.size() == 1 && result.getStatus().equals(AUtils.STATUS_ERROR)) {
+                    if (result.getStatus().equals(AUtils.STATUS_ERROR)) {
+
                         if (result.getMessage().contains("outside")) {
                             if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
                                 areaWarningListener.onError(result.getMessageMar());
@@ -148,26 +150,20 @@ public class SyncOfflineAdapterClass {
                                 areaWarningListener.onError(result.getMessage());
 
                         } else {
-                            //   syncOfflineList.clear();
-                            //    syncOfflineRepository.deleteCompleteSyncTableData();
-                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
-                                AUtils.error(mContext, result.getMessageMar());
-                            else
-                                AUtils.error(mContext, result.getMessage());
+//
+//                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+//                                AUtils.error(mContext, result.getMessageMar());
+//                            else
+//                                AUtils.error(mContext, result.getMessage());
                         }
-
                     }
+
 
                     if (Integer.parseInt(result.getID()) != 0) {
 
-//                        if (result.getMessage().contains("scanned")) {
-//
-//                        } else if (result.getMessage().contains("Invalid")) {
-//
-//                        } else
-
-                        //CHANGES BY SANATH GOSAVI
                         if (!result.getMessage().contains("wrong")) {
+                            //    AUtils.warning(mContext , mContext.getResources().getString(R.string.please_wait));
+
                             int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());
                             if (deleteCount == 0) {
                                 offset = String.valueOf(Integer.parseInt(offset) + 1);
@@ -179,7 +175,6 @@ public class SyncOfflineAdapterClass {
                                 }
                             }
                         }
-
                     }
 
                 } else
@@ -195,14 +190,15 @@ public class SyncOfflineAdapterClass {
                 }
             }
             if (isSuccess) {
-                if (syncOfflineRepository.fetchCollectionCount().size() == 0)
+                if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
                     AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
+                    Prefs.putBoolean(AUtils.isSyncingOn, false);
+                }
             }
 
         }
 
-        AUtils.isSyncOfflineDataRequestEnable = false;
-        Prefs.putBoolean(AUtils.isSyncingOn, false);
+        AUtils.isSyncOfflineScanDataRequestEnable = false;
     }
 
     private void setOfflineData() {
@@ -219,9 +215,14 @@ public class SyncOfflineAdapterClass {
             offlinePojo.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
 
             Log.d(TAG, "setOfflineData: " + new Gson().toJson(offlinePojo));
-            syncOfflineList.add(offlinePojo);
+            if (!AUtils.isNull(offlinePojo.getEmpType()) || !offlinePojo.getEmpType().isEmpty()) {
+                if (!AUtils.isNull(offlinePojo.getUserId()) || !offlinePojo.getUserId().isEmpty()) {
+                    syncOfflineList.add(offlinePojo);
+                }
+            }
 
         }
+        Log.d(TAG, "setOfflineData: " + syncOfflineList);
     }
 
     public interface SyncOfflineListener {

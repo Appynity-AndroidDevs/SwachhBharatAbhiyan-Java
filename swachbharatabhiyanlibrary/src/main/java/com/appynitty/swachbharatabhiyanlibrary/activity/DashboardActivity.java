@@ -58,7 +58,6 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleTypeAd
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
-import com.appynitty.swachbharatabhiyanlibrary.gis.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
@@ -182,6 +181,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         super.onCreate(savedInstanceState);
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
+        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
 
         Log.i("DashboardLifecycle", "onCreate: ");
         onSwitchStatus(AUtils.isIsOnduty());
@@ -219,6 +219,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     @Override
     protected void onResume() {
         super.onResume();
+
         AUtils.currentContextConstant = mContext;
         Log.i("DashboardLifecycle", "onResume: ");
         checkIsFromLogin();
@@ -349,7 +350,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 }
             }
 
-            if (!AUtils.isSyncOfflineDataRequestEnable) {
+            if (!AUtils.isSyncOfflineAttendanceDataRequestEnable) {
                 verifyDataAdapterClass.verifyOfflineSync();
             }
             if (isView)
@@ -359,11 +360,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             ex.printStackTrace();
         }
 
-        if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_DESC, null)) && !AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, null))) {
-            if (markAttendance.isChecked())
-                vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), Prefs.getString(AUtils.VEHICLE_DESC, null),
-                        this.getResources().getString(R.string.hyphen), Prefs.getString(AUtils.VEHICLE_NO, null),
-                        this.getResources().getString(R.string.closing_round_bracket)));
+        if (!AUtils.isNullString(vehicleType) && !AUtils.isNullString(vehicle_no)) {
+
+            vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
+                    this.getResources().getString(R.string.hyphen), vehicle_no,
+                    this.getResources().getString(R.string.closing_round_bracket)));
         } else {
             vehicleStatus.setText("");
         }
@@ -448,7 +449,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         //syncOfflineData();
         if (AUtils.isInternetAvailable()) {
-            //     Prefs.putBoolean(AUtils.isSyncingOn, false);
+            Prefs.putBoolean(AUtils.isSyncingOn, false);
             if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
                 syncOfflineData(isSync);
             }
@@ -1046,16 +1047,16 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
                 if (!AUtils.isIsOnduty()) {
-                    if (AUtils.isInternetAvailable())
+                    if (AUtils.isInternetAvailable()) {
                         verifyOfflineData(LoginActivity.class, true);
-                    else
+                        Prefs.remove(AUtils.PREFS.EMPLOYEE_TYPE);
+                        Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
+                    } else
                         Log.d(TAG, "onClick: no internet!");
                     /* AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));*/
                 } else {
                     AUtils.info(mContext, getResources().getString(R.string.off_duty_warning));
                 }
-                Prefs.remove(AUtils.PREFS.EMPLOYEE_TYPE);
-
             }
 
         }, null);
@@ -1079,7 +1080,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.LAT);
         Prefs.remove(AUtils.LONG);
         Prefs.remove(AUtils.VEHICLE_NO);
-        Prefs.remove(AUtils.VEHICLE_DESC);
         Prefs.remove(AUtils.VEHICLE_ID);
 
         startActivity(new Intent(context, providedClass));
@@ -1126,6 +1126,48 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             onSwitchOff();
 
         }
+//        } else {
+//            //     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//            //        markAttendance.setChecked(AUtils.isIsOnduty());
+//
+////
+//            ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+////         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
+//            ProgressDialog mProgressDialog = new ProgressDialog(mContext);
+//            mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
+//            mProgressDialog.show();
+//
+//
+//            executor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    boolean isLocationFound = false;
+//                    while (!isLocationFound) {
+//                        if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
+//                            isLocationFound = true;
+//                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    if (isChecked) {
+//                                        playsound();
+//                                        onSwitchOn();
+//                                    } else {
+//                                        playsound();
+//                                        onSwitchOff();
+//
+//                                    }
+//                                    mProgressDialog.dismiss();
+//                                }
+//                            });
+//
+//                        }
+//                    }
+//                }
+//            });
+//
+
+
     }
 
     /**
@@ -1145,21 +1187,22 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             }
 
             try {
+
+
+                //   Prefs.putString(AUtils.LAT , "");
                 if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
-                    /*syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+                    syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                     onInPunchSuccess();
                     if (AUtils.isInternetAvailable()) {
                         if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                             mOfflineAttendanceAdapter.SyncOfflineData();
                         AUtils.success(mContext, getString(R.string.shif_start));
 
-                    }*/
-
-                    mAttendanceAdapter.MarkInPunch();
-
+                    }
                 } else {
 
                     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                     ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                     mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
                     mProgressDialog.setCancelable(false);
@@ -1203,7 +1246,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void onInPunchSuccess() {
-
         getAppGeoArea(null);
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
@@ -1215,14 +1257,13 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 //                    vehicleType = vehicleTypePojoList.get(i).getDescriptionMar();
 //                else
                     vehicleType = vehicleTypePojoList.get(i).getDescription();
-                    Prefs.putString(AUtils.VEHICLE_DESC, vehicleType);
                 }
             }
 
-            if (!AUtils.isNullString(Prefs.getString(AUtils.VEHICLE_NO, ""))) {
+            if (!AUtils.isNullString(attendancePojo.getVehicleNumber())) {
 
                 vehicleStatus.setText(String.format("%s%s %s %s%s", this.getResources().getString(R.string.opening_round_bracket), vehicleType,
-                        this.getResources().getString(R.string.hyphen), Prefs.getString(AUtils.VEHICLE_NO, ""),
+                        this.getResources().getString(R.string.hyphen), attendancePojo.getVehicleNumber(),
                         this.getResources().getString(R.string.closing_round_bracket)));
                 vehicle_no = attendancePojo.getVehicleNumber();
             } else {
@@ -1238,7 +1279,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             markAttendance.setChecked(true);
             Prefs.putString(AUtils.dumpYardSuperId, dumpRefId);
         }
-        ((MyApplication) AUtils.mainApplicationConstant).startGISService();
     }
 
     private void onOutPunchSuccess() {
@@ -1250,7 +1290,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         stopServiceIfRunning();
 
         markAttendance.setChecked(false);
-//        AUtils.success(mContext, getString(R.string.shift_end));
+        AUtils.success(mContext, getString(R.string.shift_end));
 
         attendancePojo = null;
         AUtils.removeInPunchDate();
@@ -1258,14 +1298,10 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     }
 
     private void stopServiceIfRunning() {
-        boolean isServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
-        boolean isGIS_ServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class);
+        boolean isservicerunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
 
-        if (isServiceRunning)
+        if (isservicerunning)
             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
-
-        if (isGIS_ServiceRunning)
-            ((MyApplication) AUtils.mainApplicationConstant).stopGISService();
     }
 
     private void getPermission() {
@@ -1315,11 +1351,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
             }
-
-            if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class)) {
-                ((MyApplication) AUtils.mainApplicationConstant).startGISService();
-            }
-
             markAttendance.setChecked(true);
 
             attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
@@ -1450,13 +1481,11 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                             //    Prefs.putString(AUtils.LAT, "");
                             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
-                              /*  syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
-                                onOutPunchSuccess();*/
+                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                                onOutPunchSuccess();
 
                                 if (AUtils.isInternetAvailable()) {
-//                                    mOfflineAttendanceAdapter.SyncOfflineData();
-
-                                    mAttendanceAdapter.MarkOutPunch();
+                                    mOfflineAttendanceAdapter.SyncOfflineData();
                                 }
                             } else {
 

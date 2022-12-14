@@ -37,6 +37,10 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -274,8 +278,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         Type type = new TypeToken<UserDetailPojo>() {
         }.getType();
-        userDetailPojo = new Gson().fromJson(
-                Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
+        userDetailPojo = new Gson().fromJson(Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
         gson = new Gson();
 
         fabSpeedDial = findViewById(R.id.flash_toggle);
@@ -333,7 +336,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             lastText = result.getText();
             scannerView.setStatusText(result.getText());
             beepManager.playBeepSoundAndVibrate();
-            startActivity(new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class));
+            openMapsActivityForResult();
 //            handleResult(result);
         }
 
@@ -341,6 +344,28 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
+
+    public void openMapsActivityForResult() {
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+        intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+        mapsActivityResultLauncher.launch(intent);
+    }
+
+    ActivityResultLauncher<Intent> mapsActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                // There are no request codes
+                String newLat = result.getData().getStringExtra("newLat");
+                String newLong = result.getData().getStringExtra("newLong");
+                Log.e(TAG, "onActivityResult: newLat: " + newLat + ", newLong: " + newLong);
+                Log.e(TAG, "onActivityResult: oldLat: " + Prefs.getString(AUtils.LAT, null)
+                        + ", oldLong: " + Prefs.getString(AUtils.LONG, null));
+//                        doSomeOperations(str);
+            }
+        }
+    });
 
     protected void registerEvents() {
 
@@ -538,9 +563,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         Log.e(TAG, "validSubmitId: " + id);
         /* if (Prefs.getBoolean(AUtils.PREFS.IS_SAME_LOCALITY, false)) {*/
-        return id.substring(0, 2).matches("^[HhPp]+$") || id.matches("gpsba[0-9]+$")
-                || id.matches("lwsba[0-9]+$") || id.matches("sssba[0-9]+$")
-                || id.matches("dysba[0-9]+$");
+        return id.substring(0, 2).matches("^[HhPp]+$") || id.matches("gpsba[0-9]+$") || id.matches("lwsba[0-9]+$") || id.matches("sssba[0-9]+$") || id.matches("dysba[0-9]+$");
        /* } else {
             return false;
         }*/

@@ -1,9 +1,12 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,14 +27,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
     private Toolbar toolbar;
-    private Double newLat, newLong;
+    private String newLat, newLong;
     LatLng oldPosition;
+    Button btnOk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        Bundle bundle = getIntent().getExtras();
+        newLat = bundle.getString("lat");
+        newLong = bundle.getString("lon");
+
+//        newLat = Prefs.getString(AUtils.LAT, null);
+//        newLong = Prefs.getString(AUtils.LONG, null);
+
+        btnOk = findViewById(R.id.btnOk);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("newLat", newLat);
+                intent.putExtra("newLong", newLong);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 //        toolbar = findViewById(R.id.toolbar);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -43,9 +65,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
+
         // Add a marker in currentLocation and move the camera
-        LatLng currentLocation = new LatLng(Double.parseDouble(Prefs.getString(AUtils.LAT, null)),
-                Double.parseDouble(Prefs.getString(AUtils.LONG, null)));
+        LatLng currentLocation = new LatLng(Double.parseDouble(newLat),
+                Double.parseDouble(newLong));
 
         mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current location").draggable(true));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15.0f));
@@ -61,7 +84,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onMarkerDragEnd(@NonNull Marker marker) {
                 LatLng newPosition = marker.getPosition(); //
                 calcDistance(newPosition);
-                Log.e(TAG, "onMarkerDragEnd: Lat: " + newPosition.latitude + " Long: " + newPosition.latitude);
+                Log.e(TAG, "onMarkerDragEnd: Lat: " + newPosition.latitude + " Long: " + newPosition.longitude);
+                newLat = String.valueOf(newPosition.latitude);
+                newLong = String.valueOf(newPosition.longitude);
             }
 
             @Override

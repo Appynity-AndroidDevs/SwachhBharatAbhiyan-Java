@@ -197,7 +197,7 @@ public class CameraActivity extends AppCompatActivity {
 
                         Intent intent = new Intent();
                         intent.putExtra(KEY_IMAGE_PATH, file.getAbsolutePath());
-                        setResult(22, intent);
+                        setResult(RESULT_OK, intent);
                         finish();
 
                     } catch (FileNotFoundException e) {

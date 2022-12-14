@@ -42,7 +42,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -104,7 +103,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private TextInputLayout idIpLayout;
     private AutoCompleteTextView idAutoComplete;
     private RadioGroup collectionRadioGroup;
-    private String radioSelection, mHouse_id, mImagePath, encodedImage;
+    private String radioSelection, mHouse_id, mImagePath, encodedImage, mLat, mLon;
     private Button submitBtn, permissionBtn;
     private View contentView;
     private Boolean isScanQr;
@@ -269,6 +268,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         setContentView(R.layout.emp_activity_qrcode_scanner);
         toolbar = findViewById(R.id.toolbar);
         mHouse_id = "";
+        mLat = "";
+        mLon = "";
         mContext = EmpQRcodeScannerActivity.this;
         AUtils.currentContextConstant = mContext;
         myProgressDialog = new MyProgressDialog(mContext, R.drawable.progress_bar, false);
@@ -356,13 +357,29 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         @Override
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == Activity.RESULT_OK) {
-                // There are no request codes
-                String newLat = result.getData().getStringExtra("newLat");
-                String newLong = result.getData().getStringExtra("newLong");
-                Log.e(TAG, "onActivityResult: newLat: " + newLat + ", newLong: " + newLong);
-                Log.e(TAG, "onActivityResult: oldLat: " + Prefs.getString(AUtils.LAT, null)
-                        + ", oldLong: " + Prefs.getString(AUtils.LONG, null));
+                scannerView.pause();
+                mLat = result.getData().getStringExtra("newLat");
+                mLon = result.getData().getStringExtra("newLong");
+                Log.e(TAG, "onActivityResult: newLat: " + mLat + ", newLong: " + mLon);
+
+                handleResult(scannerView.getStatusView().getText().toString());
 //                        doSomeOperations(str);
+            }
+        }
+    });
+
+
+    ActivityResultLauncher<Intent> cameraActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == RESULT_OK) {
+                scannerView.pause();
+                Log.e(TAG, "onActivityResult: " + result.getData().getStringExtra("image_path"));
+                try {
+                    onCaptureImageResult(result.getData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     });
@@ -643,13 +660,16 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 //        scannerView.stopCamera();
 //        scannerView.stopCameraPreview();
         Intent i = new Intent(EmpQRcodeScannerActivity.this, CameraActivity.class);
-        startActivityForResult(i, REQUEST_CAMERA);
+//        startActivityForResult(i, REQUEST_CAMERA);
+        cameraActivityLauncher.launch(i);
     }
 
-    public void handleResult(BarcodeResult result) {
-        Log.e(TAG, "handleResult: " + result.getText());
-        mHouse_id = result.getText();
-        takePhotoImageViewOnClick();
+    public void handleResult(String result) {
+        Log.e(TAG, "handleResult: " + result);
+        mHouse_id = result;
+//        takePhotoImageViewOnClick();
+        Intent i = new Intent(EmpQRcodeScannerActivity.this, CameraActivity.class);
+        cameraActivityLauncher.launch(i);
     }
 
     private void startPreview() {
@@ -688,8 +708,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private void submitOnSkip(String id) {
         try {
             qrLocationPojo.setReferanceId(id);
-            qrLocationPojo.setLat(Prefs.getString(AUtils.LAT, ""));
-            qrLocationPojo.setLong(Prefs.getString(AUtils.LONG, ""));
+            qrLocationPojo.setLat(mLat);
+            qrLocationPojo.setLong(mLon);
 
             qrLocationPojo.setName("");
             qrLocationPojo.setNameMar("");
@@ -763,7 +783,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         stopCamera();
     }
 
-    @Override
+/*    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         AUtils.currentContextConstant = mContext;
 
@@ -785,7 +805,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-    }
+    }*/
 
     private String getGCType() {
         String areaType = AUtils.GP_AREA_TYPE_ID;
@@ -841,7 +861,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         Log.e(TAG, "onCaptureImageResult: compressedImagePath:- " + compressedImagePath);
         mImagePath = compressedImagePath;
         showActionPopUp(mHouse_id);
-        Bitmap newBitmap = AUtils.writeOnImage(mContext, AUtils.getDateAndTime(), mHouse_id, mImagePath);
+        Bitmap newBitmap = AUtils.writeOnImage(mContext, AUtils.getDateAndTime(), mHouse_id, mImagePath, mLat, mLon);
 
 
         Uri uri = getImageUri(mContext, newBitmap);

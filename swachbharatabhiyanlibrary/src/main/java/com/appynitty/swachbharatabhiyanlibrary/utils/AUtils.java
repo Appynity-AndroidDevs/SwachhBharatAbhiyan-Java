@@ -837,11 +837,11 @@ public class AUtils extends CommonUtils {
 
     }
 
-    public static Bitmap writeOnImage(Context ctx, String mDate, String mId, String mPath) {
+    public static Bitmap writeOnImage(Context ctx, String mDate, String mId, String mPath, String mLat, String mLon) {
 
         Uri uri = Uri.fromFile(new File(mPath));
-        final String lat = Prefs.getString(AUtils.LAT, "");
-        final String lon = Prefs.getString(AUtils.LONG, "");
+        /*final String lat = Prefs.getString(AUtils.LAT, "");
+        final String lon = Prefs.getString(AUtils.LONG, "");*/
 
         Bitmap bm = loadFromUri(uri, ctx);
         Bitmap mutableBitmap = bm.copy(Bitmap.Config.ARGB_8888, true);
@@ -882,10 +882,10 @@ public class AUtils extends CommonUtils {
 
         canvas.drawText("ID: " + mId, 26, yPos + 340, stkPaint);    //difference of 40
         canvas.drawText("ID: " + mId, 25, yPos + 340, paint);
-        canvas.drawText("Lat: " + lat, 28, yPos + 380, stkPaint);
-        canvas.drawText("Lat: " + lat, 27, yPos + 380, paint);
-        canvas.drawText("Long: " + lon, 30, yPos + 420, stkPaint);
-        canvas.drawText("Long: " + lon, 29, yPos + 420, paint);
+        canvas.drawText("Lat: " + mLat, 28, yPos + 380, stkPaint);
+        canvas.drawText("Lat: " + mLat, 27, yPos + 380, paint);
+        canvas.drawText("Long: " + mLon, 30, yPos + 420, stkPaint);
+        canvas.drawText("Long: " + mLon, 29, yPos + 420, paint);
         canvas.drawText(mDate, 32, yPos + 460, stkPaint);
         canvas.drawText(mDate, 31, yPos + 460, paint);
 

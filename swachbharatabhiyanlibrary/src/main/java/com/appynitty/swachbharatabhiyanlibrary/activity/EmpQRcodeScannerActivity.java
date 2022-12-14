@@ -333,7 +333,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             lastText = result.getText();
             scannerView.setStatusText(result.getText());
             beepManager.playBeepSoundAndVibrate();
-            handleResult(result);
+            startActivity(new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class));
+//            handleResult(result);
         }
 
         @Override

@@ -39,7 +39,14 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".activity.MapsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activity.CameraActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -99,7 +106,6 @@
             android:name=".activity.QRcodeScanerActivity"
             android:label="@string/title_activity_qrcode_scanner"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.QRcodeScannerDumpSuperActivity"
             android:label="@string/title_activity_qrcode_scanner"
@@ -203,6 +209,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
     </application>
 
 </manifest>

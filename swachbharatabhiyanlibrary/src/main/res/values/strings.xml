@@ -135,7 +135,7 @@
     <string name="app_id_title">Swach Bharat Abhiyan</string>
 
     <string name="vehicle_no_validation" translatable="false">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-/ </string>
-<!--    <string name="vehicle_no_validation" translatable="false">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^*?</string>-->
+    <!--    <string name="vehicle_no_validation" translatable="false">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^*?</string>-->
 
     <string name="bifurcate_garbage">Bifurcated Garbage</string>
     <string name="mixed_garbage">Mixed Garbage</string>
@@ -267,7 +267,6 @@
     <string name="perminssion_needed_title">Permission Needed!</string>
     <string name="loc_allow_all_time_txt"><br>Background Location Permission Needed!,</br><br> tap "Allow all the time" in the next screen</br></string>
     <string name="dump_yard">Dump Yard</string>
-
 
 
 </resources>

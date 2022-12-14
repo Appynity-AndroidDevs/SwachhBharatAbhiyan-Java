@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
+/*plugins {
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+}*/
 android {
     compileSdkVersion 31
 

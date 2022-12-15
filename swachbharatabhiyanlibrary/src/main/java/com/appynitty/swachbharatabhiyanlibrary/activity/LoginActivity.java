@@ -239,7 +239,6 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
             @Override
             public void onClick(View v) {
 
-                findViewById(R.id.loginProgressBar).setVisibility(View.VISIBLE);
 
                 if (AUtils.isInternetAvailable()) {
 
@@ -345,7 +344,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 //                        handler.post(new Runnable() {
 //                            @Override
 //                            public void run() {
-
+            findViewById(R.id.loginProgressBar).setVisibility(View.VISIBLE);
             loginViewModel.loginUser(loginPojo);
             loginViewModel.getLoginDetailsSuccessLiveData().observe(LoginActivity.this, new Observer<LoginDetailsPojo>() {
                 @Override
@@ -386,8 +385,10 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
                             AUtils.error(mContext, message, Toast.LENGTH_SHORT);
                         }
+                        findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
 
                     } else {
+                        findViewById(R.id.loginProgressBar).setVisibility(View.INVISIBLE);
 
                         Prefs.putBoolean(AUtils.PREFS.IS_USER_LOGIN, false);
                         AUtils.error(mContext, "" + mContext.getString(R.string.serverError), Toast.LENGTH_SHORT);

@@ -4,9 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +27,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
     private Double oldLat, newLat, oldLong, newLong;
-    Button btnOk;
+    ImageButton btnOk;
+    Runnable mRunnable;
+    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         oldLong = Double.parseDouble(bundle.getString("lon"));
 
         btnOk = findViewById(R.id.btnOk);
+
+        mHandler = new Handler();
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+//                hide();
+                btnOk.setVisibility(View.VISIBLE);
+            }
+        };
+
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +74,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
+        mHandler.removeCallbacks(mRunnable);//add this
+        mHandler.postDelayed(mRunnable, 3000);
 
         // Add a marker in currentLocation and move the camera
         LatLng currentLocation = new LatLng(oldLat, oldLong);

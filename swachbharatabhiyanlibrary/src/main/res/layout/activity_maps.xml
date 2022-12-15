@@ -7,14 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".activity.MapsActivity">
 
-    <Button
+    <ImageButton
         android:id="@+id/btnOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|top"
-        android:text="OK"
-        android:padding="10dp"
         android:layout_marginTop="20dp"
-        android:paddingEnd="10dp"/>
+        android:background="@null"
+        android:padding="10dp"
+        android:paddingEnd="10dp"
+        android:src="@drawable/ic_check_circle_24"
+        android:text="OK"
+        android:visibility="gone" />
 
 </fragment>

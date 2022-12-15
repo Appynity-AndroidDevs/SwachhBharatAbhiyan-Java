@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -78,15 +79,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mHandler.postDelayed(mRunnable, 3000);
 
         // Add a marker in currentLocation and move the camera
-        LatLng currentLocation = new LatLng(oldLat, oldLong);
 
-        Objects.requireNonNull(mMap.addMarker(new MarkerOptions()
-                .position(currentLocation)
-                .title("info")
-                .snippet(getResources().getString(R.string.map_snippet))
-                .draggable(true))).showInfoWindow();
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15.0f)); "Drag to change location!"
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, mMap.getMaxZoomLevel()));
+        addMarker();
+
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
@@ -97,7 +92,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMarkerDragEnd(@NonNull Marker marker) {
                 LatLng newPosition = marker.getPosition(); //
-                calcDistance(newPosition);
+                Double dist = calcDistance(newPosition);
+
+                if (dist > 10) {
+//                    Toast.makeText(MapsActivity.this, "You've exceeded the allowed distance", Toast.LENGTH_SHORT).show();
+                    AUtils.warning(MapsActivity.this, "You've exceeded the 10 meters distance");
+                    marker.remove();
+                    addMarker();
+                }
                 Log.e(TAG, "onMarkerDragEnd: Lat: " + newPosition.latitude + " Long: " + newPosition.longitude);
                 newLat = newPosition.latitude;
                 newLong = newPosition.longitude;
@@ -110,12 +112,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private void calcDistance(LatLng newPosition) {
+    private void addMarker() {
+        LatLng currentLocation = new LatLng(oldLat, oldLong);
+        Objects.requireNonNull(mMap.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title("info")
+                .snippet(getResources().getString(R.string.map_snippet))
+                .draggable(true))).showInfoWindow();
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15.0f)); "Drag to change location!"
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, mMap.getMaxZoomLevel()));
+    }
+
+    private double calcDistance(LatLng newPosition) {
         Location startPoint = new Location("locationA");
         startPoint.setLatitude(oldLat);
         startPoint.setLongitude(oldLong);
 
-        Location endPoint = new Location("locationA");
+        Location endPoint = new Location("locationB");
         if (newPosition != null) {
             endPoint.setLatitude(newPosition.latitude);
             endPoint.setLongitude(newPosition.longitude);
@@ -123,6 +136,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         double distance = startPoint.distanceTo(endPoint);
         Log.e(TAG, "onMarkerDrag: Distance: " + distance);
+        return distance;
     }
 
 

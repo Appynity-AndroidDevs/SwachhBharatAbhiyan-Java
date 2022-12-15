@@ -48,7 +48,7 @@
     <string name="house_number_hint">हाउस नंबर दर्ज करें</string>
     <string name="hp_area_validation">कृपया मान्य क्षेत्र और हाउस नंबर चुनें।</string>
     <string name="hp_area_validation_emp">कृपया हाउस नंबर दर्ज करें।</string>
-   <!-- <string name="hp_gp_id_hint">हाउस आईडी / कचरा प्वाइंट आईडी दर्ज करें</string>-->
+    <!-- <string name="hp_gp_id_hint">हाउस आईडी / कचरा प्वाइंट आईडी दर्ज करें</string>-->
     <string name="hp_gp_id_hint">हाउस आईडी/डंप यार्ड आईडी दर्ज करें</string>
     <string name="hp_validation">कृपया वेलिड हाउस नंबर चुनें</string>
     <string name="invalid_qr_error">अमान्य स्कॅनिफाय</string>
@@ -92,7 +92,6 @@
     <string name="setting">सेटिंग</string>
     <string name="share_the_app">ऐप साझा करें</string>
     <string name="privacy_policy">प्राइवेसी पॉलिसी</string>
-
 
 
     <string name="show_bifurcation_type">द्विभाजन प्रकार दिखाएं</string>
@@ -201,4 +200,5 @@
     <string name="loc_allow_all_time_txt">बैकग्राउंड लोकेशन परमिशन की आवश्यकता है!, अगली स्क्रीन पे Allow all the time पर टैप करें</string>
 
     <string name="dump_yard">डंप यार्ड</string>
+    <string name="map_snippet">स्थान बदलने के लिए खींचें!</string>
 </resources>

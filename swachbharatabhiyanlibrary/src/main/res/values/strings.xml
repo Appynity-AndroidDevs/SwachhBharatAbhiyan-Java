@@ -267,6 +267,7 @@
     <string name="perminssion_needed_title">Permission Needed!</string>
     <string name="loc_allow_all_time_txt"><br>Background Location Permission Needed!,</br><br> tap "Allow all the time" in the next screen</br></string>
     <string name="dump_yard">Dump Yard</string>
+    <string name="map_snippet">Drag to change location!</string>
 
 
 </resources>

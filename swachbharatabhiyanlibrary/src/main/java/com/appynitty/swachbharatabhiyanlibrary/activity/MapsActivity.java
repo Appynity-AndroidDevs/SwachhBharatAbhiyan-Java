@@ -10,10 +10,8 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
-import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,14 +19,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.pixplicity.easyprefs.library.Prefs;
+
+import java.util.Objects;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
-    private Toolbar toolbar;
-    private String newLat, newLong;
-    LatLng oldPosition;
+    private Double oldLat, newLat, oldLong, newLong;
     Button btnOk;
 
     @Override
@@ -37,27 +34,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         Bundle bundle = getIntent().getExtras();
-        newLat = bundle.getString("lat");
-        newLong = bundle.getString("lon");
-
-//        newLat = Prefs.getString(AUtils.LAT, null);
-//        newLong = Prefs.getString(AUtils.LONG, null);
+        oldLat = Double.parseDouble(bundle.getString("lat"));
+        oldLong = Double.parseDouble(bundle.getString("lon"));
 
         btnOk = findViewById(R.id.btnOk);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("newLat", newLat);
-                intent.putExtra("newLong", newLong);
+                intent.putExtra("newLat", String.valueOf(newLat));
+                intent.putExtra("newLong", String.valueOf(newLong));
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
-//        toolbar = findViewById(R.id.toolbar);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
     }
 
     @SuppressLint("PotentialBehaviorOverride")
@@ -67,11 +63,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         // Add a marker in currentLocation and move the camera
-        LatLng currentLocation = new LatLng(Double.parseDouble(newLat),
-                Double.parseDouble(newLong));
+        LatLng currentLocation = new LatLng(oldLat, oldLong);
 
-        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current location").draggable(true));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15.0f));
+        Objects.requireNonNull(mMap.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title("info")
+                .snippet(getResources().getString(R.string.map_snippet))
+                .draggable(true))).showInfoWindow();
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15.0f)); "Drag to change location!"
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, mMap.getMaxZoomLevel()));
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -85,21 +84,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LatLng newPosition = marker.getPosition(); //
                 calcDistance(newPosition);
                 Log.e(TAG, "onMarkerDragEnd: Lat: " + newPosition.latitude + " Long: " + newPosition.longitude);
-                newLat = String.valueOf(newPosition.latitude);
-                newLong = String.valueOf(newPosition.longitude);
+                newLat = newPosition.latitude;
+                newLong = newPosition.longitude;
             }
 
             @Override
             public void onMarkerDragStart(@NonNull Marker marker) {
-
+                marker.hideInfoWindow();
             }
         });
     }
 
     private void calcDistance(LatLng newPosition) {
         Location startPoint = new Location("locationA");
-        startPoint.setLatitude(Double.parseDouble(Prefs.getString(AUtils.LAT, null)));
-        startPoint.setLongitude(Double.parseDouble(Prefs.getString(AUtils.LONG, null)));
+        startPoint.setLatitude(oldLat);
+        startPoint.setLongitude(oldLong);
 
         Location endPoint = new Location("locationA");
         if (newPosition != null) {

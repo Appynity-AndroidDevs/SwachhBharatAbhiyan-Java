@@ -92,7 +92,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMarkerDragEnd(@NonNull Marker marker) {
                 LatLng newPosition = marker.getPosition(); //
-                Double dist = calcDistance(newPosition);
+                double dist = calcDistance(newPosition);
 
                 if (dist > 10) {
 //                    Toast.makeText(MapsActivity.this, "You've exceeded the allowed distance", Toast.LENGTH_SHORT).show();

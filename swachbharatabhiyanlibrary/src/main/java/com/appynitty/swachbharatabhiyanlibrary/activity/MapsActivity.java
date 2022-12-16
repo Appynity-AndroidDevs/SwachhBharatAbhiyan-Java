@@ -1,16 +1,19 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -28,7 +31,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
     private Double oldLat, newLat, oldLong, newLong;
-    ImageButton btnOk;
+    Button btnOk;
     Runnable mRunnable;
     Handler mHandler;
 
@@ -75,15 +78,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        mHandler.removeCallbacks(mRunnable);//add this
-        mHandler.postDelayed(mRunnable, 3000);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        LatLng currentLocation = new LatLng(oldLat, oldLong);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 20.0f));
+
+        mHandler.removeCallbacks(mRunnable);
+        mHandler.postDelayed(mRunnable, 1000);
 
         // Add a marker in currentLocation and move the camera
 
-        addMarker();
+//        addMarker();
 
 
-        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+        /*mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDrag(@NonNull Marker marker) {
 
@@ -108,6 +129,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMarkerDragStart(@NonNull Marker marker) {
                 marker.hideInfoWindow();
+            }
+        });*/
+
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                //get latlng at the center by calling
+                LatLng midLatLng = mMap.getCameraPosition().target;
+                /*Toast.makeText(MapsActivity.this, ""
+                        + midLatLng.latitude + ", "
+                        + midLatLng.longitude,
+                        Toast.LENGTH_SHORT).show();*/
+
+                newLat = midLatLng.latitude;
+                newLong = midLatLng.longitude;
             }
         });
     }

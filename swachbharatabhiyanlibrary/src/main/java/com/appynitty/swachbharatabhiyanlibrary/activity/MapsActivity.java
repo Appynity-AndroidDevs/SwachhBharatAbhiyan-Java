@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,13 +21,21 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -36,6 +45,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Button btnOk;
     Runnable mRunnable;
     Handler mHandler;
+    Polyline polyline;
+
+    public static final int PATTERN_DASH_LENGTH_PX = 20;
+    public static final int PATTERN_GAP_LENGTH_PX = 20;
+    public static final PatternItem DOT = new Dot();
+    public static final PatternItem DASH = new Dash(PATTERN_DASH_LENGTH_PX);
+    public static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
+    public static final List<PatternItem> PATTERN_POLYGON_ALPHA = Arrays.asList(GAP, DOT);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +109,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
 
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+//        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
@@ -155,17 +173,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.e(TAG, "onCameraIdle: lat: " + midLatLng.latitude + ", lon: " + midLatLng.longitude);
                 newLat = midLatLng.latitude;
                 newLong = midLatLng.longitude;
+
+                if (polyline != null)
+                    polyline.remove();
+
+                PolylineOptions options = new PolylineOptions().pattern(PATTERN_POLYGON_ALPHA).width(15);
+
+                polyline = googleMap.addPolyline(options.add(new LatLng(oldLat, oldLong), midLatLng));
+
+                if (calcDistance(midLatLng) > 30) {
+                    polyline.remove();
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 20.0f));
+                    Toast.makeText(MapsActivity.this, "Distance exceeded the given limit!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
 
     private void addMarker() {
         LatLng currentLocation = new LatLng(oldLat, oldLong);
-        Objects.requireNonNull(mMap.addMarker(new MarkerOptions()
-                .position(currentLocation)
-                .title("info")
-                .snippet(getResources().getString(R.string.map_snippet))
-                .draggable(true))).showInfoWindow();
+        Objects.requireNonNull(mMap.addMarker(new MarkerOptions().position(currentLocation).title("info").snippet(getResources().getString(R.string.map_snippet)).draggable(true))).showInfoWindow();
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15.0f)); "Drag to change location!"
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, mMap.getMaxZoomLevel()));
     }

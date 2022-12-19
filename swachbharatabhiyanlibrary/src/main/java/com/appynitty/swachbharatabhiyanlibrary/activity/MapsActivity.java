@@ -16,15 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
-import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.data.geojson.GeoJsonLayer;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.Objects;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -93,6 +95,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
+        try {
+            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.gokulpeth_area, MapsActivity.this);
+            layer.addLayerToMap();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         LatLng currentLocation = new LatLng(oldLat, oldLong);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 20.0f));
 
@@ -141,7 +152,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         + midLatLng.latitude + ", "
                         + midLatLng.longitude,
                         Toast.LENGTH_SHORT).show();*/
-
+                Log.e(TAG, "onCameraIdle: lat: " + midLatLng.latitude + ", lon: " + midLatLng.longitude);
                 newLat = midLatLng.latitude;
                 newLong = midLatLng.longitude;
             }

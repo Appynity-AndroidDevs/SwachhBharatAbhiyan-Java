@@ -109,16 +109,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
 
-//        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         try {
             GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.gokulpeth_area, MapsActivity.this);
             layer.addLayerToMap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
 
@@ -166,10 +164,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onCameraIdle() {
                 //get latlng at the center by calling
                 LatLng midLatLng = mMap.getCameraPosition().target;
-                /*Toast.makeText(MapsActivity.this, ""
-                        + midLatLng.latitude + ", "
-                        + midLatLng.longitude,
-                        Toast.LENGTH_SHORT).show();*/
                 Log.e(TAG, "onCameraIdle: lat: " + midLatLng.latitude + ", lon: " + midLatLng.longitude);
                 newLat = midLatLng.latitude;
                 newLong = midLatLng.longitude;

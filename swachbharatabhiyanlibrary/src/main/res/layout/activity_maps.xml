@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     tools:context=".activity.MapsActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:contentDescription="center marker"
         android:src="@drawable/ic_marker_48" />
 
     <LinearLayout
@@ -47,4 +48,18 @@
             android:layout_height="@dimen/dim_20_dp" />
     </LinearLayout>
 
+    <RadioButton
+        android:id="@+id/rbNewOldConstruct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dim_10_dp"
+        android:layout_marginTop="@dimen/dim_10_dp"
+        android:layout_marginEnd="@dimen/dim_10_dp"
+        android:layout_marginBottom="@dimen/dim_10_dp"
+        android:background="#BAFFFFFF"
+        android:minHeight="48dp"
+        android:paddingEnd="@dimen/dim_5_dp"
+        android:paddingStart="@dimen/dim_5_dp"
+        android:text="New construction"
+        android:textStyle="bold" />
 </RelativeLayout>

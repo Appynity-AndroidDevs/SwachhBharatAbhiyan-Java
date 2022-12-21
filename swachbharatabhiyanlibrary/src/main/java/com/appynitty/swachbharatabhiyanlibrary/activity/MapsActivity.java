@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,7 +44,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
     private Double oldLat, newLat, oldLong, newLong;
+    private boolean isRbChecked = false;
     Button btnOk;
+    RadioButton rbNewConstruction;
     Runnable mRunnable;
     Handler mHandler;
     Polyline polyline;
@@ -66,6 +69,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         oldLong = Double.parseDouble(bundle.getString("lon"));
 
         btnOk = findViewById(R.id.btnOk);
+        rbNewConstruction = findViewById(R.id.rbNewOldConstruct);
 
         mHandler = new Handler();
         mRunnable = new Runnable() {
@@ -76,12 +80,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         };
 
+        rbNewConstruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isRbChecked = !isRbChecked;
+                RadioButton rb = (RadioButton) view;
+                rb.setChecked(isRbChecked);
+            }
+        });
+
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putExtra("newLat", String.valueOf(newLat));
                 intent.putExtra("newLong", String.valueOf(newLong));
+                intent.putExtra("isNewConstruction", isRbChecked);
                 setResult(RESULT_OK, intent);
                 finish();
             }

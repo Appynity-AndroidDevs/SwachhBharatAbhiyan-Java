@@ -121,7 +121,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     boolean isChecked = true;
     private MyProgressDialog myProgressDialog;
     private ArrayList<Integer> mSelectedIndices;
-    private boolean isFlashOn;
+    private boolean isFlashOn, isNewConstruction;
     private UserDetailPojo userDetailPojo;
 
     @Override
@@ -360,7 +360,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                 scannerView.pause();
                 mLat = result.getData().getStringExtra("newLat");
                 mLon = result.getData().getStringExtra("newLong");
-                Log.e(TAG, "onActivityResult: newLat: " + mLat + ", newLong: " + mLon);
+                isNewConstruction = result.getData().getBooleanExtra("isNewConstruction", false);
+                Log.e(TAG, "onActivityResult: newLat: " + mLat + ", newLong: " + mLon + ", isNewConstruction: " + isNewConstruction);
 
                 handleResult(scannerView.getStatusView().getText().toString());
 //                        doSomeOperations(str);

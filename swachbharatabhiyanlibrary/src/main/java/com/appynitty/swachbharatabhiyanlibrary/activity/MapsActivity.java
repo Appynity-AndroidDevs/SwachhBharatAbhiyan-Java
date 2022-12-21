@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -115,6 +116,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         try {
             GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.gokulpeth_area, MapsActivity.this);
+            layer.getDefaultPolygonStyle().setStrokeColor(Color.WHITE);
             layer.addLayerToMap();
         } catch (IOException | JSONException e) {
             e.printStackTrace();

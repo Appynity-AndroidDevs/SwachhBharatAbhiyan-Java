@@ -62,6 +62,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -133,6 +134,7 @@ public class AUtils extends CommonUtils {
     public static final String CONTENT_TYPE = "application/json";
 
     public static final String APP_ID = "AppId";
+    public static final String ENCODED_APP_ID = "enAppId";
     public static final String VERSION_CODE = "AppVersion";
 
     public static final String DIALOG_TYPE_VEHICLE = "DialogTypeVehicle";
@@ -517,8 +519,7 @@ public class AUtils extends CommonUtils {
         }
     }
 
-    public static void showDialog(Context context, @Nullable String Title, @Nullable String Message, DialogInterface.OnClickListener
-            positiveListener, DialogInterface.OnClickListener negativeLisner) {
+    public static void showDialog(Context context, @Nullable String Title, @Nullable String Message, DialogInterface.OnClickListener positiveListener, DialogInterface.OnClickListener negativeLisner) {
 
         String positiveText = context.getResources().getString(R.string.yes_txt);
         String negativeText = context.getResources().getString(R.string.no_txt);
@@ -914,8 +915,7 @@ public class AUtils extends CommonUtils {
         mLocationRequest.setSmallestDisplacement(10);
         mLocationRequest.setFastestInterval(10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationSettingsRequest.Builder builder = new
-                LocationSettingsRequest.Builder();
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
 
         Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(ctx).checkLocationSettings(builder.build());
@@ -937,9 +937,7 @@ public class AUtils extends CommonUtils {
                             ResolvableApiException resolvable = (ResolvableApiException) exception;
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            resolvable.startResolutionForResult(
-                                    (Activity) ctx,
-                                    101);
+                            resolvable.startResolutionForResult((Activity) ctx, 101);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         } catch (ClassCastException e) {
@@ -976,8 +974,7 @@ public class AUtils extends CommonUtils {
 
     public static File getCompressed(Context context, String path) throws IOException {
 
-        if (context == null)
-            throw new NullPointerException("Context must not be null.");
+        if (context == null) throw new NullPointerException("Context must not be null.");
         //getting device external cache directory, might not be available on some devices,
         // so our code fall back to internal storage cache directory, which is always available but in smaller quantity
         File cacheDir = context.getExternalCacheDir();
@@ -989,8 +986,7 @@ public class AUtils extends CommonUtils {
         File root = new File(rootDir);
 
         //Create ImageCompressor folder if it doesnt already exists.
-        if (!root.exists())
-            root.mkdirs();
+        if (!root.exists()) root.mkdirs();
 
         //decode and resize the original bitmap from @param path.
         Bitmap bitmap = decodeImageFromFiles(path, /* your desired width*/300, /*your desired height*/ 300);
@@ -1026,8 +1022,7 @@ public class AUtils extends CommonUtils {
         scaleOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, scaleOptions);
         int scale = 1;
-        while (scaleOptions.outWidth / scale / 2 >= width
-                && scaleOptions.outHeight / scale / 2 >= height) {
+        while (scaleOptions.outWidth / scale / 2 >= width && scaleOptions.outHeight / scale / 2 >= height) {
             scale *= 2;
         }
         // decode with the sample size
@@ -1209,19 +1204,16 @@ public class AUtils extends CommonUtils {
 
                     Prefs.putString(AUtils.PREFS.AREA_VERTICES, json);
 
-                    if (geoAreaRequestListener != null)
-                        geoAreaRequestListener.onResponse();
+                    if (geoAreaRequestListener != null) geoAreaRequestListener.onResponse();
 //                checkLocationValidity();
                 } else {
-                    if (geoAreaRequestListener != null)
-                        geoAreaRequestListener.onResponse();
+                    if (geoAreaRequestListener != null) geoAreaRequestListener.onResponse();
                 }
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-                if (geoAreaRequestListener != null)
-                    geoAreaRequestListener.onFailure(throwable);
+                if (geoAreaRequestListener != null) geoAreaRequestListener.onFailure(throwable);
                 Log.e(TAG, "onFailure: " + throwable.getMessage());
             }
         });
@@ -1252,14 +1244,27 @@ public class AUtils extends CommonUtils {
         if (prefList != null) {
             boolean isPointInPolygon = PolyUtil.containsLocation(asdf, prefList, false);
 
-            Log.e(TAG, "current latlng= " + asdf
-                    + ", isValidArea: " + isPointInPolygon);
+            Log.e(TAG, "current latlng= " + asdf + ", isValidArea: " + isPointInPolygon);
 
             return isPointInPolygon;
         } else {
 
             return false;
         }
+    }
+
+    public static String getEncodedAppId() {
+
+        String strAppId = Prefs.getString(AUtils.APP_ID, null);
+        String enAppId = "ictsbm@" + strAppId.substring(0, 2) + "@Shirdi." + strAppId.substring(2, 4);
+
+        byte[] data = enAppId.getBytes(StandardCharsets.UTF_8);
+        String encodedAppId = Base64.encodeToString(data, Base64.DEFAULT);
+        Log.e(TAG, "onCreate: encodedAppId: " + encodedAppId);
+
+//        Prefs.putString(AUtils.ENCODED_APP_ID, enAppId);
+
+        return encodedAppId;
     }
 }
 

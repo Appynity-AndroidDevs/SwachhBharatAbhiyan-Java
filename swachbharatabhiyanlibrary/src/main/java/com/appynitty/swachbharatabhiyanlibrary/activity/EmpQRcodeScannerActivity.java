@@ -16,11 +16,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.hardware.Camera;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -45,6 +43,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
@@ -115,7 +114,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private EmpSyncServerRepository empSyncServerRepository;
     private HousePointRepo housePointRepo;
     private Gson gson;
-    Camera mCamera;
     private String lastText;
     private BeepManager beepManager;
     boolean isChecked = true;
@@ -126,11 +124,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            super.attachBaseContext(LocaleHelper.onAttach(newBase));
-        } else {
-            super.attachBaseContext(newBase);
-        }
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
     }
 
     @Override
@@ -164,17 +158,15 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            requestPermissions(new String[]{Manifest.permission.CAMERA}, AUtils.MY_PERMISSIONS_REQUEST_CAMERA);
-                        }
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, AUtils.MY_PERMISSIONS_REQUEST_CAMERA);
                     }
                 });
             }
         } else if (requestCode == AUtils.MY_PERMISSIONS_REQUEST_LOCATION) {
             //check if all permissions are granted
             boolean allgranted = false;
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_GRANTED) {
                     allgranted = true;
                 } else {
                     allgranted = false;
@@ -190,9 +182,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, AUtils.MY_PERMISSIONS_REQUEST_LOCATION);
-                        }
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, AUtils.MY_PERMISSIONS_REQUEST_LOCATION);
                     }
                 });
             }
@@ -204,7 +194,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                 // Permission Denied
                 Toast.makeText(EmpQRcodeScannerActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }
-            return;
         }
     }
 
@@ -224,10 +213,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -247,12 +234,11 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         if (AUtils.isInternetAvailable()) {
             AUtils.hideSnackBar();
         } else {
-            if (isChecked) {
-                //not assign
-            } else {
+            if (!isChecked) {
 
                 AUtils.showSnackBar(findViewById(R.id.parent));
-            }
+            }  //not assign
+
 
         }
     }
@@ -325,7 +311,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
-    private BarcodeCallback callback = new BarcodeCallback() {
+    private final BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
             if (result.getText() == null || result.getText().equals(lastText)) {
@@ -375,6 +361,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == RESULT_OK) {
                 scannerView.pause();
+                assert result.getData() != null;
                 Log.e(TAG, "onActivityResult: " + result.getData().getStringExtra("image_path"));
                 try {
                     onCaptureImageResult(result.getData());
@@ -480,11 +467,11 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                     if (isFlashOn) {
                         isFlashOn = false;
                         scannerView.setTorchOff();
-                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
+                        fabSpeedDial.getMainFab().setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_flash_off, null));
                     } else {
                         isFlashOn = true;
                         scannerView.setTorchOn();
-                        fabSpeedDial.getMainFab().setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on_indicator));
+                        fabSpeedDial.getMainFab().setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_flash_on_indicator, null));
                     }
 
                 } else {
@@ -496,11 +483,10 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         chooseActionPopUp.setChooseActionPopUpDialogListener(new ChooseActionPopUp.ChooseActionPopUpDialogListener() {
             @Override
             public void onChooseActionPopUpDismissed(String data, int actionType) {
-                String mId = data;
                 switch (actionType) {
                     case ChooseActionPopUp.ADD_DETAILS_BUTTON_CLICKED:
                         if (AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
-                            submitOnDetails(mId, getGCType(mId.trim()));
+                            submitOnDetails(data, getGCType(data.trim()));
                         } else {
                             if (!AUtils.isConnectedFast(mContext)) {
                                 AUtils.warning(mContext, getResources().getString(R.string.feature_unavailable_error), Toast.LENGTH_LONG);
@@ -513,7 +499,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                         break;
                     case ChooseActionPopUp.SKIP_BUTTON_CLICKED:
                         submitOnSkip(mHouse_id.trim().toString());
-                        Log.e(TAG, "onChooseActionPopUpDismissed: " + mId);
+                        Log.e(TAG, "onChooseActionPopUpDismissed: " + data);
                         break;
                 }
             }
@@ -565,13 +551,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private void submitQRcode(String houseid) {
         Log.e(TAG, "submitQRcode: " + houseid);
         mHouse_id = houseid;
-        if (validSubmitId(houseid.toLowerCase())) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//                takePhotoImageViewOnClick();
-//            }
-//            showActionPopUp(houseid);
-
-        } else {
+        if (!validSubmitId(houseid.toLowerCase())) {
             AUtils.warning(EmpQRcodeScannerActivity.this, mContext.getResources().getString(R.string.qr_error));
             restartPreview();
         }
@@ -603,10 +583,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
 
     private void isStoragePermissionGiven() {
-        if (AUtils.isStoragePermissionGiven(mContext)) {
-            //You already have the permission, just go ahead.
+        AUtils.isStoragePermissionGiven(mContext);//You already have the permission, just go ahead.
 //            isLocationPermissionGiven();
-        }
     }
 
     //
@@ -654,16 +632,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         }
     }
 
-
-    private void takePhotoImageViewOnClick() {
-//        setContentView(R.layout.layout_blank);
-//        stopPreview();
-//        scannerView.stopCamera();
-//        scannerView.stopCameraPreview();
-        Intent i = new Intent(EmpQRcodeScannerActivity.this, CameraActivity.class);
-//        startActivityForResult(i, REQUEST_CAMERA);
-        cameraActivityLauncher.launch(i);
-    }
 
     public void handleResult(String result) {
         Log.e(TAG, "handleResult: " + result);
@@ -865,7 +833,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         Bitmap newBitmap = AUtils.writeOnImage(mContext, AUtils.getDateAndTime(), mHouse_id, mImagePath, mLat, mLon);
 
 
-        Uri uri = getImageUri(mContext, newBitmap);
+        Uri uri = getImageUri(newBitmap);
         String str = getRealPathFromURI(String.valueOf(uri));
         compressedImagePath = compressImage(str);
 
@@ -888,7 +856,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) throws IOException {
+    public Uri getImageUri(Bitmap inImage) throws IOException {
 
         File tempDir = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES) + "/.temp/");
         tempDir.mkdir();
@@ -908,7 +876,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     public String compressImage(String imageUri) {
 
-        String filePath = imageUri;
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -916,15 +883,15 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 //      by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
 //      you try the use the bitmap here, you will get null.
         options.inJustDecodeBounds = true;
-        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+        Bitmap bmp = BitmapFactory.decodeFile(imageUri, options);
 
-        int actualHeight = options.outHeight;
-        int actualWidth = options.outWidth;
+        float actualHeight = options.outHeight;
+        float actualWidth = options.outWidth;
 
         float maxHeight = 1280.0f;
         float maxWidth = 1707.0f;
 
-        int bounding = dpToPx(250);
+        int bounding = dpToPx();
         Log.i("Test", "bounding = " + bounding);
         float imgRatio = actualWidth / actualHeight;
         float maxRatio = maxWidth / maxHeight;
@@ -961,13 +928,13 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         try {
 //          load the bitmap from its path
-            bmp = BitmapFactory.decodeFile(filePath, options);
+            bmp = BitmapFactory.decodeFile(imageUri, options);
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
 
         }
         try {
-            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+            scaledBitmap = Bitmap.createBitmap(Math.round(actualWidth), Math.round(actualHeight), Bitmap.Config.ARGB_8888);
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
         }
@@ -982,12 +949,12 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2F, middleY - bmp.getHeight() / 2F, new Paint(Paint.FILTER_BITMAP_FLAG));
 
 //      check the rotation of the image and display it properly
         ExifInterface exif;
         try {
-            exif = new ExifInterface(filePath);
+            exif = new ExifInterface(imageUri);
 
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
             Log.d("EXIF", "Exif: " + orientation);
@@ -1002,24 +969,25 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                 matrix.postRotate(270);
                 Log.d("EXIF", "Exif: " + orientation);
             }
+            assert scaledBitmap != null;
             scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        FileOutputStream out = null;
-        String filename = imageUri;
+        FileOutputStream out;
         try {
-            out = new FileOutputStream(filename);
+            out = new FileOutputStream(imageUri);
 
 //          write the compressed bitmap at the destination specified by filename.
+            assert scaledBitmap != null;
             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        return filename;
+        return imageUri;
 
     }
 
@@ -1031,19 +999,21 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         } else {
             cursor.moveToFirst();
             int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            cursor.close();
             return cursor.getString(index);
         }
+
     }
 
-    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    public int calculateInSampleSize(BitmapFactory.Options options, float reqWidth, float reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+            final int heightRatio = Math.round((float) height / reqHeight);
+            final int widthRatio = Math.round((float) width / reqWidth);
+            inSampleSize = Math.min(heightRatio, widthRatio);
         }
         final float totalPixels = width * height;
         final float totalReqPixelsCap = reqWidth * reqHeight * 2;
@@ -1054,9 +1024,9 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         return inSampleSize;
     }
 
-    private int dpToPx(int dp) {
+    private int dpToPx() {
         float density = getApplicationContext().getResources().getDisplayMetrics().density;
-        return Math.round((float) dp * density);
+        return Math.round((float) 250 * density);
     }
 
 
@@ -1065,7 +1035,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         Log.e(TAG, "readFile: reading the photo file");
     }
 
-    public int setDpi(byte[] imageData, int dpi) {
+    public void setDpi(byte[] imageData, int dpi) {
         imageData[13] = 1;
         imageData[14] = (byte) (dpi >> 8);
         imageData[15] = (byte) (dpi & 0xff);
@@ -1077,7 +1047,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         int dpiClassification = dm.densityDpi;
         float xDpi = dm.xdpi;
         float yDpi = dm.ydpi;*/
-        return dpi;
     }
 
     private boolean hasFlash() {

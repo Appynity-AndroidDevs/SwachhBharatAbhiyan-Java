@@ -173,11 +173,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (polyline != null)
                     polyline.remove();
 
-                PolylineOptions options = new PolylineOptions().pattern(PATTERN_POLYGON_ALPHA).width(15);
+                PolylineOptions options = new PolylineOptions().pattern(PATTERN_POLYGON_ALPHA)
+                        .color(Color.RED)
+                        .width(15);
 
                 polyline = googleMap.addPolyline(options.add(new LatLng(oldLat, oldLong), midLatLng));
 
-                if (calcDistance(midLatLng) > 30) {
+                if (calcDistance(midLatLng) > 50) {
                     polyline.remove();
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 20.0f));
                     Toast.makeText(MapsActivity.this, "Distance exceeded the given limit!", Toast.LENGTH_SHORT).show();

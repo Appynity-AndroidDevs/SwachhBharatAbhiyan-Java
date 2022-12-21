@@ -33,12 +33,12 @@
             android:id="@+id/btnOk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#CD000000"
+            android:background="#FFFFFF"
             android:drawableEnd="@drawable/ic_check_circle_24"
             android:padding="10dp"
             android:paddingBottom="@dimen/dim_10_dp"
             android:text="Confirm Location"
-            android:textColor="@color/white"
+            android:textColor="@color/colorGrayList"
             android:textStyle="bold"
             android:visibility="gone" />
 

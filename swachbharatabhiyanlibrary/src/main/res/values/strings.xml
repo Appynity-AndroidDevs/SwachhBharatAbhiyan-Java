@@ -270,6 +270,11 @@
 
     <!--Survey string -->
     <string name="title_survey_qr_code">Survey QR Code</string>
+    <string name="title_welcome_house_survey">House Survey</string>
+    <string name="title_survey_info">Survey Information</string>
+    <string name="str_srv_welcome">Welcome</string>
+    <string name="str_srv_wlc_sub_title">Tell us about your details.\n This process take about\n 2-3 minutes to complete</string>
+    <string name="btn_str_let_s_go">Let\'s Go</string>
 
 
 </resources>

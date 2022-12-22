@@ -146,7 +146,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.EmpSurveyQrActivity"
-            android:label="@string/title_activity_qrcode_scanner"
+            android:label="@string/title_survey_qr_code"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.WelcomeSurveyActivity"
+            android:label="@string/title_welcome_house_survey"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.SurveyInformationActivity"
+            android:label="@string/title_survey_info"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.EmpHistoryPageActivity"

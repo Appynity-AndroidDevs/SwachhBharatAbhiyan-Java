@@ -21,7 +21,8 @@ public class Connection {
         OkHttpClient httpClient = new OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
-                .addInterceptor(interceptor).build();
+                .addInterceptor(interceptor)
+                .build();
 
         Retrofit.Builder builder =
                 new Retrofit.Builder()
@@ -32,13 +33,16 @@ public class Connection {
         return retrofit.create(serviceClass);
     }
 
-    public static <S> S createService(Class<S> serviceClass, String url) {
+    public static <S> S createService(Class<S> serviceClass, String url, String token) {
+        TokenInterceptor tokenInterceptor = new TokenInterceptor(token);
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient httpClient = new OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
-                .addInterceptor(interceptor).build();
+                .addInterceptor(interceptor)
+                .addInterceptor(tokenInterceptor)
+                .build();
 
         Retrofit.Builder builder =
                 new Retrofit.Builder()

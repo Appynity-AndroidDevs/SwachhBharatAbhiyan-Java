@@ -103,7 +103,7 @@ public class AUtils extends CommonUtils {
 
     //NEW TESTING SERVER
     //  public static final String SERVER_URL = "http://114.143.244.133:6560/";
-    public static final String SERVER_URL = "https://ictsbm.com:30443";
+//    public static final String SERVER_URL = "https://ictsbm.com:30443";
     //   public static final String SERVER_URL = "http://202.65.157.254:6590";
 
     /***
@@ -126,15 +126,17 @@ public class AUtils extends CommonUtils {
 
     //Testingserver
 //    public static final String SERVER_URL = "http://202.65.157.254:4055/";
+    public static final String SERVER_URL = "http://124.153.94.110:1010/";
+
+
     //    General Constant
     public static final String STATUS_SUCCESS = "success";
 
     public static final String STATUS_ERROR = "error";
 
     public static final String CONTENT_TYPE = "application/json";
-
+    public static final String BEARER_TOKEN = "bearer_token";
     public static final String APP_ID = "AppId";
-    public static final String ENCODED_APP_ID = "enAppId";
     public static final String VERSION_CODE = "AppVersion";
 
     public static final String DIALOG_TYPE_VEHICLE = "DialogTypeVehicle";
@@ -1231,7 +1233,7 @@ public class AUtils extends CommonUtils {
         double lon = Double.parseDouble(Prefs.getString(AUtils.LONG, null));
         LatLng asdf = new LatLng(lat, lon);
 
-        List<LatLng> prefList = new ArrayList<>();
+        List<LatLng> prefList;
         String json = Prefs.getString(AUtils.PREFS.AREA_VERTICES, null);
 
         Gson gson = new Gson();
@@ -1259,10 +1261,8 @@ public class AUtils extends CommonUtils {
         String enAppId = "ictsbm@" + strAppId.substring(0, 2) + "@Shirdi." + strAppId.substring(2, 4);
 
         byte[] data = enAppId.getBytes(StandardCharsets.UTF_8);
-        String encodedAppId = Base64.encodeToString(data, Base64.DEFAULT);
+        String encodedAppId = Base64.encodeToString(data, Base64.NO_WRAP);
         Log.e(TAG, "onCreate: encodedAppId: " + encodedAppId);
-
-//        Prefs.putString(AUtils.ENCODED_APP_ID, enAppId);
 
         return encodedAppId;
     }

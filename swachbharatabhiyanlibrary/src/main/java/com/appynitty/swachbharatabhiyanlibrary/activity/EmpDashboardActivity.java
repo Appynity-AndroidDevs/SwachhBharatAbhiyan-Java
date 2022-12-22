@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +49,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.TokenViewModel;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -58,6 +60,7 @@ import com.riaylibrary.utils.LocaleHelper;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -276,6 +279,36 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 });
             }
 
+            String inDate = AUtils.getInPunchDate();
+            String currentDate = AUtils.getServerDate();
+
+            Calendar CurrentTime = AUtils.getCurrentTime();
+            Calendar DutyOffTime = AUtils.getDutyEndTime();
+
+            if (inDate.equals(currentDate) && CurrentTime.after(DutyOffTime)) {  //checking if the duty date is the current day
+                //and duty off-time has elapsed the current time
+
+                isFromAttendanceChecked = true;
+
+                String dutyEndTime = AUtils.getCurrentDateDutyOffTime();
+
+                /*syncOfflineAttendanceRepository.performCollectionInsert(mContext,
+                        syncOfflineAttendanceRepository.checkAttendance(), dutyEndTime);*/
+
+                onOutPunchSuccess();
+            }
+
+            if (!inDate.equals(currentDate)) {
+                isFromAttendanceChecked = true;
+
+                String dutyEndTime = AUtils.getPreviousDateDutyOffTime();
+
+                /*syncOfflineAttendanceRepository.performCollectionInsert(mContext,
+                        syncOfflineAttendanceRepository.checkAttendance(), dutyEndTime);*/
+
+                onOutPunchSuccess();
+            }
+
         }
 
 
@@ -361,6 +394,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
             }
         });*/
+
         mCheckAttendanceAdapter.setCheckAttendanceListener(new EmpCheckAttendanceAdapterClass.CheckAttendanceListener() {
             @Override
             public void onSuccessCallBack(boolean isAttendanceOff, String message, String messageMar) {
@@ -838,7 +872,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 //            vehicleStatus.setText(String.format("%s%s%s", this.getResources().getString(R.string.opening_round_bracket),
 //                    vehicleType, this.getResources().getString(R.string.closing_round_bracket)));
 //        }
-
+        AUtils.setInPunchDate(Calendar.getInstance());
         AUtils.setIsOnduty(true);
     }
 

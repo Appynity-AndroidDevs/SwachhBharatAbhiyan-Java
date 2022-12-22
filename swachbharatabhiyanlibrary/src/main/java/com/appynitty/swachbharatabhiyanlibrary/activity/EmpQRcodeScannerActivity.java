@@ -674,7 +674,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         } else AUtils.error(mContext, getResources().getString(R.string.invalid_qr_error));
     }
 
-    private void submitOnSkip(String id) {
+    private void submitOnSkip(String id) {          //setting pojo to send to the server.
         try {
             qrLocationPojo.setReferanceId(id);
             qrLocationPojo.setLat(mLat);

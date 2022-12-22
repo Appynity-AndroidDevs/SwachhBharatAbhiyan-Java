@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.EmpQRcodeScannerActivity"
+    tools:context=".activity.EmpSurveyQrActivity"
     android:id="@+id/parent">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -29,7 +29,6 @@
             android:paddingStart="@dimen/dim_6_dp"
             android:paddingEnd="@dimen/dim_6_dp"
             android:orientation="vertical"
-            android:visibility="gone"
             android:focusableInTouchMode="true">
 
             <RadioGroup
@@ -78,7 +77,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txt_area_layout"
                 android:hint="@string/select_area_hint"
-                android:visibility="gone"
                 android:theme="@style/TextLabel2"
                 android:layout_marginBottom="@dimen/dim_12_dp"
                 android:layout_marginTop="0dp"
@@ -104,7 +102,6 @@
                 android:hint="@string/hp_gp_id_hint"
                 android:theme="@style/TextLabel2"
                 android:id="@+id/txt_id_layout"
-                android:visibility="gone"
                 android:backgroundTint="@color/white">
 
                 <AutoCompleteTextView

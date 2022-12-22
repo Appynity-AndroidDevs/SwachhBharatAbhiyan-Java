@@ -53,4 +53,11 @@
         <item>@color/dot_dark_screen4</item>
     </array>
 
+    <!--Survey color code-->
+    <color name="colorSurveyGreenLight">#2EC891</color>
+    <color name="colorSurveyGreenDark">#06BD98</color>
+    <color name="colorSurveyWhite">#FFFFFF</color>
+    <color name="colorSurveyEditGreenLight">#97E3C9</color>
+    <color name="colorSurveyTextGreen">#1E715E</color>
+
 </resources>

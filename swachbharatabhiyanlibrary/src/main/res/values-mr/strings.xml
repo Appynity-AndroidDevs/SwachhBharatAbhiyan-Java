@@ -227,4 +227,7 @@
 
     <string name="dump_yard">डंप यार्ड</string>
 
+    <!--Survey string -->
+    <string name="title_survey_qr_code">सर्वेक्षण क्यूआर कोड</string>
+
 </resources>

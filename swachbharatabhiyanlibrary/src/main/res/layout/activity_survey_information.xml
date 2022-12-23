@@ -30,45 +30,47 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:fontFamily="@font/font_regular"
+            android:fontFamily="@font/font_medium"
             android:textColor="@color/white"
             android:textSize="@dimen/dim_18_sp"
             android:text="@string/title_survey_info"/>
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginHorizontal="@dimen/dim_10_dp"
         android:layout_below="@id/rl_toolbar">
 
-        <LinearLayout
-            android:id="@+id/pager_line"
+        <RelativeLayout
+            android:id="@+id/viewPagerIndicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
+            android:layout_marginVertical="10dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
-            <View
-                android:layout_width="60dp"
-                android:layout_height="1dp"
-                android:background="@drawable/pager_selector"/>
-            <View
-                android:layout_width="60dp"
-                android:layout_height="1dp"
-                android:background="@drawable/pager_selector"/>
-            <View
-                android:layout_width="60dp"
-                android:layout_height="1dp"
-                android:background="@drawable/pager_selector"/>
-        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/viewPagerCountDots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:orientation="horizontal" />
+
+        </RelativeLayout>
+
+
 
         <FrameLayout
             android:id="@+id/container_frame_layout"
+            android:layout_below="@id/viewPagerIndicator"
+            android:layout_above="@id/rl_btn_box"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorSurveyWhite">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
@@ -77,11 +79,53 @@
 
         </FrameLayout>
 
+        <RelativeLayout
+            android:id="@+id/rl_btn_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="@dimen/dim_10_dp"
+            android:layout_marginVertical="@dimen/dim_10_dp">
 
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_button"
+                android:text="Next"
+                android:fontFamily="@font/font_bold"
+                android:layout_alignParentEnd="true"
+                android:inputType="textCapSentences"
+                android:layout_centerVertical="true"
+                android:layout_marginVertical="@dimen/dim_20_dp"
+                android:layout_marginEnd="@dimen/dim_10_dp"
+                android:textColor="@color/colorSurveyTextGreen"
+                android:padding="@dimen/dim_10_dp"
+                android:elevation="@dimen/dim_10_dp"
+                android:shadowColor="@color/colorGray"
+                android:layout_gravity="center"
+                />
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_button"
+                android:text="Back"
+                android:fontFamily="@font/font_bold"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:inputType="textCapSentences"
+                android:layout_marginVertical="@dimen/dim_20_dp"
+                android:layout_marginStart="@dimen/dim_10_dp"
+                android:textColor="@color/colorSurveyTextGreen"
+                android:padding="@dimen/dim_10_dp"
+                android:elevation="@dimen/dim_10_dp"
+                android:shadowColor="@color/colorGray"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
 
+        </RelativeLayout>
 
-    </LinearLayout>
-
-
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -57,6 +57,7 @@ public class SyncServer {
     private final Context context;
     private static String empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
     private Executor executor = Executors.newSingleThreadExecutor();
+    String auth_token = "Bearer "+Prefs.getString(AUtils.BEARER_TOKEN, null);
 
     public SyncServer(Context context) {
 
@@ -310,7 +311,7 @@ public class SyncServer {
         try {
 
             UserDetailsWebService service = Connection.createService(UserDetailsWebService.class, AUtils.SERVER_URL);
-            userDetailPojo = service.pullUserDetails(Prefs.getString(AUtils.APP_ID, ""),
+            userDetailPojo = service.pullUserDetails(auth_token, Prefs.getString(AUtils.APP_ID, ""),
                     AUtils.CONTENT_TYPE, Prefs.getString(AUtils.PREFS.USER_ID, null),
                     Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0")).execute().body();
 
@@ -510,7 +511,7 @@ public class SyncServer {
         CheckAttendanceWebService checkAttendanceWebService = Connection.createService(CheckAttendanceWebService.class, AUtils.SERVER_URL);
 
         try {
-            checkAttendancePojo = checkAttendanceWebService.CheckAttendance(Prefs.getString(AUtils.APP_ID, ""),
+            checkAttendancePojo = checkAttendanceWebService.CheckAttendance(auth_token,Prefs.getString(AUtils.APP_ID, ""),
                     Prefs.getString(AUtils.PREFS.USER_ID, ""),
                     Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "")).execute().body();
 

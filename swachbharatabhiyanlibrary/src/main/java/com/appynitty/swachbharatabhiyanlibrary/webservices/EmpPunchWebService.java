@@ -13,13 +13,15 @@ public interface EmpPunchWebService {
 
 
     @POST("api/Save/QrEmployeeAttendenceIn")
-    Call<ResultPojo> saveInPunchDetails(@Header("appId") String appId,
+    Call<ResultPojo> saveInPunchDetails(@Header("Authorization") String auth_token,
+                                        @Header("appId") String appId,
                                         @Header("Content-Type") String content_type,
                                         @Header("batteryStatus") int batteryStatus,
                                         @Body EmpInPunchPojo loginPojo);
 
     @POST("api/Save/QrEmployeeAttendenceOut")
-    Call<ResultPojo> saveOutPunchDetails(@Header("appId") String appId,
+    Call<ResultPojo> saveOutPunchDetails(@Header("Authorization") String auth_token,
+                                         @Header("appId") String appId,
                                          @Header("Content-Type") String content_type,
                                          @Header("batteryStatus") int batteryStatus,
                                          @Body EmpOutPunchPojo outPojo);

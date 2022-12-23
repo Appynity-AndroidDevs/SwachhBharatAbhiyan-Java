@@ -11,8 +11,8 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpLoginDetailsPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpLoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpOutPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpWorkHistoryDetailPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.CheckAttendanceWebService;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.EmpLoginWebService;
@@ -32,6 +32,7 @@ public class EmpSyncServer {
     private static final String TAG = "EmpSyncServer";
     private static Gson gson;
     private final Context context;
+    String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
 
     public EmpSyncServer(Context context) {
 
@@ -45,9 +46,7 @@ public class EmpSyncServer {
         try {
 
             EmpLoginWebService service = Connection.createService(EmpLoginWebService.class, AUtils.SERVER_URL);
-            resultPojo = service.saveLoginDetails(
-                    AUtils.CONTENT_TYPE,
-                    empLoginPojo).execute().body();
+            resultPojo = service.saveLoginDetails(AUtils.CONTENT_TYPE, empLoginPojo).execute().body();
 
         } catch (Exception e) {
 
@@ -63,23 +62,20 @@ public class EmpSyncServer {
 
             EmpPunchWebService service = Connection.createService(EmpPunchWebService.class, AUtils.SERVER_URL);
 
-            if (Prefs.getString(AUtils.LAT,"").equals("") &&
-                    Prefs.getString(AUtils.LONG,"").equals(""))
-            {
+            if (Prefs.getString(AUtils.LAT, "").equals("") && Prefs.getString(AUtils.LONG, "").equals("")) {
                 Thread.currentThread();
                 Thread.sleep(3000);
             }
 
-            empInPunchPojo.setQrEmpId(Prefs.getString(AUtils.PREFS.USER_ID,""));
-            empInPunchPojo.setStartLat(Prefs.getString(AUtils.LAT,""));
-            empInPunchPojo.setStartLong(Prefs.getString(AUtils.LONG,""));
+            empInPunchPojo.setQrEmpId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
+            empInPunchPojo.setStartLat(Prefs.getString(AUtils.LAT, ""));
+            empInPunchPojo.setStartLong(Prefs.getString(AUtils.LONG, ""));
 
             Type type = new TypeToken<EmpInPunchPojo>() {
             }.getType();
             Prefs.putString(AUtils.PREFS.IN_PUNCH_POJO, gson.toJson(empInPunchPojo, type));
 
-            resultPojo = service.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
-                    AUtils.getBatteryStatus(), empInPunchPojo).execute().body();
+            resultPojo = service.saveInPunchDetails(auth_token, Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE, AUtils.getBatteryStatus(), empInPunchPojo).execute().body();
 
         } catch (Exception e) {
 
@@ -95,12 +91,11 @@ public class EmpSyncServer {
 
             EmpPunchWebService service = Connection.createService(EmpPunchWebService.class, AUtils.SERVER_URL);
 
-            empOutPunchPojo.setQrEmpId(Prefs.getString(AUtils.PREFS.USER_ID,""));
-            empOutPunchPojo.setEndLat(Prefs.getString(AUtils.LAT,""));
-            empOutPunchPojo.setEndLong(Prefs.getString(AUtils.LONG,""));
+            empOutPunchPojo.setQrEmpId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
+            empOutPunchPojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
+            empOutPunchPojo.setEndLong(Prefs.getString(AUtils.LONG, ""));
 
-            resultPojo = service.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
-                    AUtils.getBatteryStatus(), empOutPunchPojo).execute().body();
+            resultPojo = service.saveOutPunchDetails(auth_token, Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE, AUtils.getBatteryStatus(), empOutPunchPojo).execute().body();
 
         } catch (Exception e) {
 
@@ -116,9 +111,7 @@ public class EmpSyncServer {
         try {
 
             UserDetailsWebService service = Connection.createService(UserDetailsWebService.class, AUtils.SERVER_URL);
-            userDetailPojo = service.pullUserDetails(Prefs.getString(AUtils.APP_ID, ""),
-                    AUtils.CONTENT_TYPE, Prefs.getString(AUtils.PREFS.USER_ID,null),
-                    Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0")).execute().body();
+            userDetailPojo = service.pullUserDetails(auth_token, Prefs.getString(AUtils.APP_ID, ""), AUtils.CONTENT_TYPE, Prefs.getString(AUtils.PREFS.USER_ID, null), Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0")).execute().body();
 
             if (!AUtils.isNull(userDetailPojo)) {
 
@@ -143,8 +136,7 @@ public class EmpSyncServer {
         try {
 
             WorkHistoryWebService service = Connection.createService(WorkHistoryWebService.class, AUtils.SERVER_URL);
-            workHistoryPojoList = service.pullEmpWorkHistoryList(Prefs.getString(AUtils.APP_ID, ""),
-                    Prefs.getString(AUtils.PREFS.USER_ID,null), year, month).execute().body();
+            workHistoryPojoList = service.pullEmpWorkHistoryList(Prefs.getString(AUtils.APP_ID, ""), Prefs.getString(AUtils.PREFS.USER_ID, null), year, month).execute().body();
 
             if (!AUtils.isNull(workHistoryPojoList)) {
 
@@ -171,8 +163,7 @@ public class EmpSyncServer {
         try {
 
             WorkHistoryWebService service = Connection.createService(WorkHistoryWebService.class, AUtils.SERVER_URL);
-            workHistoryDetailPojoList = service.pullEmpWorkHistoryDetailList(Prefs.getString(AUtils.APP_ID, ""),
-                    Prefs.getString(AUtils.PREFS.USER_ID,null), fDate).execute().body();
+            workHistoryDetailPojoList = service.pullEmpWorkHistoryDetailList(Prefs.getString(AUtils.APP_ID, ""), Prefs.getString(AUtils.PREFS.USER_ID, null), fDate).execute().body();
 
             if (!AUtils.isNull(workHistoryDetailPojoList) && !workHistoryDetailPojoList.isEmpty()) {
 
@@ -192,15 +183,14 @@ public class EmpSyncServer {
         return false;
     }
 
-    public Boolean checkVersionUpdate(){
+    public Boolean checkVersionUpdate() {
 
         Boolean doUpdate = false;
 
         VersionCheckWebService checkService = Connection.createService(VersionCheckWebService.class, AUtils.SERVER_URL);
 
         try {
-            ResultPojo resultPojo = checkService.checkVersion(Prefs.getString(AUtils.APP_ID, "1"),
-                    Prefs.getInt(AUtils.VERSION_CODE, 0)).execute().body();
+            ResultPojo resultPojo = checkService.checkVersion(Prefs.getString(AUtils.APP_ID, "1"), Prefs.getInt(AUtils.VERSION_CODE, 0)).execute().body();
 
             if (resultPojo != null) {
                 doUpdate = Boolean.parseBoolean(resultPojo.getStatus());
@@ -214,16 +204,14 @@ public class EmpSyncServer {
         return doUpdate;
     }
 
-    public CheckAttendancePojo checkAttendance(){
+    public CheckAttendancePojo checkAttendance() {
 
         CheckAttendancePojo checkAttendancePojo = null;
 
         CheckAttendanceWebService checkAttendanceWebService = Connection.createService(CheckAttendanceWebService.class, AUtils.SERVER_URL);
 
         try {
-            checkAttendancePojo = checkAttendanceWebService.CheckAttendance(Prefs.getString(AUtils.APP_ID, ""),
-                    Prefs.getString(AUtils.PREFS.USER_ID, ""),
-                    Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "")).execute().body();
+            checkAttendancePojo = checkAttendanceWebService.CheckAttendance(auth_token, Prefs.getString(AUtils.APP_ID, ""), Prefs.getString(AUtils.PREFS.USER_ID, ""), Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "")).execute().body();
 
         } catch (Exception e) {
 

@@ -32,7 +32,7 @@ public class ShareLocationAdapterClass {
     private final LocationRepository mLocationRepository;
 
     private final String empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
-
+    String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
     private final List<UserLocationPojo> userLocationPojoList;
 
     public ShareLocationAdapterClass() {
@@ -77,7 +77,7 @@ public class ShareLocationAdapterClass {
         UserLocationWebService service = Connection.createService(UserLocationWebService.class, AUtils.SERVER_URL);
 
 
-        service.saveUserLocation(Prefs.getString(AUtils.APP_ID, "1"),
+        service.saveUserLocation(auth_token, Prefs.getString(AUtils.APP_ID, "1"),
                         AUtils.CONTENT_TYPE,
                         Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0"), empType,
                         AUtils.getBatteryStatus(), userLocationPojos)
@@ -141,7 +141,7 @@ public class ShareLocationAdapterClass {
 
                 UserLocationWebService service = Connection.createService(UserLocationWebService.class, AUtils.SERVER_URL);
 
-                service.saveUserLocation(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE
+                service.saveUserLocation(auth_token, Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE
                         , Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "0"), empType, AUtils.getBatteryStatus(), userLocationPojoList).enqueue(new Callback<List<UserLocationResultPojo>>() {
                     @Override
                     public void onResponse(Call<List<UserLocationResultPojo>> call, Response<List<UserLocationResultPojo>> response) {
@@ -178,7 +178,7 @@ public class ShareLocationAdapterClass {
             UserLocationWebService service = Connection.createService(UserLocationWebService.class, AUtils.SERVER_URL);
 
 
-            resultPojo = service.saveUserLocation(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE, Prefs.getString(AUtils.PREFS.USER_ID, null), empType, AUtils.getBatteryStatus(), userLocationPojoList).execute().body();
+            resultPojo = service.saveUserLocation(auth_token, Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE, Prefs.getString(AUtils.PREFS.USER_ID, null), empType, AUtils.getBatteryStatus(), userLocationPojoList).execute().body();
 
         } catch (Exception e) {
 

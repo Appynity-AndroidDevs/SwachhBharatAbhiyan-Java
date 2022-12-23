@@ -9,5 +9,5 @@ import retrofit2.http.Header;
 public interface AppGeoAreaWebService {
 
     @GET("api/Get/AppAreaLatLong")
-    Call<AppGeoArea> getAppGeoArea(@Header("appId") String appId);
+    Call<AppGeoArea> getAppGeoArea(@Header("Authorization")String auth_token,@Header("appId") String appId);
 }

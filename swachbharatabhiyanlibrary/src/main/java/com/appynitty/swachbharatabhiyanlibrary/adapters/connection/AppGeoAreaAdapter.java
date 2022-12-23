@@ -15,7 +15,7 @@ import retrofit2.Response;
 public class AppGeoAreaAdapter {
     private static final String TAG = "AppGeoAreaAdapter";
     private static final AppGeoAreaAdapter instance = new AppGeoAreaAdapter();
-
+    String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
 
     public static AppGeoAreaAdapter getInstance() {
         return instance;
@@ -23,7 +23,7 @@ public class AppGeoAreaAdapter {
 
     public void getAppGeoArea(AppGeoListener appGeoListener) {
         AppGeoAreaWebService service = Connection.createService(AppGeoAreaWebService.class, AUtils.SERVER_URL);
-        Call<AppGeoArea> appGeoAreaCall = service.getAppGeoArea(Prefs.getString(AUtils.APP_ID, null));
+        Call<AppGeoArea> appGeoAreaCall = service.getAppGeoArea(auth_token, Prefs.getString(AUtils.APP_ID, null));
         appGeoAreaCall.enqueue(new Callback<AppGeoArea>() {
             @Override
             public void onResponse(Call<AppGeoArea> call, Response<AppGeoArea> response) {

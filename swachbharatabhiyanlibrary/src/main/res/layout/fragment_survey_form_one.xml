@@ -4,9 +4,373 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormOneFragment">
 
+    <LinearLayout
+        android:id="@+id/rl_name_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="@dimen/dim_5_dp">
+
+        <ImageView
+            android:id="@+id/img_man"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/man"
+            android:layout_gravity="center_vertical|center"
+            android:fitsSystemWindows="true"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/dim_8_dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Name"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_gravity="end"
+                android:fontFamily="@font/font_medium"/>
+
+            <EditText
+                android:id="@+id/edt_your_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/survey_round_edt_box"
+                android:padding="@dimen/dim_15_dp"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1"
+                android:textSize="12sp"
+                android:fontFamily="@font/font_regular"
+                android:hint="Enter your name"
+                android:textColorHint="@color/colorGray"
+                android:textColor="@color/colorSurveyTextGreen"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/li_mobile_num_box"
+        android:layout_below="@id/rl_name_box"
+        android:layout_width="match_parent"
+        android:layout_marginVertical="@dimen/dim_5_dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/li_call"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/dim_8_dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Mobile Number"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_gravity="start"
+                android:fontFamily="@font/font_medium"/>
+
+            <EditText
+                android:id="@+id/edt_phone_call"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/survey_round_edt_box"
+                android:padding="@dimen/dim_15_dp"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:textSize="12sp"
+                android:fontFamily="@font/font_regular"
+                android:hint="Enter your mobile number"
+                android:textColorHint="@color/colorGray"
+                android:textColor="@color/colorSurveyTextGreen"/>
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/img_phone_call"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/phone_call"
+            android:layout_gravity="center_vertical|center"
+            android:fitsSystemWindows="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/li_birthday_box"
+        android:layout_below="@id/li_mobile_num_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="@dimen/dim_5_dp">
+
+        <ImageView
+            android:id="@+id/img_birth_cake"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/birthday_cake"
+            android:layout_gravity="center_vertical|center"
+            android:fitsSystemWindows="true"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/dim_8_dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_birth_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Age: 32"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@font/font_medium"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date Of Birth"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/font_medium"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/dim_8_dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dim_5_dp"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/dim_5_dp"
+                    android:background="@drawable/survey_round_edt_box"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="D"
+                        android:padding="@dimen/dim_5_dp"
+                        android:fontFamily="@font/font_medium"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorSurveyTextGreen"/>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/auto_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="23"
+                        android:textSize="10sp"
+                        android:maxLength="2"
+                        android:maxLines="1"
+                        android:inputType="none"
+                        android:padding="@dimen/dim_5_dp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/colorSurveyTextGreen"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/down_arrow"
+                        android:padding="@dimen/dim_5_dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dim_5_dp"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/dim_5_dp"
+                    android:background="@drawable/survey_round_edt_box"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="M"
+                        android:padding="@dimen/dim_5_dp"
+                        android:fontFamily="@font/font_medium"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorSurveyTextGreen"/>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/auto_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="05"
+                        android:textSize="10sp"
+                        android:maxLength="2"
+                        android:maxLines="1"
+                        android:inputType="none"
+                        android:padding="@dimen/dim_5_dp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/colorSurveyTextGreen"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/down_arrow"
+                        android:padding="@dimen/dim_5_dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dim_5_dp"
+                    android:gravity="center"
+                    android:background="@drawable/survey_round_edt_box"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Y"
+                        android:padding="@dimen/dim_5_dp"
+                        android:fontFamily="@font/font_medium"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorSurveyTextGreen"/>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/auto_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2022"
+                        android:textSize="10sp"
+                        android:maxLength="4"
+                        android:maxLines="1"
+                        android:inputType="none"
+                        android:padding="@dimen/dim_5_dp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/colorSurveyTextGreen"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/down_arrow"
+                        android:padding="@dimen/dim_5_dp"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/li_gender_box"
+        android:layout_below="@id/li_birthday_box"
+        android:layout_width="match_parent"
+        android:layout_marginVertical="@dimen/dim_5_dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/li_gender"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/dim_8_dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Which One Are You?"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_gravity="start"
+                android:fontFamily="@font/font_medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/dim_8_dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_male"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:checked="true"
+                    android:layout_marginEnd="@dimen/dim_5_dp"
+                    android:buttonTint="@color/white"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:text="Male"/>
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_female"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:checked="false"
+                    android:layout_marginEnd="@dimen/dim_5_dp"
+                    android:buttonTint="@color/white"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:text="Female"/>
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_transgender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:checked="false"
+                    android:layout_marginEnd="@dimen/dim_5_dp"
+                    android:buttonTint="@color/white"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:text="Transgender"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/img_gender"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sex"
+            android:layout_gravity="center_vertical|center"
+            android:fitsSystemWindows="true"/>
+
+    </LinearLayout>
 
 
 </RelativeLayout>

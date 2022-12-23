@@ -65,6 +65,7 @@ import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1254,5 +1255,78 @@ public class AUtils extends CommonUtils {
             return false;
         }
     }
+
+    /*******
+     * survey from auto calculate age
+     * */
+
+    public static int getAge(String date) {
+
+        int age = 0;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date date1 = dateFormat.parse(date);
+            Calendar now = Calendar.getInstance();
+            Calendar dob = Calendar.getInstance();
+            dob.setTime(date1);
+            if (dob.after(now)) {
+                throw new IllegalArgumentException("Can't be born in the future");
+            }
+            int year1 = now.get(Calendar.YEAR);
+            int year2 = dob.get(Calendar.YEAR);
+            age = year1 - year2;
+            int month1 = now.get(Calendar.MONTH);
+            int month2 = dob.get(Calendar.MONTH);
+            if (month2 > month1) {
+                age--;
+            } else if (month1 == month2) {
+                int day1 = now.get(Calendar.DAY_OF_MONTH);
+                int day2 = dob.get(Calendar.DAY_OF_MONTH);
+                if (day2 > day1) {
+                    age--;
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return age ;
+    }
+
+    public static String getAge(int year, int month, int day)
+    {
+
+        Calendar dob = Calendar.getInstance();
+
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int today_m = today.get(Calendar.MONTH);
+
+        int dob_m = dob.get(Calendar.MONTH);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (dob_m > today_m)
+        {
+
+            age--;
+        }
+        else if (dob_m == today_m)
+        {
+
+            int day_today = today.get(Calendar.DAY_OF_MONTH);
+
+            int day_dob = dob.get(Calendar.DAY_OF_MONTH);
+            if (day_dob > day_today) {
+                age--;}
+
+        }
+        return age+"";
+    }
+
+    /*LocalDate birthdate = new LocalDate (1970, 1, 20);
+    LocalDate now = new LocalDate();
+    Years age = Years.yearsBetween(birthdate, now);*/
 }
 

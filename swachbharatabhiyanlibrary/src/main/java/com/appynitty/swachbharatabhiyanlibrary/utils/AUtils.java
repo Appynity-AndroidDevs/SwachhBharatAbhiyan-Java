@@ -72,6 +72,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class AUtils extends CommonUtils {
 
@@ -193,6 +194,7 @@ public class AUtils extends CommonUtils {
     public static final String GIS_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
     public static final String GIS_START_TS = "startTs";
     public static final String GIS_END_TS = "endTs";
+    public static final String TRAIL_ID = "trailId";
 
     public static final long LOCATION_INTERVAL_MINUTES = 10 * 60 * 1000;
 
@@ -222,6 +224,7 @@ public class AUtils extends CommonUtils {
     public static final String BEFORE_IMAGE_TIME = "b4ImageTime";
     public static final String AFTER_IMAGE = "imageA";
     public static final String QR_IMAGE_PATH = "qr_image_path";
+    private static final String ALLOWED_CHARACTERS = "0123456789qwertyuiopasdfghjklzxcvbnm";
 
     private static SyncServerAdapterClass syncServer;
     private static ShareLocationAdapterClass shareLocationAdapterClass;
@@ -1266,5 +1269,20 @@ public class AUtils extends CommonUtils {
 
         return encodedAppId;
     }
+
+    public static void generateTrailId() {
+        final Random random = new Random();
+        final StringBuilder sb = new StringBuilder(10);
+        for (int i = 0; i < 10; ++i)
+            sb.append(ALLOWED_CHARACTERS.charAt(random.nextInt(ALLOWED_CHARACTERS.length())));
+        String trail_id = sb.toString();
+        Prefs.putString(TRAIL_ID, trail_id);
+        Log.e(TAG, "generateTrailId: " + trail_id);
+    }
+
+    public static String getTrailId() {
+        return Prefs.getString(TRAIL_ID, null);
+    }
+
 }
 

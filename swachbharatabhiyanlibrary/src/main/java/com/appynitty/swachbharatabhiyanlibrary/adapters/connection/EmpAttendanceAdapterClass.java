@@ -99,7 +99,7 @@ public class EmpAttendanceAdapterClass {
             public void doInBackgroundOpration(EmpSyncServer empSyncServer) {
 
                 EmpOutPunchPojo empOutPunchPojo = new EmpOutPunchPojo();
-                empOutPunchPojo.setEndDate(AUtils.getServerDate());
+                empOutPunchPojo.setEndDate(AUtils.getLocalDate());
                 empOutPunchPojo.setEndTime(AUtils.getServerTime());
                 resultPojo = empSyncServer.saveOutPunch(empOutPunchPojo);
 

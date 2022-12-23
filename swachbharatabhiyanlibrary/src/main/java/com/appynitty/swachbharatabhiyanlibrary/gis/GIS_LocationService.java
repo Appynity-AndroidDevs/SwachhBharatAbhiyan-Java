@@ -34,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,6 +58,8 @@ public class GIS_LocationService extends LifecycleService {
     private HousePointRepo mHousePointRepo;
     private List<LocationEntity> mAllLocations;
     private List<HouseLocationEntity> mAllHouses;
+    String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
+    private final List<GISRequestDTO> gisRequestDTOList = new ArrayList<>();
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -69,16 +72,11 @@ public class GIS_LocationService extends LifecycleService {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        fusedLocationClient.requestLocationUpdates(locationRequest,
-                locationCallback,
-                Looper.getMainLooper());
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
     protected LocationRequest createLocationRequest() {
-        return new LocationRequest.Builder(0)
-                .setIntervalMillis(1000 * 60)
-                .setMinUpdateDistanceMeters(5F)
-                .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
+        return new LocationRequest.Builder(0).setIntervalMillis(1000 * 60).setMinUpdateDistanceMeters(5F).setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
     }
 
     @Override
@@ -91,9 +89,8 @@ public class GIS_LocationService extends LifecycleService {
 
         Type type = new TypeToken<UserDetailPojo>() {
         }.getType();
-        userDetailPojo = new Gson().fromJson(
-                Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
-
+        userDetailPojo = new Gson().fromJson(Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
+        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationRequest = createLocationRequest();
@@ -103,13 +100,10 @@ public class GIS_LocationService extends LifecycleService {
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
                 if (location != null) {
-                    Log.e(TAG, "onLocationResult: lat: " + location.getLatitude()
-                            + ", lon: " + location.getLongitude()
-                            + ", accuracy: " + location.getAccuracy()
-                    );
+                    Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
 
                     LocationEntity locEntity = new LocationEntity();
-                    locEntity.setLatLng(location.getLatitude() + " " + location.getLongitude());
+                    locEntity.setLatLng(location.getLongitude() + " " + location.getLatitude());
                     mLocationRepository.insert(locEntity);
                 }
 
@@ -117,26 +111,21 @@ public class GIS_LocationService extends LifecycleService {
         };
         startLocationUpdates();
 
-        mLocationRepository.getAllLocations().observe(GIS_LocationService.this,
-                new Observer<List<LocationEntity>>() {
-                    @Override
-                    public void onChanged(List<LocationEntity> locationEntities) {
-                        mAllLocations = locationEntities;
-                    }
-                });
+        mLocationRepository.getAllLocations().observe(GIS_LocationService.this, new Observer<List<LocationEntity>>() {
+            @Override
+            public void onChanged(List<LocationEntity> locationEntities) {
+                mAllLocations = locationEntities;
+            }
+        });
 
         mHousePointRepo.getAllHousePoint().observe(GIS_LocationService.this, new Observer<List<HouseLocationEntity>>() {
             @Override
             public void onChanged(List<HouseLocationEntity> houseLocationEntities) {
                 mAllHouses = houseLocationEntities;
-                for (HouseLocationEntity houseEntity :
-                        houseLocationEntities) {
-                    Log.e(TAG, "onChanged: houseId: "
-                            + houseEntity.getHouseId() +
-                            ", UserName: " + houseEntity.getUserName() +
-                            ", Latlng: " + houseEntity.getLocationPoint());
+                for (HouseLocationEntity houseEntity : houseLocationEntities) {
+                    Log.e(TAG, "onChanged: houseId: " + houseEntity.getHouseId() + ", UserName: " + houseEntity.getUserName() + ", Latlng: " + houseEntity.getLocationPoint());
                     GISRequestDTO housePointDto = new GISRequestDTO();
-                    housePointDto.setCreateUser(userDetailPojo.getName());
+                    housePointDto.setCreateUser(Integer.parseInt(userDetailPojo.getName()));
                     housePointDto.setHouseId(Integer.parseInt(houseEntity.getHouseId()));
                     housePointDto.setGeom("POINT (" + houseEntity.getLocationPoint() + ")");
                     GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
@@ -177,11 +166,20 @@ public class GIS_LocationService extends LifecycleService {
 
                 mLineString.append(mAllLocations.get(mAllLocations.size() - 1).getLatLng()).append(")");
                 Log.e(TAG, "sendLocations: LineString: " + mLineString);
+                Log.e(TAG, "sendLocations: userId: " + Prefs.getString(AUtils.PREFS.USER_ID, null));
+                GISRequestDTO gisRequestDTO = new GISRequestDTO();
+                gisRequestDTO.setTrailId(AUtils.getTrailId());
+                gisRequestDTO.setStartTs(Prefs.getString(AUtils.GIS_START_TS, null));
+                gisRequestDTO.setEndTs(AUtils.getGisDateTime());
+                gisRequestDTO.setCreateUser(Integer.parseInt(Prefs.getString(AUtils.PREFS.USER_ID, null)));
+                gisRequestDTO.setCreateTs(AUtils.getGisDateTime());
+                gisRequestDTO.setUpdateUser(Integer.parseInt(Prefs.getString(AUtils.PREFS.USER_ID, null)));
+                gisRequestDTO.setUpdateTs(AUtils.getGisDateTime());
+                gisRequestDTO.setGeom(mLineString.toString());
 
-                GISRequestDTO gisRequest = new GISRequestDTO();
-                gisRequest.setStartTs(Prefs.getString(AUtils.GIS_START_TS, null));
-                gisRequest.setCreateUser(userDetailPojo.getName());
-                gisRequest.setGeom(mLineString.toString());
+                gisRequestDTOList.add(gisRequestDTO);
+                Log.e(TAG, "houseMapingTrail body: " + gisRequestDTO.to_String());
+
                 /*if (Prefs.contains(AUtils.GIS_END_TS)) {
                     if (!AUtils.isNullString(Prefs.getString(AUtils.GIS_END_TS, null))
                             || !Prefs.getString(AUtils.GIS_END_TS, null).isEmpty())
@@ -191,22 +189,22 @@ public class GIS_LocationService extends LifecycleService {
 
                 GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
                 if (userTypeId.equals(AUtils.USER_TYPE.USER_TYPE_EMP_SCANNIFY)) {
-                    service.sendHouseMapTrail(gisRequest).enqueue(new Callback<GISResponseDTO>() {
+                    service.sendHouseMapTrail(auth_token, Prefs.getString(AUtils.APP_ID, null), gisRequestDTOList).enqueue(new Callback<List<GISResponseDTO>>() {
                         @Override
-                        public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
+                        public void onResponse(@NonNull Call<List<GISResponseDTO>> call, @NonNull Response<List<GISResponseDTO>> response) {
                             if (response.body() != null) {
-                                if (response.body().getStatus().equals("Success"))
+                                if (response.body().get(0).getStatus().equals("Success"))
                                     mLocationRepository.delete();
                             }
                         }
 
                         @Override
-                        public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
+                        public void onFailure(@NonNull Call<List<GISResponseDTO>> call, @NonNull Throwable t) {
                             Log.e(TAG, "onFailure: " + t.getMessage());
                         }
                     });
                 } else {
-                    service.sendGarbageTrail(gisRequest).enqueue(new Callback<GISResponseDTO>() {
+                    service.sendGarbageTrail(gisRequestDTO).enqueue(new Callback<GISResponseDTO>() {
                         @Override
                         public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
                             if (response.body() != null) {
@@ -232,11 +230,7 @@ public class GIS_LocationService extends LifecycleService {
         userTypeId = Prefs.getString(AUtils.PREFS.USER_TYPE_ID, AUtils.USER_TYPE.USER_TYPE_GHANTA_GADI);
         String channelName = "Location Service for GIS";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    CHANNEL_ID,
-                    channelName,
-                    NotificationManager.IMPORTANCE_DEFAULT
-            );
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);

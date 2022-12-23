@@ -1,5 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.gis;
 
+import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -8,7 +10,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkConnection {
-    private static final String BASE_URL = "http://114.143.244.130:9091";
     private static volatile Retrofit INSTANCE = null;
 
 
@@ -25,7 +26,7 @@ public class NetworkConnection {
     public static synchronized Retrofit getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(AUtils.SERVER_URL)
                     .client(getOkHttpClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

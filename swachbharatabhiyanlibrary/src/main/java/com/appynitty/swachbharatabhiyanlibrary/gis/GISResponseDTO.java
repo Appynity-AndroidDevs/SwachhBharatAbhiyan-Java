@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GISResponseDTO {
-    private Integer code;
+    private String code;
     private String status;
     private String message;
-    private List<String> errorMessages = new ArrayList<String>();
+    private String errorMessages;
     private String timestamp;
-    private Integer data;
+    private String data;
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -35,11 +35,11 @@ public class GISResponseDTO {
         this.message = message;
     }
 
-    public List<String> getErrorMessages() {
+    public String getErrorMessages() {
         return errorMessages;
     }
 
-    public void setErrorMessages(List<String> errorMessages) {
+    public void setErrorMessages(String errorMessages) {
         this.errorMessages = errorMessages;
     }
 
@@ -51,11 +51,11 @@ public class GISResponseDTO {
         this.timestamp = timestamp;
     }
 
-    public Integer getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Integer data) {
+    public void setData(String data) {
         this.data = data;
     }
 }

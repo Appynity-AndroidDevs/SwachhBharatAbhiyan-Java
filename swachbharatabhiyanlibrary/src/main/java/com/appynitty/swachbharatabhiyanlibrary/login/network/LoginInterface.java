@@ -12,7 +12,7 @@ public interface LoginInterface {
 
 
     @POST("api/Account/Login")
-    Call<LoginDetailsPojo> saveLoginDetails(@Header("appId") String appId,
+    Call<LoginDetailsPojo> saveLoginDetails(@Header("Authorization") String token, @Header("appId") String appId,
                                             @Header("Content-Type") String content_type,
                                             @Header("EmpType") String emp_type,
                                             @Body LoginPojo loginPojo);

@@ -4,7 +4,7 @@ public class LoginPojo {
 
 //
 
-    private String employeeType;
+    private String EmpType;
 
     private String userPassword;
 
@@ -36,11 +36,11 @@ public class LoginPojo {
         this.imiNo = imiNo;
     }
 
-    public String getEmployeeType() {
-        return employeeType;
+    public String getEmpType() {
+        return EmpType;
     }
 
-    public void setEmployeeType(String employeeType) {
-        this.employeeType = employeeType;
+    public void setEmpType(String empType) {
+        this.EmpType = empType;
     }
 }

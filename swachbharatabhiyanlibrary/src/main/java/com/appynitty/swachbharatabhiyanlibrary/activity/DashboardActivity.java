@@ -181,7 +181,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         super.onCreate(savedInstanceState);
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
-        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+//        ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
 
         Log.i("DashboardLifecycle", "onCreate: ");
         onSwitchStatus(AUtils.isIsOnduty());

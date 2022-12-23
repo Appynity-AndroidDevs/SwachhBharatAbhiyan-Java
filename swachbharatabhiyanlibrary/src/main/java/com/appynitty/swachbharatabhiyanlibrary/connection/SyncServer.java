@@ -73,8 +73,8 @@ public class SyncServer {
              * nagpur used only empType "N". and in login activity empType field hide. Url change 253. appId change 3068
              * */
             LoginWebService service = Connection.createService(LoginWebService.class, AUtils.SERVER_URL);
-            resultPojo = service.saveLoginDetails(Prefs.getString(AUtils.APP_ID, "")
-                    , AUtils.CONTENT_TYPE, loginPojo.getEmployeeType()/* "N"*/,
+            resultPojo = service.saveLoginDetails("", Prefs.getString(AUtils.APP_ID, "")
+                    , AUtils.CONTENT_TYPE, loginPojo.getEmpType()/* "N"*/,
                     loginPojo).execute().body();
 
 //            AUtils.setEmpType(resultPojo.getEmpType());
@@ -424,7 +424,7 @@ public class SyncServer {
 
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
             areaPojoList = areaHousePointService.fetchCollectionArea(Prefs.getString(AUtils.APP_ID, ""), areaType
-                            , Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, loginPojo.getEmployeeType()))
+                            , Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, loginPojo.getEmpType()))
                     .execute().body();
 
         } catch (Exception e) {
@@ -441,7 +441,7 @@ public class SyncServer {
         try {
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
             areaPojoList = areaHousePointService.fetchCollectionAreaHouse(
-                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId, Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, loginPojo.getEmployeeType()))
+                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId, Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, loginPojo.getEmpType()))
                     .execute().body();
 
         } catch (Exception e) {

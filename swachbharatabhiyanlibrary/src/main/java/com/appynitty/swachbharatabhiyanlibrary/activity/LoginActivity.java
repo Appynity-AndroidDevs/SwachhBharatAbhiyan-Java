@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,7 +27,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.LoginAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
-import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.login.viewmodel.LoginViewModel;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginDetailsPojo;
@@ -41,8 +38,6 @@ import com.riaylibrary.utils.LocaleHelper;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Richali Pradhan Gupte on 24-10-2018.
@@ -470,16 +465,16 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         loginPojo.setUserPassword(password);
 
         if (empType.matches(getResources().getString(R.string.household_collection))) {
-            loginPojo.setEmployeeType("N");
+            loginPojo.setEmpType("N");
 
         } else if (empType.matches(getResources().getString(R.string.street_sweeping))) {
-            loginPojo.setEmployeeType("S");
+            loginPojo.setEmpType("S");
 
         } else if (empType.matches(getResources().getString(R.string.liquid_waste_cleaning))) {
-            loginPojo.setEmployeeType("L");
+            loginPojo.setEmpType("L");
 
         } else if (empType.matches(getResources().getString(R.string.dump_yard_supervisor))) {
-            loginPojo.setEmployeeType("D");
+            loginPojo.setEmpType("D");
 
         }
 

@@ -1259,7 +1259,7 @@ public class AUtils extends CommonUtils {
 
         String strAppId = Prefs.getString(AUtils.APP_ID, null);
         String enAppId = "ictsbm@" + strAppId.substring(0, 2) + "@Shirdi." + strAppId.substring(2, 4);
-
+//        String enAppId = "ictsbm@31" + "@Shirdi.32" ;
         byte[] data = enAppId.getBytes(StandardCharsets.UTF_8);
         String encodedAppId = Base64.encodeToString(data, Base64.NO_WRAP);
         Log.e(TAG, "onCreate: encodedAppId: " + encodedAppId);

@@ -12,6 +12,7 @@
         <domain includeSubdomains="true">ictsbm.com</domain>
         <domain includeSubdomains="true">114.143.244.133</domain>
         <domain includeSubdomains="true">114.143.244.130</domain>
+        <domain includeSubdomains="true">124.153.94.110</domain>
     </domain-config>
 
     <!--New advanced ULB    http://202.65.157.253-->

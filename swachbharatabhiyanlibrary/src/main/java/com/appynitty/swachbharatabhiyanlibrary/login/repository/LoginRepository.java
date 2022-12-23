@@ -21,9 +21,10 @@ import retrofit2.Response;
 public class LoginRepository {
 
     private static final String TAG = "LoginRepository";
-    private LoginInterface loginAPI = RetrofitClient.getInstance().getLoginAPI();
+    private final LoginInterface loginAPI = RetrofitClient.getInstance().getLoginAPI();
     private final Executor executor = Executors.newSingleThreadExecutor();
-    private LoginUserCallBacks loginUserCallBacks;
+    private final LoginUserCallBacks loginUserCallBacks;
+    private final String token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
 
     public LoginRepository(LoginUserCallBacks loginUserCallBacks) {
         this.loginUserCallBacks = loginUserCallBacks;
@@ -36,20 +37,20 @@ public class LoginRepository {
             public void run() {
 
 
-                Call<LoginDetailsPojo> call = loginAPI.saveLoginDetails(Prefs.getString(AUtils.APP_ID, "")
-                        , AUtils.CONTENT_TYPE, loginPojo.getEmployeeType(),
+                Call<LoginDetailsPojo> call = loginAPI.saveLoginDetails(token, Prefs.getString(AUtils.APP_ID, "")
+                        , AUtils.CONTENT_TYPE, loginPojo.getEmpType(),
                         loginPojo);
 
                 call.enqueue(new Callback<LoginDetailsPojo>() {
                     @Override
-                    public void onResponse(Call<LoginDetailsPojo> call, @NonNull Response<LoginDetailsPojo> response) {
+                    public void onResponse(@NonNull Call<LoginDetailsPojo> call, @NonNull Response<LoginDetailsPojo> response) {
                         loginUserCallBacks.onLoginResponseSuccess(response.body());
                         if (!AUtils.isNull(response))
                             Log.e(TAG, "onResponse: " + response.body());
                     }
 
                     @Override
-                    public void onFailure(Call<LoginDetailsPojo> call, Throwable t) {
+                    public void onFailure(@NonNull Call<LoginDetailsPojo> call, @NonNull Throwable t) {
                         loginUserCallBacks.onLoginResponseFailure(t);
                     }
                 });

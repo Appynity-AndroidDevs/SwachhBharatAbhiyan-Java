@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +48,6 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
-import com.appynitty.swachbharatabhiyanlibrary.viewmodels.TokenViewModel;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -294,7 +292,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
                 /*syncOfflineAttendanceRepository.performCollectionInsert(mContext,
                         syncOfflineAttendanceRepository.checkAttendance(), dutyEndTime);*/
-
+                Prefs.putString(AUtils.BEARER_TOKEN, "");
                 onOutPunchSuccess();
             }
 
@@ -302,7 +300,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 isFromAttendanceChecked = true;
 
                 String dutyEndTime = AUtils.getPreviousDateDutyOffTime();
-
+                Prefs.putString(AUtils.BEARER_TOKEN, "");
                 /*syncOfflineAttendanceRepository.performCollectionInsert(mContext,
                         syncOfflineAttendanceRepository.checkAttendance(), dutyEndTime);*/
 
@@ -881,6 +879,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorOFFDutyRed));
 
         vehicleStatus.setText("");
+
 
         boolean isservicerunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
 

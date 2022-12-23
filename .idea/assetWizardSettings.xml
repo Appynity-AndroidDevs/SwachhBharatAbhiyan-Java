@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="343232" />
-                            <entry key="outputName" value="ic_arrow_drop_down" />
-                            <entry key="sourceFile" value="D:\CloneSBA\swachbharatabhiyanlibrary\src\main\res\drawable-hdpi\try.svg" />
+                            <entry key="outputName" value="user_icon" />
+                            <entry key="sourceFile" value="D:\BigV Project\Sba_Ghantagadi\include survey app\Survey App\User_Icon.svg" />
                           </map>
                         </option>
                       </PersistentState>

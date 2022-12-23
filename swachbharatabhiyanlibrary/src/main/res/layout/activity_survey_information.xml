@@ -37,6 +37,51 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/dim_10_dp"
+        android:layout_below="@id/rl_toolbar">
+
+        <LinearLayout
+            android:id="@+id/pager_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="60dp"
+                android:layout_height="1dp"
+                android:background="@drawable/pager_selector"/>
+            <View
+                android:layout_width="60dp"
+                android:layout_height="1dp"
+                android:background="@drawable/pager_selector"/>
+            <View
+                android:layout_width="60dp"
+                android:layout_height="1dp"
+                android:background="@drawable/pager_selector"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/container_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+
+
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>

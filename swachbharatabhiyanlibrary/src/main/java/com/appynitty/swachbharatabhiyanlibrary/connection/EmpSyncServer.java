@@ -136,7 +136,7 @@ public class EmpSyncServer {
         try {
 
             WorkHistoryWebService service = Connection.createService(WorkHistoryWebService.class, AUtils.SERVER_URL);
-            workHistoryPojoList = service.pullEmpWorkHistoryList(Prefs.getString(AUtils.APP_ID, ""), Prefs.getString(AUtils.PREFS.USER_ID, null), year, month).execute().body();
+            workHistoryPojoList = service.pullEmpWorkHistoryList(auth_token, Prefs.getString(AUtils.APP_ID, ""), Prefs.getString(AUtils.PREFS.USER_ID, null), year, month).execute().body();
 
             if (!AUtils.isNull(workHistoryPojoList)) {
 
@@ -163,7 +163,7 @@ public class EmpSyncServer {
         try {
 
             WorkHistoryWebService service = Connection.createService(WorkHistoryWebService.class, AUtils.SERVER_URL);
-            workHistoryDetailPojoList = service.pullEmpWorkHistoryDetailList(Prefs.getString(AUtils.APP_ID, ""), Prefs.getString(AUtils.PREFS.USER_ID, null), fDate).execute().body();
+            workHistoryDetailPojoList = service.pullEmpWorkHistoryDetailList(auth_token, Prefs.getString(AUtils.APP_ID, ""), Prefs.getString(AUtils.PREFS.USER_ID, null), fDate).execute().body();
 
             if (!AUtils.isNull(workHistoryDetailPojoList) && !workHistoryDetailPojoList.isEmpty()) {
 

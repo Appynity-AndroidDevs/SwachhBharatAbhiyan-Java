@@ -90,7 +90,7 @@ public class GIS_LocationService extends LifecycleService {
         Type type = new TypeToken<UserDetailPojo>() {
         }.getType();
         userDetailPojo = new Gson().fromJson(Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
-        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
+//        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationRequest = createLocationRequest();
@@ -125,7 +125,7 @@ public class GIS_LocationService extends LifecycleService {
                 for (HouseLocationEntity houseEntity : houseLocationEntities) {
                     Log.e(TAG, "onChanged: houseId: " + houseEntity.getHouseId() + ", UserName: " + houseEntity.getUserName() + ", Latlng: " + houseEntity.getLocationPoint());
                     GISRequestDTO housePointDto = new GISRequestDTO();
-                    housePointDto.setCreateUser(Integer.parseInt(userDetailPojo.getName()));
+                    housePointDto.setCreateUser(Integer.parseInt(Prefs.getString(AUtils.PREFS.USER_ID, null)));
                     housePointDto.setHouseId(Integer.parseInt(houseEntity.getHouseId()));
                     housePointDto.setGeom("POINT (" + houseEntity.getLocationPoint() + ")");
                     GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);

@@ -13,15 +13,18 @@ public class QrLocationPojo {
     private String Address;
     private String Lat;
     private String Long;
-    private String zoneId;
-    private String wardId;
-    private String areaId;
+    private Integer zoneId;
+    private Integer wardId;
+    private Integer areaId;
     private String houseNumber;
     private String userId;
     private String mobileno;
     private String date;
     private String OfflineID;
     private String QRCodeImage;
+    private Integer new_const;
+    private String geom;
+    private String createTs;
 
     public String getQRCodeImage() {
         return QRCodeImage;
@@ -95,27 +98,27 @@ public class QrLocationPojo {
         Long = aLong;
     }
 
-    public String getZoneId() {
+    public Integer getZoneId() {
         return zoneId;
     }
 
-    public void setZoneId(String zoneId) {
+    public void setZoneId(Integer zoneId) {
         this.zoneId = zoneId;
     }
 
-    public String getWardId() {
+    public Integer getWardId() {
         return wardId;
     }
 
-    public void setWardId(String wardId) {
+    public void setWardId(Integer wardId) {
         this.wardId = wardId;
     }
 
-    public String getAreaId() {
+    public Integer getAreaId() {
         return areaId;
     }
 
-    public void setAreaId(String areaId) {
+    public void setAreaId(Integer areaId) {
         this.areaId = areaId;
     }
 
@@ -157,6 +160,30 @@ public class QrLocationPojo {
 
     public void setOfflineID(String offlineID) {
         OfflineID = offlineID;
+    }
+
+    public Integer getNew_const() {
+        return new_const;
+    }
+
+    public void setNew_const(Integer new_const) {
+        this.new_const = new_const;
+    }
+
+    public String getGeom() {
+        return geom;
+    }
+
+    public void setGeom(String geom) {
+        this.geom = geom;
+    }
+
+    public String getCreateTs() {
+        return createTs;
+    }
+
+    public void setCreateTs(String createTs) {
+        this.createTs = createTs;
     }
 
     @Override

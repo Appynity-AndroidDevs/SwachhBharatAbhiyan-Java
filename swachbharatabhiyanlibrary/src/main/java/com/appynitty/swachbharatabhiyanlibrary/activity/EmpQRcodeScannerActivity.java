@@ -49,7 +49,6 @@ import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpQrLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.ChooseActionPopUp;
-import com.appynitty.swachbharatabhiyanlibrary.gis.HouseLocationEntity;
 import com.appynitty.swachbharatabhiyanlibrary.gis.HousePointRepo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
@@ -683,16 +682,18 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             qrLocationPojo.setName("");
             qrLocationPojo.setNameMar("");
             qrLocationPojo.setAddress("");
-            qrLocationPojo.setZoneId("");
-            qrLocationPojo.setWardId("");
-            qrLocationPojo.setAreaId("");
+            qrLocationPojo.setZoneId(0);
+            qrLocationPojo.setWardId(0);
+            qrLocationPojo.setAreaId(0);
             qrLocationPojo.setHouseNumber("");
             qrLocationPojo.setMobileno("");
 
             qrLocationPojo.setGcType(getGCType(id));
-            qrLocationPojo.setDate(AUtils.getServerDateTime());
+            qrLocationPojo.setDate(AUtils.getGisDateTime());
             qrLocationPojo.setQRCodeImage("data:image/jpeg;base64," + encodedImage);
-
+            qrLocationPojo.setNew_const(0);
+            qrLocationPojo.setGeom("POINT (" + mLon + " " + mLat + ")");
+            qrLocationPojo.setCreateTs(AUtils.getGisDateTime());
             //SANATH : Checking lat before saving ( if lat is null or empty string )
             // Prefs.putString(AUtils.LAT, null);
             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
@@ -802,7 +803,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         empSyncServerRepository.insertEmpSyncServerEntity(gson.toJson(pojo, type));
 
 
-        String str = pojo.getReferanceId();
+        /*String str = pojo.getReferanceId();
         String[] part = str.split("(?<=\\D)(?=\\d)");
         System.out.println(part[0]);
         System.out.println(part[1]);
@@ -811,7 +812,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         houseLocationEntity.setHouseId(part[1]);
         houseLocationEntity.setLocationPoint(pojo.getLat() + " " + pojo.getLong());
         houseLocationEntity.setUserName(userDetailPojo.getName());
-        housePointRepo.insert(houseLocationEntity);
+        housePointRepo.insert(houseLocationEntity);*/
         myProgressDialog.dismiss();
         if (isChecked) {
             if (!AUtils.isInternetAvailable()) {

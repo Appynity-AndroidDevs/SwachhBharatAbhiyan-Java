@@ -28,14 +28,16 @@ public interface WorkHistoryWebService {
                                                                 @Header("LanguageId") String languageId);
 
     @GET("api/Get/QrWorkHistory ")
-    Call<List<TableDataCountPojo.WorkHistory>> pullEmpWorkHistoryList(@Header("appId") String appId,
+    Call<List<TableDataCountPojo.WorkHistory>> pullEmpWorkHistoryList(@Header("Authorization") String auth_token,
+                                                                      @Header("appId") String appId,
                                                                       @Header("userId") String userId,
                                                                       @Header("year") String year,
                                                                       @Header("month") String month);
 
 
     @GET("api/Get/QrWorkHistoryDetails")
-    Call<List<EmpWorkHistoryDetailPojo>> pullEmpWorkHistoryDetailList(@Header("appId") String appId,
+    Call<List<EmpWorkHistoryDetailPojo>> pullEmpWorkHistoryDetailList(@Header("Authorization") String auth_token,
+                                                                      @Header("appId") String appId,
                                                                       @Header("userId") String userId,
                                                                       @Header("Date") String fDate);
 

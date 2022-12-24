@@ -4,7 +4,6 @@ import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpRegistrationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.OfflineGcResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.UserLocationResultPojo;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ import retrofit2.http.POST;
 public interface QrLocationWebService {
 
 
-
     @POST("api/Save/QrHPDCollections")
     Call<ResultPojo> saveQrLocationDetails(@Header("appId") String appId,
                                            @Header("referanceId") String refId,
@@ -34,8 +32,8 @@ public interface QrLocationWebService {
                                                        @Header("ReferenceId") String refId,
                                                        @Header("gcType") String gcType);
 
-    @POST("api/Save/QrHPDCollectionsOffline")
-    Call<List<OfflineGcResultPojo>> saveQrLocationDetailsOffline(@Header("appId") String appId,
+    @POST("api/Save/QrHPDCollections")
+    Call<OfflineGcResultPojo> saveQrLocationDetailsOffline(@Header("Authorization") String auth_token, @Header("appId") String appId,
                                                                  @Header("Content-Type") String contentType,
-                                                                 @Body List<QrLocationPojo> locationPojoList);
+                                                                 @Body QrLocationPojo qrLocationPojo);
 }

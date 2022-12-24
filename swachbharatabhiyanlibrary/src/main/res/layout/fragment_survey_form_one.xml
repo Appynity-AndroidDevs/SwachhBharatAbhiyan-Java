@@ -192,7 +192,11 @@
                         android:textSize="10sp"
                         android:maxLength="2"
                         android:maxLines="1"
-                        android:inputType="none"
+                        android:singleLine="true"
+                        android:textAlignment="center"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textNoSuggestions"
+                        tools:ignore="LabelFor"
                         android:padding="@dimen/dim_5_dp"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/colorSurveyTextGreen"/>
@@ -233,6 +237,10 @@
                         android:maxLines="1"
                         android:inputType="none"
                         android:padding="@dimen/dim_5_dp"
+                        android:focusableInTouchMode="false"
+                        tools:ignore="LabelFor"
+                        android:singleLine="true"
+                        android:textAlignment="center"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/colorSurveyTextGreen"/>
                     <ImageView
@@ -270,6 +278,10 @@
                         android:maxLength="4"
                         android:maxLines="1"
                         android:inputType="none"
+                        android:singleLine="true"
+                        tools:ignore="LabelFor"
+                        android:focusableInTouchMode="false"
+                        android:textAlignment="center"
                         android:padding="@dimen/dim_5_dp"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/colorSurveyTextGreen"/>
@@ -282,9 +294,8 @@
 
                 </LinearLayout>
 
-
-
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -329,6 +340,7 @@
                     android:layout_marginEnd="@dimen/dim_5_dp"
                     android:buttonTint="@color/white"
                     android:textSize="12sp"
+                    android:fontFamily="@font/font_medium"
                     android:textColor="@color/white"
                     android:text="Male"/>
 
@@ -341,6 +353,7 @@
                     android:layout_marginEnd="@dimen/dim_5_dp"
                     android:buttonTint="@color/white"
                     android:textSize="12sp"
+                    android:fontFamily="@font/font_medium"
                     android:textColor="@color/white"
                     android:text="Female"/>
 
@@ -350,6 +363,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:checked="false"
+                    android:fontFamily="@font/font_medium"
                     android:layout_marginEnd="@dimen/dim_5_dp"
                     android:buttonTint="@color/white"
                     android:textSize="12sp"
@@ -357,8 +371,6 @@
                     android:text="Transgender"/>
 
             </LinearLayout>
-
-
 
         </LinearLayout>
         <ImageView
@@ -369,6 +381,175 @@
             android:src="@drawable/sex"
             android:layout_gravity="center_vertical|center"
             android:fitsSystemWindows="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/li_blood_group_box"
+        android:layout_below="@id/li_gender_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="@dimen/dim_5_dp">
+
+        <ImageView
+            android:id="@+id/img_blood_group"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/blood_group"
+            android:layout_gravity="center_vertical|center"
+            android:fitsSystemWindows="true"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/dim_8_dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_blood_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Blood Group"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/font_medium"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/dim_8_dp">
+
+                <LinearLayout
+                    android:id="@+id/li_blood_positive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_positive_a"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="A+"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_positive_o"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="O+"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_positive_b"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="B+"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_positive_ab"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="AB+"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/li_blood_negative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_negative_a"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="A-"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_negative_o"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="O-"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_negative_b"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="B-"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_negative_ab"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:fontFamily="@font/font_medium"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:text="AB-"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

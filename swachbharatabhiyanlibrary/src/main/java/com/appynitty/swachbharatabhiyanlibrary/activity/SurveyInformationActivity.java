@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.SurveyPagerAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFiveFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
@@ -39,7 +40,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private Button btnBack,btnNext;
     private ImageView imgBack;
 
-    private PagerAdapter pagerAdapter;
+    private SurveyPagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private ImageView[] dots;
     private View viewLineOne, viewLineTwo, viewLineThree,viewLineFour, viewLineFive;
@@ -58,6 +59,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnBack = findViewById(R.id.btn_back);
         linearLayout = findViewById(R.id.viewPagerCountDots);
+        /*pagerAdapter = new SurveyPagerAdapter(context);*/
 
         srvFromOneFrag = new SurveyFormOneFragment();
         srvFromTwoFrag = new SurveyFormTwoFragment();
@@ -66,7 +68,20 @@ public class SurveyInformationActivity extends AppCompatActivity {
         srvFromFiveFrag = new SurveyFormFiveFragment();
 
         loadFragment(srvFromOneFrag);
+
+        /*pagerAdapter.setCurrentItem(1, true);*/
+       /* viewPager.setCurrentItem(getItem(+1), true);*/
         setOnClick();
+    }
+
+    private void addTabs(ViewPager viewPager) {
+        pagerAdapter = new SurveyPagerAdapter(context);
+        pagerAdapter.addFrag(srvFromOneFrag);
+        pagerAdapter.addFrag(srvFromTwoFrag);
+        pagerAdapter.addFrag(srvFromThreeFrag);
+        pagerAdapter.addFrag(srvFromFourFrag);
+        pagerAdapter.addFrag(srvFromFiveFrag);
+        viewPager.setAdapter(pagerAdapter);
     }
 
     private void setOnClick(){
@@ -80,19 +95,38 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount())
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             }
         });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (viewPager.getCurrentItem() != 0)
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                drawPageSelectionIndicators(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
 
-
     }
+
 
     private boolean loadFragment(Fragment fragment) {
         if (fragment != null) {
@@ -133,4 +167,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
             linearLayout.addView(dots[i], params);
         }
     }
+
+
 }

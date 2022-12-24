@@ -1,14 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormFiveFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/li_insurance_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/dim_5_dp">
+
+                <ImageView
+                    android:id="@+id/img_insurance"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/life_insurance"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_insurance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Do Have Insurance?"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:layout_alignParentStart="true"
+                            android:fontFamily="@font/font_medium"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_insurance_cb_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_life_insurance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Life Insurance"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_medical_insurance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Medical Insurance"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_both_insurance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Both"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_insurance_type_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_5_dp"
+                android:visibility="visible"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="If Insured, Under Which Insured."
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="start"
+                    android:fontFamily="@font/font_medium"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/dim_8_dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_gov_insurance_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Government"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_private_insurance_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="false"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Private"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_ayushman_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_5_dp"
+                android:visibility="visible"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Are You Ayushman Bharat Beneficiary."
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="start"
+                    android:fontFamily="@font/font_medium"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/dim_8_dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_yes_ayushman"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Yes"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_no_ayushman"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="false"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="No"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_divyang_box"
+                android:layout_width="match_parent"
+                android:layout_marginVertical="@dimen/dim_5_dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/li_divyang"
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Is Any Members Of  Your Family Is Divyang Or Differently Abled."
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/font_medium"/>
+
+                    <LinearLayout
+                        android:id="@+id/li_divyang_cb_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_yes_divyang"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Yes"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_no_divyang"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="No"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/img_divyang"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/disable"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -512,7 +512,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, EmpQRcodeScannerActivity.class, true));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, EmpHistoryPageActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, EmpSyncOfflineActivity.class, false));
-        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_survey_qr_code), R.drawable.ic_qr_code_survey, EmpSurveyQrActivity.class, false));
+        menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_survey_qr_code), R.drawable.survey_icon, EmpSurveyQrActivity.class, false));
 
         DashboardMenuAdapter mainMenuAdaptor = new DashboardMenuAdapter(EmpDashboardActivity.this, rProgress);
         mainMenuAdaptor.setMenuList(menuPojoList);

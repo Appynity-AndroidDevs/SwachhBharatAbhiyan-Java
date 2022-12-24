@@ -1,14 +1,566 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormThreeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+            android:id="@+id/li_total_family_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="@dimen/dim_5_dp">
+
+            <ImageView
+                android:id="@+id/img_total_family"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:src="@drawable/grandparents"
+                android:layout_gravity="center_vertical|center"
+                android:fitsSystemWindows="true"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_8_dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/rl_total_family"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total No. Of Members"
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/font_medium"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(Family &amp; Dependents)"
+                        android:textSize="8sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/font_medium"/>
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Adults"
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="start"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/font_medium"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/dim_5_dp">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_minus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="4"
+                            android:textColor="@color/colorSurveyTextGreen"
+                            android:fontFamily="@font/font_medium"
+                            android:textSize="@dimen/dim_14_sp"
+                            android:background="@drawable/solid_white_rectangle_survey"
+                            android:padding="@dimen/dim_5_dp"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_plus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Children"
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="start"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/font_medium"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/dim_5_dp">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_minus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="2"
+                            android:textColor="@color/colorSurveyTextGreen"
+                            android:fontFamily="@font/font_medium"
+                            android:textSize="@dimen/dim_14_sp"
+                            android:background="@drawable/solid_white_rectangle_survey"
+                            android:padding="@dimen/dim_5_dp"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_plus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Senior Citizen"
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="start"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/font_medium"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/dim_5_dp">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_minus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="2"
+                            android:textColor="@color/colorSurveyTextGreen"
+                            android:fontFamily="@font/font_medium"
+                            android:textSize="@dimen/dim_14_sp"
+                            android:background="@drawable/solid_white_rectangle_survey"
+                            android:padding="@dimen/dim_5_dp"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_plus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_business"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_5_dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Is Any Of Your Family Member is willing to start The Business?"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="start"
+                    android:fontFamily="@font/font_medium"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/dim_8_dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_business_yes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Yes"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_business_no"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="false"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="No"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_business_available"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_5_dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="If Yes Then Resources Available To Start The?"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="start"
+                    android:fontFamily="@font/font_medium"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/dim_8_dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_land_available"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Land"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_shop_available"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="false"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Shop"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_other_available"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="false"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Other"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_vehicle_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/dim_5_dp">
+
+                <ImageView
+                    android:id="@+id/img_vehicle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/car"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:layout_height="wrap_content"
+                            android:text="Number Of Vehicles"
+                            android:padding="5dp"
+                            android:textSize="14sp"
+                            android:textColor="@color/white"
+                            android:layout_gravity="start|center_vertical"
+                            android:fontFamily="@font/font_medium"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="3"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center|center_vertical"
+                            android:gravity="center"
+                            android:padding="@dimen/dim_5_dp">
+
+                            <TextView
+                                android:id="@+id/txt_total_car_vehicle"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="6"
+                                android:textColor="@color/colorSurveyTextGreen"
+                                android:fontFamily="@font/font_medium"
+                                android:textSize="@dimen/dim_14_sp"
+                                android:background="@drawable/solid_white_rectangle_survey"
+                                android:padding="@dimen/dim_5_dp"/>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Two Wheeler"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="start"
+                            android:layout_alignParentStart="true"
+                            android:fontFamily="@font/font_medium"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:padding="@dimen/dim_5_dp">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_circle_minus"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fitsSystemWindows="true"/>
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="4"
+                                android:textColor="@color/colorSurveyTextGreen"
+                                android:fontFamily="@font/font_medium"
+                                android:textSize="@dimen/dim_14_sp"
+                                android:background="@drawable/solid_white_rectangle_survey"
+                                android:padding="@dimen/dim_5_dp"/>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_circle_plus"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fitsSystemWindows="true"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Four Wheeler"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="start"
+                            android:layout_alignParentStart="true"
+                            android:fontFamily="@font/font_medium"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:padding="@dimen/dim_5_dp">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_circle_minus"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fitsSystemWindows="true"/>
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="2"
+                                android:textColor="@color/colorSurveyTextGreen"
+                                android:fontFamily="@font/font_medium"
+                                android:textSize="@dimen/dim_14_sp"
+                                android:background="@drawable/solid_white_rectangle_survey"
+                                android:padding="@dimen/dim_5_dp"/>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_circle_plus"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fitsSystemWindows="true"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_vote_box"
+                android:layout_width="match_parent"
+                android:layout_marginVertical="@dimen/dim_5_dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/li_vote"
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No. Of People Registered To Vote"
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/font_medium"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="start|center_vertical"
+                        android:padding="@dimen/dim_5_dp">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_minus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="2"
+                            android:textColor="@color/colorSurveyTextGreen"
+                            android:fontFamily="@font/font_medium"
+                            android:textSize="@dimen/dim_14_sp"
+                            android:background="@drawable/solid_white_rectangle_survey"
+                            android:padding="@dimen/dim_5_dp"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_plus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/img_vote"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ballot"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

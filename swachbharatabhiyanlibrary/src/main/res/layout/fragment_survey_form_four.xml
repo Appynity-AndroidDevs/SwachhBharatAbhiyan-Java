@@ -1,14 +1,470 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormFourFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/li_social_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/dim_5_dp">
+
+                <ImageView
+                    android:id="@+id/img_social"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/social_media"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_social"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Which Social Media Platform You Use To Interact."
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:layout_alignParentStart="true"
+                            android:fontFamily="@font/font_medium"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_social_cb_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_fb_social"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Facebook"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_twitter_social"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Twitter"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_instagram_social"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Instagram"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/li_social_cb_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_whatsapp_social"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Whatsapp"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_linkedin_social"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Linkedin"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_snapchat_social"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Snapchat"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/li_social_cb_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_other_social"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Other"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_shopping_box"
+                android:layout_width="match_parent"
+                android:layout_marginVertical="@dimen/dim_5_dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/li_shopping"
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Preferred Online Shopping App."
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/font_medium"/>
+
+                    <LinearLayout
+                        android:id="@+id/li_shopping_cb_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_amazon_shopping"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Amazon"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_flipkart"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Flipkart"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_nykaa_shopping"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Nykka"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_shopping_cb_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_tata_cliq_shopping"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Tata Cliq"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_snapdeal_shopping"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Snapdeal"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_other_shopping"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Other"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/img_vote"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/online_shop"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_online_payment_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/dim_5_dp">
+
+                <ImageView
+                    android:id="@+id/img_online_payment"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/cashless_payment"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_online_payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Which Online Payment App Do You Use?"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:layout_alignParentStart="true"
+                            android:fontFamily="@font/font_medium"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_online_payment_cb_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_bhim_online_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Bhim"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_paytm_online_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Paytm"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_phone_pe_online_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="PhonePe"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/li_online_payment_cb_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_gpay_online_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:layout_gravity="center_vertical"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Google Pay"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_banking_online_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Personal Banking"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_other_online_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_gravity="center_vertical"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Other"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

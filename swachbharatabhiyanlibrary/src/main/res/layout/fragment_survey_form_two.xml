@@ -1,14 +1,556 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_survey"
+    android:orientation="vertical"
     tools:context=".fragment.SurveyFormTwoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/li_certificate_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/dim_5_dp">
+
+                <ImageView
+                    android:id="@+id/img_certificate"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/certificate"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_certificate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Qualification"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/font_medium"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_certificate_cb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_un_graduate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Under graduate"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_graduate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_marginTop="@dimen/dim_5_dp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Graduate"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_pst_graduate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Post Graduate"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_occupation_box"
+                android:layout_below="@id/li_certificate_box"
+                android:layout_width="match_parent"
+                android:layout_marginVertical="@dimen/dim_5_dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/li_occupation"
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Occupation"
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/font_medium"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="@dimen/dim_8_dp"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_service_occupation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Service"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_business_occupation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Business"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_professional_occupation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:checked="false"
+                            android:fontFamily="@font/font_medium"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:text="Professional"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/img_occupation"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/employment"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_marital_status_box"
+                android:layout_below="@id/li_occupation_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/dim_5_dp">
+
+                <ImageView
+                    android:id="@+id/img_marital_status"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/rings"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_marital_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Marital Status"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/font_medium"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_marital_status_cb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_married"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Married"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_unmarried"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_marginTop="@dimen/dim_5_dp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Unmarried"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_anniversary_date_box"
+                android:layout_below="@id/li_marital_status_box"
+                android:layout_width="match_parent"
+                android:layout_marginVertical="@dimen/dim_5_dp"
+                android:visibility="visible"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/li_anniversary_date"
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="If married, Date Of Marriage Anniversary."
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/font_medium"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="@dimen/dim_8_dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dim_5_dp"
+                            android:gravity="center"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:background="@drawable/survey_round_edt_box"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/txt_day"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="D"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fontFamily="@font/font_medium"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorSurveyTextGreen"/>
+
+                            <AutoCompleteTextView
+                                android:id="@+id/auto_day_anniversary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="23"
+                                android:textSize="10sp"
+                                android:maxLength="2"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textAlignment="center"
+                                android:focusableInTouchMode="false"
+                                android:inputType="textNoSuggestions"
+                                tools:ignore="LabelFor"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fontFamily="@font/font_medium"
+                                android:textColor="@color/colorSurveyTextGreen"/>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/down_arrow"
+                                android:padding="@dimen/dim_5_dp"
+                                android:layout_gravity="center_vertical"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dim_5_dp"
+                            android:gravity="center"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:background="@drawable/survey_round_edt_box"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/txt_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="M"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fontFamily="@font/font_medium"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorSurveyTextGreen"/>
+
+                            <AutoCompleteTextView
+                                android:id="@+id/auto_month_anniversary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="05"
+                                android:textSize="10sp"
+                                android:maxLength="2"
+                                android:maxLines="1"
+                                android:inputType="none"
+                                android:padding="@dimen/dim_5_dp"
+                                android:focusableInTouchMode="false"
+                                tools:ignore="LabelFor"
+                                android:singleLine="true"
+                                android:textAlignment="center"
+                                android:fontFamily="@font/font_medium"
+                                android:textColor="@color/colorSurveyTextGreen"/>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/down_arrow"
+                                android:padding="@dimen/dim_5_dp"
+                                android:layout_gravity="center_vertical"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dim_5_dp"
+                            android:gravity="center"
+                            android:background="@drawable/survey_round_edt_box"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/txt_year"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Y"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fontFamily="@font/font_medium"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorSurveyTextGreen"/>
+
+                            <AutoCompleteTextView
+                                android:id="@+id/auto_year_anniversary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2022"
+                                android:textSize="10sp"
+                                android:maxLength="4"
+                                android:maxLines="1"
+                                android:inputType="none"
+                                android:singleLine="true"
+                                tools:ignore="LabelFor"
+                                android:focusableInTouchMode="false"
+                                android:textAlignment="center"
+                                android:padding="@dimen/dim_5_dp"
+                                android:fontFamily="@font/font_medium"
+                                android:textColor="@color/colorSurveyTextGreen"/>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/down_arrow"
+                                android:padding="@dimen/dim_5_dp"
+                                android:layout_gravity="center_vertical"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_anniversary_date"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/birthday_cake"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_living_status_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/dim_5_dp">
+
+                <ImageView
+                    android:id="@+id/img_living_status"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/employment"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_living_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Living Status"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/font_medium"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_living_status_cb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_own_house_li_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Own House"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_ranted_li_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="2dp"
+                            android:checked="false"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_marginTop="@dimen/dim_5_dp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Ranted"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_lease_li_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:padding="2dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="Lease"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

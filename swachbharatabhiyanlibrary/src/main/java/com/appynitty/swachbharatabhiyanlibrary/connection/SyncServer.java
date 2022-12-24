@@ -202,7 +202,7 @@ public class SyncServer {
             PunchWebService service = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
             InPunchPojo inPunchPojo = new InPunchPojo();
             inPunchPojo.setStartTime(AUtils.getServerTime());
-            inPunchPojo.setDaDate(AUtils.getServerDate());
+            inPunchPojo.setDaDate(AUtils.getLocalDate());
             inPunchPojo.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
             inPunchPojo.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
             inPunchPojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
@@ -216,7 +216,7 @@ public class SyncServer {
             }.getType();
             Prefs.putString(AUtils.PREFS.IN_PUNCH_POJO, gson.toJson(inPunchPojo, type));
 
-            resultPojo = service.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
+            resultPojo = service.saveInPunchDetails(auth_token, Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
                     AUtils.getBatteryStatus(), inPunchPojo).execute().body();
 
         } catch (Exception e) {
@@ -233,7 +233,7 @@ public class SyncServer {
 
             PunchWebService service = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
             OutPunchPojo outPunchPojo = new OutPunchPojo();
-            outPunchPojo.setDaendDate(AUtils.getServerDate());
+            outPunchPojo.setDaendDate(AUtils.getLocalDate());
             outPunchPojo.setEndTime(AUtils.getServerTime());
             outPunchPojo.setUserId(Prefs.getString(AUtils.PREFS.USER_ID, ""));
             outPunchPojo.setEndLat(Prefs.getString(AUtils.LAT, ""));
@@ -242,7 +242,7 @@ public class SyncServer {
             outPunchPojo.setVehicleNumber(Prefs.getString(AUtils.VEHICLE_NO, ""));
             outPunchPojo.setVtId(String.valueOf(Prefs.getString(AUtils.VEHICLE_ID, "1")));
             outPunchPojo.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
-            resultPojo = service.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
+            resultPojo = service.saveOutPunchDetails(auth_token, Prefs.getString(AUtils.APP_ID, "1"), AUtils.CONTENT_TYPE,
                     AUtils.getBatteryStatus(), outPunchPojo).execute().body();
 
         } catch (Exception e) {
@@ -259,7 +259,7 @@ public class SyncServer {
         try {
 
             VehicleTypeWebService service = Connection.createService(VehicleTypeWebService.class, AUtils.SERVER_URL);
-            vehicleTypePojoList = service.pullVehicleTypeList(auth_token,Prefs.getString(AUtils.APP_ID, ""),
+            vehicleTypePojoList = service.pullVehicleTypeList(auth_token, Prefs.getString(AUtils.APP_ID, ""),
                     AUtils.CONTENT_TYPE).execute().body();
 
             if (!AUtils.isNull(vehicleTypePojoList) && !vehicleTypePojoList.isEmpty()) {

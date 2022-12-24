@@ -18,6 +18,7 @@ public class DumpEmpAttendanceRepo {
 
     private static final String TAG = "DumpEmpAttendanceRepo";
     private static final DumpEmpAttendanceRepo instance = new DumpEmpAttendanceRepo();
+    String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
 
     public static DumpEmpAttendanceRepo getInstance() {
         return instance;
@@ -37,7 +38,7 @@ public class DumpEmpAttendanceRepo {
         inPunchBody.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
 
         PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
-        Call<ResultPojo> punchInCall = punchWebService.saveInPunchDetails(Prefs.getString(AUtils.APP_ID, null), AUtils.CONTENT_TYPE,
+        Call<ResultPojo> punchInCall = punchWebService.saveInPunchDetails(auth_token, Prefs.getString(AUtils.APP_ID, null), AUtils.CONTENT_TYPE,
                 AUtils.getBatteryStatus(),
                 inPunchBody);
 
@@ -70,7 +71,7 @@ public class DumpEmpAttendanceRepo {
         outPunchBody.setReferanceId(refId);
 
         PunchWebService punchWebService = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
-        Call<ResultPojo> punchOutCall = punchWebService.saveOutPunchDetails(Prefs.getString(AUtils.APP_ID, null),
+        Call<ResultPojo> punchOutCall = punchWebService.saveOutPunchDetails(auth_token, Prefs.getString(AUtils.APP_ID, null),
                 AUtils.CONTENT_TYPE, AUtils.getBatteryStatus(),
                 outPunchBody);
 

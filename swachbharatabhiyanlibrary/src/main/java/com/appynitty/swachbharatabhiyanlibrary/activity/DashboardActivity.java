@@ -1191,14 +1191,15 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                 //   Prefs.putString(AUtils.LAT , "");
                 if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
-                    syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
+                    /*syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.InAttendanceId);
                     onInPunchSuccess();
                     if (AUtils.isInternetAvailable()) {
                         if (!syncOfflineAttendanceRepository.checkIsInAttendanceSync())
                             mOfflineAttendanceAdapter.SyncOfflineData();
                         AUtils.success(mContext, getString(R.string.shif_start));
 
-                    }
+                    }*/
+                    mAttendanceAdapter.MarkInPunch();
                 } else {
 
                     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
@@ -1481,12 +1482,14 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                             //    Prefs.putString(AUtils.LAT, "");
                             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
-                                syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
+                                /*syncOfflineAttendanceRepository.insertCollection(attendancePojo, SyncOfflineAttendanceRepository.OutAttendanceId);
                                 onOutPunchSuccess();
 
                                 if (AUtils.isInternetAvailable()) {
                                     mOfflineAttendanceAdapter.SyncOfflineData();
-                                }
+                                }*/
+
+                                mAttendanceAdapter.MarkOutPunch();
                             } else {
 
                                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();

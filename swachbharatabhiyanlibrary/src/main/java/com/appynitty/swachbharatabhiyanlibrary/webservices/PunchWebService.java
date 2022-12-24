@@ -16,13 +16,13 @@ import retrofit2.http.POST;
 public interface PunchWebService {
 
     @POST("api/Save/UserAttendenceIn")
-    Call<ResultPojo> saveInPunchDetails(@Header("appId") String appId,
+    Call<ResultPojo> saveInPunchDetails(@Header("Authorization") String auth_token, @Header("appId") String appId,
                                         @Header("Content-Type") String content_type,
                                         @Header("batteryStatus") int batteryStatus,
                                         @Body InPunchPojo loginPojo);
 
     @POST("api/Save/UserAttendenceOut")
-    Call<ResultPojo> saveOutPunchDetails(@Header("appId") String appId,
+    Call<ResultPojo> saveOutPunchDetails(@Header("Authorization") String auth_token, @Header("appId") String appId,
                                          @Header("Content-Type") String content_type,
                                          @Header("batteryStatus") int batteryStatus,
                                          @Body OutPunchPojo outPojo);

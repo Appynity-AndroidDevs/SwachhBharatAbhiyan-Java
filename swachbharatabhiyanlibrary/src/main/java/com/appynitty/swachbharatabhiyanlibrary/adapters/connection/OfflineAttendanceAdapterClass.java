@@ -34,6 +34,7 @@ public class OfflineAttendanceAdapterClass {
     private final SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
     private String offset = "0";
     private final List<AttendancePojo> syncOfflineList;
+    String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
 
     public OfflineAttendanceAdapterClass(Context context) {
         this.mContext = context;
@@ -59,8 +60,8 @@ public class OfflineAttendanceAdapterClass {
 
                 PunchWebService service = Connection.createService(PunchWebService.class, AUtils.SERVER_URL);
 
-                service.saveOfflineAttendanceDetails(Prefs.getString(AUtils.APP_ID, ""),
-                        AUtils.CONTENT_TYPE, AUtils.getServerDateTimeWithMilliesSecond(), Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null), syncOfflineList)
+                service.saveOfflineAttendanceDetails(auth_token, Prefs.getString(AUtils.APP_ID, ""),
+                                AUtils.CONTENT_TYPE, AUtils.getServerDateTimeWithMilliesSecond(), Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null), syncOfflineList)
                         .enqueue(new Callback<List<AttendanceResponsePojo>>() {
                             @Override
                             public void onResponse(@NonNull Call<List<AttendanceResponsePojo>> call,

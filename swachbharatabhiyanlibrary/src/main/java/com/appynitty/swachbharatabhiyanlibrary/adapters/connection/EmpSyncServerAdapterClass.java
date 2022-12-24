@@ -159,12 +159,12 @@ public class EmpSyncServerAdapterClass {
                     }*/
 
                 } else {
-
+                    empSyncServerRepository.deleteAllEmpSyncServerEntity();
                     if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
                         AUtils.error(mContext, results.getMessageMar());
                     else AUtils.error(mContext, results.getMessage());
 
-                    if (!results.getMessage().contains("wrong")) {
+                    /*if (!results.getMessage().contains("wrong")) {
                         if (Integer.parseInt(results.getID()) != 0) {
                             empSyncServerRepository.deleteEmpSyncServerEntity(Integer.parseInt(results.getID()));
                         }
@@ -175,7 +175,7 @@ public class EmpSyncServerAdapterClass {
                                 break;
                             }
                         }
-                    }
+                    }*/
 
                 }
 //            }

@@ -3,7 +3,6 @@ package com.appynitty.swachbharatabhiyanlibrary.webservices;
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendanceResponsePojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.DumpEmpPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.InPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.OutPunchPojo;
 
@@ -29,7 +28,7 @@ public interface PunchWebService {
                                          @Body OutPunchPojo outPojo);
 
     @POST("api/Save/AttendenceOffline")
-    Call<List<AttendanceResponsePojo>> saveOfflineAttendanceDetails(@Header("appId") String appId,
+    Call<List<AttendanceResponsePojo>> saveOfflineAttendanceDetails(@Header("Authorization") String auth_token, @Header("appId") String appId,
                                                                     @Header("Content-Type") String content_type,
                                                                     @Header("cdate") String currentDateTime,
                                                                     @Header("EmpType") String empType,

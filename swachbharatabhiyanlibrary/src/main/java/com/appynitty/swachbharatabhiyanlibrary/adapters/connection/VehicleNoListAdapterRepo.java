@@ -1,13 +1,13 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.connection;
 
 import android.util.Log;
-import android.widget.BaseAdapter;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.CollectionAreaHousePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.VehicleTypeWebService;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class VehicleNoListAdapterRepo {
     private static final String TAG = "VehicleNoListAdapterRepo";
-
+    String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
     private static final VehicleNoListAdapterRepo instance = new VehicleNoListAdapterRepo();
 
     public static VehicleNoListAdapterRepo getInstance() {
@@ -31,7 +31,7 @@ public class VehicleNoListAdapterRepo {
 
     public void getVehicleNosList(String appId, String vehicleTypeId, IVehicleNoListListener iVehicleNoListListener) {
         VehicleTypeWebService service = Connection.createService(VehicleTypeWebService.class, AUtils.SERVER_URL);
-        Call<List<VehicleNumberPojo>> vehicleNosListCall = service.pullVehicleNumberList(AUtils.CONTENT_TYPE, appId, vehicleTypeId);
+        Call<List<VehicleNumberPojo>> vehicleNosListCall = service.pullVehicleNumberList(auth_token, AUtils.CONTENT_TYPE, appId, vehicleTypeId);
         vehicleNosListCall.enqueue(new Callback<List<VehicleNumberPojo>>() {
             @Override
             public void onResponse(Call<List<VehicleNumberPojo>> call, Response<List<VehicleNumberPojo>> response) {
@@ -49,7 +49,7 @@ public class VehicleNoListAdapterRepo {
 
     public void getVehicleQRIdList(String appId, IVehicleQRIdListListener iVehicleQRIdListListener) {
         VehicleTypeWebService service = Connection.createService(VehicleTypeWebService.class, AUtils.SERVER_URL);
-        Call<List<CollectionAreaHousePojo>> vehicleNosListCall = service.pullVehicleQRIdList(appId,AUtils.CONTENT_TYPE,"","0","V");
+        Call<List<CollectionAreaHousePojo>> vehicleNosListCall = service.pullVehicleQRIdList(appId, AUtils.CONTENT_TYPE, "", "0", "V");
         vehicleNosListCall.enqueue(new Callback<List<CollectionAreaHousePojo>>() {
             @Override
             public void onResponse(Call<List<CollectionAreaHousePojo>> call, Response<List<CollectionAreaHousePojo>> response) {
@@ -66,8 +66,7 @@ public class VehicleNoListAdapterRepo {
     }
 
 
-
-    public interface IVehicleQRIdListListener{
+    public interface IVehicleQRIdListListener {
         void onResponse(List<CollectionAreaHousePojo> vehicleQRIdList);
 
         void onFailure(Throwable throwable);

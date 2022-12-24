@@ -118,7 +118,8 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     boolean isChecked = true;
     private MyProgressDialog myProgressDialog;
     private ArrayList<Integer> mSelectedIndices;
-    private boolean isFlashOn, isNewConstruction;
+    private boolean isFlashOn;
+    private int isNewConstruction;
     private UserDetailPojo userDetailPojo;
 
     @Override
@@ -345,7 +346,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                 scannerView.pause();
                 mLat = result.getData().getStringExtra("newLat");
                 mLon = result.getData().getStringExtra("newLong");
-                isNewConstruction = result.getData().getBooleanExtra("isNewConstruction", false);
+                isNewConstruction = result.getData().getIntExtra("isNewConstruction", 0);
                 Log.e(TAG, "onActivityResult: newLat: " + mLat + ", newLong: " + mLon + ", isNewConstruction: " + isNewConstruction);
 
                 handleResult(scannerView.getStatusView().getText().toString());
@@ -691,7 +692,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             qrLocationPojo.setGcType(getGCType(id));
             qrLocationPojo.setDate(AUtils.getGisDateTime());
             qrLocationPojo.setQRCodeImage("data:image/jpeg;base64," + encodedImage);
-            qrLocationPojo.setNew_const(0);
+            qrLocationPojo.setNew_const(isNewConstruction);
             qrLocationPojo.setGeom("POINT (" + mLon + " " + mLat + ")");
             qrLocationPojo.setCreateTs(AUtils.getGisDateTime());
             //SANATH : Checking lat before saving ( if lat is null or empty string )

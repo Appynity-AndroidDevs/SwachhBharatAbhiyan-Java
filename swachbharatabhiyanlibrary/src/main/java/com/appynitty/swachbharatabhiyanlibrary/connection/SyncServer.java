@@ -57,7 +57,7 @@ public class SyncServer {
     private final Context context;
     private static String empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
     private Executor executor = Executors.newSingleThreadExecutor();
-    String auth_token = "Bearer "+Prefs.getString(AUtils.BEARER_TOKEN, null);
+    String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
 
     public SyncServer(Context context) {
 
@@ -259,7 +259,7 @@ public class SyncServer {
         try {
 
             VehicleTypeWebService service = Connection.createService(VehicleTypeWebService.class, AUtils.SERVER_URL);
-            vehicleTypePojoList = service.pullVehicleTypeList(Prefs.getString(AUtils.APP_ID, ""),
+            vehicleTypePojoList = service.pullVehicleTypeList(auth_token,Prefs.getString(AUtils.APP_ID, ""),
                     AUtils.CONTENT_TYPE).execute().body();
 
             if (!AUtils.isNull(vehicleTypePojoList) && !vehicleTypePojoList.isEmpty()) {
@@ -285,7 +285,7 @@ public class SyncServer {
         try {
 
             VehicleTypeWebService service = Connection.createService(VehicleTypeWebService.class, AUtils.SERVER_URL);
-            vehicleNumberList = service.pullVehicleNumberList(AUtils.CONTENT_TYPE,
+            vehicleNumberList = service.pullVehicleNumberList(auth_token, AUtils.CONTENT_TYPE,
                     Prefs.getString(AUtils.APP_ID, ""), vehicleTypeId).execute().body();
 
             if (!AUtils.isNull(vehicleNumberList) && !vehicleNumberList.isEmpty()) {
@@ -511,7 +511,7 @@ public class SyncServer {
         CheckAttendanceWebService checkAttendanceWebService = Connection.createService(CheckAttendanceWebService.class, AUtils.SERVER_URL);
 
         try {
-            checkAttendancePojo = checkAttendanceWebService.CheckAttendance(auth_token,Prefs.getString(AUtils.APP_ID, ""),
+            checkAttendancePojo = checkAttendanceWebService.CheckAttendance(auth_token, Prefs.getString(AUtils.APP_ID, ""),
                     Prefs.getString(AUtils.PREFS.USER_ID, ""),
                     Prefs.getString(AUtils.PREFS.USER_TYPE_ID, "")).execute().body();
 

@@ -95,7 +95,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent = new Intent();
                 intent.putExtra("newLat", String.valueOf(newLat));
                 intent.putExtra("newLong", String.valueOf(newLong));
-                intent.putExtra("isNewConstruction", isRbChecked);
+
+                if (isRbChecked)
+                    intent.putExtra("isNewConstruction", 1);
+                else
+                    intent.putExtra("isNewConstruction", 0);
+
                 setResult(RESULT_OK, intent);
                 finish();
             }

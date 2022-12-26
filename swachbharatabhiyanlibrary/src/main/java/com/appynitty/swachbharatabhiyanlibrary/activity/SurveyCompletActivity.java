@@ -22,6 +22,7 @@ public class SurveyCompletActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(SurveyCompletActivity.this,EmpDashboardActivity.class));
+                finishAffinity();
             }
         }, 300);
     }

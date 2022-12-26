@@ -1,18 +1,13 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,11 +23,13 @@ import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class SurveyInformationActivity extends AppCompatActivity {
 
-    private int dotsCount = 5;
+    private final static int NUM_PAGES = 5;
     private Context context;
     private FrameLayout frameLayout;
     private SurveyFormOneFragment srvFromOneFrag;
@@ -41,13 +38,12 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private SurveyFormFourFragment srvFromFourFrag;
     private SurveyFormFiveFragment srvFromFiveFrag;
 
-    private LinearLayout linearLayout;
-
     private Button btnBack,btnNext, btnDone;
     private ImageView imgBack;
 
     private ViewPager2 viewPager;
     private SurPagerAdapter pagerAdapter;
+    private View vOne, vTwo, vThree, vFour,vFive;
 
 
     @Override
@@ -66,6 +62,12 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
         btnDone = findViewById(R.id.btn_done);
 
+        vOne = findViewById(R.id.view_one);
+        vTwo = findViewById(R.id.view_two);
+        vThree = findViewById(R.id.view_three);
+        vFour = findViewById(R.id.view_four);
+        vFive = findViewById(R.id.view_five);
+
         btnDone.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
@@ -79,6 +81,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
         setOnClick();
     }
+
 
 
     private void setOnClick(){
@@ -130,8 +133,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 }
                 if(position < Objects.requireNonNull(viewPager.getAdapter()).getItemCount() -1 ) {
                     btnNext.setVisibility(View.VISIBLE);
+                    btnDone.setVisibility(View.GONE);
+
                 }else  {
                     btnNext.setVisibility(View.GONE);
+                    btnDone.setVisibility(View.VISIBLE);
                 }
             }
 

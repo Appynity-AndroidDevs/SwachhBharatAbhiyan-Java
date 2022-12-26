@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.UI;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,11 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SurveyPagerAdapter extends PagerAdapter {
-    private Context context;
+    private Context mContext;
+    LayoutInflater mLayoutInflater;
     private final List<Fragment> mFragmentList = new ArrayList<>();
 
     public SurveyPagerAdapter(Context context) {
-        this.context = context;
+        this.mContext = context;
+        mLayoutInflater = LayoutInflater.from(mContext);
     }
 
     @NonNull
@@ -29,7 +32,7 @@ public class SurveyPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        super.destroyItem(container, position, object);
+        container.removeView((View) object);
     }
 
 
@@ -44,6 +47,6 @@ public class SurveyPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return false;
+        return view == object;
     }
 }

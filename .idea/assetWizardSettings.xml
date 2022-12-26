@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/do_disturb_on/baseline_do_disturb_on_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/brightness_1/baseline_brightness_1_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -34,7 +34,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_circle_minus" />
+                            <entry key="outputName" value="ic_circle_withe_solid" />
                             <entry key="sourceFile" value="D:\BigV Project\Sba_Ghantagadi\include survey app\Survey_Icon.svg" />
                           </map>
                         </option>

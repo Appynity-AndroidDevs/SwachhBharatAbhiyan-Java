@@ -55,14 +55,14 @@
             <LinearLayout
                 android:id="@+id/viewPagerCountDots"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dim_10_dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:orientation="horizontal" />
+                android:orientation="horizontal">
+
+            </LinearLayout>
 
         </RelativeLayout>
-
-
 
         <FrameLayout
             android:id="@+id/container_frame_layout"
@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.viewpager.widget.ViewPager
+            <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

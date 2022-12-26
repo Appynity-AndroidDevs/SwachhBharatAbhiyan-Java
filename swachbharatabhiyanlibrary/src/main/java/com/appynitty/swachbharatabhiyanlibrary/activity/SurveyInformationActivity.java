@@ -2,14 +2,17 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -17,12 +20,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.SurveyPagerAdapter;
+import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.SurPagerAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFiveFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
+
+import java.util.Objects;
 
 public class SurveyInformationActivity extends AppCompatActivity {
 
@@ -37,13 +42,13 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout;
 
-    private Button btnBack,btnNext;
+    private Button btnBack,btnNext, btnDone;
     private ImageView imgBack;
 
-    private SurveyPagerAdapter pagerAdapter;
-    private ViewPager viewPager;
+    private ViewPager2 viewPager;
+    private SurPagerAdapter pagerAdapter;
     private ImageView[] dots;
-    private View viewLineOne, viewLineTwo, viewLineThree,viewLineFour, viewLineFive;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,34 +60,24 @@ public class SurveyInformationActivity extends AppCompatActivity {
         context = this;
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
+        pagerAdapter = new SurPagerAdapter(getSupportFragmentManager(),getLifecycle());
         imgBack = findViewById(R.id.img_survey_back);
         btnNext = findViewById(R.id.btn_next);
         btnBack = findViewById(R.id.btn_back);
+        btnDone = findViewById(R.id.btn_done);
         linearLayout = findViewById(R.id.viewPagerCountDots);
-        /*pagerAdapter = new SurveyPagerAdapter(context);*/
+
 
         srvFromOneFrag = new SurveyFormOneFragment();
         srvFromTwoFrag = new SurveyFormTwoFragment();
         srvFromThreeFrag = new SurveyFormThreeFragment();
         srvFromFourFrag = new SurveyFormFourFragment();
         srvFromFiveFrag = new SurveyFormFiveFragment();
+        viewPager.setAdapter(pagerAdapter);
 
-        loadFragment(srvFromOneFrag);
-
-        /*pagerAdapter.setCurrentItem(1, true);*/
-       /* viewPager.setCurrentItem(getItem(+1), true);*/
         setOnClick();
     }
 
-    private void addTabs(ViewPager viewPager) {
-        pagerAdapter = new SurveyPagerAdapter(context);
-        pagerAdapter.addFrag(srvFromOneFrag);
-        pagerAdapter.addFrag(srvFromTwoFrag);
-        pagerAdapter.addFrag(srvFromThreeFrag);
-        pagerAdapter.addFrag(srvFromFourFrag);
-        pagerAdapter.addFrag(srvFromFiveFrag);
-        viewPager.setAdapter(pagerAdapter);
-    }
 
     private void setOnClick(){
         imgBack.setOnClickListener(new View.OnClickListener() {
@@ -95,8 +90,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount())
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                if (viewPager.getCurrentItem() < viewPager.getAdapter().getItemCount()) {
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                }
             }
         });
 
@@ -104,38 +100,52 @@ public class SurveyInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (viewPager.getCurrentItem() != 0)
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
             }
         });
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, SurveyCompletActivity.class));
+            }
+        });
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
 
             @Override
             public void onPageSelected(int position) {
+                Log.i("Rahul", "PageChange: "+position);
                 drawPageSelectionIndicators(position);
+                /*super.onPageSelected(position);*/
+                if(position==0) {
+                    btnBack.setVisibility(View.GONE);
+                }else  {
+                    btnBack.setVisibility(View.VISIBLE);
+                }
+                if(position < Objects.requireNonNull(viewPager.getAdapter()).getItemCount() -1 ) {
+                    btnNext.setVisibility(View.VISIBLE);
+                }else  {
+                    btnNext.setVisibility(View.GONE);
+                }
+
+                /*if() {
+                    btnNext.setVisibility(View.VISIBLE);
+                }else  {
+                    btnNext.setVisibility(View.GONE);
+                }*/
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                super.onPageScrollStateChanged(state);
             }
         });
 
-    }
-
-
-    private boolean loadFragment(Fragment fragment) {
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_frame_layout, fragment);
-            ft.commit();
-            return true;
-        }
-        return false;
     }
 
     private void setupWindowAnimations() {
@@ -158,9 +168,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             else
                 dots[i].setImageDrawable(context.getDrawable(R.drawable.unselected_line));
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10,LinearLayout.LayoutParams.WRAP_CONTENT
             );
 
             params.setMargins(4, 0, 4, 0);

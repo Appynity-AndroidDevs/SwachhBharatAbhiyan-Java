@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormFourFragment">
 
     <ScrollView
@@ -54,7 +53,7 @@
                             android:textSize="12sp"
                             android:textColor="@color/white"
                             android:layout_alignParentStart="true"
-                            android:fontFamily="@font/font_medium"/>
+                            android:fontFamily="@font/font_bold"/>
                     </RelativeLayout>
 
                     <LinearLayout
@@ -70,6 +69,7 @@
                             android:layout_weight="3"
                             android:checked="true"
                             android:padding="2dp"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
@@ -84,6 +84,7 @@
                             android:layout_weight="3"
                             android:padding="2dp"
                             android:checked="false"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
@@ -97,6 +98,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
                             android:checked="true"
+                            android:layout_gravity="center_vertical"
                             android:padding="2dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
@@ -122,6 +124,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Whatsapp"/>
@@ -136,6 +139,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Linkedin"/>
@@ -149,6 +153,7 @@
                             android:padding="2dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Snapchat"/>
@@ -171,6 +176,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Other"/>
@@ -203,7 +209,7 @@
                         android:textSize="12sp"
                         android:textColor="@color/white"
                         android:layout_gravity="start"
-                        android:fontFamily="@font/font_medium"/>
+                        android:fontFamily="@font/font_bold"/>
 
                     <LinearLayout
                         android:id="@+id/li_shopping_cb_one"
@@ -219,6 +225,7 @@
                             android:checked="true"
                             android:padding="2dp"
                             android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:layout_gravity="center_vertical"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
@@ -235,6 +242,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Flipkart"/>
@@ -248,6 +256,7 @@
                             android:padding="2dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Nykka"/>
@@ -271,6 +280,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Tata Cliq"/>
@@ -285,6 +295,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Snapdeal"/>
@@ -298,6 +309,7 @@
                             android:padding="2dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Other"/>
@@ -354,7 +366,7 @@
                             android:textSize="12sp"
                             android:textColor="@color/white"
                             android:layout_alignParentStart="true"
-                            android:fontFamily="@font/font_medium"/>
+                            android:fontFamily="@font/font_bold"/>
                     </RelativeLayout>
 
                     <LinearLayout
@@ -370,6 +382,7 @@
                             android:layout_weight="3"
                             android:checked="true"
                             android:padding="2dp"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
@@ -387,6 +400,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Paytm"/>
@@ -398,6 +412,7 @@
                             android:layout_weight="3"
                             android:checked="true"
                             android:padding="2dp"
+                            android:layout_gravity="center_vertical"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"

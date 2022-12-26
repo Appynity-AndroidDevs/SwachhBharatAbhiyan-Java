@@ -54,7 +54,7 @@
                             android:textSize="12sp"
                             android:textColor="@color/white"
                             android:layout_alignParentEnd="true"
-                            android:fontFamily="@font/font_medium"/>
+                            android:fontFamily="@font/font_bold"/>
                     </RelativeLayout>
 
                     <LinearLayout
@@ -73,6 +73,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Under graduate"/>
@@ -84,10 +85,10 @@
                             android:layout_weight="3"
                             android:padding="2dp"
                             android:checked="false"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
-                            android:layout_marginTop="@dimen/dim_5_dp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Graduate"/>
@@ -99,6 +100,7 @@
                             android:layout_weight="3"
                             android:checked="true"
                             android:padding="2dp"
+                            android:layout_gravity="center_vertical"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
@@ -135,7 +137,7 @@
                         android:textSize="12sp"
                         android:textColor="@color/white"
                         android:layout_gravity="start"
-                        android:fontFamily="@font/font_medium"/>
+                        android:fontFamily="@font/font_bold"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -152,6 +154,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Service"/>
@@ -163,6 +166,7 @@
                             android:layout_weight="3"
                             android:checked="false"
                             android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:layout_gravity="center_vertical"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
@@ -179,6 +183,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:textColor="@color/white"
                             android:text="Professional"/>
 
@@ -234,7 +239,7 @@
                             android:textSize="12sp"
                             android:textColor="@color/white"
                             android:layout_alignParentEnd="true"
-                            android:fontFamily="@font/font_medium"/>
+                            android:fontFamily="@font/font_bold"/>
                     </RelativeLayout>
 
                     <LinearLayout
@@ -253,6 +258,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Married"/>
@@ -266,6 +272,7 @@
                             android:checked="false"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginTop="@dimen/dim_5_dp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
@@ -302,7 +309,7 @@
                         android:textSize="12sp"
                         android:textColor="@color/white"
                         android:layout_gravity="start"
-                        android:fontFamily="@font/font_medium"/>
+                        android:fontFamily="@font/font_bold"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -491,7 +498,7 @@
                             android:textSize="12sp"
                             android:textColor="@color/white"
                             android:layout_alignParentEnd="true"
-                            android:fontFamily="@font/font_medium"/>
+                            android:fontFamily="@font/font_bold"/>
                     </RelativeLayout>
 
                     <LinearLayout
@@ -510,6 +517,7 @@
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Own House"/>
@@ -521,10 +529,10 @@
                             android:layout_weight="3"
                             android:padding="2dp"
                             android:checked="false"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
-                            android:layout_marginTop="@dimen/dim_5_dp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
                             android:text="Ranted"/>
@@ -536,6 +544,7 @@
                             android:layout_weight="3"
                             android:checked="true"
                             android:padding="2dp"
+                            android:layout_gravity="center_vertical"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"

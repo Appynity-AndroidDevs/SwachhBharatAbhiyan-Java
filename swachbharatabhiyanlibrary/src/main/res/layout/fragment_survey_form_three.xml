@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormThreeFragment">
 
     <ScrollView
@@ -53,14 +52,14 @@
                         android:padding="5dp"
                         android:textSize="12sp"
                         android:textColor="@color/white"
-                        android:fontFamily="@font/font_medium"/>
+                        android:fontFamily="@font/font_bold"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="(Family &amp; Dependents)"
                         android:textSize="8sp"
                         android:textColor="@color/white"
-                        android:fontFamily="@font/font_medium"/>
+                        android:fontFamily="@font/font_bold"/>
                 </LinearLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -226,7 +225,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"
                     android:layout_gravity="start"
-                    android:fontFamily="@font/font_medium"/>
+                    android:fontFamily="@font/font_bold"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -243,6 +242,7 @@
                         android:layout_marginEnd="@dimen/dim_5_dp"
                         android:buttonTint="@color/white"
                         android:textSize="12sp"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
                         android:text="Yes"/>
@@ -256,6 +256,7 @@
                         android:layout_marginEnd="@dimen/dim_5_dp"
                         android:buttonTint="@color/white"
                         android:textSize="12sp"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
                         android:text="No"/>
@@ -279,7 +280,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"
                     android:layout_gravity="start"
-                    android:fontFamily="@font/font_medium"/>
+                    android:fontFamily="@font/font_bold"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -296,6 +297,7 @@
                         android:layout_marginEnd="@dimen/dim_5_dp"
                         android:buttonTint="@color/white"
                         android:textSize="12sp"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
                         android:text="Land"/>
@@ -309,6 +311,7 @@
                         android:layout_marginEnd="@dimen/dim_5_dp"
                         android:buttonTint="@color/white"
                         android:textSize="12sp"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
                         android:text="Shop"/>
@@ -322,6 +325,7 @@
                         android:layout_marginEnd="@dimen/dim_5_dp"
                         android:buttonTint="@color/white"
                         android:textSize="12sp"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
                         android:text="Other"/>
@@ -365,7 +369,7 @@
                             android:textSize="14sp"
                             android:textColor="@color/white"
                             android:layout_gravity="start|center_vertical"
-                            android:fontFamily="@font/font_medium"/>
+                            android:fontFamily="@font/font_bold"/>
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -382,6 +386,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="6"
+                                android:layout_marginEnd="@dimen/dim_10_dp"
                                 android:textColor="@color/colorSurveyTextGreen"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="@dimen/dim_14_sp"
@@ -515,7 +520,7 @@
                         android:textSize="12sp"
                         android:textColor="@color/white"
                         android:layout_gravity="start"
-                        android:fontFamily="@font/font_medium"/>
+                        android:fontFamily="@font/font_bold"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

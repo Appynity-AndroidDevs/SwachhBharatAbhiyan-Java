@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,7 +48,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private SurPagerAdapter pagerAdapter;
-    private ImageView[] dots;
 
 
     @Override
@@ -65,8 +65,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnBack = findViewById(R.id.btn_back);
         btnDone = findViewById(R.id.btn_done);
-        linearLayout = findViewById(R.id.viewPagerCountDots);
 
+        btnDone.setVisibility(View.GONE);
+        btnBack.setVisibility(View.GONE);
+        btnNext.setVisibility(View.VISIBLE);
 
         srvFromOneFrag = new SurveyFormOneFragment();
         srvFromTwoFrag = new SurveyFormTwoFragment();
@@ -90,7 +92,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (viewPager.getCurrentItem() < viewPager.getAdapter().getItemCount()) {
+                if (viewPager.getCurrentItem() < Objects.requireNonNull(viewPager.getAdapter()).getItemCount()) {
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
                 }
             }
@@ -120,8 +122,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 Log.i("Rahul", "PageChange: "+position);
-                drawPageSelectionIndicators(position);
-                /*super.onPageSelected(position);*/
+
                 if(position==0) {
                     btnBack.setVisibility(View.GONE);
                 }else  {
@@ -132,12 +133,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 }else  {
                     btnNext.setVisibility(View.GONE);
                 }
-
-                /*if() {
-                    btnNext.setVisibility(View.VISIBLE);
-                }else  {
-                    btnNext.setVisibility(View.GONE);
-                }*/
             }
 
             @Override
@@ -147,34 +142,4 @@ public class SurveyInformationActivity extends AppCompatActivity {
         });
 
     }
-
-    private void setupWindowAnimations() {
-        Slide slide = new Slide();
-        slide.setDuration(1000);
-        getWindow().setEnterTransition(slide);
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private void drawPageSelectionIndicators(int mPosition){
-        if(linearLayout!=null) {
-            linearLayout.removeAllViews();
-        }
-        linearLayout=(LinearLayout)findViewById(R.id.viewPagerCountDots);
-        dots = new ImageView[dotsCount];
-        for (int i = 0; i < dotsCount; i++) {
-            dots[i] = new ImageView(context);
-            if(i==mPosition)
-                dots[i].setImageDrawable(context.getDrawable(R.drawable.selected_line));
-            else
-                dots[i].setImageDrawable(context.getDrawable(R.drawable.unselected_line));
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10,LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-
-            params.setMargins(4, 0, 4, 0);
-            linearLayout.addView(dots[i], params);
-        }
-    }
-
-
 }

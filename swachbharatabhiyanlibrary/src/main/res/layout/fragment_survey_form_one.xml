@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormOneFragment">
 
     <LinearLayout
@@ -34,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="Your Name"
                 android:padding="5dp"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
                 android:layout_gravity="end"
                 android:fontFamily="@font/font_bold"/>
@@ -77,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:text="Your Mobile Number"
                 android:padding="5dp"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
                 android:layout_gravity="start"
                 android:fontFamily="@font/font_bold"/>
@@ -152,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:text="Date Of Birth"
                     android:padding="5dp"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textColor="@color/white"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/font_bold"/>
@@ -319,7 +320,7 @@
                 android:layout_height="wrap_content"
                 android:text="Which One Are You?"
                 android:padding="5dp"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
                 android:layout_gravity="start"
                 android:fontFamily="@font/font_bold"/>
@@ -421,7 +422,7 @@
                     android:layout_height="wrap_content"
                     android:text="Blood Group"
                     android:padding="5dp"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textColor="@color/white"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/font_bold"/>

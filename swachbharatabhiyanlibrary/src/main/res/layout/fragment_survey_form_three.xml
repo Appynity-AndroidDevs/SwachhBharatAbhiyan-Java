@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormThreeFragment">
 
     <ScrollView
@@ -84,22 +85,25 @@
                         android:layout_centerVertical="true"
                         android:padding="@dimen/dim_5_dp">
                         <ImageView
+                            android:id="@+id/img_minus_adult"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_circle_minus"
                             android:padding="@dimen/dim_5_dp"
                             android:fitsSystemWindows="true"/>
                         <TextView
+                            android:id="@+id/txt_num_adult"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="4"
+                            android:text="0"
                             android:textColor="@color/colorSurveyTextGreen"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
                             android:background="@drawable/solid_white_rectangle_survey"
                             android:padding="@dimen/dim_5_dp"/>
                         <ImageView
+                            android:id="@+id/img_plus_adult"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_circle_plus"
@@ -132,22 +136,25 @@
                         android:layout_centerVertical="true"
                         android:padding="@dimen/dim_5_dp">
                         <ImageView
+                            android:id="@+id/img_child_minus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_circle_minus"
                             android:padding="@dimen/dim_5_dp"
                             android:fitsSystemWindows="true"/>
                         <TextView
+                            android:id="@+id/txt_num_child"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="2"
+                            android:text="0"
                             android:textColor="@color/colorSurveyTextGreen"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
                             android:background="@drawable/solid_white_rectangle_survey"
                             android:padding="@dimen/dim_5_dp"/>
                         <ImageView
+                            android:id="@+id/img_child_plus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_circle_plus"
@@ -180,22 +187,25 @@
                         android:layout_centerVertical="true"
                         android:padding="@dimen/dim_5_dp">
                         <ImageView
+                            android:id="@+id/img_minus_citizen"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_circle_minus"
                             android:padding="@dimen/dim_5_dp"
                             android:fitsSystemWindows="true"/>
                         <TextView
+                            android:id="@+id/txt_num_citizen"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="2"
+                            android:text="0"
                             android:textColor="@color/colorSurveyTextGreen"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
                             android:background="@drawable/solid_white_rectangle_survey"
                             android:padding="@dimen/dim_5_dp"/>
                         <ImageView
+                            android:id="@+id/img_plus_citizen"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_circle_plus"
@@ -357,46 +367,57 @@
                     android:padding="@dimen/dim_8_dp"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="4"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Number Of Vehicles"
                             android:padding="5dp"
                             android:textSize="14sp"
                             android:textColor="@color/white"
-                            android:layout_gravity="start|center_vertical"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="start"
+                            android:layout_alignParentStart="true"
                             android:fontFamily="@font/font_bold"/>
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="3"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_gravity="center|center_vertical"
-                            android:gravity="center"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
                             android:padding="@dimen/dim_5_dp">
-
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_circle_minus"
+                                android:padding="@dimen/dim_5_dp"
+                                android:visibility="invisible"
+                                android:fitsSystemWindows="true"/>
                             <TextView
-                                android:id="@+id/txt_total_car_vehicle"
+                                android:id="@+id/txt_num_total_vehicle"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="6"
-                                android:layout_marginEnd="@dimen/dim_10_dp"
                                 android:textColor="@color/colorSurveyTextGreen"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="@dimen/dim_14_sp"
+                                android:text="0"
                                 android:background="@drawable/solid_white_rectangle_survey"
                                 android:padding="@dimen/dim_5_dp"/>
-
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_circle_plus"
+                                android:padding="@dimen/dim_5_dp"
+                                android:visibility="invisible"
+                                android:fitsSystemWindows="true"/>
 
                         </LinearLayout>
 
-                    </LinearLayout>
+                    </RelativeLayout>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -420,22 +441,25 @@
                             android:layout_centerVertical="true"
                             android:padding="@dimen/dim_5_dp">
                             <ImageView
+                                android:id="@+id/img_minus_two_wheeler"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_circle_minus"
                                 android:padding="@dimen/dim_5_dp"
                                 android:fitsSystemWindows="true"/>
                             <TextView
+                                android:id="@+id/txt_num_two_wheeler"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="4"
                                 android:textColor="@color/colorSurveyTextGreen"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="@dimen/dim_14_sp"
+                                android:text="0"
                                 android:background="@drawable/solid_white_rectangle_survey"
                                 android:padding="@dimen/dim_5_dp"/>
                             <ImageView
+                                android:id="@+id/img_plus_two_wheeler"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_circle_plus"
@@ -468,22 +492,25 @@
                             android:layout_centerVertical="true"
                             android:padding="@dimen/dim_5_dp">
                             <ImageView
+                                android:id="@+id/img_minus_four_wheeler"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_circle_minus"
                                 android:padding="@dimen/dim_5_dp"
                                 android:fitsSystemWindows="true"/>
                             <TextView
+                                android:id="@+id/txt_num_four_wheeler"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="2"
                                 android:textColor="@color/colorSurveyTextGreen"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="@dimen/dim_14_sp"
+                                android:text="0"
                                 android:background="@drawable/solid_white_rectangle_survey"
                                 android:padding="@dimen/dim_5_dp"/>
                             <ImageView
+                                android:id="@+id/img_plus_four_wheeler"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_circle_plus"
@@ -529,22 +556,25 @@
                         android:layout_gravity="start|center_vertical"
                         android:padding="@dimen/dim_5_dp">
                         <ImageView
+                            android:id="@+id/img_minus_vote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_circle_minus"
                             android:padding="@dimen/dim_5_dp"
                             android:fitsSystemWindows="true"/>
                         <TextView
+                            android:id="@+id/txt_num_vote"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="2"
                             android:textColor="@color/colorSurveyTextGreen"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
+                            android:text="0"
                             android:background="@drawable/solid_white_rectangle_survey"
                             android:padding="@dimen/dim_5_dp"/>
                         <ImageView
+                            android:id="@+id/img_plus_vote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_circle_plus"

@@ -22,6 +22,7 @@ import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private SurveyFormThreeFragment srvFromThreeFrag;
     private SurveyFormFourFragment srvFromFourFrag;
     private SurveyFormFiveFragment srvFromFiveFrag;
+    private DotsIndicator dotsIndicator;
 
     private Button btnBack,btnNext, btnDone;
     private ImageView imgBack;
@@ -56,6 +58,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         context = this;
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
+        dotsIndicator = findViewById(R.id.dots_indicator);
         pagerAdapter = new SurPagerAdapter(getSupportFragmentManager(),getLifecycle());
         imgBack = findViewById(R.id.img_survey_back);
         btnNext = findViewById(R.id.btn_next);
@@ -78,6 +81,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         srvFromFourFrag = new SurveyFormFourFragment();
         srvFromFiveFrag = new SurveyFormFiveFragment();
         viewPager.setAdapter(pagerAdapter);
+        dotsIndicator.attachTo(viewPager);
 
         setOnClick();
     }

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormFourFragment">
 
     <ScrollView
@@ -21,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/dim_5_dp">
+                android:layout_marginVertical="@dimen/dim_10_dp">
 
                 <ImageView
                     android:id="@+id/img_social"
@@ -190,7 +191,7 @@
             <LinearLayout
                 android:id="@+id/li_shopping_box"
                 android:layout_width="match_parent"
-                android:layout_marginVertical="@dimen/dim_5_dp"
+                android:layout_marginVertical="@dimen/dim_10_dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -334,7 +335,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/dim_5_dp">
+                android:layout_marginVertical="@dimen/dim_10_dp">
 
                 <ImageView
                     android:id="@+id/img_online_payment"

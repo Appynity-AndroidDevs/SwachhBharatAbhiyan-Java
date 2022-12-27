@@ -51,12 +51,26 @@
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dots_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:dotsColor="@color/colorSurveyEditGreenLight"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="16dp"
+                app:dotsSpacing="4dp"
+                app:dotsWidthFactor="2.5"
+                app:selectedDotColor="@color/white"
+                app:progressMode="true"
+                />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dim_10_dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical|center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <View
                     android:id="@+id/view_one"
@@ -113,7 +127,8 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layoutDirection="ltr"/>
 
         </FrameLayout>
 

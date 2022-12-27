@@ -18,6 +18,76 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/li_vote_box"
+                android:layout_width="match_parent"
+                android:layout_marginVertical="@dimen/dim_5_dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/li_vote"
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dim_8_dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No. Of People Registered To Vote"
+                        android:padding="5dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/font_bold"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="start|center_vertical"
+                        android:padding="@dimen/dim_5_dp">
+                        <ImageView
+                            android:id="@+id/img_minus_vote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_minus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+                        <TextView
+                            android:id="@+id/txt_num_vote"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/colorSurveyTextGreen"
+                            android:fontFamily="@font/font_medium"
+                            android:textSize="@dimen/dim_14_sp"
+                            android:text="0"
+                            android:background="@drawable/solid_white_rectangle_survey"
+                            android:padding="@dimen/dim_5_dp"/>
+                        <ImageView
+                            android:id="@+id/img_plus_vote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_circle_plus"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fitsSystemWindows="true"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/img_vote"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ballot"
+                    android:layout_gravity="center_vertical|center"
+                    android:fitsSystemWindows="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/li_social_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +121,7 @@
                             android:layout_height="wrap_content"
                             android:text="Which Social Media Platform You Use To Interact."
                             android:padding="5dp"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:textColor="@color/white"
                             android:layout_alignParentStart="true"
                             android:fontFamily="@font/font_bold"/>
@@ -207,7 +277,7 @@
                         android:layout_height="wrap_content"
                         android:text="Preferred Online Shopping App."
                         android:padding="5dp"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         android:textColor="@color/white"
                         android:layout_gravity="start"
                         android:fontFamily="@font/font_bold"/>
@@ -320,7 +390,7 @@
 
                 </LinearLayout>
                 <ImageView
-                    android:id="@+id/img_vote"
+                    android:id="@+id/img_shopping"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
@@ -364,7 +434,7 @@
                             android:layout_height="wrap_content"
                             android:text="Which Online Payment App Do You Use?"
                             android:padding="5dp"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:textColor="@color/white"
                             android:layout_alignParentStart="true"
                             android:fontFamily="@font/font_bold"/>

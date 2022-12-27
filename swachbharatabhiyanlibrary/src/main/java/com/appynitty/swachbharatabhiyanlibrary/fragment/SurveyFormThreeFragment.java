@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,22 +23,24 @@ public class SurveyFormThreeFragment extends Fragment {
     private ImageView imgMinusSCitizen,imgPlusSCitizen;
     private ImageView imgMinusTwoWheel,imgPlusTwoWheel;
     private ImageView imgMinusFourWheel,imgPlusFourWheel;
-    private ImageView imgMinusVote,imgPlusVote;
+
     private TextView txtNumAdult;
     private TextView txtNumChild;
     private TextView txtNumSCitizen;
     private TextView txtNumTwoWheel;
     private TextView txtNumFourWheel;
     private TextView txtNumTotalVehicle;
-    private TextView txtNumVote;
-    private String adult, children, SCitizen, twoWheel, fourWheel, totalVehiclePlus, totalVehicleMinus, vote;
+
+    private String adult, children, SCitizen, twoWheel, fourWheel, totalVehiclePlus, totalVehicleMinus;
     private Integer i = 1;
     private Integer j = 1;
     private Integer k = 1;
     private Integer l = 1;
     private Integer m = 1;
     private Integer n = 1;
-    private Integer o = 1;
+
+
+    private CheckBox cbBusinessTypeYes, cbBusinessTypeNo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,10 +81,7 @@ public class SurveyFormThreeFragment extends Fragment {
         txtNumFourWheel = view.findViewById(R.id.txt_num_four_wheeler);
         imgPlusFourWheel = view.findViewById(R.id.img_plus_four_wheeler);
 
-        //Vote
-        imgMinusVote = view.findViewById(R.id.img_minus_vote);
-        txtNumVote = view.findViewById(R.id.txt_num_vote);
-        imgPlusVote = view.findViewById(R.id.img_plus_vote);
+
 
         i = Integer.parseInt(txtNumAdult.getText().toString());
         j = Integer.parseInt(txtNumChild.getText().toString());
@@ -89,7 +89,7 @@ public class SurveyFormThreeFragment extends Fragment {
         l = Integer.parseInt(txtNumTwoWheel.getText().toString());
         m = Integer.parseInt(txtNumFourWheel.getText().toString());
         n = Integer.parseInt(txtNumTotalVehicle.getText().toString());
-        o = Integer.parseInt(txtNumVote.getText().toString());
+
 
 
 
@@ -229,31 +229,7 @@ public class SurveyFormThreeFragment extends Fragment {
             }
         });
 
-        //Vote
-        imgMinusVote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("src", "Decreasing value...");
 
-                if (o > 0) {
-                    o = o - 1;
-                    vote = String.valueOf(o);
-                    txtNumVote.setText(vote);
-                } else {
-                    Log.d("src", "Value can't be less than 0");
-                }
-            }
-        });
-
-        imgPlusVote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("src", "Increasing value...");
-                o = o + 1;
-                vote = String.valueOf(o);
-                txtNumVote.setText(vote);
-            }
-        });
 
     }
 

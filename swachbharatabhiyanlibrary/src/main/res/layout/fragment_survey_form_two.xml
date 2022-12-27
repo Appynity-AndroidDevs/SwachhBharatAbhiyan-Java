@@ -306,7 +306,7 @@
                         android:layout_height="wrap_content"
                         android:text="If married, Date Of Marriage Anniversary."
                         android:padding="5dp"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         android:textColor="@color/white"
                         android:layout_gravity="start"
                         android:fontFamily="@font/font_bold"/>

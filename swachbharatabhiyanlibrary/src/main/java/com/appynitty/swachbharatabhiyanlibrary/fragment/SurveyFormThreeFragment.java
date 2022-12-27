@@ -173,6 +173,7 @@ public class SurveyFormThreeFragment extends Fragment {
                 txtNumSCitizen.setText(SCitizen);
             }
         });
+
     //Two Wheeler
         imgMinusTwoWheel.setOnClickListener(new View.OnClickListener() {
             @Override

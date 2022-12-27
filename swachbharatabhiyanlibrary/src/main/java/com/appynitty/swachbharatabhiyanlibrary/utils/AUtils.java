@@ -25,6 +25,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -72,6 +73,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class AUtils extends CommonUtils {
 
@@ -1337,5 +1339,15 @@ public class AUtils extends CommonUtils {
     /*LocalDate birthdate = new LocalDate (1970, 1, 20);
     LocalDate now = new LocalDate();
     Years age = Years.yearsBetween(birthdate, now);*/
+
+    public static void getDate(Context context, int currentYear, int currentMonth, int currentDay){
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+
+         currentYear = calendar.get(Calendar.YEAR);
+            currentMonth = calendar.get(Calendar.MONTH) + 1;
+         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        Toast.makeText(context,"Today's Date: " + currentYear + currentMonth + currentDay, Toast.LENGTH_SHORT).show();
+    }
 }
 

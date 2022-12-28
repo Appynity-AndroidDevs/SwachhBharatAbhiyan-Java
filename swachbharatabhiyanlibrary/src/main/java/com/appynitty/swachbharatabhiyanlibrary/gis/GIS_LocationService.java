@@ -61,7 +61,6 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
     private List<LocationEntity> mAllLocations = new ArrayList<>();
     private List<HouseLocationEntity> mAllHouses;
     String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
-    private final List<GISRequestDTO> gisRequestDTOList = new ArrayList<>();
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -189,10 +188,10 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
                 gisRequestDTO.setUpdateTs(AUtils.getGisDateTime());
                 gisRequestDTO.setGeom(mLineString.toString());
 
+                List<GISRequestDTO> gisRequestDTOList = new ArrayList<>();
                 gisRequestDTOList.add(gisRequestDTO);
-                Log.e(TAG, "houseMapingTrail body: " + gisRequestDTO.to_String());
-                /*mLocationRepository.delete();
-                mAllLocations.clear();*/
+                Log.e(TAG, "houseMappingTrail body: " + gisRequestDTOList);
+
                 /*if (Prefs.contains(AUtils.GIS_END_TS)) {
                     if (!AUtils.isNullString(Prefs.getString(AUtils.GIS_END_TS, null))
                             || !Prefs.getString(AUtils.GIS_END_TS, null).isEmpty())

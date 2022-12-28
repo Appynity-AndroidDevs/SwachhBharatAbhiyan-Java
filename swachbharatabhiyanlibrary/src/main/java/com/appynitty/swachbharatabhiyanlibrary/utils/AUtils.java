@@ -110,7 +110,11 @@ public class AUtils extends CommonUtils {
     /*****
      * live survey url
      * http://124.153.94.110:5051/
+     * on mumbai server
+     * http://124.153.94.110:5054/
+     * MSysICTSBM [API]
      * */
+    public static final String SURVEY_SERVER_URL = "http://124.153.94.110:5051/";
 
 
     //test

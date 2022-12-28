@@ -22,6 +22,7 @@ import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
@@ -33,11 +34,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private final static int NUM_PAGES = 5;
     private Context context;
     private FrameLayout frameLayout;
-    private SurveyFormOneFragment srvFromOneFrag;
-    private SurveyFormTwoFragment srvFromTwoFrag;
-    private SurveyFormThreeFragment srvFromThreeFrag;
-    private SurveyFormFourFragment srvFromFourFrag;
-    private SurveyFormFiveFragment srvFromFiveFrag;
     private DotsIndicator dotsIndicator;
 
     private Button btnBack,btnNext, btnDone;
@@ -75,11 +71,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
 
-        srvFromOneFrag = new SurveyFormOneFragment();
-        srvFromTwoFrag = new SurveyFormTwoFragment();
-        srvFromThreeFrag = new SurveyFormThreeFragment();
-        srvFromFourFrag = new SurveyFormFourFragment();
-        srvFromFiveFrag = new SurveyFormFiveFragment();
         viewPager.setAdapter(pagerAdapter);
         dotsIndicator.attachTo(viewPager);
 

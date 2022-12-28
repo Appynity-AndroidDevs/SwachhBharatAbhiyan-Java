@@ -270,6 +270,7 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
     public void onDestroy() {
         super.onDestroy();
         fusedLocationClient.removeLocationUpdates(locationCallback);
+        Log.e(TAG, "onDestroy: service done!");
     }
 
     @Override

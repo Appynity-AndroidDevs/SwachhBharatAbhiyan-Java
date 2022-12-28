@@ -26,7 +26,6 @@ public class TokenRepo {
 
     public void getToken(iTokenResponseListener tokenResponseListener) {
         String enAppID = AUtils.getEncodedAppId();
-        Log.e(TAG, "getToken: ");
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

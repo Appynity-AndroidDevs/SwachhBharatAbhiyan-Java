@@ -37,9 +37,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.Priority;
-import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -50,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,13 +58,11 @@ import java.util.TimerTask;
 
 public class LocationService extends Service {
 
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
     private static final String TAG = "LocationService";
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
-    //    long notify_interval = 1000 * 60; //for one minute
     long notify_interval = 1000 * 60 * 10;//for 10 minutes
 
 
@@ -80,7 +77,7 @@ public class LocationService extends Service {
     private final List<UserLocationPojo> mUserLocationPojoList;
 
     private final SyncOfflineAttendanceRepository syncOfflineAttendanceRepository;
-    LocationCallback locationCallback1;
+    LocationCallback locationCallback;
 
 
     public LocationService() {
@@ -146,14 +143,14 @@ public class LocationService extends Service {
             return;
         }
         mFusedLocationClient.requestLocationUpdates(this.locationRequest,
-                this.locationCallback1, Looper.myLooper());
+                this.locationCallback, Looper.myLooper());
     }
 
     protected LocationRequest createLocationRequest() {
 
-        return new LocationRequest.Builder(0)
-                .setIntervalMillis(3000)
-                .setMinUpdateIntervalMillis(5000)
+        return new LocationRequest.Builder(3000)
+                .setWaitForAccurateLocation(true)
+                .setMinUpdateDistanceMeters(1F)
                 .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
 
     }
@@ -185,19 +182,14 @@ public class LocationService extends Service {
         LocationSettingsRequest.Builder builder = new
                 LocationSettingsRequest.Builder();
         builder.addLocationRequest(locationRequest);
-        Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
-        mFusedLocationClient =
-                LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
-        locationCallback1 = new LocationCallback() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+
+        locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-//                    Log.e(TAG, "onLocationResult: Lat: " + location.getLatitude() + ", Long: " + location.getLongitude());
+                Location location = locationResult.getLastLocation();
+                if (location != null) {
                     Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
                     Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
 
@@ -214,26 +206,23 @@ public class LocationService extends Service {
                         }
 
                     }
+                    
                 }
             }
         };
 
     }
 
-    private class TimerTaskToSendLocation extends TimerTask {
+    private static class TimerTaskToSendLocation extends TimerTask {
         @Override
         public void run() {
-            sendLocation();
+//            sendLocation();
         }
     }
 
     private void sendLocation() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
         String currentTime = sdf.format(new Date());
-       /* if (AUtils.isNullString(Prefs.getString(AUtils.LAT, null))) {
-            AUtils.showGPSSettingsAlert(getApplicationContext());
-        }*/
-
 
         Log.e(TAG, "sendLocation: sending location=> "
                 + Prefs.getString(AUtils.LAT, null)

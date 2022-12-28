@@ -91,7 +91,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         tokenViewModel.tokenLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String token_value) {
-                Log.e(TAG, "token: " + token_value);
                 Prefs.putString(AUtils.BEARER_TOKEN, token_value);
             }
         });

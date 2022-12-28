@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -107,9 +108,13 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
                     Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
 
                     if (location.hasAccuracy() && location.getAccuracy() <= 15) {
-                        Toast.makeText(GIS_LocationService.this, "lat: " + location.getLatitude() + '\n'
+                        Toast t = Toast.makeText(GIS_LocationService.this, "lat: " + location.getLatitude() + '\n'
                                 + ", lon: " + location.getLongitude() + '\n'
-                                + "Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+                                + "Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT);
+
+                        t.setGravity(Gravity.CENTER, 0, 0);
+                        t.show();
+
                         LocationEntity locEntity = new LocationEntity();
                         locEntity.setLatLng(location.getLongitude() + " " + location.getLatitude());
                         mLocationRepository.insert(locEntity);
@@ -190,7 +195,7 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
 
                 List<GISRequestDTO> gisRequestDTOList = new ArrayList<>();
                 gisRequestDTOList.add(gisRequestDTO);
-                Log.e(TAG, "houseMappingTrail body: " + gisRequestDTOList);
+                Log.e(TAG, "houseMappingTrail body: " + gisRequestDTOList.get(0).toString());
 
                 /*if (Prefs.contains(AUtils.GIS_END_TS)) {
                     if (!AUtils.isNullString(Prefs.getString(AUtils.GIS_END_TS, null))

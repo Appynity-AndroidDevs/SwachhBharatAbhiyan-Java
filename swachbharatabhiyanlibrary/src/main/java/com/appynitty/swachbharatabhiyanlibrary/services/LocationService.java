@@ -148,9 +148,9 @@ public class LocationService extends Service {
 
     protected LocationRequest createLocationRequest() {
 
-        return new LocationRequest.Builder(3000)
+        return new LocationRequest.Builder(0)
                 .setWaitForAccurateLocation(true)
-                .setMinUpdateDistanceMeters(1F)
+                .setMinUpdateDistanceMeters(6F)
                 .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
 
     }
@@ -206,7 +206,9 @@ public class LocationService extends Service {
                         }
 
                     }
-                    
+                    Log.i(TAG, "onLocationResult: \nloc==> lat: " + location.getLatitude()
+                            + " lon: " + location.getLongitude()
+                            + " accuracy: " + location.getAccuracy());
                 }
             }
         };

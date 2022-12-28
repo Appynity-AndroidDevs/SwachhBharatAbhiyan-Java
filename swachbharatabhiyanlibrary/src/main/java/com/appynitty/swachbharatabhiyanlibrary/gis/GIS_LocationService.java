@@ -11,10 +11,12 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -47,7 +49,7 @@ import retrofit2.Response;
  * Created by Swapnil Lanjewar on 23-Nov-2022
  */
 
-public class GIS_LocationService extends LifecycleService {
+public class GIS_LocationService extends LifecycleService implements LocationListener {
     private static final String TAG = "GIS_LocationService";
     FusedLocationProviderClient fusedLocationClient;
     LocationRequest locationRequest;
@@ -56,7 +58,7 @@ public class GIS_LocationService extends LifecycleService {
     String userTypeId;
     private LocationRepository mLocationRepository;
     private HousePointRepo mHousePointRepo;
-    private List<LocationEntity> mAllLocations;
+    private List<LocationEntity> mAllLocations = new ArrayList<>();
     private List<HouseLocationEntity> mAllHouses;
     String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
     private final List<GISRequestDTO> gisRequestDTOList = new ArrayList<>();
@@ -76,7 +78,10 @@ public class GIS_LocationService extends LifecycleService {
     }
 
     protected LocationRequest createLocationRequest() {
-        return new LocationRequest.Builder(0).setIntervalMillis(1000 * 60).setMinUpdateDistanceMeters(5F).setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
+        return new LocationRequest.Builder(3000)
+                .setMinUpdateDistanceMeters(11F)
+                .setWaitForAccurateLocation(true)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
     }
 
     @Override
@@ -102,9 +107,15 @@ public class GIS_LocationService extends LifecycleService {
                 if (location != null) {
                     Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
 
-                    LocationEntity locEntity = new LocationEntity();
-                    locEntity.setLatLng(location.getLongitude() + " " + location.getLatitude());
-                    mLocationRepository.insert(locEntity);
+                    if (location.hasAccuracy() && location.getAccuracy() <= 15) {
+                        Toast.makeText(GIS_LocationService.this, "lat: " + location.getLatitude() + '\n'
+                                + ", lon: " + location.getLongitude() + '\n'
+                                + "Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+                        LocationEntity locEntity = new LocationEntity();
+                        locEntity.setLatLng(location.getLongitude() + " " + location.getLatitude());
+                        mLocationRepository.insert(locEntity);
+                    }
+
                 }
 
             }
@@ -114,6 +125,7 @@ public class GIS_LocationService extends LifecycleService {
         mLocationRepository.getAllLocations().observe(GIS_LocationService.this, new Observer<List<LocationEntity>>() {
             @Override
             public void onChanged(List<LocationEntity> locationEntities) {
+                mAllLocations.clear();
                 mAllLocations = locationEntities;
             }
         });
@@ -179,7 +191,8 @@ public class GIS_LocationService extends LifecycleService {
 
                 gisRequestDTOList.add(gisRequestDTO);
                 Log.e(TAG, "houseMapingTrail body: " + gisRequestDTO.to_String());
-
+                /*mLocationRepository.delete();
+                mAllLocations.clear();*/
                 /*if (Prefs.contains(AUtils.GIS_END_TS)) {
                     if (!AUtils.isNullString(Prefs.getString(AUtils.GIS_END_TS, null))
                             || !Prefs.getString(AUtils.GIS_END_TS, null).isEmpty())
@@ -188,39 +201,50 @@ public class GIS_LocationService extends LifecycleService {
                 }*/
 
                 GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
+
                 if (userTypeId.equals(AUtils.USER_TYPE.USER_TYPE_EMP_SCANNIFY)) {
-                    service.sendHouseMapTrail(auth_token, Prefs.getString(AUtils.APP_ID, null), gisRequestDTOList).enqueue(new Callback<List<GISResponseDTO>>() {
-                        @Override
-                        public void onResponse(@NonNull Call<List<GISResponseDTO>> call, @NonNull Response<List<GISResponseDTO>> response) {
-                            if (response.body() != null) {
-                                if (response.body().get(0).getStatus().equals("Success"))
-                                    mLocationRepository.delete();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<List<GISResponseDTO>> call, @NonNull Throwable t) {
-                            Log.e(TAG, "onFailure: " + t.getMessage());
-                        }
-                    });
+                    sendHouseMapTrail(service, gisRequestDTOList);
                 } else {
-                    service.sendGarbageTrail(gisRequestDTO).enqueue(new Callback<GISResponseDTO>() {
-                        @Override
-                        public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
-                            if (response.body() != null) {
-                                if (response.body().getStatus().equals("Success"))
-                                    mLocationRepository.delete();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
-                            Log.e(TAG, "onFailure: " + t.getMessage());
-                        }
-                    });
+                    sendGarbageTrail(service, gisRequestDTO);
                 }
             }
         }
+    }
+
+    public void sendHouseMapTrail(GISWebService mService, List<GISRequestDTO> gisRequestDTOList) {
+        mService.sendHouseMapTrail(auth_token, Prefs.getString(AUtils.APP_ID, null), gisRequestDTOList).enqueue(new Callback<List<GISResponseDTO>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<GISResponseDTO>> call, @NonNull Response<List<GISResponseDTO>> response) {
+                if (response.body() != null) {
+                    if (response.body().get(0).getStatus().equals("Success"))
+                        mLocationRepository.delete();
+                    mAllLocations.clear();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<GISResponseDTO>> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    private void sendGarbageTrail(GISWebService mService, GISRequestDTO gisRequestDTO) {
+        mService.sendGarbageTrail(gisRequestDTO).enqueue(new Callback<GISResponseDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
+                if (response.body() != null) {
+                    if (response.body().getStatus().equals("Success"))
+                        mLocationRepository.delete();
+                    mAllLocations.clear();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -254,6 +278,11 @@ public class GIS_LocationService extends LifecycleService {
         return null;
     }
 
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        Log.e(TAG, "onLocationChanged: lat: " + location.getLatitude() + ", lon: " + location.getLongitude());
+    }
+
     private class TtSendLocations extends TimerTask {
 
         @Override
@@ -261,6 +290,5 @@ public class GIS_LocationService extends LifecycleService {
             sendLocations();
         }
     }
-
 
 }

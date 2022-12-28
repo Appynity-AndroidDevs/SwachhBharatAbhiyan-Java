@@ -30,11 +30,15 @@ public class SurveyFormThreeFragment extends Fragment {
     private TextView txtNumTwoWheel;
     private TextView txtNumFourWheel;
     private TextView txtNumTotalVehicle;
+    private TextView txtNumTotalMember;
 
-    private String adult, children, SCitizen, twoWheel, fourWheel, totalVehiclePlus, totalVehicleMinus;
+    private String adult, children, SCitizen, totalMemberPlus, totalMemberMinus;
     private Integer i = 1;
     private Integer j = 1;
     private Integer k = 1;
+    private Integer r = 1;
+
+    private String twoWheel, fourWheel, totalVehiclePlus, totalVehicleMinus;
     private Integer l = 1;
     private Integer m = 1;
     private Integer n = 1;
@@ -69,6 +73,8 @@ public class SurveyFormThreeFragment extends Fragment {
         txtNumSCitizen = view.findViewById(R.id.txt_num_citizen);
         imgPlusSCitizen = view.findViewById(R.id.img_plus_citizen);
 
+        txtNumTotalMember = view.findViewById(R.id.txt_num_total_mem);
+
         //Two Wheeler
         imgMinusTwoWheel = view.findViewById(R.id.img_minus_two_wheeler);
         txtNumTwoWheel = view.findViewById(R.id.txt_num_two_wheeler);
@@ -82,16 +88,16 @@ public class SurveyFormThreeFragment extends Fragment {
         imgPlusFourWheel = view.findViewById(R.id.img_plus_four_wheeler);
 
 
-
+        //total family member
         i = Integer.parseInt(txtNumAdult.getText().toString());
         j = Integer.parseInt(txtNumChild.getText().toString());
         k = Integer.parseInt(txtNumSCitizen.getText().toString());
+        r = Integer.parseInt(txtNumSCitizen.getText().toString());
+
+        //total vehicle
         l = Integer.parseInt(txtNumTwoWheel.getText().toString());
         m = Integer.parseInt(txtNumFourWheel.getText().toString());
         n = Integer.parseInt(txtNumTotalVehicle.getText().toString());
-
-
-
 
         setOnClick();
     }
@@ -108,6 +114,10 @@ public class SurveyFormThreeFragment extends Fragment {
                     i = i - 1;
                     adult = String.valueOf(i);
                     txtNumAdult.setText(adult);
+
+                    r = i + j + k;
+                    totalMemberMinus = String.valueOf(r);
+                    txtNumTotalMember.setText( totalMemberMinus.replace("-","").trim());
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -121,6 +131,10 @@ public class SurveyFormThreeFragment extends Fragment {
                 i = i + 1;
                 adult = String.valueOf(i);
                 txtNumAdult.setText(adult);
+
+                r = i + j + k;
+                totalMemberPlus = String.valueOf(r);
+                txtNumTotalMember.setText( totalMemberPlus);
             }
         });
    //children
@@ -133,6 +147,10 @@ public class SurveyFormThreeFragment extends Fragment {
                     j = j - 1;
                     children = String.valueOf(j);
                     txtNumChild.setText(children);
+
+                    r = i + j + k;
+                    totalMemberMinus = String.valueOf(r);
+                    txtNumTotalMember.setText( totalMemberMinus.replace("-","").trim());
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -146,6 +164,10 @@ public class SurveyFormThreeFragment extends Fragment {
                 j = j + 1;
                 children = String.valueOf(j);
                 txtNumChild.setText(children);
+
+                r = i + j + k;
+                totalMemberPlus = String.valueOf(r);
+                txtNumTotalMember.setText( totalMemberPlus);
             }
         });
     //Senior Citizen
@@ -158,6 +180,10 @@ public class SurveyFormThreeFragment extends Fragment {
                     k = k - 1;
                     SCitizen = String.valueOf(k);
                     txtNumSCitizen.setText(SCitizen);
+
+                    r = i + j + k;
+                    totalMemberMinus = String.valueOf(r);
+                    txtNumTotalMember.setText( totalMemberMinus.replace("-","").trim());
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -171,6 +197,10 @@ public class SurveyFormThreeFragment extends Fragment {
                 k = k + 1;
                 SCitizen = String.valueOf(k);
                 txtNumSCitizen.setText(SCitizen);
+
+                r = i + j + k;
+                totalMemberPlus = String.valueOf(r);
+                txtNumTotalMember.setText( totalMemberPlus);
             }
         });
 
@@ -185,6 +215,10 @@ public class SurveyFormThreeFragment extends Fragment {
                     twoWheel = String.valueOf(l);
                     txtNumTwoWheel.setText(twoWheel);
                     txtNumTotalVehicle.setText(twoWheel);
+                    n = l + m;
+                    totalVehicleMinus = String.valueOf(n);
+                    txtNumTotalVehicle.setText( totalVehicleMinus.replace("-","").trim());
+
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -198,7 +232,10 @@ public class SurveyFormThreeFragment extends Fragment {
                 l = l + 1;
                 twoWheel = String.valueOf(l);
                 txtNumTwoWheel.setText(twoWheel);
-                txtNumTotalVehicle.setText(twoWheel);
+
+                n = m + l;
+                totalVehiclePlus = String.valueOf(n);
+                txtNumTotalVehicle.setText( totalVehiclePlus);
             }
         });
 
@@ -213,6 +250,10 @@ public class SurveyFormThreeFragment extends Fragment {
                     fourWheel = String.valueOf(m);
                     txtNumFourWheel.setText(fourWheel);
                     txtNumTotalVehicle.setText(fourWheel);
+
+                    n = m + l;
+                    totalVehicleMinus = String.valueOf(n);
+                    txtNumTotalVehicle.setText( totalVehicleMinus.replace("-","").trim());
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -226,7 +267,10 @@ public class SurveyFormThreeFragment extends Fragment {
                 m = m + 1;
                 fourWheel = String.valueOf(m);
                 txtNumFourWheel.setText(fourWheel);
-                txtNumTotalVehicle.setText(fourWheel);
+
+                n = m + l;
+                totalVehiclePlus = String.valueOf(n);
+                txtNumTotalVehicle.setText( totalVehiclePlus);
             }
         });
 

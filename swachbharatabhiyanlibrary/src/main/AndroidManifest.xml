@@ -191,7 +191,7 @@
         <service
             android:name=".gis.GIS_LocationService"
             android:enabled="true"
-            android:exported="true" />
+            android:foregroundServiceType="location" />
 
         <receiver
             android:name=".services.RestarterBroadcastReceiver"

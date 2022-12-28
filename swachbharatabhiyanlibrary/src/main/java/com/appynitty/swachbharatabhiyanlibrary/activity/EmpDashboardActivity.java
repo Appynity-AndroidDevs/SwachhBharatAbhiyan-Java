@@ -41,6 +41,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
+import com.appynitty.swachbharatabhiyanlibrary.gis.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
@@ -118,6 +119,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initComponents();
+
     }
 
     @Override
@@ -300,7 +302,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 isFromAttendanceChecked = true;
 
                 String dutyEndTime = AUtils.getPreviousDateDutyOffTime();
-                Prefs.putString(AUtils.BEARER_TOKEN, "");
+//                Prefs.putString(AUtils.BEARER_TOKEN, "");
                 /*syncOfflineAttendanceRepository.performCollectionInsert(mContext,
                         syncOfflineAttendanceRepository.checkAttendance(), dutyEndTime);*/
 
@@ -440,9 +442,13 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                 if (type == 1) {
                     markAttendance.setChecked(false);
                     AUtils.setIsOnduty(false);
+                    ((MyApplication) AUtils.mainApplicationConstant).stopGISService();
                 } else if (type == 2) {
                     markAttendance.setChecked(true);
                     AUtils.setIsOnduty(true);
+                    if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class)) {
+                        ((MyApplication) AUtils.mainApplicationConstant).startGISService();
+                    }
                 }
             }
         });
@@ -628,7 +634,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
                     if (!AUtils.isIsOnduty()) {
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                        ((MyApplication) AUtils.mainApplicationConstant).startGISService();
 
                         //    if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
 
@@ -664,7 +669,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                         //       markAttendance.setChecked(true);
 
                                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                                        ((MyApplication) AUtils.mainApplicationConstant).startGISService();
+                                        ((MyApplication) AUtils.mainApplicationConstant).stopGISService();
 //         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                                         ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                                         mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
@@ -747,7 +752,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                     //       markAttendance.setChecked(true);
 
                                     ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                                    ((MyApplication) AUtils.mainApplicationConstant).startGISService();
 //         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                                     ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                                     mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
@@ -804,7 +808,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                                 //       markAttendance.setChecked(true);
 
                                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-                                ((MyApplication) AUtils.mainApplicationConstant).startGISService();
 //         //   AUtils.warning(mContext, mContext.getString(R.string.no_location_found_cant_save));
                                 ProgressDialog mProgressDialog = new ProgressDialog(mContext);
                                 mProgressDialog.setMessage(getResources().getString(R.string.fetching_location));
@@ -862,7 +865,8 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     private void onInPunchSuccess() {
         attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));
         attendanceStatus.setTextColor(this.getResources().getColor(R.color.colorONDutyGreen));
-
+        if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class))
+            ((MyApplication) AUtils.mainApplicationConstant).startGISService();
 //        String vehicleType = null;
 //
 //        if (!AUtils.isNullString(empInPunchPojo.getVehicleNumber())) {
@@ -885,13 +889,14 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         vehicleStatus.setText("");
 
+        boolean isLocationServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
+        boolean isGIS_ServiceRunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class);
 
-        boolean isservicerunning = AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class);
-
-//
-        if (isservicerunning)
+        if (isLocationServiceRunning)
             ((MyApplication) AUtils.mainApplicationConstant).stopLocationTracking();
-        ((MyApplication) AUtils.mainApplicationConstant).stopGISService();
+
+        if (isGIS_ServiceRunning)
+            ((MyApplication) AUtils.mainApplicationConstant).stopGISService();
 
         markAttendance.setChecked(false);
 
@@ -903,7 +908,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
         isLocationPermission = AUtils.isLocationPermissionGiven(EmpDashboardActivity.this);
         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
-        ((MyApplication) AUtils.mainApplicationConstant).startGISService();
     }
 
     private void initUserDetails() {
@@ -945,8 +949,12 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
             if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                 ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+            }
+
+            if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, GIS_LocationService.class)) {
                 ((MyApplication) AUtils.mainApplicationConstant).startGISService();
             }
+
             markAttendance.setChecked(true);
 
             attendanceStatus.setText(this.getResources().getString(R.string.status_on_duty));

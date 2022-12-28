@@ -7,573 +7,588 @@
     android:background="@drawable/bg_survey"
     tools:context=".fragment.SurveyFormOneFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:fitsSystemWindows="true">
+
     <LinearLayout
-        android:id="@+id/rl_name_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginVertical="@dimen/dim_5_dp">
-
-        <ImageView
-            android:id="@+id/img_man"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:src="@drawable/man"
-            android:layout_gravity="center_vertical|center"
-            android:fitsSystemWindows="true"/>
-
+        android:orientation="vertical">
+        
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="8"
+            android:id="@+id/rl_name_box"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/dim_8_dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="@dimen/dim_5_dp">
+
+            <ImageView
+                android:id="@+id/img_man"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="Your Name"
-                android:padding="5dp"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:layout_gravity="end"
-                android:fontFamily="@font/font_bold"/>
+                android:src="@drawable/man"
+                android:layout_gravity="center_vertical|center"
+                android:fitsSystemWindows="true"/>
 
-            <EditText
-                android:id="@+id/edt_your_name"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="8"
                 android:layout_height="wrap_content"
-                android:background="@drawable/survey_round_edt_box"
-                android:padding="@dimen/dim_15_dp"
-                android:inputType="textNoSuggestions"
-                android:maxLines="1"
-                android:textSize="12sp"
-                android:fontFamily="@font/font_regular"
-                android:hint="Enter your name"
-                android:textColorHint="@color/colorGray"
-                android:textColor="@color/colorSurveyTextGreen"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/li_mobile_num_box"
-        android:layout_below="@id/rl_name_box"
-        android:layout_width="match_parent"
-        android:layout_marginVertical="@dimen/dim_5_dp"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/li_call"
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/dim_8_dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Your Mobile Number"
-                android:padding="5dp"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:layout_gravity="start"
-                android:fontFamily="@font/font_bold"/>
-
-            <EditText
-                android:id="@+id/edt_phone_call"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/survey_round_edt_box"
-                android:padding="@dimen/dim_15_dp"
-                android:inputType="phone"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:textSize="12sp"
-                android:fontFamily="@font/font_regular"
-                android:hint="Enter your mobile number"
-                android:textColorHint="@color/colorGray"
-                android:textColor="@color/colorSurveyTextGreen"/>
-
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/img_phone_call"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:src="@drawable/phone_call"
-            android:layout_gravity="center_vertical|center"
-            android:fitsSystemWindows="true"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/li_birthday_box"
-        android:layout_below="@id/li_mobile_num_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginVertical="@dimen/dim_5_dp">
-
-        <ImageView
-            android:id="@+id/img_birth_cake"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:src="@drawable/birthday_cake"
-            android:layout_gravity="center_vertical|center"
-            android:fitsSystemWindows="true"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/dim_8_dp"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/rl_birth_heading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_8_dp"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Age: 32"
-                    android:padding="5dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:layout_alignParentStart="true"
-                    android:fontFamily="@font/font_bold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Date Of Birth"
+                    android:text="Your Name"
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:textColor="@color/white"
-                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
                     android:fontFamily="@font/font_bold"/>
-            </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/dim_8_dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/li_day_box"
-                    android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dim_5_dp"
-                    android:gravity="center"
-                    android:layout_marginEnd="@dimen/dim_5_dp"
+                <EditText
+                    android:id="@+id/edt_your_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/survey_round_edt_box"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/txt_day"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="D"
-                        android:padding="@dimen/dim_5_dp"
-                        android:fontFamily="@font/font_medium"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorSurveyTextGreen"/>
-
-                    <AutoCompleteTextView
-                        android:id="@+id/auto_day"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="23"
-                        android:textSize="10sp"
-                        android:maxLength="2"
-                        android:maxLines="1"
-                        android:background="@null"
-                        android:dropDownHeight="200dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textAlignment="center"
-                        android:focusableInTouchMode="false"
-                        android:inputType="textNoSuggestions"
-                        tools:ignore="LabelFor"
-                        android:padding="@dimen/dim_5_dp"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/colorSurveyTextGreen"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/down_arrow"
-                        android:padding="@dimen/dim_5_dp"
-                        android:layout_gravity="center_vertical"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/li_month_box"
-                    android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dim_5_dp"
-                    android:gravity="center"
-                    android:dropDownHeight="200dp"
-                    android:ellipsize="end"
-                    android:layout_marginEnd="@dimen/dim_5_dp"
-                    android:background="@drawable/survey_round_edt_box"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/txt_month"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="M"
-                        android:padding="@dimen/dim_5_dp"
-                        android:fontFamily="@font/font_medium"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorSurveyTextGreen"/>
-
-                    <AutoCompleteTextView
-                        android:id="@+id/auto_month"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="05"
-                        android:textSize="10sp"
-                        android:maxLength="2"
-                        android:maxLines="1"
-                        android:inputType="number"
-                        android:padding="@dimen/dim_5_dp"
-                        android:focusableInTouchMode="true"
-                        tools:ignore="LabelFor"
-                        android:singleLine="true"
-                        android:textAlignment="center"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/colorSurveyTextGreen"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/down_arrow"
-                        android:padding="@dimen/dim_5_dp"
-                        android:layout_gravity="center_vertical"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/li_year_box"
-                    android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dim_5_dp"
-                    android:gravity="center"
-                    android:background="@drawable/survey_round_edt_box"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/txt_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Y"
-                        android:padding="@dimen/dim_5_dp"
-                        android:fontFamily="@font/font_medium"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorSurveyTextGreen"/>
-
-                    <AutoCompleteTextView
-                        android:id="@+id/auto_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2022"
-                        android:textSize="10sp"
-                        android:maxLength="4"
-                        android:maxLines="1"
-                        android:inputType="none"
-                        android:background="@null"
-                        android:dropDownHeight="200dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        tools:ignore="LabelFor"
-                        android:focusableInTouchMode="false"
-                        android:textAlignment="center"
-                        android:padding="@dimen/dim_5_dp"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/colorSurveyTextGreen"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/down_arrow"
-                        android:padding="@dimen/dim_5_dp"
-                        android:layout_gravity="center_vertical"/>
-
-                </LinearLayout>
+                    android:padding="@dimen/dim_15_dp"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="1"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/font_regular"
+                    android:hint="Enter your name"
+                    android:textColorHint="@color/colorGray"
+                    android:textColor="@color/colorSurveyTextGreen"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/li_gender_box"
-        android:layout_below="@id/li_birthday_box"
-        android:layout_width="match_parent"
-        android:layout_marginVertical="@dimen/dim_5_dp"
-        android:layout_height="wrap_content">
-
         <LinearLayout
-            android:id="@+id/li_gender"
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/dim_8_dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Which One Are You?"
-                android:padding="5dp"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:layout_gravity="start"
-                android:fontFamily="@font/font_bold"/>
+            android:id="@+id/li_mobile_num_box"
+            android:layout_below="@id/rl_name_box"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="@dimen/dim_5_dp"
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/li_call"
+                android:layout_width="0dp"
+                android:layout_weight="8"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/dim_8_dp"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_male"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:checked="true"
-                    android:layout_marginEnd="@dimen/dim_5_dp"
-                    android:buttonTint="@color/white"
-                    android:textSize="12sp"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/font_medium"
-                    android:textColor="@color/white"
-                    android:text="Male"/>
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_female"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:checked="false"
-                    android:layout_marginEnd="@dimen/dim_5_dp"
-                    android:buttonTint="@color/white"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/font_medium"
-                    android:textColor="@color/white"
-                    android:text="Female"/>
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_transgender"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:checked="false"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/font_medium"
-                    android:layout_marginEnd="@dimen/dim_5_dp"
-                    android:buttonTint="@color/white"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:text="Transgender"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/img_gender"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:src="@drawable/sex"
-            android:layout_gravity="center_vertical|center"
-            android:fitsSystemWindows="true"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/li_blood_group_box"
-        android:layout_below="@id/li_gender_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginVertical="@dimen/dim_5_dp">
-
-        <ImageView
-            android:id="@+id/img_blood_group"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:src="@drawable/blood_group"
-            android:layout_gravity="center_vertical|center"
-            android:fitsSystemWindows="true"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/dim_8_dp"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/rl_blood_heading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_8_dp"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Blood Group"
+                    android:text="Your Mobile Number"
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:textColor="@color/white"
-                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="start"
                     android:fontFamily="@font/font_bold"/>
-            </RelativeLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
+
+                <EditText
+                    android:id="@+id/edt_phone_call"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/survey_round_edt_box"
+                    android:padding="@dimen/dim_15_dp"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/font_regular"
+                    android:hint="Enter your mobile number"
+                    android:textColorHint="@color/colorGray"
+                    android:textColor="@color/colorSurveyTextGreen"/>
+
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/img_phone_call"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/dim_8_dp">
+                android:src="@drawable/phone_call"
+                android:layout_gravity="center_vertical|center"
+                android:fitsSystemWindows="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/li_birthday_box"
+            android:layout_below="@id/li_mobile_num_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="@dimen/dim_5_dp">
+
+            <ImageView
+                android:id="@+id/img_birth_cake"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:src="@drawable/birthday_cake"
+                android:layout_gravity="center_vertical|center"
+                android:fitsSystemWindows="true"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_8_dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rl_birth_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Age: 32"
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/font_bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date Of Birth"
+                        android:padding="5dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/font_bold"/>
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/li_blood_positive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/dim_8_dp"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_positive_a"
+                    <LinearLayout
+                        android:id="@+id/li_day_box"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:checked="true"
+                        android:layout_weight="4"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dim_5_dp"
+                        android:gravity="center"
                         android:layout_marginEnd="@dimen/dim_5_dp"
-                        android:buttonTint="@color/white"
-                        android:textSize="12sp"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/white"
-                        android:text="A+"/>
+                        android:background="@drawable/survey_round_edt_box"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/txt_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="D"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fontFamily="@font/font_medium"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorSurveyTextGreen"/>
 
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_positive_o"
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="23"
+                            android:textSize="10sp"
+                            android:maxLength="2"
+                            android:maxLines="1"
+                            android:background="@null"
+                            android:dropDownHeight="200dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textAlignment="center"
+                            android:focusableInTouchMode="false"
+                            android:inputType="textNoSuggestions"
+                            tools:ignore="LabelFor"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/colorSurveyTextGreen"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/down_arrow"
+                            android:padding="@dimen/dim_5_dp"
+                            android:layout_gravity="center_vertical"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/li_month_box"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:checked="true"
+                        android:layout_weight="4"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dim_5_dp"
+                        android:gravity="center"
+                        android:dropDownHeight="200dp"
+                        android:ellipsize="end"
                         android:layout_marginEnd="@dimen/dim_5_dp"
-                        android:buttonTint="@color/white"
-                        android:textSize="12sp"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/white"
-                        android:text="O+"/>
+                        android:background="@drawable/survey_round_edt_box"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/txt_month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="M"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fontFamily="@font/font_medium"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorSurveyTextGreen"/>
 
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_positive_b"
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="05"
+                            android:textSize="10sp"
+                            android:maxLength="2"
+                            android:maxLines="1"
+                            android:inputType="number"
+                            android:padding="@dimen/dim_5_dp"
+                            android:focusableInTouchMode="true"
+                            tools:ignore="LabelFor"
+                            android:singleLine="true"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/colorSurveyTextGreen"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/down_arrow"
+                            android:padding="@dimen/dim_5_dp"
+                            android:layout_gravity="center_vertical"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/li_year_box"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:checked="true"
-                        android:layout_marginEnd="@dimen/dim_5_dp"
-                        android:buttonTint="@color/white"
-                        android:textSize="12sp"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/white"
-                        android:text="B+"/>
+                        android:layout_weight="4"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dim_5_dp"
+                        android:gravity="center"
+                        android:background="@drawable/survey_round_edt_box"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/txt_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Y"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fontFamily="@font/font_medium"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorSurveyTextGreen"/>
 
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_positive_ab"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:checked="true"
-                        android:buttonTint="@color/white"
-                        android:textSize="12sp"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/white"
-                        android:text="AB+"/>
+                        <AutoCompleteTextView
+                            android:id="@+id/auto_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2022"
+                            android:textSize="10sp"
+                            android:maxLength="4"
+                            android:maxLines="1"
+                            android:inputType="none"
+                            android:background="@null"
+                            android:dropDownHeight="200dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            tools:ignore="LabelFor"
+                            android:focusableInTouchMode="false"
+                            android:textAlignment="center"
+                            android:padding="@dimen/dim_5_dp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/colorSurveyTextGreen"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/down_arrow"
+                            android:padding="@dimen/dim_5_dp"
+                            android:layout_gravity="center_vertical"/>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/li_blood_negative"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_negative_a"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:checked="true"
-                        android:layout_marginEnd="@dimen/dim_5_dp"
-                        android:buttonTint="@color/white"
-                        android:textSize="12sp"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/white"
-                        android:text="A-"/>
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_negative_o"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:checked="true"
-                        android:layout_marginEnd="@dimen/dim_5_dp"
-                        android:buttonTint="@color/white"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/white"
-                        android:text="O-"/>
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_negative_b"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:checked="true"
-                        android:layout_marginEnd="@dimen/dim_5_dp"
-                        android:layout_gravity="center_vertical"
-                        android:buttonTint="@color/white"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/font_medium"
-                        android:textColor="@color/white"
-                        android:text="B-"/>
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_negative_ab"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:checked="true"
-                        android:fontFamily="@font/font_medium"
-                        android:buttonTint="@color/white"
-                        android:textSize="12sp"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:text="AB-"/>
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/li_gender_box"
+            android:layout_below="@id/li_birthday_box"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="@dimen/dim_5_dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/li_gender"
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_8_dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Which One Are You?"
+                    android:padding="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="start"
+                    android:fontFamily="@font/font_bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/dim_8_dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_male"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="true"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Male"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_female"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="false"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/font_medium"
+                        android:textColor="@color/white"
+                        android:text="Female"/>
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_transgender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:checked="false"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/font_medium"
+                        android:layout_marginEnd="@dimen/dim_5_dp"
+                        android:buttonTint="@color/white"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:text="Transgender"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/img_gender"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:src="@drawable/sex"
+                android:layout_gravity="center_vertical|center"
+                android:fitsSystemWindows="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/li_blood_group_box"
+            android:layout_below="@id/li_gender_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="@dimen/dim_5_dp">
+
+            <ImageView
+                android:id="@+id/img_blood_group"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:src="@drawable/blood_group"
+                android:layout_gravity="center_vertical|center"
+                android:fitsSystemWindows="true"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/dim_8_dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rl_blood_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Blood Group"
+                        android:padding="5dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/font_bold"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/dim_8_dp">
+
+                    <LinearLayout
+                        android:id="@+id/li_blood_positive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_positive_a"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="A+"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_positive_o"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="O+"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_positive_b"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="B+"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_positive_ab"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="AB+"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_blood_negative"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_negative_a"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="A-"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_negative_o"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:buttonTint="@color/white"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="O-"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_negative_b"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:layout_marginEnd="@dimen/dim_5_dp"
+                            android:layout_gravity="center_vertical"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/font_medium"
+                            android:textColor="@color/white"
+                            android:text="B-"/>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_negative_ab"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:checked="true"
+                            android:fontFamily="@font/font_medium"
+                            android:buttonTint="@color/white"
+                            android:textSize="12sp"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/white"
+                            android:text="AB-"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
+
+    </ScrollView>
 
 
 </RelativeLayout>

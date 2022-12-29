@@ -147,4 +147,9 @@
         <item name="android:windowExitAnimation">@anim/slide_up_animation</item>
     </style>
 
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/colorSurveyEditGreenLight</item>  // you can change the color of the yearPiker dialog
+        <item name="android:textColorPrimary">@color/colorSurveyTextGreen</item> // you can change the color of the yearPiker dialog
+    </style>
+
 </resources>

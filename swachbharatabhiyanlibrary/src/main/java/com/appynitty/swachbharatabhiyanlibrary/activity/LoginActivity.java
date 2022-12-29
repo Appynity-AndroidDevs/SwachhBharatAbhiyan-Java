@@ -494,7 +494,8 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         String deviceId = AUtils.getAndroidId();
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            deviceId = telephonyManager.getDeviceId();
+           // deviceId = telephonyManager.getDeviceId();
+            deviceId = telephonyManager.getSubscriberId();
         }
 
         loginPojo.setImiNo(deviceId);

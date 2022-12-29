@@ -1353,5 +1353,36 @@ public class AUtils extends CommonUtils {
 
         Toast.makeText(context,"Today's Date: " + currentYear + currentMonth + currentDay, Toast.LENGTH_SHORT).show();
     }
+
+    public static int getPerfectAgeInYears(int year, int month, int date) {
+
+        Calendar dobCalendar = Calendar.getInstance();
+
+        dobCalendar.set(Calendar.YEAR, year);
+        dobCalendar.set(Calendar.MONTH, month);
+        dobCalendar.set(Calendar.DATE, date);
+
+        int ageInteger = 0;
+
+        Calendar today = Calendar.getInstance();
+
+        ageInteger = today.get(Calendar.YEAR) - dobCalendar.get(Calendar.YEAR);
+
+        if (today.get(Calendar.MONTH) == dobCalendar.get(Calendar.MONTH)) {
+
+            if (today.get(Calendar.DAY_OF_MONTH) < dobCalendar.get(Calendar.DAY_OF_MONTH)) {
+
+                ageInteger = ageInteger - 1;
+            }
+
+        } else if (today.get(Calendar.MONTH) < dobCalendar.get(Calendar.MONTH)) {
+
+            ageInteger = ageInteger - 1;
+
+        }
+
+        return ageInteger;
+    }
+
 }
 

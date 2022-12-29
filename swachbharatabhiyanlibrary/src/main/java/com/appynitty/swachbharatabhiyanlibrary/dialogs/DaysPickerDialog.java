@@ -19,6 +19,12 @@ import java.util.Calendar;
 public class DaysPickerDialog extends DialogFragment {
     private static final int MAX_YEAR = 2099;
     private DatePickerDialog.OnDateSetListener listener;
+    private String day;
+
+    public DaysPickerDialog(DatePickerDialog.OnDateSetListener listener, String day) {
+        this.listener = listener;
+        this.day = day;
+    }
 
     public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;

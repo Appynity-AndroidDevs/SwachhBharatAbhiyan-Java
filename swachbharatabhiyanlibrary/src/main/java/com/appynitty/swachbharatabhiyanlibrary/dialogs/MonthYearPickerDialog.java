@@ -21,9 +21,11 @@ import java.util.Calendar;
 public class MonthYearPickerDialog extends DialogFragment {
     private static final int MAX_YEAR = 2099;
     private DatePickerDialog.OnDateSetListener listener;
+    private String year;
 
-    public MonthYearPickerDialog(DatePickerDialog.OnDateSetListener listener) {
+    public MonthYearPickerDialog(DatePickerDialog.OnDateSetListener listener,String year) {
         this.listener = listener;
+        this.year = year;
     }
 
     public void setListener(DatePickerDialog.OnDateSetListener listener) {

@@ -1,6 +1,5 @@
 package com.appynitty.swachbharatabhiyanlibrary.dialogs;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -10,7 +9,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -21,6 +19,12 @@ import java.util.Calendar;
 public class MonthPickerDialog extends DialogFragment {
     private static final int MAX_YEAR = 2099;
     private DatePickerDialog.OnDateSetListener listener;
+    private String month;
+
+    public MonthPickerDialog(DatePickerDialog.OnDateSetListener listener, String month) {
+        this.listener = listener;
+        this.month = month;
+    }
 
     public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
@@ -55,6 +59,7 @@ public class MonthPickerDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         listener.onDateSet(null, 0, monthPicker.getValue(), 0);
+                        month = String.valueOf(monthPicker.getValue());
                     }
                 })
                 .setNegativeButton(Html.fromHtml("<font color='#FF4081'>Cancel</font>"), new DialogInterface.OnClickListener() {

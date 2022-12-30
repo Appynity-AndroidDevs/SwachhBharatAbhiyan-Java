@@ -23,6 +23,7 @@ import com.appynitty.swachbharatabhiyanlibrary.dialogs.DaysPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthYearPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.Calendar;
 
@@ -88,7 +89,6 @@ public class SurveyFormOneFragment extends Fragment {
                 }, birthMonth);
                 monthPickerDialog.setCancelable(false);
                 monthPickerDialog.show(getChildFragmentManager().beginTransaction(), monthPickerDialog.getTag());
-                atxtMonth.setText(birthMonth);
             }
         });
 
@@ -112,8 +112,6 @@ public class SurveyFormOneFragment extends Fragment {
                 }, birthDay);
                 daysPickerDialog.setCancelable(false);
                 daysPickerDialog.show(getChildFragmentManager().beginTransaction(), daysPickerDialog.getTag());
-
-                atxtDay.setText(birthDay);
             }
         });
 
@@ -127,13 +125,12 @@ public class SurveyFormOneFragment extends Fragment {
                         atxtYear.setText(birthYear);
                         birthDayDate = "0" +birthDay + "-" + "0" + birthMonth + "-" + birthYear;
                         Log.d("Rahul", "date_of_birth: " + birthDayDate);
+                        Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE, birthDayDate);
                         myAge(birthYear);
                     }
                 }, birthYear);
                 monthYearPickerDialog.setCancelable(false);
                 monthYearPickerDialog.show(getChildFragmentManager().beginTransaction(), monthYearPickerDialog.getTag());
-
-                atxtYear.setText(birthYear);
 
             }
         });
@@ -155,8 +152,10 @@ public class SurveyFormOneFragment extends Fragment {
         Calendar today = getInstance();
         int currentYear = today.get(YEAR);
         int age = currentYear - Integer.parseInt(birthYear);
+        Prefs.putString(AUtils.PREFS.SUR_AGE, String.valueOf(age));
         Log.d("TAG", "My Age is: "+age);
         txtAge.setText("Age: " +age);
+        txtAge.setText("Age: " +Prefs.getString(AUtils.PREFS.SUR_AGE,"0"));
     }
 
 }

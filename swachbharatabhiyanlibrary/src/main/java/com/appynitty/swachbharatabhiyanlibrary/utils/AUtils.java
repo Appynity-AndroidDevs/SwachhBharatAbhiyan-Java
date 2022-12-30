@@ -289,6 +289,14 @@ public class AUtils extends CommonUtils {
         /*String DUMP_YARD_SUPERVISOR = "ReferanceId";
         String HOUSE_ID_START = "ReferanceId";
         String HOUSE_ID = "ReferanceId";*/
+
+
+        /****
+         * survey data store
+         * */
+        String SUR_AGE = "age";
+        String SUR_BIRTHDAY_DATE = "dateOfBirth";
+        String SUR_MARRIAGE_DATE = "marriageDate";
     }
 
     public interface USER_TYPE {

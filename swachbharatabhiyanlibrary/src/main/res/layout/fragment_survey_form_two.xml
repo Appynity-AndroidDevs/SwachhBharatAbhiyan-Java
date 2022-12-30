@@ -319,6 +319,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/li_day_marriage_box"
                             android:layout_width="0dp"
                             android:layout_weight="4"
                             android:orientation="horizontal"
@@ -341,14 +342,13 @@
                                 android:id="@+id/auto_day_anniversary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="23"
                                 android:textSize="10sp"
                                 android:maxLength="2"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:textAlignment="center"
                                 android:focusableInTouchMode="false"
-                                android:inputType="textNoSuggestions"
+                                android:inputType="none"
                                 tools:ignore="LabelFor"
                                 android:padding="@dimen/dim_5_dp"
                                 android:fontFamily="@font/font_medium"
@@ -361,7 +361,9 @@
                                 android:layout_gravity="center_vertical"/>
 
                         </LinearLayout>
+
                         <LinearLayout
+                            android:id="@+id/li_month_marriage_box"
                             android:layout_width="0dp"
                             android:layout_weight="4"
                             android:orientation="horizontal"
@@ -384,7 +386,6 @@
                                 android:id="@+id/auto_month_anniversary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="05"
                                 android:textSize="10sp"
                                 android:maxLength="2"
                                 android:maxLines="1"
@@ -404,7 +405,9 @@
                                 android:layout_gravity="center_vertical"/>
 
                         </LinearLayout>
+
                         <LinearLayout
+                            android:id="@+id/li_year_marriage_box"
                             android:layout_width="0dp"
                             android:layout_weight="4"
                             android:orientation="horizontal"
@@ -426,7 +429,6 @@
                                 android:id="@+id/auto_year_anniversary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2022"
                                 android:textSize="10sp"
                                 android:maxLength="4"
                                 android:maxLines="1"

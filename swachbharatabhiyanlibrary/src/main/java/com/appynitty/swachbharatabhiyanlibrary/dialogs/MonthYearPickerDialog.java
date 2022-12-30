@@ -49,12 +49,14 @@ public class MonthYearPickerDialog extends DialogFragment {
         yearPicker.setVisibility(View.VISIBLE);
         yearPicker.setMinValue(1900);
         yearPicker.setMaxValue(4000);
+        yearPicker.setWrapSelectorWheel(true);
         yearPicker.setValue(year);
 
         builder.setView(dialog).setPositiveButton(Html.fromHtml("<font color='#FF4081'>Ok</font>"), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 listener.onDateSet(null, yearPicker.getValue(),0, 0);
+
             }
         }).setNegativeButton(Html.fromHtml("<font color='#FF4081'>Cancel</font>"), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

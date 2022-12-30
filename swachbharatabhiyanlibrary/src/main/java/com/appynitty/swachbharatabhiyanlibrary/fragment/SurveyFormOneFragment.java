@@ -86,7 +86,7 @@ public class SurveyFormOneFragment extends Fragment {
         chkArrayGender = new CheckBox[3];
         chkArrayGender[0] = cbMale;
         chkArrayGender[0].setOnClickListener(mListener);
-        Log.d(TAG, "check Male is: "+chkArrayGender[getId()]);
+
         chkArrayGender[1] = cbFemale;
         chkArrayGender[1].setOnClickListener(mListener);
 

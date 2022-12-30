@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,9 +30,11 @@ public class SurveyFormTwoFragment extends Fragment {
     private MonthPickerDialog monthPickerDialog;
     private MonthYearPickerDialog yearPickerDialog;
     private DaysPickerDialog daysPickerDialog;
-    
     private String strDay,strMonth,strYear;
     private String marriageDate;
+
+    private CheckBox cbUg,cbG,cbPg;
+    private CheckBox[] chkArrayQualification;
 
 
     @Override
@@ -54,6 +57,19 @@ public class SurveyFormTwoFragment extends Fragment {
         txtDayMarriage = view.findViewById(R.id.auto_day_anniversary);
         txtMonthMarriage = view.findViewById(R.id.auto_month_anniversary);
         txtYearMarriage = view.findViewById(R.id.auto_year_anniversary);
+
+        cbUg = view.findViewById(R.id.cb_un_graduate);
+        cbG = view.findViewById(R.id.cb_graduate);
+        cbPg = view.findViewById(R.id.cb_pst_graduate);
+
+        chkArrayQualification = new CheckBox[3];
+        chkArrayQualification[0] = cbUg;
+        chkArrayQualification[0].setOnClickListener(mListenerQualification);
+        chkArrayQualification[1] = cbG;
+        chkArrayQualification[1].setOnClickListener(mListenerQualification);
+        chkArrayQualification[2] = cbPg;
+        chkArrayQualification[2].setOnClickListener(mListenerQualification);
+
         setOnClick();
     }
 
@@ -125,4 +141,21 @@ public class SurveyFormTwoFragment extends Fragment {
             }
         });
     }
+
+    private View.OnClickListener mListenerQualification = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            for (int i = 0; i < chkArrayQualification.length; i++) {
+                final CheckBox current = chkArrayQualification[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                } else {
+                    current.setChecked(false);
+                }
+
+            }
+        }
+    };
 }

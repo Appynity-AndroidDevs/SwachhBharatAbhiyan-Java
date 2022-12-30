@@ -12,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.gis.GIS_LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
@@ -84,16 +85,13 @@ public class MyApplication extends Application {
     }
 
     public void startLocationTracking() {
-        Intent mLocationServiceIntent = new Intent(this, LocationService.class);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            startForegroundService(mLocationServiceIntent);
-            Log.e(TAG, "startLocationTracking: " + Prefs.getString(AUtils.LAT, null) + ", " + Prefs.getString(AUtils.LONG, null));
+        if (!AUtils.isMyServiceRunning(MyApplication.this, LocationService.class)) {
+            startService(new Intent(MyApplication.this, LocationService.class));
+//            Toast.makeText(this, "Location service started!", Toast.LENGTH_SHORT).show();
         } else {
-            startService(mLocationServiceIntent);
+            Toast.makeText(this, "Location service is already running!", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     public void startGISService() {

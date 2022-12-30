@@ -80,8 +80,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
 
         if (Prefs.contains(AUtils.BEARER_TOKEN)) {
+
+            String inDate = AUtils.getInPunchDate();
+            String currentDate = AUtils.getServerDate();
+
             String str = Prefs.getString(AUtils.BEARER_TOKEN, null);
             if (str.isEmpty()) {
+                tokenViewModel.init();
+            } else if (!inDate.equals(currentDate)) {
+                Log.e(TAG, "onCreate: token was expired, getting new one!");
                 tokenViewModel.init();
             }
         } else {

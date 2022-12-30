@@ -254,6 +254,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
             mCheckAttendanceAdapter.checkAttendance();
         }
 
+        //Syncing offline scanning data here...
         if (AUtils.isInternetAvailable()) {
             Prefs.putBoolean(AUtils.isSyncingOn, false);
             if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {

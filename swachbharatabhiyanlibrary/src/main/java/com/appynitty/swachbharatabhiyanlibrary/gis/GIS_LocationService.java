@@ -12,11 +12,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,9 +51,10 @@ import retrofit2.Response;
  * Created by Swapnil Lanjewar on 23-Nov-2022
  */
 
-public class GIS_LocationService extends LifecycleService implements LocationListener {
+public class GIS_LocationService extends LifecycleService {
     private static final String TAG = "GIS_LocationService";
     FusedLocationProviderClient fusedLocationClient;
+    LocationManager locationManager;
     LocationRequest locationRequest;
     LocationCallback locationCallback;
     private UserDetailPojo userDetailPojo;
@@ -62,6 +64,46 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
     private List<LocationEntity> mAllLocations = new ArrayList<>();
     private List<HouseLocationEntity> mAllHouses;
     String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
+
+
+    LocationListener locationListenerGPS = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+//            Location location = locationResult.getLastLocation();
+            if (location != null) {
+                Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
+                Toast.makeText(GIS_LocationService.this, "new location received with acc: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+
+                if (location.hasAccuracy() && location.getAccuracy() <= 12) {
+                    Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude()
+                            + ", lon: " + location.getLongitude()
+                            + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+
+                    LocationEntity locEntity = new LocationEntity();
+                    locEntity.setLatLng(location.getLongitude() + " " + location.getLatitude());
+                    mLocationRepository.insert(locEntity);
+                }
+
+            }
+//            sendLocationBroadcast(location, "new location");
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -79,7 +121,7 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
 
     protected LocationRequest createLocationRequest() {
         return new LocationRequest.Builder(3000)
-                .setMinUpdateDistanceMeters(11F)
+                .setMinUpdateDistanceMeters(10F)
                 .setWaitForAccurateLocation(true)
                 .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
     }
@@ -89,31 +131,42 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
         super.onCreate();
         mLocationRepository = new LocationRepository(getApplication());
         mHousePointRepo = new HousePointRepo(getApplication());
-
         new Notification();
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10F, locationListenerGPS);
+
 
         Type type = new TypeToken<UserDetailPojo>() {
         }.getType();
         userDetailPojo = new Gson().fromJson(Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
 //        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        locationRequest = createLocationRequest();
+//        locationRequest = createLocationRequest();
 
-        locationCallback = new LocationCallback() {
+        /*locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
                 if (location != null) {
                     Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
+                    Toast.makeText(GIS_LocationService.this, "new location received with acc: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
 
-                    if (location.hasAccuracy() && location.getAccuracy() <= 15) {
-                        Toast t = Toast.makeText(GIS_LocationService.this, "lat: " + location.getLatitude() + '\n'
-                                + ", lon: " + location.getLongitude() + '\n'
-                                + "Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT);
-
-                        t.setGravity(Gravity.CENTER, 0, 0);
-                        t.show();
+                    if (location.hasAccuracy() && location.getAccuracy() <= 12) {
+                        Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude()
+                                + ", lon: " + location.getLongitude()
+                                + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
 
                         LocationEntity locEntity = new LocationEntity();
                         locEntity.setLatLng(location.getLongitude() + " " + location.getLatitude());
@@ -123,8 +176,8 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
                 }
 
             }
-        };
-        startLocationUpdates();
+        };*/
+//        startLocationUpdates();
 
         mLocationRepository.getAllLocations().observe(GIS_LocationService.this, new Observer<List<LocationEntity>>() {
             @Override
@@ -266,6 +319,7 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
 
         startForeground(getNotificationId(), getNotification(this));
         Log.e(TAG, "started successfully!");
+        Toast.makeText(this, TAG + " started successfully!", Toast.LENGTH_SHORT).show();
 
         return START_STICKY;
     }
@@ -281,11 +335,6 @@ public class GIS_LocationService extends LifecycleService implements LocationLis
     public IBinder onBind(@NonNull Intent intent) {
         super.onBind(intent);
         return null;
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        Log.e(TAG, "onLocationChanged: lat: " + location.getLatitude() + ", lon: " + location.getLongitude());
     }
 
     private class TtSendLocations extends TimerTask {

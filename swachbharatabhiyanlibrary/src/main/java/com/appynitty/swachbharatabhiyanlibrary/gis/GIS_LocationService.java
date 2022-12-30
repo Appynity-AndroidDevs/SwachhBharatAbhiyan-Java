@@ -30,8 +30,6 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -327,7 +325,8 @@ public class GIS_LocationService extends LifecycleService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        fusedLocationClient.removeLocationUpdates(locationCallback);
+//        fusedLocationClient.removeLocationUpdates(locationCallback);
+        locationManager.removeUpdates(locationListenerGPS);
         Log.e(TAG, "onDestroy: service done!");
     }
 

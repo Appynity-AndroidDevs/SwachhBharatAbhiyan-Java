@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -1310,11 +1311,10 @@ public class AUtils extends CommonUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return age ;
+        return age;
     }
 
-    public static String getAge(int year, int month, int day)
-    {
+    public static String getAge(int year, int month, int day) {
 
         Calendar dob = Calendar.getInstance();
 
@@ -1328,22 +1328,20 @@ public class AUtils extends CommonUtils {
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        if (dob_m > today_m)
-        {
+        if (dob_m > today_m) {
 
             age--;
-        }
-        else if (dob_m == today_m)
-        {
+        } else if (dob_m == today_m) {
 
             int day_today = today.get(Calendar.DAY_OF_MONTH);
 
             int day_dob = dob.get(Calendar.DAY_OF_MONTH);
             if (day_dob > day_today) {
-                age--;}
+                age--;
+            }
 
         }
-        return age+"";
+        return age + "";
     }
 
 
@@ -1352,14 +1350,14 @@ public class AUtils extends CommonUtils {
     LocalDate now = new LocalDate();
     Years age = Years.yearsBetween(birthdate, now);*/
 
-    public static void getDate(Context context, int currentYear, int currentMonth, int currentDay){
+    public static void getDate(Context context, int currentYear, int currentMonth, int currentDay) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
-         currentYear = calendar.get(Calendar.YEAR);
-            currentMonth = calendar.get(Calendar.MONTH) + 1;
-         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonth = calendar.get(Calendar.MONTH) + 1;
+        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        Toast.makeText(context,"Today's Date: " + currentYear + currentMonth + currentDay, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Today's Date: " + currentYear + currentMonth + currentDay, Toast.LENGTH_SHORT).show();
     }
 
     public static int getPerfectAgeInYears(int year, int month, int date) {
@@ -1391,6 +1389,19 @@ public class AUtils extends CommonUtils {
 
         return ageInteger;
     }
+
+   /* public void putBooleanInPreferences(boolean isChecked,String key){
+        SharedPreferences sharedPreferences = this.getPreferences(Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(key, isChecked);
+        editor.commit();
+    }
+    public boolean getBooleanFromPreferences(String key){
+        SharedPreferences sharedPreferences = this.getPreferences(Activity.MODE_PRIVATE);
+        Boolean isChecked = sharedPreferences.getBoolean(key, false);
+        return isChecked;
+
+    }*/
 
 }
 

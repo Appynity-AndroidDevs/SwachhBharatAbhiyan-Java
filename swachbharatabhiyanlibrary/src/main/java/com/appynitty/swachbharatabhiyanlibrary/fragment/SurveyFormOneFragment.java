@@ -4,6 +4,7 @@ import static java.util.Calendar.*;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +33,8 @@ import java.util.Calendar;
 
 
 public class SurveyFormOneFragment extends Fragment {
+
+    private static String TAG = "SurveyFormOneFragment";
     private Context context;
     private View view;
     private LinearLayout liMonthBox, liDayBox, liYearBox;
@@ -39,7 +45,15 @@ public class SurveyFormOneFragment extends Fragment {
     private TextView txtAge;
     private String birthDayDate;
     private String birthDay, birthMonth, birthYear;
-   // private int bYear =0,bMonth = 0,bDay = 0;
+
+    private EditText edtName, edtMobile;
+    private CheckBox cbMale, cbFemale,cbTransG;
+    private boolean isCheckGender = false;
+    private CheckBox[] chkArrayGender;
+    private CheckBox[] chkArrayBloodGroup;
+
+    private CheckBox cbBloodPosA,cbBloodPosB,cbBloodPosAB,cbBloodPosO;
+    private CheckBox cbBloodNegA,cbBloodNegB,cbBloodNegAB,cbBloodNegO;
 
 
     @Override
@@ -62,10 +76,61 @@ public class SurveyFormOneFragment extends Fragment {
         atxtDay = view.findViewById(R.id.auto_day);
         atxtYear = view.findViewById(R.id.auto_year);
         txtAge = view.findViewById(R.id.txt_age);
+        edtName = view.findViewById(R.id.edt_your_name);
+        edtMobile = view.findViewById(R.id.edt_phone_call);
+
+        cbMale = view.findViewById(R.id.cb_male);
+        cbFemale = view.findViewById(R.id.cb_female);
+        cbTransG = view.findViewById(R.id.cb_transgender);
+
+        chkArrayGender = new CheckBox[3];
+        chkArrayGender[0] = cbMale;
+        chkArrayGender[0].setOnClickListener(mListener);
+        Log.d(TAG, "check Male is: "+chkArrayGender[getId()]);
+        chkArrayGender[1] = cbFemale;
+        chkArrayGender[1].setOnClickListener(mListener);
+
+        chkArrayGender[2] = cbTransG;
+        chkArrayGender[2].setOnClickListener(mListener);
+
+        cbBloodPosA = view.findViewById(R.id.cb_positive_a);
+        cbBloodPosO = view.findViewById(R.id.cb_positive_o);
+        cbBloodPosB = view.findViewById(R.id.cb_positive_b);
+        cbBloodPosAB = view.findViewById(R.id.cb_positive_ab);
+
+        cbBloodNegA = view.findViewById(R.id.cb_negative_a);
+        cbBloodNegO = view.findViewById(R.id.cb_negative_o);
+        cbBloodNegB = view.findViewById(R.id.cb_negative_b);
+        cbBloodNegAB = view.findViewById(R.id.cb_negative_ab);
+
+        chkArrayBloodGroup = new CheckBox[8];
+        chkArrayBloodGroup[0] = cbBloodPosA;
+        chkArrayBloodGroup[0].setOnClickListener(mListenerBloodGroup);
+
+        chkArrayBloodGroup[1] = cbBloodPosO;
+        chkArrayBloodGroup[1].setOnClickListener(mListenerBloodGroup);
+
+        chkArrayBloodGroup[2] = cbBloodPosB;
+        chkArrayBloodGroup[2].setOnClickListener(mListenerBloodGroup);
+
+        chkArrayBloodGroup[3] = cbBloodPosAB;
+        chkArrayBloodGroup[3].setOnClickListener(mListenerBloodGroup);
+
+        chkArrayBloodGroup[4] = cbBloodNegA;
+        chkArrayBloodGroup[4].setOnClickListener(mListenerBloodGroup);
+
+        chkArrayBloodGroup[5] = cbBloodNegO;
+        chkArrayBloodGroup[5].setOnClickListener(mListenerBloodGroup);
+
+        chkArrayBloodGroup[6] = cbBloodNegB;
+        chkArrayBloodGroup[6].setOnClickListener(mListenerBloodGroup);
+
+        chkArrayBloodGroup[7] = cbBloodNegAB;
+        chkArrayBloodGroup[7].setOnClickListener(mListenerBloodGroup);
 
         setOnClick();
-
     }
+
 
     private void setOnClick() {
         liMonthBox.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +202,7 @@ public class SurveyFormOneFragment extends Fragment {
 
         birthDayDate = "0" +birthDay + "-" + "0" + birthMonth + "-" + birthYear;
         Log.d("Rahul", "date_of_birth: " + birthDayDate);
+
     }
 
 
@@ -157,5 +223,41 @@ public class SurveyFormOneFragment extends Fragment {
         txtAge.setText("Age: " +age);
         txtAge.setText("Age: " +Prefs.getString(AUtils.PREFS.SUR_AGE,"0"));
     }
+
+    private View.OnClickListener mListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            for (int i = 0; i < chkArrayGender.length; i++) {
+                final CheckBox current = chkArrayGender[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                } else {
+                    current.setChecked(false);
+                }
+
+            }
+        }
+    };
+
+    private View.OnClickListener mListenerBloodGroup = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            for (int i = 0; i < chkArrayBloodGroup.length; i++) {
+                final CheckBox current = chkArrayBloodGroup[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                    if (checkedId == 0){
+                        Log.d(TAG, "");
+                    }
+                } else {
+                    current.setChecked(false);
+                }
+            }
+        }
+    };
 
 }

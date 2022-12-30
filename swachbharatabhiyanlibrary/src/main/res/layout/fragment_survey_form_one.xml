@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your Name"
+                    android:text="@string/sur_heading_name"
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:textColor="@color/white"
@@ -61,7 +61,7 @@
                     android:maxLines="1"
                     android:textSize="12sp"
                     android:fontFamily="@font/font_regular"
-                    android:hint="Enter your name"
+                    android:hint="@string/sur_hint_enter_name"
                     android:textColorHint="@color/colorGray"
                     android:textColor="@color/colorSurveyTextGreen"/>
 
@@ -87,7 +87,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your Mobile Number"
+                    android:text="@string/str_heading_mobile_number"
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:textColor="@color/white"
@@ -105,7 +105,7 @@
                     android:maxLines="1"
                     android:textSize="12sp"
                     android:fontFamily="@font/font_regular"
-                    android:hint="Enter your mobile number"
+                    android:hint="@string/str_hint_mobile_number"
                     android:textColorHint="@color/colorGray"
                     android:textColor="@color/colorSurveyTextGreen"/>
 
@@ -154,7 +154,7 @@
                         android:id="@+id/txt_age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Age: "
+                        android:text="@string/str_heading_age"
                         android:padding="5dp"
                         android:textSize="12sp"
                         android:textColor="@color/white"
@@ -163,7 +163,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Date Of Birth"
+                        android:text="@string/str_heading_date_of_birth"
                         android:padding="5dp"
                         android:textSize="16sp"
                         android:textColor="@color/white"
@@ -191,7 +191,7 @@
                             android:id="@+id/txt_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="D"
+                            android:text="@string/str_day"
                             android:padding="@dimen/dim_5_dp"
                             android:fontFamily="@font/font_medium"
                             android:textSize="12sp"
@@ -241,7 +241,7 @@
                             android:id="@+id/txt_month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="M"
+                            android:text="@string/str_month"
                             android:padding="@dimen/dim_5_dp"
                             android:fontFamily="@font/font_medium"
                             android:textSize="12sp"
@@ -285,7 +285,7 @@
                             android:id="@+id/txt_year"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Y"
+                            android:text="@string/str_year"
                             android:padding="@dimen/dim_5_dp"
                             android:fontFamily="@font/font_medium"
                             android:textSize="12sp"
@@ -345,7 +345,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Which One Are You?"
+                    android:text="@string/str_heading_gender"
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:textColor="@color/white"
@@ -363,14 +363,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:checked="true"
+                        android:checked="false"
                         android:layout_marginEnd="@dimen/dim_5_dp"
                         android:buttonTint="@color/white"
                         android:textSize="12sp"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="Male"/>
+                        android:text="@string/str_male"/>
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/cb_female"
@@ -384,7 +384,7 @@
                         android:textSize="12sp"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="Female"/>
+                        android:text="@string/str_female"/>
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/cb_transgender"
@@ -398,7 +398,7 @@
                         android:buttonTint="@color/white"
                         android:textSize="12sp"
                         android:textColor="@color/white"
-                        android:text="Transgender"/>
+                        android:text="@string/str_transgender"/>
 
                 </LinearLayout>
 
@@ -447,7 +447,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Blood Group"
+                        android:text="@string/str_heading_blood_group"
                         android:padding="5dp"
                         android:textSize="16sp"
                         android:textColor="@color/white"
@@ -471,55 +471,55 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:checked="true"
+                            android:checked="false"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="A+"/>
+                            android:text="@string/str_pos_a"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_positive_o"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:checked="true"
+                            android:checked="false"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="O+"/>
+                            android:text="@string/str_pos_o"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_positive_b"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:checked="true"
+                            android:checked="false"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="B+"/>
+                            android:text="@string/str_pos_b"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_positive_ab"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:checked="true"
+                            android:checked="false"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="AB+"/>
+                            android:text="@string/str_pos_ab"/>
 
                     </LinearLayout>
 
@@ -534,55 +534,55 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:checked="true"
+                            android:checked="false"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="A-"/>
+                            android:text="@string/str_neg_a"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_negative_o"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:checked="true"
+                            android:checked="false"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:buttonTint="@color/white"
                             android:layout_gravity="center_vertical"
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="O-"/>
+                            android:text="@string/str_neg_o"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_negative_b"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:checked="true"
+                            android:checked="false"
                             android:layout_marginEnd="@dimen/dim_5_dp"
                             android:layout_gravity="center_vertical"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="B-"/>
+                            android:text="@string/str_neg_b"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_negative_ab"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:checked="true"
+                            android:checked="false"
                             android:fontFamily="@font/font_medium"
                             android:buttonTint="@color/white"
                             android:textSize="12sp"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/white"
-                            android:text="AB-"/>
+                            android:text="@string/str_neg_ab"/>
 
                     </LinearLayout>
 

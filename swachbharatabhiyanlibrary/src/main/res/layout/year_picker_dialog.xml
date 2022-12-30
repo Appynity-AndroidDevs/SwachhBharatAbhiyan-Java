@@ -26,7 +26,7 @@
                 android:layout_gravity="center"
                 android:elevation="8dp"
                 android:gravity="center"
-                android:text="Year"
+                android:text="@string/str_year_dialog"
                 android:textColor="@color/white"
                 android:textSize="22dp"
                 android:textStyle="bold" />

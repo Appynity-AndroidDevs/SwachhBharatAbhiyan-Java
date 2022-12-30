@@ -45,20 +45,19 @@ public class MonthYearPickerDialog extends DialogFragment {
         final NumberPicker yearPicker = (NumberPicker) dialog.findViewById(R.id.picker_year);
 
         int year = cal.get(Calendar.YEAR);
-        txtDialogTitle.setText("Year");
         yearPicker.setVisibility(View.VISIBLE);
         yearPicker.setMinValue(1900);
         yearPicker.setMaxValue(4000);
         yearPicker.setWrapSelectorWheel(true);
         yearPicker.setValue(year);
 
-        builder.setView(dialog).setPositiveButton(Html.fromHtml("<font color='#FF4081'>Ok</font>"), new DialogInterface.OnClickListener() {
+        builder.setView(dialog).setPositiveButton(Html.fromHtml(getString(R.string.str_ok)), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 listener.onDateSet(null, yearPicker.getValue(),0, 0);
 
             }
-        }).setNegativeButton(Html.fromHtml("<font color='#FF4081'>Cancel</font>"), new DialogInterface.OnClickListener() {
+        }).setNegativeButton(Html.fromHtml(getString(R.string.str_cancel)), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 MonthYearPickerDialog.this.getDialog().cancel();
             }

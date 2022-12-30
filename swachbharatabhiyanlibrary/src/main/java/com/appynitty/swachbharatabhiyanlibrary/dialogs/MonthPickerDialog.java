@@ -55,14 +55,14 @@ public class MonthPickerDialog extends DialogFragment {
 
         builder.setView(dialog)
                 // Add action buttons
-                .setPositiveButton(Html.fromHtml("<font color='#FF4081'>Ok</font>"), new DialogInterface.OnClickListener() {
+                .setPositiveButton(Html.fromHtml(getString(R.string.str_ok)), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         listener.onDateSet(null, 0, monthPicker.getValue(), 0);
                         month = String.valueOf(monthPicker.getValue());
                     }
                 })
-                .setNegativeButton(Html.fromHtml("<font color='#FF4081'>Cancel</font>"), new DialogInterface.OnClickListener() {
+                .setNegativeButton(Html.fromHtml(getString(R.string.str_cancel)), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         MonthPickerDialog.this.getDialog().cancel();
                     }

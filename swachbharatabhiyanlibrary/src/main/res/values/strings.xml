@@ -276,7 +276,33 @@
     <string name="str_srv_wlc_sub_title">Tell us about your details.\n This process take about\n 2-3 minutes to complete</string>
     <string name="btn_str_let_s_go">Let\'s Go</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sur_heading_name">Your Name</string>
+    <string name="sur_hint_enter_name">Enter Your Name</string>
+    <string name="str_heading_mobile_number">Your Mobile Number</string>
+    <string name="str_hint_mobile_number">Enter Your Mobile Number</string>
+    <string name="str_heading_age">Age: </string>
+    <string name="str_heading_date_of_birth">Date Of Birth</string>
+    <string name="str_day">D</string>
+    <string name="str_month">M</string>
+    <string name="str_year">Y</string>
+    <string name="str_heading_gender">Which One Are You?</string>
+    <string name="str_male">Male</string>
+    <string name="str_female">Female</string>
+    <string name="str_transgender">Transgender</string>
+    <string name="str_heading_blood_group">Blood Group</string>
+    <string name="str_pos_a">A+</string>
+    <string name="str_pos_o">O+</string>
+    <string name="str_pos_b">B+</string>
+    <string name="str_pos_ab">AB+</string>
+    <string name="str_neg_a">A-</string>
+    <string name="str_neg_o">O-</string>
+    <string name="str_neg_b">B-</string>
+    <string name="str_neg_ab">AB-</string>
+    <string name="str_month_dialog">Month</string>
+    <string name="str_year_dialog">Year</string>
+    <string name="str_days_dialog">Day</string>
+    <string name="str_ok"><![CDATA[<font color=\'#FF4081\'>Ok</font>]]></string>
+    <string name="str_cancel"><![CDATA[<font color=\'#FF4081\'>Cancel</font>]]></string>
 
 
     <!--    STRING ARRAY FOR MONTHS-->

@@ -55,13 +55,13 @@ public class DaysPickerDialog extends DialogFragment {
 
         builder.setView(dialog)
                 // Add action buttons
-                .setPositiveButton(Html.fromHtml("<font color='#FF4081'>Ok</font>"), new DialogInterface.OnClickListener() {
+                .setPositiveButton(Html.fromHtml(getString(R.string.str_ok)), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         listener.onDateSet(null, 0, 0, dayPicker.getValue());
                     }
                 })
-                .setNegativeButton(Html.fromHtml("<font color='#FF4081'>Cancel</font>"), new DialogInterface.OnClickListener() {
+                .setNegativeButton(Html.fromHtml(getString(R.string.str_cancel)), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         DaysPickerDialog.this.getDialog().cancel();
                     }

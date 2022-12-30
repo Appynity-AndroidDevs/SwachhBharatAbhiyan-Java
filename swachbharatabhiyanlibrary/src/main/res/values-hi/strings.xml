@@ -209,4 +209,31 @@
     <string name="str_srv_welcome">स्वागत है</string>
     <string name="str_srv_wlc_sub_title">हमें अपने विवरण के बारे में बताएं।\n इस प्रक्रिया को पूरा होने में लगभग\n 2-3 मिनट लगते हैं</string>
     <string name="btn_str_let_s_go">Let\'s Go</string>
+    <string name="sur_heading_name">तुम्हारा  नाम</string>
+    <string name="sur_hint_enter_name">अपना नाम दर्ज करें</string>
+    <string name="str_heading_mobile_number">आपका मोबाइल नंबर</string>
+    <string name="str_hint_mobile_number">अपना मोबाइल नंबर दर्ज करें</string>
+    <string name="str_heading_age">आयु: </string>
+    <string name="str_heading_date_of_birth">जन्म की तारीख</string>
+    <string name="str_day">डी</string>
+    <string name="str_month">एम</string>
+    <string name="str_year">वाई</string>
+    <string name="str_heading_gender">जो एक आप हैं?</string>
+    <string name="str_male">पुरुष</string>
+    <string name="str_female">औरत</string>
+    <string name="str_transgender">ट्रांसजेंडर</string>
+    <string name="str_heading_blood_group">रक्त समूह</string>
+    <string name="str_pos_a">ए +</string>
+    <string name="str_pos_o">ओ +</string>
+    <string name="str_pos_b">बी +</string>
+    <string name="str_pos_ab">एबी +</string>
+    <string name="str_neg_a">ए -</string>
+    <string name="str_neg_o">ओ -</string>
+    <string name="str_neg_b">बी -</string>
+    <string name="str_neg_ab">एबी -</string>
+    <string name="str_month_dialog">महिना</string>
+    <string name="str_year_dialog">साल</string>
+    <string name="str_days_dialog">दिन</string>
+    <string name="str_ok"><![CDATA[<font color=\'#FF4081\'>ठीक है</font>]]></string>
+    <string name="str_cancel"><![CDATA[<font color=\'#FF4081\'>रद्द करें</font>]]></string>
 </resources>

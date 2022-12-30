@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@color/colorSurveyTextGreen"
+            android:background="@color/colorSurveyTextBlue"
             android:gravity="top">
 
             <TextView
@@ -47,6 +47,7 @@
                 android:visibility="visible"
                 android:textAlignment="center"
                 android:gravity="center"
+                android:solidColor="@color/colorSurveyTextBlue"
                 android:scrollbars="none"
                 tools:ignore="RtlCompat">
 

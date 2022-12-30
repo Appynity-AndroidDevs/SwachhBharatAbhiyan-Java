@@ -234,6 +234,6 @@
     <string name="str_month_dialog">महिना</string>
     <string name="str_year_dialog">साल</string>
     <string name="str_days_dialog">दिन</string>
-    <string name="str_ok"><![CDATA[<font color=\'#FF4081\'>ठीक है</font>]]></string>
-    <string name="str_cancel"><![CDATA[<font color=\'#FF4081\'>रद्द करें</font>]]></string>
+    <string name="str_ok"><![CDATA[<font color=\'#168bc6\'>ठीक है</font>]]></string>
+    <string name="str_cancel"><![CDATA[<font color=\'#168bc6\'>रद्द करें</font>]]></string>
 </resources>

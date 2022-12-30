@@ -35,6 +35,12 @@ public class SurveyFormTwoFragment extends Fragment {
 
     private CheckBox cbUg,cbG,cbPg;
     private CheckBox[] chkArrayQualification;
+    private CheckBox cbServiceO,cbBusinessO,cbProfessionalO;
+    private CheckBox[] chkArrayOccupation;
+    private CheckBox cbMarried,cbUnMarried;
+    private CheckBox[] chkArrayMarital;
+    private CheckBox cbOwnHouse,cbRanted,cbLease;
+    private CheckBox[] chkArrayLiving;
 
 
     @Override
@@ -69,6 +75,39 @@ public class SurveyFormTwoFragment extends Fragment {
         chkArrayQualification[1].setOnClickListener(mListenerQualification);
         chkArrayQualification[2] = cbPg;
         chkArrayQualification[2].setOnClickListener(mListenerQualification);
+
+        cbServiceO = view.findViewById(R.id.cb_service_occupation);
+        cbBusinessO = view.findViewById(R.id.cb_business_occupation);
+        cbProfessionalO = view.findViewById(R.id.cb_professional_occupation);
+
+        chkArrayOccupation = new CheckBox[3];
+        chkArrayOccupation[0] = cbServiceO;
+        chkArrayOccupation[0].setOnClickListener(mListenerOccupation);
+        chkArrayOccupation[1] = cbBusinessO;
+        chkArrayOccupation[1].setOnClickListener(mListenerOccupation);
+        chkArrayOccupation[2] = cbProfessionalO;
+        chkArrayOccupation[2].setOnClickListener(mListenerOccupation);
+
+        cbMarried = view.findViewById(R.id.cb_married);
+        cbUnMarried = view.findViewById(R.id.cb_unmarried);
+
+        chkArrayMarital = new CheckBox[2];
+        chkArrayMarital[0] = cbMarried;
+        chkArrayMarital[0].setOnClickListener(mListenerMarital);
+        chkArrayMarital[1] = cbUnMarried;
+        chkArrayMarital[1].setOnClickListener(mListenerMarital);
+
+        cbOwnHouse = view.findViewById(R.id.cb_own_house_li_status);
+        cbRanted = view.findViewById(R.id.cb_ranted_li_status);
+        cbLease = view.findViewById(R.id.cb_lease_li_status);
+
+        chkArrayOccupation = new CheckBox[3];
+        chkArrayOccupation[0] = cbServiceO;
+        chkArrayOccupation[0].setOnClickListener(mListenerOccupation);
+        chkArrayOccupation[1] = cbBusinessO;
+        chkArrayOccupation[1].setOnClickListener(mListenerOccupation);
+        chkArrayOccupation[2] = cbProfessionalO;
+        chkArrayOccupation[2].setOnClickListener(mListenerOccupation);
 
         setOnClick();
     }
@@ -149,6 +188,41 @@ public class SurveyFormTwoFragment extends Fragment {
             final int checkedId = v.getId();
             for (int i = 0; i < chkArrayQualification.length; i++) {
                 final CheckBox current = chkArrayQualification[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                } else {
+                    current.setChecked(false);
+                }
+
+            }
+        }
+    };
+
+    private View.OnClickListener mListenerOccupation = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            for (int i = 0; i < chkArrayOccupation.length; i++) {
+                final CheckBox current = chkArrayOccupation[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                } else {
+                    current.setChecked(false);
+                }
+
+            }
+        }
+    };
+
+
+    private View.OnClickListener mListenerMarital = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            for (int i = 0; i < chkArrayMarital.length; i++) {
+                final CheckBox current = chkArrayMarital[i];
                 if (current.getId() == checkedId) {
                     current.setChecked(true);
                 } else {

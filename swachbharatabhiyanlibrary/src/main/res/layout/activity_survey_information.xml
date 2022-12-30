@@ -154,7 +154,7 @@
                 android:padding="@dimen/dim_10_dp"
                 android:shadowColor="@color/colorGray"
                 android:text="Next"
-                android:textColor="@color/colorSurveyTextGreen" />
+                android:textColor="@color/colorSurveyTextBlue" />
 
             <Button
                 android:id="@+id/btn_done"
@@ -171,7 +171,7 @@
                 android:padding="@dimen/dim_10_dp"
                 android:shadowColor="@color/colorGray"
                 android:text="Done"
-                android:textColor="@color/colorSurveyTextGreen"/>
+                android:textColor="@color/colorSurveyTextBlue"/>
             <Button
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
                 android:textAllCaps="false"
                 android:layout_marginVertical="@dimen/dim_20_dp"
                 android:layout_marginStart="@dimen/dim_10_dp"
-                android:textColor="@color/colorSurveyTextGreen"
+                android:textColor="@color/colorSurveyTextBlue"
                 android:padding="@dimen/dim_10_dp"
                 android:elevation="@dimen/dim_10_dp"
                 android:shadowColor="@color/colorGray"

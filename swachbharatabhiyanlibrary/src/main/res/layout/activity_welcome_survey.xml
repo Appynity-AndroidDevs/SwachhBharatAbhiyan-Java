@@ -65,7 +65,7 @@
             android:inputType="textCapSentences"
             android:layout_marginVertical="@dimen/dim_20_dp"
             android:layout_marginHorizontal="@dimen/dim_40_dp"
-            android:textColor="@color/colorSurveyTextGreen"
+            android:textColor="@color/colorSurveyTextBlue"
             android:padding="@dimen/dim_10_dp"
             android:elevation="@dimen/dim_10_dp"
             android:shadowColor="@color/colorGray"

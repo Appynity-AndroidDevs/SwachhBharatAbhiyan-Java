@@ -301,8 +301,8 @@
     <string name="str_month_dialog">Month</string>
     <string name="str_year_dialog">Year</string>
     <string name="str_days_dialog">Day</string>
-    <string name="str_ok"><![CDATA[<font color=\'#FF4081\'>Ok</font>]]></string>
-    <string name="str_cancel"><![CDATA[<font color=\'#FF4081\'>Cancel</font>]]></string>
+    <string name="str_ok"><![CDATA[<font color=\'#168bc6\'>Ok</font>]]></string>
+    <string name="str_cancel"><![CDATA[<font color=\'#168bc6\'>Cancel</font>]]></string>
 
 
     <!--    STRING ARRAY FOR MONTHS-->

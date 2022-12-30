@@ -259,7 +259,7 @@
     <string name="str_month_dialog">महीना</string>
     <string name="str_year_dialog">वर्ष</string>
     <string name="str_days_dialog">दिवस</string>
-    <string name="str_ok"><![CDATA[<font color=\'#FF4081\'>ठीक आहे</font>]]></string>
-    <string name="str_cancel"><![CDATA[<font color=\'#FF4081\'>रद्द करा</font>]]></string>
+    <string name="str_ok"><![CDATA[<font color=\'#168bc6\'>ठीक आहे</font>]]></string>
+    <string name="str_cancel"><![CDATA[<font color=\'#168bc6\'>रद्द करा</font>]]></string>
 
 </resources>

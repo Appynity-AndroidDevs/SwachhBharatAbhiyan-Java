@@ -78,7 +78,7 @@ public class SyncOfflineAdapterClass {
                                 if (response.code() == 200) {
 
                                     onResponseReceived(response.body());
-                                    SyncOfflineData();
+                                  //  SyncOfflineData();
 
 
                                 } else {
@@ -129,64 +129,94 @@ public class SyncOfflineAdapterClass {
 
             for (OfflineGcResultPojo result : results) {
 
-                if (result.getStatus().equals(AUtils.STATUS_SUCCESS) || result.getStatus().equals(AUtils.STATUS_ERROR)) {
+                if (result.getStatus() != null) {
+                    if (result.getStatus().equals(AUtils.STATUS_SUCCESS) || result.getStatus().equals(AUtils.STATUS_ERROR)) {
 
-                    if (results.size() == 1) {
-                        if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                        if (results.size() == 1) {
+                            if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
 
-                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
-                                AUtils.success(mContext, result.getMessageMar());
-                            else
-                                AUtils.success(mContext, result.getMessage());
+                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                    AUtils.success(mContext, result.getMessageMar());
+                                else
+                                    AUtils.success(mContext, result.getMessage());
+                            }
                         }
-                    }
 
-                    if (result.getStatus().equals(AUtils.STATUS_ERROR)) {
+                        if (result.getStatus().equals(AUtils.STATUS_ERROR)) {
 
-                        if (result.getMessage().contains("outside")) {
-                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
-                                areaWarningListener.onError(result.getMessageMar());
-                            else
-                                areaWarningListener.onError(result.getMessage());
+                            if (result.getMessage().contains("outside")) {
+                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                    areaWarningListener.onError(result.getMessageMar());
+                                else
+                                    areaWarningListener.onError(result.getMessage());
 
-                        } else {
+                            } else {
 //
 //                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
 //                                AUtils.error(mContext, result.getMessageMar());
 //                            else
 //                                AUtils.error(mContext, result.getMessage());
-                        }
-                    }
-
-
-                    if (Integer.parseInt(result.getID()) != 0) {
-
-                        if (!result.getMessage().contains("wrong")) {
-                            //    AUtils.warning(mContext , mContext.getResources().getString(R.string.please_wait));
-
-                            int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());
-                            if (deleteCount == 0) {
-                                offset = String.valueOf(Integer.parseInt(offset) + 1);
                             }
-                            for (int i = 0; i < syncOfflineList.size(); i++) {
-                                if (syncOfflineList.get(i).getOfflineID().equals(result.getID())) {
-                                    syncOfflineList.remove(i);
-                                    break;
+                        }
+
+
+                        if (Integer.parseInt(result.getID()) != 0) {
+
+                            if (!result.getMessage().contains("wrong")) {
+                                //    AUtils.warning(mContext , mContext.getResources().getString(R.string.please_wait));
+
+                                int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());
+                                if (deleteCount == 0) {
+                                    offset = String.valueOf(Integer.parseInt(offset) + 1);
+                                }
+                                for (int i = 0; i < syncOfflineList.size(); i++) {
+                                    if (syncOfflineList.get(i).getOfflineID().equals(result.getID())) {
+                                        syncOfflineList.remove(i);
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                } else
-                    offset = String.valueOf(Integer.parseInt(offset) + 1);
+                    } else
+                        offset = String.valueOf(Integer.parseInt(offset) + 1);
+                } else {
+
+                    //if nearby scan condition
+                    if (results.size() == 1) {
+
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                            AUtils.error(mContext, result.getMessageMar());
+                        else
+                            AUtils.error(mContext, result.getMessage());
+
+                    }
+                    if (Integer.parseInt(result.getID()) != 0) {
+
+                        //    AUtils.warning(mContext , mContext.getResources().getString(R.string.please_wait));
+                        int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());
+                        if (deleteCount == 0) {
+                            offset = String.valueOf(Integer.parseInt(offset) + 1);
+                        }
+                        for (int i = 0; i < syncOfflineList.size(); i++) {
+                            if (syncOfflineList.get(i).getOfflineID().equals(result.getID())) {
+                                syncOfflineList.remove(i);
+                                break;
+                            }
+                        }
+
+                    }
+                }
             }
         }
 
         if (results.size() > 1) {
             boolean isSuccess = false;
             for (OfflineGcResultPojo result : results) {
-                if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
-                    isSuccess = true;
+                if (result.getStatus() != null) {
+                    if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                        isSuccess = true;
+                    }
                 }
             }
             if (isSuccess) {

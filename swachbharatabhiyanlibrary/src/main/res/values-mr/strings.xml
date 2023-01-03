@@ -226,5 +226,7 @@
     <string name="loc_allow_all_time_txt">बॅकग्राऊंड लोकेशन परमिशन आवश्यक आहे!, पुढील स्क्रीनवर  Allow all the time वर टॅप करा</string>
 
     <string name="dump_yard">डंप यार्ड</string>
+    <string name="warn_distance_limit">तुम्ही ५० मीटर मर्यादा ओलांडली आहे!</string>
+    <string name="distance_warning">तुम्ही %1$d मीटर मर्यादा ओलांडली आहे!</string>
 
 </resources>

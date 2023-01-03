@@ -3,6 +3,8 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,17 +15,37 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "MapsActivity";
+    public static final int DISTANCE_LIMIT = 50;
     private GoogleMap mMap;
     private Double oldLat, newLat, oldLong, newLong;
     Button btnConfirmLocation;
+
+    Polyline polyline;
+
+    public static final int PATTERN_DASH_LENGTH_PX = 20;
+    public static final int PATTERN_GAP_LENGTH_PX = 20;
+    public static final PatternItem DOT = new Dot();
+    public static final PatternItem DASH = new Dash(PATTERN_DASH_LENGTH_PX);
+    public static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
+    public static final List<PatternItem> PATTERN_POLYGON_ALPHA = Arrays.asList(GAP, DOT);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +99,44 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 btnConfirmLocation.setVisibility(View.VISIBLE);
                 LatLng midLatLng = mMap.getCameraPosition().target;
                 Log.e(TAG, "onCameraIdle: lat: " + midLatLng.latitude + ", lon: " + midLatLng.longitude);
-                 newLat = midLatLng.latitude;
-                 newLong = midLatLng.longitude;
+                newLat = midLatLng.latitude;
+                newLong = midLatLng.longitude;
+
+                if (polyline != null)
+                    polyline.remove();
+
+                PolylineOptions options = new PolylineOptions().pattern(PATTERN_POLYGON_ALPHA)
+                        .color(Color.RED)
+                        .width(15);
+
+                polyline = googleMap.addPolyline(options.add(new LatLng(oldLat, oldLong), midLatLng));
+
+                if (calcDistance(midLatLng) > DISTANCE_LIMIT) {
+                    polyline.remove();
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 20.0f));
+                    String text = getString(R.string.distance_warning, DISTANCE_LIMIT);
+                    AUtils.info(MapsActivity.this, text);
+                }
+
             }
         });
 
     }
+
+    private double calcDistance(LatLng newPosition) {
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(oldLat);
+        startPoint.setLongitude(oldLong);
+
+        Location endPoint = new Location("locationB");
+        if (newPosition != null) {
+            endPoint.setLatitude(newPosition.latitude);
+            endPoint.setLongitude(newPosition.longitude);
+        }
+
+        double distance = startPoint.distanceTo(endPoint);
+        Log.e(TAG, "onMarkerDrag: Distance: " + distance);
+        return distance;
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.appynitty.swachbharatabhiyanlibrary.services;
 
+import static com.appynitty.swachbharatabhiyanlibrary.utils.NotificationCreator.CHANNEL_ID;
 import static com.appynitty.swachbharatabhiyanlibrary.utils.NotificationCreator.getNotification;
 import static com.appynitty.swachbharatabhiyanlibrary.utils.NotificationCreator.getNotificationId;
 
@@ -15,7 +16,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -101,11 +101,11 @@ public class LocationService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChanel() {
-        String notificationChannelId = "Location channel id";
+//        String notificationChannelId = "Location channel id";
         String channelName = "Background Service";
 
         NotificationChannel chan = new NotificationChannel(
-                notificationChannelId,
+                CHANNEL_ID,
                 channelName,
                 NotificationManager.IMPORTANCE_NONE
         );

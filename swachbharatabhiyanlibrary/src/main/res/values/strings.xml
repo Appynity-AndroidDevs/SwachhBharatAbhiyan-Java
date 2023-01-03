@@ -337,6 +337,35 @@
     <string name="str_two_wheeler">Two Wheeler</string>
     <string name="str_four_wheeler">Four Wheeler</string>
     <string name="str_que_total_vote">No. Of People Registered To Vote</string>
+    <string name="str_que_which_social">Which Social Media Platform You Use To Interact.</string>
+    <string name="str_facebook">Facebook</string>
+    <string name="str_twitter">Twitter</string>
+    <string name="str_instagram">Instagram</string>
+    <string name="str_whatsapp">Whatsapp</string>
+    <string name="str_linkedin">Linkedin</string>
+    <string name="str_snapchat">Snapchat</string>
+    <string name="str_que_shopping_app">Preferred Online Shopping App.</string>
+    <string name="str_amazon">Amazon</string>
+    <string name="str_flipkart">Flipkart</string>
+    <string name="str_nykka">Nykka</string>
+    <string name="str_tata_cliq">Tata Cliq</string>
+    <string name="str_snapdeal">Snapdeal</string>
+    <string name="str_que_which_online_payment">Which Online Payment App Do You Use?</string>
+    <string name="str_bhim">Bhim</string>
+    <string name="str_paytm">Paytm</string>
+    <string name="str_phonepe">PhonePe</string>
+    <string name="str_google_pay">Google Pay</string>
+    <string name="str_personal_banking">Personal Banking</string>
+    <string name="str_que_do_have_insurance">Do Have Insurance?</string>
+    <string name="str_life_insurance">Life Insurance</string>
+    <string name="str_medical_insurance">Medical Insurance</string>
+    <string name="str_both">Both</string>
+    <string name="str_que_which_insured">If Insured, Under Which Insured.</string>
+    <string name="str_government">Government</string>
+    <string name="str_private">Private</string>
+    <string name="str_que_ayushman_bharat">Are You Ayushman Bharat Beneficiary.</string>
+    <string name="str_que_booster_shot">Have You Taken Your Booster dose?</string>
+    <string name="str_que_divyang">Is Any Members Of Your Family Is Divyang Or Differently Abled.</string>
 
 
     <!--    STRING ARRAY FOR MONTHS-->

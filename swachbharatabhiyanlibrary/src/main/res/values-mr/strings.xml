@@ -295,6 +295,35 @@
     <string name="str_two_wheeler">दुचाकी</string>
     <string name="str_four_wheeler">चार चाकी</string>
     <string name="str_que_total_vote">मतदानासाठी नोंदणी केलेल्या लोकांची संख्या</string>
+    <string name="str_que_which_social">तुम्ही संवाद साधण्यासाठी कोणते सोशल मीडिया प्लॅटफॉर्म वापरता.</string>
+    <string name="str_facebook">फेसबुक</string>
+    <string name="str_twitter">ट्विटर</string>
+    <string name="str_instagram">इंस्टाग्राम</string>
+    <string name="str_whatsapp">व्हॉट्सॲप</string>
+    <string name="str_linkedin">लिंक्डइन</string>
+    <string name="str_snapchat">स्नॅपचॅट</string>
+    <string name="str_que_shopping_app">पसंतीचे ऑनलाइन शॉपिंग अॅप.</string>
+    <string name="str_amazon">ऍमेझॉन</string>
+    <string name="str_flipkart">फ्लिपकार्ट</string>
+    <string name="str_nykka">नायका</string>
+    <string name="str_tata_cliq">टाटा क्लीक</string>
+    <string name="str_snapdeal">स्नैपडील</string>
+    <string name="str_que_which_online_payment">तुम्ही कोणते ऑनलाइन पेमेंट अॅप वापरता?</string>
+    <string name="str_bhim">भीम</string>
+    <string name="str_paytm">पेटीएम</string>
+    <string name="str_phonepe">फोनपे</string>
+    <string name="str_google_pay">गूगल पे</string>
+    <string name="str_personal_banking">वैयक्तिक बँकिंग</string>
+    <string name="str_que_do_have_insurance">विमा आहे का?</string>
+    <string name="str_life_insurance">जीवन विमा</string>
+    <string name="str_medical_insurance">वैद्यकीय विमा</string>
+    <string name="str_both">दोन्ही</string>
+    <string name="str_que_which_insured">जर विमा उतरवला असेल तर कोणत्या अंतर्गत विमा उतरवला आहे.</string>
+    <string name="str_government">सरकारी विमा</string>
+    <string name="str_private">खाजगी विमा</string>
+    <string name="str_que_ayushman_bharat">तुम्ही आयुष्मान भारत लाभार्थी आहात का?</string>
+    <string name="str_que_booster_shot">तुम्ही तुमचा बूस्टर औषध घेतला आहे का?</string>
+    <string name="str_que_divyang">तुमच्या कुटुंबातील कोणताही सदस्य दिव्यांग किंवा अपंग आहे का?</string>
 
 
 </resources>

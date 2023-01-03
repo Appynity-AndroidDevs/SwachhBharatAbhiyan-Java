@@ -270,5 +270,34 @@
     <string name="str_two_wheeler">दोपहिया</string>
     <string name="str_four_wheeler">चार पहिया</string>
     <string name="str_que_total_vote">वोट करने के लिए पंजीकृत लोगों की संख्या</string>
+    <string name="str_que_which_social">आप बातचीत करने के लिए किस सोशल मीडिया प्लेटफॉर्म का इस्तेमाल करते हैं।</string>
+    <string name="str_facebook">फेसबुक</string>
+    <string name="str_twitter">ट्विटर</string>
+    <string name="str_instagram">इंस्टाग्राम</string>
+    <string name="str_whatsapp">व्हॉट्सॲप</string>
+    <string name="str_linkedin">लिंक्डइन</string>
+    <string name="str_snapchat">स्नॅपचॅट</string>
+    <string name="str_que_shopping_app">पसंदीदा ऑनलाइन शॉपिंग ऐप।</string>
+    <string name="str_amazon">ऍमेझॉन</string>
+    <string name="str_flipkart">फ्लिपकार्ट</string>
+    <string name="str_nykka">नायका</string>
+    <string name="str_tata_cliq">टाटा क्लीक</string>
+    <string name="str_snapdeal">स्नैपडील</string>
+    <string name="str_que_which_online_payment">आप किस ऑनलाइन भुगतान ऐप का उपयोग करते हैं?</string>
+    <string name="str_bhim">भीम</string>
+    <string name="str_paytm">पेटीएम</string>
+    <string name="str_phonepe">फोनपे</string>
+    <string name="str_google_pay">गूगल पे</string>
+    <string name="str_personal_banking">व्यक्तिगत बैंकिंग</string>
+    <string name="str_que_do_have_insurance">बीमा है?</string>
+    <string name="str_life_insurance">जीवन बीमा</string>
+    <string name="str_medical_insurance">चिकित्सा बीमा</string>
+    <string name="str_both">दोनों</string>
+    <string name="str_que_which_insured">यदि बीमित है, तो किस बीमाकृत के अंतर्गत।</string>
+    <string name="str_government">सरकारी बीमा</string>
+    <string name="str_private">निजी बीमा</string>
+    <string name="str_que_ayushman_bharat">क्या आप आयुष्मान भारत के लाभार्थी हैं।</string>
+    <string name="str_que_booster_shot">कक्या आपने अपनी बूस्टर खुराक ले ली है?</string>
+    <string name="str_que_divyang">क्या आपके परिवार का कोई सदस्य दिव्यांग है या विकलांग है।</string>
 
 </resources>

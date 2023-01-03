@@ -121,7 +121,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Which Social Media Platform You Use To Interact."
+                            android:text="@string/str_que_which_social"
                             android:padding="5dp"
                             android:textSize="16sp"
                             android:textColor="@color/white"
@@ -148,7 +148,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Facebook"/>
+                            android:text="@string/str_facebook"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_twitter_social"
@@ -163,7 +163,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Twitter"/>
+                            android:text="@string/str_twitter"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_instagram_social"
@@ -177,7 +177,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Instagram"/>
+                            android:text="@string/str_instagram"/>
 
 
                     </LinearLayout>
@@ -200,7 +200,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Whatsapp"/>
+                            android:text="@string/str_whatsapp"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_linkedin_social"
@@ -215,7 +215,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Linkedin"/>
+                            android:text="@string/str_linkedin"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_snapchat_social"
@@ -229,7 +229,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Snapchat"/>
+                            android:text="@string/str_snapchat"/>
 
 
                     </LinearLayout>
@@ -252,7 +252,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Other"/>
+                            android:text="@string/str_other"/>
 
                     </LinearLayout>
 
@@ -277,7 +277,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Preferred Online Shopping App."
+                        android:text="@string/str_que_shopping_app"
                         android:padding="5dp"
                         android:textSize="16sp"
                         android:textColor="@color/white"
@@ -303,7 +303,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Amazon"/>
+                            android:text="@string/str_amazon"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_flipkart"
@@ -318,7 +318,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Flipkart"/>
+                            android:text="@string/str_flipkart"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_nykaa_shopping"
@@ -332,7 +332,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Nykka"/>
+                            android:text="@string/str_nykka"/>
 
 
                     </LinearLayout>
@@ -356,7 +356,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Tata Cliq"/>
+                            android:text="@string/str_tata_cliq"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_snapdeal_shopping"
@@ -371,7 +371,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Snapdeal"/>
+                            android:text="@string/str_snapdeal"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_other_shopping"
@@ -385,7 +385,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Other"/>
+                            android:text="@string/str_other"/>
 
 
                     </LinearLayout>
@@ -434,7 +434,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Which Online Payment App Do You Use?"
+                            android:text="@string/str_que_which_online_payment"
                             android:padding="5dp"
                             android:textSize="16sp"
                             android:textColor="@color/white"
@@ -461,7 +461,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Bhim"/>
+                            android:text="@string/str_bhim"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_paytm_online_payment"
@@ -476,7 +476,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Paytm"/>
+                            android:text="@string/str_paytm"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_phone_pe_online_payment"
@@ -490,7 +490,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="PhonePe"/>
+                            android:text="@string/str_phonepe"/>
 
 
                     </LinearLayout>
@@ -513,7 +513,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Google Pay"/>
+                            android:text="@string/str_google_pay"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_banking_online_payment"
@@ -528,7 +528,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Personal Banking"/>
+                            android:text="@string/str_personal_banking"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_other_online_payment"
@@ -542,7 +542,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Other"/>
+                            android:text="@string/str_other"/>
 
 
                     </LinearLayout>

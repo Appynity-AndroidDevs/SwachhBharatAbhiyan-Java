@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total No. Of Members"
+                        android:text="@string/str_heading_total_members"
                         android:padding="5dp"
                         android:textSize="16sp"
                         android:layout_gravity="center_vertical"
@@ -59,7 +59,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(Family &amp; Dependents)"
+                        android:text="@string/str_small_head_family_dependent"
                         android:textSize="10sp"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/white"
@@ -72,7 +72,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total Member"
+                        android:text="@string/str_total_member"
                         android:padding="5dp"
                         android:textSize="12sp"
                         android:textColor="@color/white"
@@ -101,7 +101,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textColor="@color/colorSurveyTextGreen"
+                            android:textColor="@color/colorSurveyTextBlue"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
                             android:background="@drawable/solid_white_rectangle_survey"
@@ -124,7 +124,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Adults"
+                        android:text="@string/str_adults"
                         android:padding="5dp"
                         android:textSize="12sp"
                         android:textColor="@color/white"
@@ -153,7 +153,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textColor="@color/colorSurveyTextGreen"
+                            android:textColor="@color/colorSurveyTextBlue"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
                             android:background="@drawable/solid_white_rectangle_survey"
@@ -176,7 +176,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Children"
+                        android:text="@string/str_children"
                         android:padding="5dp"
                         android:textSize="12sp"
                         android:textColor="@color/white"
@@ -205,7 +205,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textColor="@color/colorSurveyTextGreen"
+                            android:textColor="@color/colorSurveyTextBlue"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
                             android:background="@drawable/solid_white_rectangle_survey"
@@ -227,7 +227,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Senior Citizen"
+                        android:text="@string/str_senior_citizen"
                         android:padding="5dp"
                         android:textSize="12sp"
                         android:textColor="@color/white"
@@ -256,7 +256,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textColor="@color/colorSurveyTextGreen"
+                            android:textColor="@color/colorSurveyTextBlue"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
                             android:background="@drawable/solid_white_rectangle_survey"
@@ -287,7 +287,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Is Any Of Your Family Member is willing to start The Business?"
+                    android:text="@string/str_que_start_bussiness"
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:textColor="@color/white"
@@ -312,7 +312,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="Yes"/>
+                        android:text="@string/str_yes"/>
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/cb_business_no"
@@ -326,7 +326,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="No"/>
+                        android:text="@string/str_no"/>
 
                 </LinearLayout>
 
@@ -342,7 +342,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="If Yes Then Resources Available To Start The?"
+                    android:text="@string/str_que_resources_available"
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:textColor="@color/white"
@@ -367,7 +367,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="Land"/>
+                        android:text="@string/str_land"/>
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/cb_shop_available"
@@ -381,7 +381,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="Shop"/>
+                        android:text="@string/str_shop"/>
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/cb_other_available"
@@ -395,7 +395,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="Other"/>
+                        android:text="@string/str_other"/>
 
                 </LinearLayout>
 
@@ -411,7 +411,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Any Of Your Family Members Are Relocated To Other Cities For Job/Business Or Other Purpose."
+                    android:text="@string/str_que_relocate_other_cities"
                     android:padding="5dp"
                     android:textSize="16sp"
                     android:textColor="@color/white"
@@ -436,7 +436,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="Yes"/>
+                        android:text="@string/str_yes"/>
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/cb_no_member_other_city"
@@ -450,7 +450,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/font_medium"
                         android:textColor="@color/white"
-                        android:text="No"/>
+                        android:text="@string/str_no"/>
 
 
                 </LinearLayout>
@@ -488,7 +488,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="6"
                             android:layout_height="wrap_content"
-                            android:text="Number Of Vehicles"
+                            android:text="@string/str_heading_number_of_vehicles"
                             android:padding="5dp"
                             android:textSize="16sp"
                             android:textColor="@color/white"
@@ -520,7 +520,7 @@
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:textColor="@color/colorSurveyTextGreen"
+                                android:textColor="@color/colorSurveyTextBlue"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="@dimen/dim_14_sp"
                                 android:text="0"
@@ -546,7 +546,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="6"
                             android:layout_height="wrap_content"
-                            android:text="Two Wheeler"
+                            android:text="@string/str_two_wheeler"
                             android:padding="5dp"
                             android:textSize="12sp"
                             android:textColor="@color/white"
@@ -578,7 +578,7 @@
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:textColor="@color/colorSurveyTextGreen"
+                                android:textColor="@color/colorSurveyTextBlue"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="@dimen/dim_14_sp"
                                 android:text="0"
@@ -604,7 +604,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="6"
                             android:layout_height="wrap_content"
-                            android:text="Four Wheeler"
+                            android:text="@string/str_four_wheeler"
                             android:padding="5dp"
                             android:textSize="12sp"
                             android:textColor="@color/white"
@@ -636,7 +636,7 @@
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:textColor="@color/colorSurveyTextGreen"
+                                android:textColor="@color/colorSurveyTextBlue"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="@dimen/dim_14_sp"
                                 android:text="0"

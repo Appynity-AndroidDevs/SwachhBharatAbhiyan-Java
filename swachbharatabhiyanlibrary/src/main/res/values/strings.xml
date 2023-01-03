@@ -303,6 +303,40 @@
     <string name="str_days_dialog">Day</string>
     <string name="str_ok"><![CDATA[<font color=\'#168bc6\'>Ok</font>]]></string>
     <string name="str_cancel"><![CDATA[<font color=\'#168bc6\'>Cancel</font>]]></string>
+    <string name="str_heading_qualification">Qualification</string>
+    <string name="str_ug">Under Graduate</string>
+    <string name="str_graduate">Graduate</string>
+    <string name="str_pg">Post Graduate</string>
+    <string name="str_heading_occupation">Occupation</string>
+    <string name="str_service">Service</string>
+    <string name="str_business">Business</string>
+    <string name="str_professional">Professional</string>
+    <string name="str_heading_marital_status">Marital Status</string>
+    <string name="str_married">Married</string>
+    <string name="str_unmarried">Unmarried</string>
+    <string name="str_que_married_date">If married, Date Of Marriage Anniversary.</string>
+    <string name="str_heading_living_status">Living Status</string>
+    <string name="str_own_house">Own House</string>
+    <string name="str_ranted">Rented</string>
+    <string name="str_lease">Lease</string>
+    <string name="str_heading_total_members">Total No. Of Members</string>
+    <string name="str_small_head_family_dependent"><![CDATA[(Family & Dependents)]]></string>
+    <string name="str_total_member">Total Member</string>
+    <string name="str_adults">Adults</string>
+    <string name="str_children">Children</string>
+    <string name="str_senior_citizen">Senior Citizen</string>
+    <string name="str_que_start_bussiness">Is Any Of Your Family Member is willing to start The Business?</string>
+    <string name="str_yes">Yes</string>
+    <string name="str_no">No</string>
+    <string name="str_que_resources_available">If Yes Then Resources Available To Start The?</string>
+    <string name="str_land">Land</string>
+    <string name="str_shop">Shop</string>
+    <string name="str_other">Other</string>
+    <string name="str_que_relocate_other_cities">Any Of Your Family Members Are Relocated To Other Cities For Job/Business Or Other Purpose.</string>
+    <string name="str_heading_number_of_vehicles">Number Of Vehicles</string>
+    <string name="str_two_wheeler">Two Wheeler</string>
+    <string name="str_four_wheeler">Four Wheeler</string>
+    <string name="str_que_total_vote">No. Of People Registered To Vote</string>
 
 
     <!--    STRING ARRAY FOR MONTHS-->

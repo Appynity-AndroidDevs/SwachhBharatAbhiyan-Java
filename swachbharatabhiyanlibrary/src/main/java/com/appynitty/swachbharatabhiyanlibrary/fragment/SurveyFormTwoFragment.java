@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.DaysPickerDialog;
@@ -101,13 +102,13 @@ public class SurveyFormTwoFragment extends Fragment {
         cbRanted = view.findViewById(R.id.cb_ranted_li_status);
         cbLease = view.findViewById(R.id.cb_lease_li_status);
 
-        chkArrayOccupation = new CheckBox[3];
-        chkArrayOccupation[0] = cbServiceO;
-        chkArrayOccupation[0].setOnClickListener(mListenerOccupation);
-        chkArrayOccupation[1] = cbBusinessO;
-        chkArrayOccupation[1].setOnClickListener(mListenerOccupation);
-        chkArrayOccupation[2] = cbProfessionalO;
-        chkArrayOccupation[2].setOnClickListener(mListenerOccupation);
+        chkArrayLiving = new CheckBox[3];
+        chkArrayLiving[0] = cbOwnHouse;
+        chkArrayLiving[0].setOnClickListener(mListenerLiving);
+        chkArrayLiving[1] = cbRanted;
+        chkArrayLiving[1].setOnClickListener(mListenerLiving);
+        chkArrayLiving[2] = cbLease;
+        chkArrayLiving[2].setOnClickListener(mListenerLiving);
 
         setOnClick();
     }
@@ -186,6 +187,7 @@ public class SurveyFormTwoFragment extends Fragment {
         @Override
         public void onClick(View v) {
             final int checkedId = v.getId();
+            final String checkedValue = v.toString();
             for (int i = 0; i < chkArrayQualification.length; i++) {
                 final CheckBox current = chkArrayQualification[i];
                 if (current.getId() == checkedId) {
@@ -223,6 +225,23 @@ public class SurveyFormTwoFragment extends Fragment {
             final int checkedId = v.getId();
             for (int i = 0; i < chkArrayMarital.length; i++) {
                 final CheckBox current = chkArrayMarital[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                } else {
+                    current.setChecked(false);
+                }
+
+            }
+        }
+    };
+
+    private View.OnClickListener mListenerLiving = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            for (int i = 0; i < chkArrayLiving.length; i++) {
+                final CheckBox current = chkArrayLiving[i];
                 if (current.getId() == checkedId) {
                     current.setChecked(true);
                 } else {

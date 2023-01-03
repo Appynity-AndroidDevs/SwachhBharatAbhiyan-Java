@@ -261,5 +261,40 @@
     <string name="str_days_dialog">दिवस</string>
     <string name="str_ok"><![CDATA[<font color=\'#168bc6\'>ठीक आहे</font>]]></string>
     <string name="str_cancel"><![CDATA[<font color=\'#168bc6\'>रद्द करा</font>]]></string>
+    <string name="str_heading_qualification">पात्रता</string>
+    <string name="str_ug">अंडर ग्रेजुएट</string>
+    <string name="str_graduate">ग्रेजुएट</string>
+    <string name="str_pg">पोस्ट ग्रेजुएट</string>
+    <string name="str_heading_occupation">व्यवसाय</string>
+    <string name="str_service">सेवा</string>
+    <string name="str_business">व्यापार</string>
+    <string name="str_professional">व्यावसायिक</string>
+    <string name="str_heading_marital_status">वैवाहिक स्थिती</string>
+    <string name="str_married">लग्न झाले</string>
+    <string name="str_unmarried">अविवाहित</string>
+    <string name="str_que_married_date">विवाहित असल्यास, विवाह वर्धापनदिनाची तारीख.</string>
+    <string name="str_heading_living_status">राहण्याची स्थिती</string>
+    <string name="str_own_house">स्वतःचे घर</string>
+    <string name="str_ranted">भाड्याने</string>
+    <string name="str_lease">भाडेपट्टी करार</string>
+    <string name="str_heading_total_members">एकूण सदस्य संख्या</string>
+    <string name="str_small_head_family_dependent"><![CDATA[(कुटुंब आणि आश्रित)]]></string>
+    <string name="str_total_member">एकूण सदस्य</string>
+    <string name="str_adults">प्रौढ</string>
+    <string name="str_children">मुले</string>
+    <string name="str_senior_citizen">ज्येष्ठ नागरिक</string>
+    <string name="str_que_start_bussiness">तुमच्या कुटुंबातील कोणताही सदस्य व्यवसाय सुरू करण्यास इच्छुक आहे का?</string>
+    <string name="str_yes">होय</string>
+    <string name="str_no">नाही</string>
+    <string name="str_que_resources_available">जर होय तर सुरू करण्यासाठी संसाधने उपलब्ध आहेत?</string>
+    <string name="str_land">जमीन</string>
+    <string name="str_shop">दुकान</string>
+    <string name="str_other">इतर</string>
+    <string name="str_que_relocate_other_cities">तुमच्या कुटुंबातील कोणत्याही सदस्याला नोकरी/व्यवसाय किंवा इतर हेतूने इतर शहरांमध्ये स्थलांतरित केले आहे.</string>
+    <string name="str_heading_number_of_vehicles">वाहनांची संख्या</string>
+    <string name="str_two_wheeler">दुचाकी</string>
+    <string name="str_four_wheeler">चार चाकी</string>
+    <string name="str_que_total_vote">मतदानासाठी नोंदणी केलेल्या लोकांची संख्या</string>
+
 
 </resources>

@@ -236,4 +236,39 @@
     <string name="str_days_dialog">दिन</string>
     <string name="str_ok"><![CDATA[<font color=\'#168bc6\'>ठीक है</font>]]></string>
     <string name="str_cancel"><![CDATA[<font color=\'#168bc6\'>रद्द करें</font>]]></string>
+    <string name="str_heading_qualification">योग्यता</string>
+    <string name="str_ug">अंडर ग्रेजुएट</string>
+    <string name="str_graduate">ग्रेजुएट</string>
+    <string name="str_pg">पोस्ट ग्रेजुएट</string>
+    <string name="str_heading_occupation">व्यवसाय</string>
+    <string name="str_service">सेवा</string>
+    <string name="str_business">व्यापार</string>
+    <string name="str_professional">पेशेवर</string>
+    <string name="str_heading_marital_status">वैवाहिक स्थिति</string>
+    <string name="str_married">विवाहित</string>
+    <string name="str_unmarried">अविवाहित</string>
+    <string name="str_que_married_date">यदि विवाहित हैं, तो विवाह की वर्षगाँठ की तिथि।</string>
+    <string name="str_heading_living_status">रहने की स्थिति</string>
+    <string name="str_own_house">अपना मकान</string>
+    <string name="str_ranted">किराए पर</string>
+    <string name="str_lease">भाडेपट्टी करार</string>
+    <string name="str_heading_total_members">सदस्यों की कुल संख्या</string>
+    <string name="str_small_head_family_dependent"><![CDATA[(परिवार और आश्रित)]]></string>
+    <string name="str_total_member">कुल सदस्य</string>
+    <string name="str_adults">वयस्कों</string>
+    <string name="str_children">बच्चे</string>
+    <string name="str_senior_citizen">वरिष्ठ नागरिक</string>
+    <string name="str_que_start_bussiness">क्या आपके परिवार का कोई सदस्य व्यवसाय शुरू करने का इच्छुक है?</string>
+    <string name="str_yes">हां</string>
+    <string name="str_no">नहीं</string>
+    <string name="str_que_resources_available">यदि हां, तो शुरू करने के लिए संसाधन उपलब्ध हैं?</string>
+    <string name="str_land">भूमि</string>
+    <string name="str_shop">दुकान</string>
+    <string name="str_other">अन्य</string>
+    <string name="str_que_relocate_other_cities">आपके परिवार के किसी सदस्य का नौकरी/व्यवसाय या अन्य उद्देश्य से अन्य शहरों में स्थानांतरण हो गया है।</string>
+    <string name="str_heading_number_of_vehicles">वाहनों की संख्या</string>
+    <string name="str_two_wheeler">दोपहिया</string>
+    <string name="str_four_wheeler">चार पहिया</string>
+    <string name="str_que_total_vote">वोट करने के लिए पंजीकृत लोगों की संख्या</string>
+
 </resources>

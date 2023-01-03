@@ -36,7 +36,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="No. Of People Registered To Vote"
+                        android:text="@string/str_que_total_vote"
                         android:padding="5dp"
                         android:textSize="16sp"
                         android:textColor="@color/white"
@@ -61,7 +61,7 @@
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:textColor="@color/colorSurveyTextGreen"
+                            android:textColor="@color/colorSurveyTextBlue"
                             android:fontFamily="@font/font_medium"
                             android:textSize="@dimen/dim_14_sp"
                             android:text="0"

@@ -51,7 +51,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Qualification"
+                            android:text="@string/str_heading_qualification"
                             android:padding="5dp"
                             android:textSize="16sp"
                             android:textColor="@color/white"
@@ -78,7 +78,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Under graduate"/>
+                            android:text="@string/str_ug"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_graduate"
@@ -93,7 +93,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Graduate"/>
+                            android:text="@string/str_graduate"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_pst_graduate"
@@ -107,7 +107,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Post Graduate"/>
+                            android:text="@string/str_pg"/>
 
 
                     </LinearLayout>
@@ -134,7 +134,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Occupation"
+                        android:text="@string/str_heading_occupation"
                         android:padding="5dp"
                         android:textSize="16sp"
                         android:textColor="@color/white"
@@ -159,7 +159,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Service"/>
+                            android:text="@string/str_service"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_business_occupation"
@@ -173,7 +173,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Business"/>
+                            android:text="@string/str_business"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_professional_occupation"
@@ -187,7 +187,7 @@
                             android:textSize="12sp"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/white"
-                            android:text="Professional"/>
+                            android:text="@string/str_professional"/>
 
                     </LinearLayout>
 
@@ -236,7 +236,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Marital Status"
+                            android:text="@string/str_heading_marital_status"
                             android:padding="5dp"
                             android:textSize="16sp"
                             android:textColor="@color/white"
@@ -263,7 +263,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Married"/>
+                            android:text="@string/str_married"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_unmarried"
@@ -277,7 +277,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Unmarried"/>
+                            android:text="@string/str_unmarried"/>
 
 
                     </LinearLayout>
@@ -305,7 +305,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="If married, Date Of Marriage Anniversary."
+                        android:text="@string/str_que_married_date"
                         android:padding="5dp"
                         android:textSize="16sp"
                         android:textColor="@color/white"
@@ -332,7 +332,7 @@
                                 android:id="@+id/txt_day"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="D"
+                                android:text="@string/str_day"
                                 android:padding="@dimen/dim_5_dp"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="12sp"
@@ -346,7 +346,9 @@
                                 android:maxLength="2"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:textAlignment="center"
+                                android:backgroundTint="@color/white"
+                                android:gravity="center|center_vertical"
+                                android:layout_gravity="center_vertical"
                                 android:focusableInTouchMode="false"
                                 android:inputType="none"
                                 tools:ignore="LabelFor"
@@ -376,7 +378,7 @@
                                 android:id="@+id/txt_month"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="M"
+                                android:text="@string/str_month"
                                 android:padding="@dimen/dim_5_dp"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="12sp"
@@ -391,10 +393,12 @@
                                 android:maxLines="1"
                                 android:inputType="none"
                                 android:padding="@dimen/dim_5_dp"
+                                android:layout_gravity="center_vertical"
+                                android:backgroundTint="@color/white"
                                 android:focusableInTouchMode="false"
                                 tools:ignore="LabelFor"
                                 android:singleLine="true"
-                                android:textAlignment="center"
+                                android:gravity="center|center_vertical"
                                 android:fontFamily="@font/font_medium"
                                 android:textColor="@color/colorSurveyTextGreen"/>
                             <ImageView
@@ -419,7 +423,7 @@
                                 android:id="@+id/txt_year"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Y"
+                                android:text="@string/str_year"
                                 android:padding="@dimen/dim_5_dp"
                                 android:fontFamily="@font/font_medium"
                                 android:textSize="12sp"
@@ -434,9 +438,11 @@
                                 android:maxLines="1"
                                 android:inputType="none"
                                 android:singleLine="true"
+                                android:layout_gravity="center_vertical"
+                                android:backgroundTint="@color/white"
                                 tools:ignore="LabelFor"
                                 android:focusableInTouchMode="false"
-                                android:textAlignment="center"
+                                android:gravity="center|center_vertical"
                                 android:padding="@dimen/dim_5_dp"
                                 android:fontFamily="@font/font_medium"
                                 android:textColor="@color/colorSurveyTextGreen"/>
@@ -496,7 +502,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Living Status"
+                            android:text="@string/str_heading_living_status"
                             android:padding="5dp"
                             android:textSize="16sp"
                             android:textColor="@color/white"
@@ -523,7 +529,7 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Own House"/>
+                            android:text="@string/str_own_house"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_ranted_li_status"
@@ -538,7 +544,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Ranted"/>
+                            android:text="@string/str_ranted"/>
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/cb_lease_li_status"
@@ -552,7 +558,7 @@
                             android:textSize="12sp"
                             android:fontFamily="@font/font_medium"
                             android:textColor="@color/white"
-                            android:text="Lease"/>
+                            android:text="@string/str_lease"/>
 
 
                     </LinearLayout>

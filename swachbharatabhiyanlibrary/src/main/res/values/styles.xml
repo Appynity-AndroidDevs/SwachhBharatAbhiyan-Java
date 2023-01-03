@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
+    <style name="Autocomplete" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="colorControlActivated">@color/white</item>
+    </style>
 
 
     <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">

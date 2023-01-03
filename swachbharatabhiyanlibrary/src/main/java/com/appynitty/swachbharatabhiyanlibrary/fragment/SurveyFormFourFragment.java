@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.appynitty.swachbharatabhiyanlibrary.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class SurveyFormFourFragment extends Fragment {
 
@@ -28,7 +31,10 @@ public class SurveyFormFourFragment extends Fragment {
     private String vote;
     private Integer o = 1;
 
+    private CheckBox cbFbS,cbTwitSocial,cbInstagram,cbWhatsapp,cbLinkedIn,cbSnapChat,cbOtherS;
 
+    private HashMap<String, String> ckList = new HashMap<>();
+    ArrayList<String> list = new ArrayList<String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +54,14 @@ public class SurveyFormFourFragment extends Fragment {
         imgMinusVote = view.findViewById(R.id.img_minus_vote);
         txtNumVote = view.findViewById(R.id.txt_num_vote);
         imgPlusVote = view.findViewById(R.id.img_plus_vote);
+
+        cbTwitSocial = view.findViewById(R.id.cb_twitter_social);
+        cbInstagram = view.findViewById(R.id.cb_instagram_social);
+        cbFbS = view.findViewById(R.id.cb_fb_social);
+        cbWhatsapp = view.findViewById(R.id.cb_whatsapp_social);
+        cbLinkedIn = view.findViewById(R.id.cb_linkedin_social);
+        cbSnapChat = view.findViewById(R.id.cb_snapchat_social);
+        cbOtherS = view.findViewById(R.id.cb_other_social);
 
         o = Integer.parseInt(txtNumVote.getText().toString());
         setOnClick();
@@ -77,6 +91,77 @@ public class SurveyFormFourFragment extends Fragment {
                 o = o + 1;
                 vote = String.valueOf(o);
                 txtNumVote.setText(vote);
+            }
+        });
+
+        cbFbS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ckList.put(cbFbS.getText().toString(),cbFbS.getText().toString());
+                    Log.d("SocialMediaArrayAdd", "onCheckedChanged: "+ckList);
+                }
+                else{
+                    try{
+                        ckList.remove(cbFbS.getText().toString());
+                        Log.d("SocialMediaArrayRemove", "onCheckedChanged: "+ckList);
+                    }catch(NullPointerException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        cbInstagram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ckList.put(cbInstagram.getText().toString(),cbInstagram.getText().toString());
+                    Log.d("SocialMediaArrayAdd", "onCheckedChanged: "+ckList);
+                }
+                else{
+                    try{
+                        ckList.remove(cbInstagram.getText().toString());
+                        Log.d("SocialMediaArrayRemove", "onCheckedChanged: "+ckList);
+                    }catch(NullPointerException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        cbWhatsapp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ckList.put(cbWhatsapp.getText().toString(),cbWhatsapp.getText().toString());
+                    Log.d("SocialMediaArrayAdd", "onCheckedChanged: "+ckList);
+                }
+                else{
+                    try{
+                        ckList.remove(cbWhatsapp.getText().toString());
+                        Log.d("SocialMediaArrayRemove", "onCheckedChanged: "+ckList);
+                    }catch(NullPointerException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        cbTwitSocial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ckList.put(cbTwitSocial.getText().toString(),cbTwitSocial.getText().toString());
+                    Log.d("SocialMediaArrayAdd", "onCheckedChanged: "+ckList);
+                }
+                else{
+                    try{
+                        ckList.remove(cbWhatsapp.getText().toString());
+                        Log.d("SocialMediaArrayRemove", "onCheckedChanged: "+ckList);
+                    }catch(NullPointerException e){
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }

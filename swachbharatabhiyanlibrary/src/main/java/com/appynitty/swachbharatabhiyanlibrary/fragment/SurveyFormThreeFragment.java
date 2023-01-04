@@ -45,6 +45,11 @@ public class SurveyFormThreeFragment extends Fragment {
 
 
     private CheckBox cbBusinessTypeYes, cbBusinessTypeNo;
+    private CheckBox[] chkArrayBusinessType;
+    private CheckBox cbLandA,cbShopA,cbOtherA;
+    private CheckBox[] chkArrayAvailable;
+    private CheckBox cbYesOCity,cbNoOCity;
+    private CheckBox[] chkArrayOtherCity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +103,36 @@ public class SurveyFormThreeFragment extends Fragment {
         l = Integer.parseInt(txtNumTwoWheel.getText().toString());
         m = Integer.parseInt(txtNumFourWheel.getText().toString());
         n = Integer.parseInt(txtNumTotalVehicle.getText().toString());
+//Business Type
+        cbBusinessTypeYes = view.findViewById(R.id.cb_business_yes);
+        cbBusinessTypeNo = view.findViewById(R.id.cb_business_no);
+
+        chkArrayBusinessType = new CheckBox[2];
+        chkArrayBusinessType[0] = cbBusinessTypeYes;
+        chkArrayBusinessType[0].setOnClickListener(mListenerBusinessType);
+        chkArrayBusinessType[1] = cbBusinessTypeNo;
+        chkArrayBusinessType[1].setOnClickListener(mListenerBusinessType);
+//Available
+        cbLandA = view.findViewById(R.id.cb_land_available);
+        cbShopA = view.findViewById(R.id.cb_shop_available);
+        cbOtherA = view.findViewById(R.id.cb_other_available);
+
+        chkArrayAvailable = new CheckBox[3];
+        chkArrayAvailable[0] = cbLandA;
+        chkArrayAvailable[0].setOnClickListener(mListenerAvailable);
+        chkArrayAvailable[1] = cbShopA;
+        chkArrayAvailable[1].setOnClickListener(mListenerAvailable);
+        chkArrayAvailable[2] = cbOtherA;
+        chkArrayAvailable[2].setOnClickListener(mListenerAvailable);
+//other city
+        cbYesOCity = view.findViewById(R.id.cb_yes_member_other_city);
+        cbNoOCity = view.findViewById(R.id.cb_no_member_other_city);
+
+        chkArrayOtherCity = new CheckBox[2];
+        chkArrayOtherCity[0] = cbYesOCity;
+        chkArrayOtherCity[0].setOnClickListener(mListenerOtherCity);
+        chkArrayOtherCity[1] = cbNoOCity;
+        chkArrayOtherCity[1].setOnClickListener(mListenerOtherCity);
 
         setOnClick();
     }
@@ -274,8 +309,53 @@ public class SurveyFormThreeFragment extends Fragment {
             }
         });
 
-
-
     }
 
+    private View.OnClickListener mListenerBusinessType = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            final String checkedValue = v.toString();
+            for (int i = 0; i < chkArrayBusinessType.length; i++) {
+                final CheckBox current = chkArrayBusinessType[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                } else {
+                    current.setChecked(false);
+                }
+            }
+        }
+    };
+
+    private View.OnClickListener mListenerAvailable = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            final String checkedValue = v.toString();
+            for (int i = 0; i < chkArrayAvailable.length; i++) {
+                final CheckBox current = chkArrayAvailable[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                } else {
+                    current.setChecked(false);
+                }
+            }
+        }
+    };
+
+    private View.OnClickListener mListenerOtherCity = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final int checkedId = v.getId();
+            final String checkedValue = v.toString();
+            for (int i = 0; i < chkArrayOtherCity.length; i++) {
+                final CheckBox current = chkArrayOtherCity[i];
+                if (current.getId() == checkedId) {
+                    current.setChecked(true);
+                } else {
+                    current.setChecked(false);
+                }
+            }
+        }
+    };
 }

@@ -1,11 +1,15 @@
 package com.appynitty.swachbharatabhiyanlibrary.fragment;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class SurveyFormFourFragment extends Fragment {
 
@@ -117,146 +122,185 @@ public class SurveyFormFourFragment extends Fragment {
             }
         });
 // Social Media
+        String strFaceBook = getResStringLanguage(R.string.str_facebook, "en");
         cbFbS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    socialMArray.add(cbFbS.getText().toString());
+                  //  socialMArray.add(cbFbS.getText().toString());
+                    socialMArray.add(strFaceBook);
                 }else {
-                    socialMArray.remove(cbFbS.getText().toString());
+                  //  socialMArray.remove(cbFbS.getText().toString());
+                    socialMArray.remove(strFaceBook);
                 }
                 Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
+        String strTwitter = getResStringLanguage(R.string.str_twitter, "en");
         cbTwitSocial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    socialMArray.add(cbTwitSocial.getText().toString());
+                 //   socialMArray.add(cbTwitSocial.getText().toString());
+                    socialMArray.add(strTwitter);
                 }else {
-                    socialMArray.remove(cbTwitSocial.getText().toString());
+                 //   socialMArray.remove(cbTwitSocial.getText().toString());
+                    socialMArray.remove(strTwitter);
                 }
                 Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
+        String strInstagram = getResStringLanguage(R.string.str_instagram, "en");
         cbInstagram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    socialMArray.add(cbInstagram.getText().toString());
+                 //   socialMArray.add(cbInstagram.getText().toString());
+                    socialMArray.add(strInstagram);
                 }else {
-                    socialMArray.remove(cbInstagram.getText().toString());
+                //    socialMArray.remove(cbInstagram.getText().toString());
+                    socialMArray.remove(strInstagram);
                 }
                 Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
+        String strWhatsApp = getResStringLanguage(R.string.str_whatsapp, "en");
         cbWhatsapp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    socialMArray.add(cbWhatsapp.getText().toString());
+                    //socialMArray.add(cbWhatsapp.getText().toString());
+                    socialMArray.add(strWhatsApp);
                 }else {
-                    socialMArray.remove(cbWhatsapp.getText().toString());
+                 //   socialMArray.remove(cbWhatsapp.getText().toString());
+                    socialMArray.remove(strWhatsApp);
                 }
                 Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
+        String strSnapChat = getResStringLanguage(R.string.str_snapchat, "en");
         cbSnapChat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    socialMArray.add(cbSnapChat.getText().toString());
+                 //   socialMArray.add(cbSnapChat.getText().toString());
+                    socialMArray.add(strSnapChat);
                 }else {
-                    socialMArray.remove(cbSnapChat.getText().toString());
+                  //  socialMArray.remove(cbSnapChat.getText().toString());
+                    socialMArray.remove(strSnapChat);
                 }
                 Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
+        String strLinkedIn = getResStringLanguage(R.string.str_linkedin, "en");
         cbLinkedIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    socialMArray.add(cbLinkedIn.getText().toString());
+                  //  socialMArray.add(cbLinkedIn.getText().toString());
+                    socialMArray.add(strLinkedIn);
                 }else {
-                    socialMArray.remove(cbLinkedIn.getText().toString());
+                   // socialMArray.remove(cbLinkedIn.getText().toString());
+                    socialMArray.remove(strLinkedIn);
                 }
                 Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
+        String strOtherSocial = getResStringLanguage(R.string.str_other, "en");
         cbOtherS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    socialMArray.add(cbOtherS.getText().toString());
+                   // socialMArray.add(cbOtherS.getText().toString());
+                    socialMArray.add(strOtherSocial);
                 }else {
-                    socialMArray.remove(cbOtherS.getText().toString());
+                 //   socialMArray.remove(cbOtherS.getText().toString());
+                    socialMArray.remove(strOtherSocial);
                 }
                 Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
 //shopping
+        String strAmazon = getResStringLanguage(R.string.str_amazon, "en");
         cbAmazonS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    shoppingArray.add(cbAmazonS.getText().toString());
+                    //shoppingArray.add(cbAmazonS.getText().toString());
+                    shoppingArray.add(strAmazon);
                 }else {
-                    shoppingArray.remove(cbAmazonS.getText().toString());
+                    //shoppingArray.remove(cbAmazonS.getText().toString());
+                    shoppingArray.remove(strAmazon);
                 }
                 Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
+        String strFlifkart = getResStringLanguage(R.string.str_flipkart, "en");
         cbFlifkartS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    shoppingArray.add(cbFlifkartS.getText().toString());
+                   // shoppingArray.add(cbFlifkartS.getText().toString());
+                    shoppingArray.add(strFlifkart);
                 }else {
-                    shoppingArray.remove(cbFlifkartS.getText().toString());
+                 //   shoppingArray.remove(cbFlifkartS.getText().toString());
+                    shoppingArray.remove(strFlifkart);
                 }
                 Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
+        String strNayka = getResStringLanguage(R.string.str_nykka, "en");
         cbNaykkaS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    shoppingArray.add(cbNaykkaS.getText().toString());
+              //      shoppingArray.add(cbNaykkaS.getText().toString());
+                    shoppingArray.add(strNayka);
                 }else {
-                    shoppingArray.remove(cbNaykkaS.getText().toString());
+                   // shoppingArray.remove(cbNaykkaS.getText().toString());
+                    shoppingArray.remove(strNayka);
                 }
                 Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
+        String strTataCliq = getResStringLanguage(R.string.str_tata_cliq, "en");
         cbTataCliqS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    shoppingArray.add(cbTataCliqS.getText().toString());
+               //     shoppingArray.add(cbTataCliqS.getText().toString());
+                    shoppingArray.add(strTataCliq);
                 }else {
-                    shoppingArray.remove(cbTataCliqS.getText().toString());
+                //    shoppingArray.remove(cbTataCliqS.getText().toString());
+                    shoppingArray.remove(strTataCliq);
                 }
                 Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
+        String strSnapdeal = getResStringLanguage(R.string.str_snapdeal, "en");
         cbSnapS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    shoppingArray.add(cbSnapS.getText().toString());
+                //    shoppingArray.add(cbSnapS.getText().toString());
+                    shoppingArray.add(strSnapdeal);
                 }else {
-                    shoppingArray.remove(cbSnapS.getText().toString());
+                  //  shoppingArray.remove(cbSnapS.getText().toString());
+                    shoppingArray.remove(strSnapdeal);
                 }
                 Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
+        String strOtherShop = getResStringLanguage(R.string.str_other, "en");
         cbOtherShopping.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    shoppingArray.add(cbOtherShopping.getText().toString());
+                //    shoppingArray.add(cbOtherShopping.getText().toString());
+                    shoppingArray.add(strOtherShop);
                 }else {
-                    shoppingArray.remove(cbOtherShopping.getText().toString());
+                  //  shoppingArray.remove(cbOtherShopping.getText().toString());
+                    shoppingArray.remove(strOtherShop);
                 }
                 Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
@@ -345,7 +389,7 @@ public class SurveyFormFourFragment extends Fragment {
         }
     }*/
 
-    /*public String getResStringLanguage(int id, String lang){
+    public String getResStringLanguage(int id, String lang){
         //Get default locale to back it
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
@@ -354,7 +398,7 @@ public class SurveyFormFourFragment extends Fragment {
         Configuration confAr = getResources().getConfiguration();
         confAr.locale = new Locale(lang);
         DisplayMetrics metrics = new DisplayMetrics();
-        Resources resources = new Resources(getAssets(), metrics, confAr);
+        Resources resources = new Resources(getResources().getAssets(), metrics, confAr);
         //Get string which you want
         String string = resources.getString(id);
         //Restore default locale
@@ -364,5 +408,4 @@ public class SurveyFormFourFragment extends Fragment {
         return string;
     }
 
-    String str = getResStringLanguage(R.string.any_string, "en");*/
 }

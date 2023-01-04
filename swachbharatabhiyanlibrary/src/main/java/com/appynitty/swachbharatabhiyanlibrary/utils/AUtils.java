@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -1390,8 +1389,6 @@ public class AUtils extends CommonUtils {
 
         return ageInteger;
     }
-
-
 
    /* public void putBooleanInPreferences(boolean isChecked,String key){
         SharedPreferences sharedPreferences = this.getPreferences(Activity.MODE_PRIVATE);

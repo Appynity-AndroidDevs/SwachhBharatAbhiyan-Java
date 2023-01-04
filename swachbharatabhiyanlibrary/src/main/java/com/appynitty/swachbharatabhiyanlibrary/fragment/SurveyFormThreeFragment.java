@@ -1,10 +1,13 @@
 package com.appynitty.swachbharatabhiyanlibrary.fragment;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +18,10 @@ import android.widget.TextView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 
+import java.util.Locale;
+
 public class SurveyFormThreeFragment extends Fragment {
+    private static final String TAG = "SurveyFormThreeFragment";
     private Context context;
     private View view;
     private ImageView imgMinusAdult,imgPlusAdult;
@@ -149,10 +155,11 @@ public class SurveyFormThreeFragment extends Fragment {
                     i = i - 1;
                     adult = String.valueOf(i);
                     txtNumAdult.setText(adult);
-
+                    Log.i("Social", "adult minus: "+adult);
                     r = i + j + k;
                     totalMemberMinus = String.valueOf(r);
                     txtNumTotalMember.setText( totalMemberMinus.replace("-","").trim());
+                    Log.i("Social", "total Member Minus: "+totalMemberMinus.replace("-","").trim());
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -166,10 +173,11 @@ public class SurveyFormThreeFragment extends Fragment {
                 i = i + 1;
                 adult = String.valueOf(i);
                 txtNumAdult.setText(adult);
-
+                Log.i("Social", "adult add: "+adult);
                 r = i + j + k;
                 totalMemberPlus = String.valueOf(r);
                 txtNumTotalMember.setText( totalMemberPlus);
+                Log.i("Social", "total Member Plus: "+totalMemberPlus);
             }
         });
    //children
@@ -182,10 +190,12 @@ public class SurveyFormThreeFragment extends Fragment {
                     j = j - 1;
                     children = String.valueOf(j);
                     txtNumChild.setText(children);
+                    Log.i("Social", "children minus: "+children);
 
                     r = i + j + k;
                     totalMemberMinus = String.valueOf(r);
                     txtNumTotalMember.setText( totalMemberMinus.replace("-","").trim());
+                    Log.i("Social", "total Member Minus: "+totalMemberMinus.replace("-","").trim());
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -199,10 +209,12 @@ public class SurveyFormThreeFragment extends Fragment {
                 j = j + 1;
                 children = String.valueOf(j);
                 txtNumChild.setText(children);
+                Log.i("Social", "children add: "+children);
 
                 r = i + j + k;
                 totalMemberPlus = String.valueOf(r);
                 txtNumTotalMember.setText( totalMemberPlus);
+                Log.i("Social", "total Member Plus: "+totalMemberPlus);
             }
         });
     //Senior Citizen
@@ -215,10 +227,12 @@ public class SurveyFormThreeFragment extends Fragment {
                     k = k - 1;
                     SCitizen = String.valueOf(k);
                     txtNumSCitizen.setText(SCitizen);
+                    Log.i("Social", "minus SCitizen: "+SCitizen);
 
                     r = i + j + k;
                     totalMemberMinus = String.valueOf(r);
                     txtNumTotalMember.setText( totalMemberMinus.replace("-","").trim());
+                    Log.i("Social", "total Member Minus: "+totalMemberMinus.replace("-","").trim());
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -232,10 +246,12 @@ public class SurveyFormThreeFragment extends Fragment {
                 k = k + 1;
                 SCitizen = String.valueOf(k);
                 txtNumSCitizen.setText(SCitizen);
+                Log.i("Social", "SCitizen: "+SCitizen);
 
                 r = i + j + k;
                 totalMemberPlus = String.valueOf(r);
                 txtNumTotalMember.setText( totalMemberPlus);
+                Log.i("Social", "totalMemberPlus: "+totalMemberPlus);
             }
         });
 
@@ -250,9 +266,11 @@ public class SurveyFormThreeFragment extends Fragment {
                     twoWheel = String.valueOf(l);
                     txtNumTwoWheel.setText(twoWheel);
                     txtNumTotalVehicle.setText(twoWheel);
+                    Log.i("Social", "minus twoWheel: "+twoWheel);
                     n = l + m;
                     totalVehicleMinus = String.valueOf(n);
                     txtNumTotalVehicle.setText( totalVehicleMinus.replace("-","").trim());
+                    Log.i("Social", "totalVehicleMinus: "+totalVehicleMinus.replace("-","").trim());
 
                 } else {
                     Log.d("src", "Value can't be less than 0");
@@ -267,10 +285,12 @@ public class SurveyFormThreeFragment extends Fragment {
                 l = l + 1;
                 twoWheel = String.valueOf(l);
                 txtNumTwoWheel.setText(twoWheel);
+                Log.i("Social", "twoWheel: "+twoWheel);
 
                 n = m + l;
                 totalVehiclePlus = String.valueOf(n);
                 txtNumTotalVehicle.setText( totalVehiclePlus);
+                Log.i("Social", "Add totalVehiclePlus: "+totalVehiclePlus);
             }
         });
 
@@ -284,11 +304,13 @@ public class SurveyFormThreeFragment extends Fragment {
                     m = m - 1;
                     fourWheel = String.valueOf(m);
                     txtNumFourWheel.setText(fourWheel);
+                    Log.i("Social", "minus fourWheel: "+fourWheel);
                     txtNumTotalVehicle.setText(fourWheel);
 
                     n = m + l;
                     totalVehicleMinus = String.valueOf(n);
                     txtNumTotalVehicle.setText( totalVehicleMinus.replace("-","").trim());
+                    Log.i("Social", "totalVehicleMinus: "+totalVehicleMinus.replace("-","").trim());
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -302,10 +324,12 @@ public class SurveyFormThreeFragment extends Fragment {
                 m = m + 1;
                 fourWheel = String.valueOf(m);
                 txtNumFourWheel.setText(fourWheel);
+                Log.i("Social", "fourWheel: "+fourWheel);
 
                 n = m + l;
                 totalVehiclePlus = String.valueOf(n);
                 txtNumTotalVehicle.setText( totalVehiclePlus);
+                Log.i("Social", "total Vehicle Plus: "+totalVehiclePlus);
             }
         });
 
@@ -319,6 +343,9 @@ public class SurveyFormThreeFragment extends Fragment {
             for (int i = 0; i < chkArrayBusinessType.length; i++) {
                 final CheckBox current = chkArrayBusinessType[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxBusinessType = view.findViewById(current.getId());
+                    String cbValueBusinessType = checkBoxBusinessType.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueBusinessType);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -335,6 +362,9 @@ public class SurveyFormThreeFragment extends Fragment {
             for (int i = 0; i < chkArrayAvailable.length; i++) {
                 final CheckBox current = chkArrayAvailable[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxAvailable = view.findViewById(current.getId());
+                    String cbValueAvailable = checkBoxAvailable.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueAvailable);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -351,6 +381,9 @@ public class SurveyFormThreeFragment extends Fragment {
             for (int i = 0; i < chkArrayOtherCity.length; i++) {
                 final CheckBox current = chkArrayOtherCity[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxOtherCity = view.findViewById(current.getId());
+                    String cbValueOtherCity = checkBoxOtherCity.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueOtherCity);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -358,4 +391,23 @@ public class SurveyFormThreeFragment extends Fragment {
             }
         }
     };
+
+    public String getResStringLanguage(int id, String lang){
+        //Get default locale to back it
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale savedLocale = conf.locale;
+        //Retrieve resources from desired locale
+        Configuration confAr = getResources().getConfiguration();
+        confAr.locale = new Locale(lang);
+        DisplayMetrics metrics = new DisplayMetrics();
+        Resources resources = new Resources(getResources().getAssets(), metrics, confAr);
+        //Get string which you want
+        String string = resources.getString(id);
+        //Restore default locale
+        conf.locale = savedLocale;
+        res.updateConfiguration(conf, null);
+        //return the string that you want
+        return string;
+    }
 }

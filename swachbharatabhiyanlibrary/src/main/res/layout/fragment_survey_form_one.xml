@@ -150,16 +150,31 @@
                     android:id="@+id/rl_birth_heading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/txt_age"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/str_heading_age"
-                        android:padding="5dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:layout_alignParentStart="true"
-                        android:fontFamily="@font/font_bold"/>
+                        android:orientation="horizontal"
+                        android:layout_alignParentStart="true">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/str_heading_age"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/font_bold"/>
+                        <TextView
+                            android:id="@+id/txt_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:gravity="center_vertical"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/font_medium"/>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -1,10 +1,18 @@
 package com.appynitty.swachbharatabhiyanlibrary.fragment;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +20,10 @@ import android.widget.CheckBox;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 
+import java.util.Locale;
+
 public class SurveyFormFiveFragment extends Fragment {
+    private static final String TAG = "SurveyFormFiveFragment";
     private Context context;
     private View view;
     private CheckBox cbLInsurance,cbMInsurance,cbBothInsurance;
@@ -110,6 +121,11 @@ public class SurveyFormFiveFragment extends Fragment {
             for (int i = 0; i < chkArrayInsurance.length; i++) {
                 final CheckBox current = chkArrayInsurance[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxInsurance = view.findViewById(current.getId());
+                    String strInsurance = getStringByLocal(context,current.getId(),"en");
+                    String cbValueInsurance = checkBoxInsurance.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueInsurance);
+                    Log.i("Social", "English: "+strInsurance);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -126,6 +142,9 @@ public class SurveyFormFiveFragment extends Fragment {
             for (int i = 0; i < chkArrayIType.length; i++) {
                 final CheckBox current = chkArrayIType[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxIType = view.findViewById(current.getId());
+                    String cbValueIType = checkBoxIType.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueIType);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -142,6 +161,9 @@ public class SurveyFormFiveFragment extends Fragment {
             for (int i = 0; i < chkArrayAyushman.length; i++) {
                 final CheckBox current = chkArrayAyushman[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxAyushman = view.findViewById(current.getId());
+                    String cbValueAyushman = checkBoxAyushman.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueAyushman);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -158,6 +180,9 @@ public class SurveyFormFiveFragment extends Fragment {
             for (int i = 0; i < chkArrayBooster.length; i++) {
                 final CheckBox current = chkArrayBooster[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxBooster = view.findViewById(current.getId());
+                    String cbValueBooster = checkBoxBooster.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueBooster);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -174,6 +199,9 @@ public class SurveyFormFiveFragment extends Fragment {
             for (int i = 0; i < chkArrayDivang.length; i++) {
                 final CheckBox current = chkArrayDivang[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxDivang = view.findViewById(current.getId());
+                    String cbValueDivang = checkBoxDivang.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueDivang);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -181,4 +209,30 @@ public class SurveyFormFiveFragment extends Fragment {
             }
         }
     };
+
+    public String getResStringLanguage(int id, String lang){
+        //Get default locale to back it
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale savedLocale = conf.locale;
+        //Retrieve resources from desired locale
+        Configuration confAr = getResources().getConfiguration();
+        confAr.locale = new Locale(lang);
+        DisplayMetrics metrics = new DisplayMetrics();
+        Resources resources = new Resources(getResources().getAssets(), metrics, confAr);
+        //Get string which you want
+        String string = resources.getString(id);
+        //Restore default locale
+        conf.locale = savedLocale;
+        res.updateConfiguration(conf, null);
+        //return the string that you want
+        return string;
+    }
+
+
+    public static String getStringByLocal(Context context, int id, String lang) {
+        Configuration configuration = new Configuration(context.getResources().getConfiguration());
+        configuration.setLocale(new Locale(lang));
+        return context.createConfigurationContext(configuration).getResources().getString(id);
+    }
 }

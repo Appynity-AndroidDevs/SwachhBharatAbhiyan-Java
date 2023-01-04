@@ -5,10 +5,13 @@ import static java.util.Calendar.*;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +33,7 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 
 public class SurveyFormOneFragment extends Fragment {
@@ -85,13 +89,13 @@ public class SurveyFormOneFragment extends Fragment {
 
         chkArrayGender = new CheckBox[3];
         chkArrayGender[0] = cbMale;
-        chkArrayGender[0].setOnClickListener(mListener);
+        chkArrayGender[0].setOnClickListener(mListenerGender);
 
         chkArrayGender[1] = cbFemale;
-        chkArrayGender[1].setOnClickListener(mListener);
+        chkArrayGender[1].setOnClickListener(mListenerGender);
 
         chkArrayGender[2] = cbTransG;
-        chkArrayGender[2].setOnClickListener(mListener);
+        chkArrayGender[2].setOnClickListener(mListenerGender);
 
         cbBloodPosA = view.findViewById(R.id.cb_positive_a);
         cbBloodPosO = view.findViewById(R.id.cb_positive_o);
@@ -220,11 +224,11 @@ public class SurveyFormOneFragment extends Fragment {
         int age = currentYear - Integer.parseInt(birthYear);
         Prefs.putString(AUtils.PREFS.SUR_AGE, String.valueOf(age));
         Log.d("TAG", "My Age is: "+age);
-        txtAge.setText("Age: " +age);
-        txtAge.setText("Age: " +Prefs.getString(AUtils.PREFS.SUR_AGE,"0"));
+        //txtAge.setText(age);
+        txtAge.setText(Prefs.getString(AUtils.PREFS.SUR_AGE,""));
     }
 
-    private View.OnClickListener mListener = new View.OnClickListener() {
+    private View.OnClickListener mListenerGender = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -232,6 +236,9 @@ public class SurveyFormOneFragment extends Fragment {
             for (int i = 0; i < chkArrayGender.length; i++) {
                 final CheckBox current = chkArrayGender[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxGender = view.findViewById(current.getId());
+                    String cbValueGender = checkBoxGender.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueGender);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -249,15 +256,35 @@ public class SurveyFormOneFragment extends Fragment {
             for (int i = 0; i < chkArrayBloodGroup.length; i++) {
                 final CheckBox current = chkArrayBloodGroup[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxBloodGroup = view.findViewById(current.getId());
+                    String cbValueBloodGroup = checkBoxBloodGroup.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueBloodGroup);
                     current.setChecked(true);
-                    if (checkedId == 0){
-                        Log.d(TAG, "");
-                    }
                 } else {
                     current.setChecked(false);
                 }
             }
         }
     };
+
+
+    public String getResStringLanguage(int id, String lang){
+        //Get default locale to back it
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale savedLocale = conf.locale;
+        //Retrieve resources from desired locale
+        Configuration confAr = getResources().getConfiguration();
+        confAr.locale = new Locale(lang);
+        DisplayMetrics metrics = new DisplayMetrics();
+        Resources resources = new Resources(getResources().getAssets(), metrics, confAr);
+        //Get string which you want
+        String string = resources.getString(id);
+        //Restore default locale
+        conf.locale = savedLocale;
+        res.updateConfiguration(conf, null);
+        //return the string that you want
+        return string;
+    }
 
 }

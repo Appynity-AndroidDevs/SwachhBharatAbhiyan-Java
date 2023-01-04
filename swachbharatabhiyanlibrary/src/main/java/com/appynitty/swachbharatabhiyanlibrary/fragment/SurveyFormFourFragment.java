@@ -30,6 +30,7 @@ import java.util.Locale;
 
 public class SurveyFormFourFragment extends Fragment {
 
+    private static final String TAG = "SurveyFormFourFragment";
     private Context context;
     private View view;
     private ImageView imgMinusVote,imgPlusVote;
@@ -106,6 +107,7 @@ public class SurveyFormFourFragment extends Fragment {
                     o = o - 1;
                     vote = String.valueOf(o);
                     txtNumVote.setText(vote);
+                    Log.i("Social", "vote minus: "+vote);
                 } else {
                     Log.d("src", "Value can't be less than 0");
                 }
@@ -119,6 +121,7 @@ public class SurveyFormFourFragment extends Fragment {
                 o = o + 1;
                 vote = String.valueOf(o);
                 txtNumVote.setText(vote);
+                Log.i("Social", "vote add: "+vote);
             }
         });
 // Social Media
@@ -306,69 +309,87 @@ public class SurveyFormFourFragment extends Fragment {
             }
         });
 //Payment Mode
+        String strBhimP = getResStringLanguage(R.string.str_bhim, "en");
         cbBhimP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    paymentArray.add(cbBhimP.getText().toString());
+                //    paymentArray.add(cbBhimP.getText().toString());
+                    paymentArray.add(strBhimP);
                 }else {
-                    paymentArray.remove(cbBhimP.getText().toString());
+                  //  paymentArray.remove(cbBhimP.getText().toString());
+                    paymentArray.remove(strBhimP);
                 }
                 Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
 
+        String strPaytmP = getResStringLanguage(R.string.str_paytm, "en");
         cbPaytmP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    paymentArray.add(cbPaytmP.getText().toString());
+                   // paymentArray.add(cbPaytmP.getText().toString());
+                    paymentArray.add(strPaytmP);
                 }else {
-                    paymentArray.remove(cbPaytmP.getText().toString());
+                  //  paymentArray.remove(cbPaytmP.getText().toString());
+                    paymentArray.remove(strPaytmP);
                 }
                 Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
+        String strPhonePeP = getResStringLanguage(R.string.str_phonepe, "en");
         cbPhonPaP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    paymentArray.add(cbPhonPaP.getText().toString());
+                  //  paymentArray.add(cbPhonPaP.getText().toString());
+                    paymentArray.add(strPhonePeP);
                 }else {
-                    paymentArray.remove(cbPhonPaP.getText().toString());
+                  //  paymentArray.remove(cbPhonPaP.getText().toString());
+                    paymentArray.remove(strPhonePeP);
                 }
                 Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
+        String strGooglePeP = getResStringLanguage(R.string.str_google_pay, "en");
         cbGooglePeP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    paymentArray.add(cbGooglePeP.getText().toString());
+                   // paymentArray.add(cbGooglePeP.getText().toString());
+                    paymentArray.add(strGooglePeP);
                 }else {
-                    paymentArray.remove(cbGooglePeP.getText().toString());
+                  //  paymentArray.remove(cbGooglePeP.getText().toString());
+                    paymentArray.remove(strGooglePeP);
                 }
                 Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
+        String strPersonalBP = getResStringLanguage(R.string.str_personal_banking, "en");
         cbPersonalBP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    paymentArray.add(cbPersonalBP.getText().toString());
+                   // paymentArray.add(cbPersonalBP.getText().toString());
+                    paymentArray.add(strPersonalBP);
                 }else {
-                    paymentArray.remove(cbPersonalBP.getText().toString());
+                  //  paymentArray.remove(cbPersonalBP.getText().toString());
+                    paymentArray.remove(strPersonalBP);
                 }
                 Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
+        String strOtherP = getResStringLanguage(R.string.str_other, "en");
         cbOtherP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    paymentArray.add(cbOtherP.getText().toString());
+                   // paymentArray.add(cbOtherP.getText().toString());
+                    paymentArray.add(strOtherP);
                 }else {
-                    paymentArray.remove(cbOtherP.getText().toString());
+                   // paymentArray.remove(cbOtherP.getText().toString());
+                    paymentArray.remove(strOtherP);
                 }
                 Log.i("Social", "onCheckedChanged: "+paymentArray);
             }

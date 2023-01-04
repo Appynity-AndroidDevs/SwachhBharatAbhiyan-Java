@@ -2,10 +2,13 @@ package com.appynitty.swachbharatabhiyanlibrary.fragment;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +26,10 @@ import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthYearPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.util.Locale;
+
 public class SurveyFormTwoFragment extends Fragment {
+    private static final String TAG = "SurveyFormTwoFragment";
     private Context context;
     private View view;
     private LinearLayout liDayMarriage,liMonthMarriage,liYearMarriage;
@@ -191,6 +197,9 @@ public class SurveyFormTwoFragment extends Fragment {
             for (int i = 0; i < chkArrayQualification.length; i++) {
                 final CheckBox current = chkArrayQualification[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxQualification = view.findViewById(current.getId());
+                    String cbValueQualification = checkBoxQualification.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueQualification);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -208,6 +217,9 @@ public class SurveyFormTwoFragment extends Fragment {
             for (int i = 0; i < chkArrayOccupation.length; i++) {
                 final CheckBox current = chkArrayOccupation[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxOccupation = view.findViewById(current.getId());
+                    String cbValueOccupation = checkBoxOccupation.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueOccupation);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -226,6 +238,9 @@ public class SurveyFormTwoFragment extends Fragment {
             for (int i = 0; i < chkArrayMarital.length; i++) {
                 final CheckBox current = chkArrayMarital[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxMarital = view.findViewById(current.getId());
+                    String cbValueMarital = checkBoxMarital.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueMarital);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -243,6 +258,9 @@ public class SurveyFormTwoFragment extends Fragment {
             for (int i = 0; i < chkArrayLiving.length; i++) {
                 final CheckBox current = chkArrayLiving[i];
                 if (current.getId() == checkedId) {
+                    CheckBox checkBoxLiving = view.findViewById(current.getId());
+                    String cbValueLiving = checkBoxLiving.getText().toString();
+                    Log.i("Social", "onClick: "+cbValueLiving);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -251,4 +269,23 @@ public class SurveyFormTwoFragment extends Fragment {
             }
         }
     };
+
+    public String getResStringLanguage(int id, String lang){
+        //Get default locale to back it
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale savedLocale = conf.locale;
+        //Retrieve resources from desired locale
+        Configuration confAr = getResources().getConfiguration();
+        confAr.locale = new Locale(lang);
+        DisplayMetrics metrics = new DisplayMetrics();
+        Resources resources = new Resources(getResources().getAssets(), metrics, confAr);
+        //Get string which you want
+        String string = resources.getString(id);
+        //Restore default locale
+        conf.locale = savedLocale;
+        res.updateConfiguration(conf, null);
+        //return the string that you want
+        return string;
+    }
 }

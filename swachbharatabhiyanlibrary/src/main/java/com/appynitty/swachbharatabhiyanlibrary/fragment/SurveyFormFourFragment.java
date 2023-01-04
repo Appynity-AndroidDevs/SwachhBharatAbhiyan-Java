@@ -92,7 +92,6 @@ public class SurveyFormFourFragment extends Fragment {
         cbPersonalBP = view.findViewById(R.id.cb_banking_online_payment);
         cbOtherP = view.findViewById(R.id.cb_other_online_payment);
 
-
         setOnClick();
     }
 
@@ -132,11 +131,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                   //  socialMArray.add(cbFbS.getText().toString());
                     socialMArray.add(strFaceBook);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }else {
                   //  socialMArray.remove(cbFbS.getText().toString());
                     socialMArray.remove(strFaceBook);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
         String strTwitter = getResStringLanguage(R.string.str_twitter, "en");
@@ -146,11 +148,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                  //   socialMArray.add(cbTwitSocial.getText().toString());
                     socialMArray.add(strTwitter);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }else {
                  //   socialMArray.remove(cbTwitSocial.getText().toString());
                     socialMArray.remove(strTwitter);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
         String strInstagram = getResStringLanguage(R.string.str_instagram, "en");
@@ -160,11 +165,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                  //   socialMArray.add(cbInstagram.getText().toString());
                     socialMArray.add(strInstagram);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }else {
                 //    socialMArray.remove(cbInstagram.getText().toString());
                     socialMArray.remove(strInstagram);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
         String strWhatsApp = getResStringLanguage(R.string.str_whatsapp, "en");
@@ -174,11 +182,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                     //socialMArray.add(cbWhatsapp.getText().toString());
                     socialMArray.add(strWhatsApp);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }else {
                  //   socialMArray.remove(cbWhatsapp.getText().toString());
                     socialMArray.remove(strWhatsApp);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
         String strSnapChat = getResStringLanguage(R.string.str_snapchat, "en");
@@ -188,11 +199,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                  //   socialMArray.add(cbSnapChat.getText().toString());
                     socialMArray.add(strSnapChat);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }else {
                   //  socialMArray.remove(cbSnapChat.getText().toString());
                     socialMArray.remove(strSnapChat);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
         String strLinkedIn = getResStringLanguage(R.string.str_linkedin, "en");
@@ -202,11 +216,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                   //  socialMArray.add(cbLinkedIn.getText().toString());
                     socialMArray.add(strLinkedIn);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }else {
                    // socialMArray.remove(cbLinkedIn.getText().toString());
                     socialMArray.remove(strLinkedIn);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
         String strOtherSocial = getResStringLanguage(R.string.str_other, "en");
@@ -216,11 +233,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                    // socialMArray.add(cbOtherS.getText().toString());
                     socialMArray.add(strOtherSocial);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }else {
                  //   socialMArray.remove(cbOtherS.getText().toString());
                     socialMArray.remove(strOtherSocial);
+                    String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "socialMode: "+socialMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+socialMArray);
             }
         });
 //shopping
@@ -231,11 +251,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                     //shoppingArray.add(cbAmazonS.getText().toString());
                     shoppingArray.add(strAmazon);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }else {
                     //shoppingArray.remove(cbAmazonS.getText().toString());
                     shoppingArray.remove(strAmazon);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
         String strFlifkart = getResStringLanguage(R.string.str_flipkart, "en");
@@ -245,11 +268,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                    // shoppingArray.add(cbFlifkartS.getText().toString());
                     shoppingArray.add(strFlifkart);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }else {
                  //   shoppingArray.remove(cbFlifkartS.getText().toString());
                     shoppingArray.remove(strFlifkart);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
         String strNayka = getResStringLanguage(R.string.str_nykka, "en");
@@ -259,11 +285,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
               //      shoppingArray.add(cbNaykkaS.getText().toString());
                     shoppingArray.add(strNayka);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }else {
                    // shoppingArray.remove(cbNaykkaS.getText().toString());
                     shoppingArray.remove(strNayka);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
         String strTataCliq = getResStringLanguage(R.string.str_tata_cliq, "en");
@@ -273,11 +302,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                //     shoppingArray.add(cbTataCliqS.getText().toString());
                     shoppingArray.add(strTataCliq);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }else {
                 //    shoppingArray.remove(cbTataCliqS.getText().toString());
                     shoppingArray.remove(strTataCliq);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
         String strSnapdeal = getResStringLanguage(R.string.str_snapdeal, "en");
@@ -287,11 +319,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                 //    shoppingArray.add(cbSnapS.getText().toString());
                     shoppingArray.add(strSnapdeal);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }else {
                   //  shoppingArray.remove(cbSnapS.getText().toString());
                     shoppingArray.remove(strSnapdeal);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
         String strOtherShop = getResStringLanguage(R.string.str_other, "en");
@@ -301,11 +336,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                 //    shoppingArray.add(cbOtherShopping.getText().toString());
                     shoppingArray.add(strOtherShop);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }else {
                   //  shoppingArray.remove(cbOtherShopping.getText().toString());
                     shoppingArray.remove(strOtherShop);
+                    String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+shoppingArray);
             }
         });
 //Payment Mode
@@ -316,11 +354,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                 //    paymentArray.add(cbBhimP.getText().toString());
                     paymentArray.add(strBhimP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }else {
                   //  paymentArray.remove(cbBhimP.getText().toString());
                     paymentArray.remove(strBhimP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
 
@@ -331,11 +372,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                    // paymentArray.add(cbPaytmP.getText().toString());
                     paymentArray.add(strPaytmP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }else {
                   //  paymentArray.remove(cbPaytmP.getText().toString());
                     paymentArray.remove(strPaytmP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
         String strPhonePeP = getResStringLanguage(R.string.str_phonepe, "en");
@@ -345,11 +389,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                   //  paymentArray.add(cbPhonPaP.getText().toString());
                     paymentArray.add(strPhonePeP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }else {
                   //  paymentArray.remove(cbPhonPaP.getText().toString());
                     paymentArray.remove(strPhonePeP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
         String strGooglePeP = getResStringLanguage(R.string.str_google_pay, "en");
@@ -359,11 +406,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                    // paymentArray.add(cbGooglePeP.getText().toString());
                     paymentArray.add(strGooglePeP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }else {
                   //  paymentArray.remove(cbGooglePeP.getText().toString());
                     paymentArray.remove(strGooglePeP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
         String strPersonalBP = getResStringLanguage(R.string.str_personal_banking, "en");
@@ -373,11 +423,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                    // paymentArray.add(cbPersonalBP.getText().toString());
                     paymentArray.add(strPersonalBP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }else {
                   //  paymentArray.remove(cbPersonalBP.getText().toString());
                     paymentArray.remove(strPersonalBP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
         String strOtherP = getResStringLanguage(R.string.str_other, "en");
@@ -387,11 +440,14 @@ public class SurveyFormFourFragment extends Fragment {
                 if (b){
                    // paymentArray.add(cbOtherP.getText().toString());
                     paymentArray.add(strOtherP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }else {
                    // paymentArray.remove(cbOtherP.getText().toString());
                     paymentArray.remove(strOtherP);
+                    String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
+                    Log.i("Social", "paymentMode: "+paymentMode);
                 }
-                Log.i("Social", "onCheckedChanged: "+paymentArray);
             }
         });
 

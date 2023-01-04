@@ -132,7 +132,15 @@ public class SurveyFormOneFragment extends Fragment {
         chkArrayBloodGroup[7] = cbBloodNegAB;
         chkArrayBloodGroup[7].setOnClickListener(mListenerBloodGroup);
 
+        setData();
         setOnClick();
+    }
+
+    private void setData() {
+    Prefs.putString(AUtils.PREFS.SUR_NAME,edtName.getText().toString().trim());
+    Prefs.putString(AUtils.PREFS.SUR_MOBILE, String.valueOf(edtMobile.getText().toString().trim().length() <10));
+    Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE, birthDayDate);
+    Prefs.putString(AUtils.PREFS.SUR_AGE, txtAge.getText().toString());
     }
 
 

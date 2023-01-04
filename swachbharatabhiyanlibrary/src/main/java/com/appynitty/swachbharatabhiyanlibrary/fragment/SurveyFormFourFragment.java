@@ -453,19 +453,6 @@ public class SurveyFormFourFragment extends Fragment {
 
     }
 
-
-   /*if (checkbox.isChecked()) {
-        assuranceArray.add(new Assurance("email",checkBox.getText().toString()));
-    } else {
-        for (Assurance assurance : assuranceArray) {
-            if (assurance.getEmail().equals(checkBox.getText().toString())  {
-                assuranceArray.remove(assurance);
-                //You can exit the loop as you find a reference
-                break;
-            }
-        }
-    }*/
-
     public String getResStringLanguage(int id, String lang){
         //Get default locale to back it
         Resources res = getResources();

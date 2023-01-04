@@ -577,6 +577,9 @@ public class EmpSurveyQrActivity extends AppCompatActivity {
     public void handleResult(BarcodeResult result) {
         Log.e(TAG, "handleResult: " + result.getText());
         mHouse_id = result.getText();
+        Prefs.putString(AUtils.PREFS.SUR_REFERENCE_ID,mHouse_id);
+        Log.i("Social", "barcode reader: "+mHouse_id);
+
         scanQrViewOnClick();
     }
 

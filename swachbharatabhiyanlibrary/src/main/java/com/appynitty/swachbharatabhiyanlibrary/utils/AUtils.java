@@ -295,10 +295,91 @@ public class AUtils extends CommonUtils {
         /****
          * survey data store
          * */
+        String SUR_REFERENCE_ID = "ReferanceId";
+        String SUR_NAME = "name";
+        String SUR_MOBILE = "mobileNumber";
+        String SUR_HOUSE_LAT = "houseLat";
+        String SUR_HOUSE_LONG = "houseLong";
+        String SUR_GENDER = "gender";
+        String SUR_BLOOD_GROUP = "bloodGroup";
+        String SUR_QUALIFICATION = "qualification";
+        String SUR_OCCUPATION = "occupation";
+        String SUR_MARITAL_STATUS = "maritalStatus";
         String SUR_AGE = "age";
         String SUR_BIRTHDAY_DATE = "dateOfBirth";
         String SUR_MARRIAGE_DATE = "marriageDate";
+        String SUR_LIVING_STATUS = "livingStatus";
+        String SUR_TOTAL_ADULT = "totalAdults";
+        String SUR_TOTAL_CHILDREN = "totalChildren";
+        String SUR_TOTAL_CITIZEN = "totalSrCitizen";
+        String SUR_TOTAL_MEMBER = "totalMember";
+        String SUR_WILLING_START = "willingStart";
+        String SUR_RESOURCE_AVAILABLE = "resourcesAvailable";
+        String SUR_MEMBER_JOB_OTHER_CITY = "memberJobOtherCity";
+        String SUR_NUM_OF_VEHICLE = "noOfVehicle";
+        String SUR_TWO_WHEELER_QTY = "twoWheelerQty";
+        String SUR_FOUR_WHEELER_QTY = "fourWheelerQty";
+        String SUR_NUM_OF_PEOPLE_VOTE = "noPeopleVote";
+        String SUR_SOCIAL_MEDIA = "socialMedia";
+        String SUR_ONLINE_SHOPPING = "onlineShopping";
+        String SUR_PAYMENT_MODE = "paymentModePrefer";
+        String SUR_ONLINE_PAY_APP = "onlinePayApp";
+        String SUR_INSURANCE = "insurance";
+        String SUR_UNDER_INSURANCE = "underInsurer";
+        String SUR_AYUSHMAN_BENE = "ayushmanBeneficiary";
+        String SUR_BOOSTER_SHOT = "boosterShot";
+        String SUR_MEMBER_OF_DIVYANG = "memberDivyang";
+        String SUR_CREATED_USER_ID = "createUserId";
+        String SUR_UPDATED_USER_ID = "updateUserId";
     }
+
+
+    /******
+     * SURVEY
+     *
+     * */
+    //memberDivyang
+    public static boolean isMemberOfDivang() {
+        return Prefs.getBoolean(PREFS.SUR_MEMBER_OF_DIVYANG, false);
+    }
+
+    public static void setMemberOfDivang(boolean memberDivyang) {
+        Prefs.putBoolean(PREFS.SUR_MEMBER_OF_DIVYANG, memberDivyang);
+    }
+//boosterShot
+    public static boolean isBoosterDose() {
+        return Prefs.getBoolean(PREFS.SUR_BOOSTER_SHOT, false);
+    }
+
+    public static void setBoosterDose(boolean boosterShot) {
+        Prefs.putBoolean(PREFS.SUR_BOOSTER_SHOT, boosterShot);
+    }
+//underInsurer
+    public static boolean isUnderInsurance() {
+        return Prefs.getBoolean(PREFS.SUR_UNDER_INSURANCE, false);
+    }
+
+    public static void setUnderInsurance(boolean underInsurer) {
+        Prefs.putBoolean(PREFS.SUR_UNDER_INSURANCE, underInsurer);
+    }
+    //memberJobOtherCity
+    public static boolean isMemberJobOtherCity() {
+        return Prefs.getBoolean(PREFS.SUR_MEMBER_JOB_OTHER_CITY, false);
+    }
+
+    public static void setMemberJobOtherCity(boolean memberJobOtherCity) {
+        Prefs.putBoolean(PREFS.SUR_MEMBER_JOB_OTHER_CITY, memberJobOtherCity);
+    }
+    //willingStart
+    public static boolean isWillingStart() {
+        return Prefs.getBoolean(PREFS.SUR_WILLING_START, false);
+    }
+
+    public static void setWillingStart(boolean willingStart) {
+        Prefs.putBoolean(PREFS.SUR_WILLING_START, willingStart);
+    }
+
+    /************************************************************/
 
     public interface USER_TYPE {
         String USER_TYPE_GHANTA_GADI = "0";
@@ -1314,36 +1395,6 @@ public class AUtils extends CommonUtils {
         return age;
     }
 
-    public static String getAge(int year, int month, int day) {
-
-        Calendar dob = Calendar.getInstance();
-
-        Calendar today = Calendar.getInstance();
-
-        dob.set(year, month, day);
-
-        int today_m = today.get(Calendar.MONTH);
-
-        int dob_m = dob.get(Calendar.MONTH);
-
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-
-        if (dob_m > today_m) {
-
-            age--;
-        } else if (dob_m == today_m) {
-
-            int day_today = today.get(Calendar.DAY_OF_MONTH);
-
-            int day_dob = dob.get(Calendar.DAY_OF_MONTH);
-            if (day_dob > day_today) {
-                age--;
-            }
-
-        }
-        return age + "";
-    }
-
 
 
     /*LocalDate birthdate = new LocalDate (1970, 1, 20);
@@ -1389,19 +1440,6 @@ public class AUtils extends CommonUtils {
 
         return ageInteger;
     }
-
-   /* public void putBooleanInPreferences(boolean isChecked,String key){
-        SharedPreferences sharedPreferences = this.getPreferences(Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(key, isChecked);
-        editor.commit();
-    }
-    public boolean getBooleanFromPreferences(String key){
-        SharedPreferences sharedPreferences = this.getPreferences(Activity.MODE_PRIVATE);
-        Boolean isChecked = sharedPreferences.getBoolean(key, false);
-        return isChecked;
-
-    }*/
 
 }
 

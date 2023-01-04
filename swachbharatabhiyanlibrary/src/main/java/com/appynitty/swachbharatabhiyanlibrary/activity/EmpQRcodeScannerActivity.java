@@ -350,8 +350,17 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             lastText = result.getText();
             scannerView.setStatusText(result.getText());
             beepManager.playBeepSoundAndVibrate();
-            openMapsActivityForResult();
-//            handleResult(result.toString());
+
+            if (AUtils.isInternetAvailable()) {
+                openMapsActivityForResult();
+            } else {
+
+                mLat = Prefs.getString(AUtils.LAT, null);
+                mLon = Prefs.getString(AUtils.LONG, null);
+                handleResult(result.toString());
+            }
+
+//
         }
 
         @Override

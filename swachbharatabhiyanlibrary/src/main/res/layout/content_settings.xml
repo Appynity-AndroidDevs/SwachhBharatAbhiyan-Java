@@ -24,6 +24,7 @@
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
+            android:visibility="visible"
             android:text="@string/show_bifurcation_type"
             android:gravity="center_vertical"
             android:textSize="@dimen/dim_17_sp"/>
@@ -32,6 +33,7 @@
             android:id="@+id/switch_bifurcation"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:visibility="visible"
             android:layout_height="match_parent"/>
 
     </LinearLayout>

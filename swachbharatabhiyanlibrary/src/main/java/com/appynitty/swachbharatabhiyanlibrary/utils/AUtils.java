@@ -102,6 +102,7 @@ public class AUtils extends CommonUtils {
 
     //NEW TESTING SERVER
     //  public static final String SERVER_URL = "http://114.143.244.133:6560/";
+   //   public static final String SERVER_URL = "http://124.153.94.110:5051/";
     public static final String SERVER_URL = "https://ictsbm.com:30443";
     //test
     // public static final String SERVER_URL = "http://desaiganj.ictsbm.com";

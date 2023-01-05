@@ -368,10 +368,12 @@ public class SurveyFormThreeFragment extends Fragment {
                     CheckBox checkBoxBusinessType = view.findViewById(current.getId());
                     String cbValueBusinessType = checkBoxBusinessType.getText().toString();
                     Log.i("Social", "onClick: "+cbValueBusinessType);
-                    Prefs.putString(AUtils.PREFS.SUR_WILLING_START,cbValueBusinessType);
+                   // Prefs.putString(AUtils.PREFS.SUR_WILLING_START,cbValueBusinessType);
+                    Prefs.putString(AUtils.PREFS.SUR_WILLING_START,String.valueOf(false));
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
+                    Prefs.putString(AUtils.PREFS.SUR_WILLING_START,String.valueOf(true));
                 }
             }
         }
@@ -408,10 +410,12 @@ public class SurveyFormThreeFragment extends Fragment {
                     CheckBox checkBoxOtherCity = view.findViewById(current.getId());
                     String cbValueOtherCity = checkBoxOtherCity.getText().toString();
                     Log.i("Social", "onClick: "+cbValueOtherCity);
-                    Prefs.putString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,cbValueOtherCity);
+                   // Prefs.putString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,cbValueOtherCity);
+                    Prefs.putString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,String.valueOf(false));
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
+                    Prefs.putString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,String.valueOf(true));
                 }
             }
         }

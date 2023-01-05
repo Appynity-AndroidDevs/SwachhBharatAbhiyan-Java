@@ -50,8 +50,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
     private SurveyDetailsRepo surveyDetailsRepo;
     private List<SurveyDetailsRequestPojo> requestPojo = new ArrayList<>();
-    private
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +173,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setData();
-               // startActivity(new Intent(context, SurveyCompletActivity.class));
+                startActivity(new Intent(context, SurveyCompletActivity.class));
             }
         });
 

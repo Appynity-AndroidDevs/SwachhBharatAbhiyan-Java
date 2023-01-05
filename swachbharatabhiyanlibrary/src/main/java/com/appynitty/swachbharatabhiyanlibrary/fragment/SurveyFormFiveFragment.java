@@ -146,10 +146,12 @@ public class SurveyFormFiveFragment extends Fragment {
                     CheckBox checkBoxIType = view.findViewById(current.getId());
                     String cbValueIType = checkBoxIType.getText().toString();
                     Log.i("Social", "onClick: "+cbValueIType);
-                    Prefs.putString(AUtils.PREFS.SUR_UNDER_INSURANCE,cbValueIType);
+                  //  Prefs.putString(AUtils.PREFS.SUR_UNDER_INSURANCE,cbValueIType);
+                    Prefs.putString(AUtils.PREFS.SUR_UNDER_INSURANCE,String.valueOf(false));
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
+                    Prefs.putString(AUtils.PREFS.SUR_UNDER_INSURANCE,String.valueOf(true));
                 }
             }
         }
@@ -166,10 +168,12 @@ public class SurveyFormFiveFragment extends Fragment {
                     CheckBox checkBoxAyushman = view.findViewById(current.getId());
                     String cbValueAyushman = checkBoxAyushman.getText().toString();
                     Log.i("Social", "onClick: "+cbValueAyushman);
-                    Prefs.putString(AUtils.PREFS.SUR_AYUSHMAN_BENE,cbValueAyushman);
+                   // Prefs.putString(AUtils.PREFS.SUR_AYUSHMAN_BENE,cbValueAyushman);
+                    Prefs.putString(AUtils.PREFS.SUR_AYUSHMAN_BENE,String.valueOf(false));
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
+                    Prefs.putString(AUtils.PREFS.SUR_AYUSHMAN_BENE,String.valueOf(true));
                 }
             }
         }
@@ -186,10 +190,12 @@ public class SurveyFormFiveFragment extends Fragment {
                     CheckBox checkBoxBooster = view.findViewById(current.getId());
                     String cbValueBooster = checkBoxBooster.getText().toString();
                     Log.i("Social", "onClick: "+cbValueBooster);
-                    Prefs.putString(AUtils.PREFS.SUR_BOOSTER_SHOT,cbValueBooster);
+                  //  Prefs.putString(AUtils.PREFS.SUR_BOOSTER_SHOT,cbValueBooster);
+                    Prefs.putString(AUtils.PREFS.SUR_BOOSTER_SHOT,String.valueOf(false));
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
+                    Prefs.putString(AUtils.PREFS.SUR_BOOSTER_SHOT,String.valueOf(true));
                 }
             }
         }
@@ -206,11 +212,11 @@ public class SurveyFormFiveFragment extends Fragment {
                     CheckBox checkBoxDivang = view.findViewById(current.getId());
                     String cbValueDivang = checkBoxDivang.getText().toString();
                     Log.i("Social", "onClick: "+cbValueDivang);
-                    Prefs.putString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG, String.valueOf(true));
+                    Prefs.putString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG, String.valueOf(false));
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
-                    Prefs.putString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG, String.valueOf(false));
+                    Prefs.putString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG, String.valueOf(true));
                 }
             }
         }

@@ -83,9 +83,11 @@ public class SurveyFormOneFragment extends Fragment {
         edtName = view.findViewById(R.id.edt_your_name);
         String name = edtName.getText().toString().trim();
         Prefs.putString(AUtils.PREFS.SUR_NAME,name);
+        Log.i("Social", "name is: "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
         edtMobile = view.findViewById(R.id.edt_phone_call);
         String mobile = edtMobile.getText().toString().trim();
         Prefs.putString(AUtils.PREFS.SUR_MOBILE, mobile);
+        Log.i("Social", "mobile is: "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
         cbMale = view.findViewById(R.id.cb_male);
         cbFemale = view.findViewById(R.id.cb_female);
         cbTransG = view.findViewById(R.id.cb_transgender);
@@ -135,12 +137,14 @@ public class SurveyFormOneFragment extends Fragment {
         chkArrayBloodGroup[7] = cbBloodNegAB;
         chkArrayBloodGroup[7].setOnClickListener(mListenerBloodGroup);
 
-        setData();
+
         setOnClick();
+        setData();
     }
 
     private void setData() {
-
+        Log.d(TAG, "name : "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
+        Log.d(TAG, "mobile : "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
 
 
     }

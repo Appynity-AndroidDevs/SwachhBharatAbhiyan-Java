@@ -82,4 +82,17 @@ public class SurveyDetailsResultPojo {
     public void setExist(boolean exist) {
         IsExist = exist;
     }
+
+    @Override
+    public String toString() {
+        return "SurveyDetailsResultPojo{" +
+                "ID=" + ID +
+                ", status='" + status + '\'' +
+                ", message='" + message + '\'' +
+                ", messageMar='" + messageMar + '\'' +
+                ", isAttendenceOff=" + isAttendenceOff +
+                ", houseId='" + houseId + '\'' +
+                ", IsExist=" + IsExist +
+                '}';
+    }
 }

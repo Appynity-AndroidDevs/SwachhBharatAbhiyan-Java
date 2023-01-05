@@ -223,6 +223,7 @@ public class SurveyFormTwoFragment extends Fragment {
                     CheckBox checkBoxQualification = view.findViewById(current.getId());
                     String cbValueQualification = checkBoxQualification.getText().toString();
                     Log.i("Social", "onClick: "+cbValueQualification);
+                    Prefs.putString(AUtils.PREFS.SUR_QUALIFICATION,cbValueQualification);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -243,6 +244,7 @@ public class SurveyFormTwoFragment extends Fragment {
                     CheckBox checkBoxOccupation = view.findViewById(current.getId());
                     String cbValueOccupation = checkBoxOccupation.getText().toString();
                     Log.i("Social", "onClick: "+cbValueOccupation);
+                    Prefs.putString(AUtils.PREFS.SUR_OCCUPATION,cbValueOccupation);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -264,6 +266,7 @@ public class SurveyFormTwoFragment extends Fragment {
                     CheckBox checkBoxMarital = view.findViewById(current.getId());
                     String cbValueMarital = checkBoxMarital.getText().toString();
                     Log.i("Social", "onClick: "+cbValueMarital);
+                    Prefs.putString(AUtils.PREFS.SUR_MARITAL_STATUS,cbValueMarital);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -284,6 +287,7 @@ public class SurveyFormTwoFragment extends Fragment {
                     CheckBox checkBoxLiving = view.findViewById(current.getId());
                     String cbValueLiving = checkBoxLiving.getText().toString();
                     Log.i("Social", "onClick: "+cbValueLiving);
+                    Prefs.putString(AUtils.PREFS.SUR_LIVING_STATUS,cbValueLiving);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);

@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
+import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +48,9 @@ public class SurveyFormFourFragment extends Fragment {
 
     private CheckBox cbBhimP,cbPaytmP,cbPhonPaP,cbGooglePeP,cbPersonalBP,cbOtherP;
     private static  ArrayList<String> paymentArray = new ArrayList<>();
+
+    private String socialList,shoppingList,paymentList;
+    String regex = "\\[|\\]";
 
 
 
@@ -106,6 +111,7 @@ public class SurveyFormFourFragment extends Fragment {
                     o = o - 1;
                     vote = String.valueOf(o);
                     txtNumVote.setText(vote);
+                    Prefs.putString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,vote);
                     Log.i("Social", "vote minus: "+vote);
                 } else {
                     Log.d("src", "Value can't be less than 0");
@@ -120,6 +126,7 @@ public class SurveyFormFourFragment extends Fragment {
                 o = o + 1;
                 vote = String.valueOf(o);
                 txtNumVote.setText(vote);
+                Prefs.putString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,vote);
                 Log.i("Social", "vote add: "+vote);
             }
         });
@@ -132,12 +139,16 @@ public class SurveyFormFourFragment extends Fragment {
                   //  socialMArray.add(cbFbS.getText().toString());
                     socialMArray.add(strFaceBook);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }else {
                   //  socialMArray.remove(cbFbS.getText().toString());
                     socialMArray.remove(strFaceBook);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }
             }
         });
@@ -149,12 +160,16 @@ public class SurveyFormFourFragment extends Fragment {
                  //   socialMArray.add(cbTwitSocial.getText().toString());
                     socialMArray.add(strTwitter);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }else {
                  //   socialMArray.remove(cbTwitSocial.getText().toString());
                     socialMArray.remove(strTwitter);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }
             }
         });
@@ -166,12 +181,16 @@ public class SurveyFormFourFragment extends Fragment {
                  //   socialMArray.add(cbInstagram.getText().toString());
                     socialMArray.add(strInstagram);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }else {
                 //    socialMArray.remove(cbInstagram.getText().toString());
                     socialMArray.remove(strInstagram);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }
             }
         });
@@ -183,12 +202,16 @@ public class SurveyFormFourFragment extends Fragment {
                     //socialMArray.add(cbWhatsapp.getText().toString());
                     socialMArray.add(strWhatsApp);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }else {
                  //   socialMArray.remove(cbWhatsapp.getText().toString());
                     socialMArray.remove(strWhatsApp);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }
             }
         });
@@ -200,12 +223,16 @@ public class SurveyFormFourFragment extends Fragment {
                  //   socialMArray.add(cbSnapChat.getText().toString());
                     socialMArray.add(strSnapChat);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }else {
                   //  socialMArray.remove(cbSnapChat.getText().toString());
                     socialMArray.remove(strSnapChat);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }
             }
         });
@@ -217,12 +244,16 @@ public class SurveyFormFourFragment extends Fragment {
                   //  socialMArray.add(cbLinkedIn.getText().toString());
                     socialMArray.add(strLinkedIn);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }else {
                    // socialMArray.remove(cbLinkedIn.getText().toString());
                     socialMArray.remove(strLinkedIn);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }
             }
         });
@@ -234,12 +265,16 @@ public class SurveyFormFourFragment extends Fragment {
                    // socialMArray.add(cbOtherS.getText().toString());
                     socialMArray.add(strOtherSocial);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }else {
                  //   socialMArray.remove(cbOtherS.getText().toString());
                     socialMArray.remove(strOtherSocial);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "socialMode: "+socialMode);
+                    socialList = socialMode.replaceAll(regex,"");
+                    Log.i("Social", "socialMode: "+socialList);
+                    Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA,socialList);
                 }
             }
         });
@@ -252,12 +287,16 @@ public class SurveyFormFourFragment extends Fragment {
                     //shoppingArray.add(cbAmazonS.getText().toString());
                     shoppingArray.add(strAmazon);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }else {
                     //shoppingArray.remove(cbAmazonS.getText().toString());
                     shoppingArray.remove(strAmazon);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }
             }
         });
@@ -269,12 +308,16 @@ public class SurveyFormFourFragment extends Fragment {
                    // shoppingArray.add(cbFlifkartS.getText().toString());
                     shoppingArray.add(strFlifkart);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }else {
                  //   shoppingArray.remove(cbFlifkartS.getText().toString());
                     shoppingArray.remove(strFlifkart);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }
             }
         });
@@ -286,12 +329,16 @@ public class SurveyFormFourFragment extends Fragment {
               //      shoppingArray.add(cbNaykkaS.getText().toString());
                     shoppingArray.add(strNayka);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }else {
                    // shoppingArray.remove(cbNaykkaS.getText().toString());
                     shoppingArray.remove(strNayka);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }
             }
         });
@@ -303,12 +350,16 @@ public class SurveyFormFourFragment extends Fragment {
                //     shoppingArray.add(cbTataCliqS.getText().toString());
                     shoppingArray.add(strTataCliq);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }else {
                 //    shoppingArray.remove(cbTataCliqS.getText().toString());
                     shoppingArray.remove(strTataCliq);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }
             }
         });
@@ -320,12 +371,16 @@ public class SurveyFormFourFragment extends Fragment {
                 //    shoppingArray.add(cbSnapS.getText().toString());
                     shoppingArray.add(strSnapdeal);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }else {
                   //  shoppingArray.remove(cbSnapS.getText().toString());
                     shoppingArray.remove(strSnapdeal);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }
             }
         });
@@ -337,12 +392,16 @@ public class SurveyFormFourFragment extends Fragment {
                 //    shoppingArray.add(cbOtherShopping.getText().toString());
                     shoppingArray.add(strOtherShop);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }else {
                   //  shoppingArray.remove(cbOtherShopping.getText().toString());
                     shoppingArray.remove(strOtherShop);
                     String shoppingModeMode = shoppingArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "shoppingMode: "+shoppingModeMode);
+                    shoppingList = shoppingModeMode.replaceAll(regex,"");
+                    Log.i("Social", "shoppingMode: "+shoppingList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_SHOPPING,shoppingList);
                 }
             }
         });
@@ -355,12 +414,16 @@ public class SurveyFormFourFragment extends Fragment {
                 //    paymentArray.add(cbBhimP.getText().toString());
                     paymentArray.add(strBhimP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }else {
                   //  paymentArray.remove(cbBhimP.getText().toString());
                     paymentArray.remove(strBhimP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }
             }
         });
@@ -373,12 +436,16 @@ public class SurveyFormFourFragment extends Fragment {
                    // paymentArray.add(cbPaytmP.getText().toString());
                     paymentArray.add(strPaytmP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }else {
                   //  paymentArray.remove(cbPaytmP.getText().toString());
                     paymentArray.remove(strPaytmP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }
             }
         });
@@ -390,12 +457,16 @@ public class SurveyFormFourFragment extends Fragment {
                   //  paymentArray.add(cbPhonPaP.getText().toString());
                     paymentArray.add(strPhonePeP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }else {
                   //  paymentArray.remove(cbPhonPaP.getText().toString());
                     paymentArray.remove(strPhonePeP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }
             }
         });
@@ -407,12 +478,16 @@ public class SurveyFormFourFragment extends Fragment {
                    // paymentArray.add(cbGooglePeP.getText().toString());
                     paymentArray.add(strGooglePeP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }else {
                   //  paymentArray.remove(cbGooglePeP.getText().toString());
                     paymentArray.remove(strGooglePeP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }
             }
         });
@@ -424,12 +499,16 @@ public class SurveyFormFourFragment extends Fragment {
                    // paymentArray.add(cbPersonalBP.getText().toString());
                     paymentArray.add(strPersonalBP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }else {
                   //  paymentArray.remove(cbPersonalBP.getText().toString());
                     paymentArray.remove(strPersonalBP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }
             }
         });
@@ -441,12 +520,16 @@ public class SurveyFormFourFragment extends Fragment {
                    // paymentArray.add(cbOtherP.getText().toString());
                     paymentArray.add(strOtherP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }else {
                    // paymentArray.remove(cbOtherP.getText().toString());
                     paymentArray.remove(strOtherP);
                     String paymentMode = paymentArray.toString().trim().replaceAll("\\s","");
-                    Log.i("Social", "paymentMode: "+paymentMode);
+                    paymentList = paymentMode.replaceAll(regex,"");
+                    Log.i("Social", "paymentMode: "+paymentList);
+                    Prefs.putString(AUtils.PREFS.SUR_ONLINE_PAY_APP,paymentList);
                 }
             }
         });

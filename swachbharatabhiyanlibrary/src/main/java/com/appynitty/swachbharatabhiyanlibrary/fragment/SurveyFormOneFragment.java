@@ -81,8 +81,11 @@ public class SurveyFormOneFragment extends Fragment {
         atxtYear = view.findViewById(R.id.auto_year);
         txtAge = view.findViewById(R.id.txt_age);
         edtName = view.findViewById(R.id.edt_your_name);
+        String name = edtName.getText().toString().trim();
+        Prefs.putString(AUtils.PREFS.SUR_NAME,name);
         edtMobile = view.findViewById(R.id.edt_phone_call);
-
+        String mobile = edtMobile.getText().toString().trim();
+        Prefs.putString(AUtils.PREFS.SUR_MOBILE, mobile);
         cbMale = view.findViewById(R.id.cb_male);
         cbFemale = view.findViewById(R.id.cb_female);
         cbTransG = view.findViewById(R.id.cb_transgender);
@@ -137,10 +140,8 @@ public class SurveyFormOneFragment extends Fragment {
     }
 
     private void setData() {
-    Prefs.putString(AUtils.PREFS.SUR_NAME,edtName.getText().toString().trim());
-        Log.i("Social", "My name is: "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
-    Prefs.putString(AUtils.PREFS.SUR_MOBILE, edtMobile.getText().toString());
-        Log.i("Social", "My mobile is: "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
+
+
 
     }
 
@@ -265,6 +266,7 @@ public class SurveyFormOneFragment extends Fragment {
                     CheckBox checkBoxGender = view.findViewById(current.getId());
                     String cbValueGender = checkBoxGender.getText().toString();
                     Log.i("Social", "onClick: "+cbValueGender);
+                    Prefs.putString(AUtils.PREFS.SUR_GENDER,cbValueGender);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -285,6 +287,7 @@ public class SurveyFormOneFragment extends Fragment {
                     CheckBox checkBoxBloodGroup = view.findViewById(current.getId());
                     String cbValueBloodGroup = checkBoxBloodGroup.getText().toString();
                     Log.i("Social", "onClick: "+cbValueBloodGroup);
+                    Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);

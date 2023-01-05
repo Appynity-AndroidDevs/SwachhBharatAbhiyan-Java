@@ -33,7 +33,7 @@ public class SurveyDetailsRepo {
         requestPojo.setReferanceId(refId);
         requestPojo.setHouseLat(Prefs.getString(AUtils.LAT,"0"));
         requestPojo.setHouseLong(Prefs.getString(AUtils.LONG,"0"));
-        requestPojo.setName(" ");
+        requestPojo.setName(Prefs.getString(AUtils.SUR_NAME,"0"));
         requestPojo.setMobileNumber(" ");
         requestPojo.setDateOfBirth(" ");
         requestPojo.setAge(" ");

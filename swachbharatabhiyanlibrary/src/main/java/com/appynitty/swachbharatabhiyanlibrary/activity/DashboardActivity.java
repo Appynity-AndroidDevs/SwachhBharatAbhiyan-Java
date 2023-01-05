@@ -1663,8 +1663,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         Prefs.remove(AUtils.PREFS.SUR_REFERENCE_ID);
         Prefs.remove(AUtils.PREFS.SUR_NAME);
         Prefs.remove(AUtils.PREFS.SUR_MOBILE);
-        Prefs.remove(AUtils.PREFS.SUR_HOUSE_LAT);
-        Prefs.remove(AUtils.PREFS.SUR_HOUSE_LONG);
         Prefs.remove(AUtils.PREFS.SUR_GENDER);
         Prefs.remove(AUtils.PREFS.SUR_BLOOD_GROUP);
         Prefs.remove(AUtils.PREFS.SUR_QUALIFICATION);

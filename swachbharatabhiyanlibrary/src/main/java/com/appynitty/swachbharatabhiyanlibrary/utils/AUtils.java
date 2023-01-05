@@ -249,6 +249,50 @@ public class AUtils extends CommonUtils {
 
     public static boolean DutyOffFromService = false;
 
+    /***survey form */
+
+    public static final String SUR_REFERENCE_ID = "ReferanceId";
+    public static final String SUR_NAME = "name";
+    public static final String SUR_MOBILE = "mobileNumber";
+    public static final String SUR_GENDER = "gender";
+    public static final String SUR_BLOOD_GROUP = "bloodGroup";
+    public static final String SUR_QUALIFICATION = "qualification";
+    public static final String SUR_OCCUPATION = "occupation";
+    public static final String SUR_MARITAL_STATUS = "maritalStatus";
+    public static final String SUR_AGE = "age";
+    public static final String SUR_BIRTHDAY_DATE = "dateOfBirth";
+    public static final String SUR_BIRTH_YEAR = "birthYear";
+    public static final String SUR_BIRTH_MONTH = "birthMonth";
+    public static final String SUR_BIRTH_DAY = "birthDay";
+    public static final String SUR_MARRIAGE_DATE = "marriageDate";
+    public static final String SUR_MARRIAGE_YEAR = "marriageYear";
+    public static final String SUR_MARRIAGE_MONTH = "marriageMonth";
+    public static final String SUR_MARRIAGE_DAY = "marriageDay";
+    public static final String SUR_LIVING_STATUS = "livingStatus";
+    public static final String SUR_TOTAL_ADULT = "totalAdults";
+    public static final String SUR_TOTAL_CHILDREN = "maritalStatus";
+    public static final String SUR_TOTAL_CITIZEN = "totalSrCitizen";
+    public static final String SUR_TOTAL_MEMBER = "totalMember";
+    public static final String SUR_WILLING_START = "willingStart";
+    public static final String SUR_RESOURCE_AVAILABLE = "resourcesAvailable";
+    public static final String SUR_MEMBER_JOB_OTHER_CITY = "memberJobOtherCity";
+    public static final String SUR_NUM_OF_VEHICLE = "noOfVehicle";
+    public static final String SUR_TWO_WHEELER_QTY = "twoWheelerQty";
+    public static final String SUR_FOUR_WHEELER_QTY = "fourWheelerQty";
+    public static final String SUR_NUM_OF_PEOPLE_VOTE = "noPeopleVote";
+    public static final String SUR_SOCIAL_MEDIA = "socialMedia";
+    public static final String SUR_ONLINE_SHOPPING = "onlineShopping";
+    public static final String SUR_PAYMENT_MODE = "paymentModePrefer";
+    public static final String SUR_ONLINE_PAY_APP = "onlinePayApp";
+    public static final String SUR_INSURANCE = "insurance";
+    public static final String SUR_UNDER_INSURANCE = "underInsurer";
+    public static final String SUR_AYUSHMAN_BENE = "ayushmanBeneficiary";
+    public static final String SUR_BOOSTER_SHOT = "boosterShot";
+    public static final String SUR_MEMBER_OF_DIVYANG = "memberDivyang";
+    public static final String SUR_CREATED_USER_ID = "createUserId";
+    public static final String SUR_UPDATED_USER_ID = "updateUserId";
+
+    /***********/
     public static boolean isIsOnduty() {       // important function to get the status of the employee's duty
         return Prefs.getBoolean(PREFS.IS_ON_DUTY, false);
     }
@@ -298,8 +342,6 @@ public class AUtils extends CommonUtils {
         String SUR_REFERENCE_ID = "ReferanceId";
         String SUR_NAME = "name";
         String SUR_MOBILE = "mobileNumber";
-        String SUR_HOUSE_LAT = "houseLat";
-        String SUR_HOUSE_LONG = "houseLong";
         String SUR_GENDER = "gender";
         String SUR_BLOOD_GROUP = "bloodGroup";
         String SUR_QUALIFICATION = "qualification";

@@ -311,6 +311,9 @@ public class AUtils extends CommonUtils {
         String SUR_BIRTH_MONTH = "birthMonth";
         String SUR_BIRTH_DAY = "birthDay";
         String SUR_MARRIAGE_DATE = "marriageDate";
+        String SUR_MARRIAGE_YEAR = "marriageYear";
+        String SUR_MARRIAGE_MONTH = "marriageMonth";
+        String SUR_MARRIAGE_DAY = "marriageDay";
         String SUR_LIVING_STATUS = "livingStatus";
         String SUR_TOTAL_ADULT = "totalAdults";
         String SUR_TOTAL_CHILDREN = "totalChildren";

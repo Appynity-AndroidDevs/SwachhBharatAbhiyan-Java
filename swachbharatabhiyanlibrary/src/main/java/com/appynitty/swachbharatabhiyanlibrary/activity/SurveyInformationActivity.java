@@ -41,7 +41,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private SurPagerAdapter pagerAdapter;
-    private View vOne, vTwo, vThree, vFour,vFive;
+    private View view;
 
 
     @Override
@@ -60,12 +60,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnBack = findViewById(R.id.btn_back);
         btnDone = findViewById(R.id.btn_done);
-
-        vOne = findViewById(R.id.view_one);
-        vTwo = findViewById(R.id.view_two);
-        vThree = findViewById(R.id.view_three);
-        vFour = findViewById(R.id.view_four);
-        vFive = findViewById(R.id.view_five);
 
         btnDone.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);

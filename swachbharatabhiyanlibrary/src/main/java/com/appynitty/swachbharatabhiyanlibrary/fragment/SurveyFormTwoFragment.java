@@ -129,12 +129,21 @@ public class SurveyFormTwoFragment extends Fragment {
                         strDay = String.valueOf(i2);
 
                         if (strDay.length() == 1) {
-                            marriageDate = "0" +strDay + "-" + "0" + strMonth + "-" + strYear;
                             txtDayMarriage.setText("0" + strDay);
-                        } else{
+                            Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_DAY, "0" + strDay);
+                            Log.i("Social", "marriage of day: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,""));
                             marriageDate = "0" +strDay + "-" + "0" + strMonth + "-" + strYear;
+                            Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_DATE,Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,""));
+                            Log.i("Social", "date of marriage: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DATE,""));
+
+                        } else{
+                            marriageDate = strDay + "-" + strMonth + "-" + strYear;
                             Log.d("Rahul", "date_of_marriage: " + marriageDate);
+                            Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_DATE,Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,""));
+                            Log.i("Social", "date of marriage: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DATE,""));
                             txtDayMarriage.setText(strDay);
+                            Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_DAY, strDay);
+                            Log.i("Social", "marriage day: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,""));
                         }
                     }
                 }, strDay);
@@ -156,10 +165,20 @@ public class SurveyFormTwoFragment extends Fragment {
                         if (strMonth.length() == 1) {
                             marriageDate = "0" +strDay + "-" + "0" + strMonth + "-" + strYear;
                             txtMonthMarriage.setText("0" + strMonth);
-                        } else{
+                            Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_MONTH, "0" + strMonth);
+                            Log.i("Social", "marriage of month: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,""));
                             marriageDate = "0" +strDay + "-" + "0" + strMonth + "-" + strYear;
+                            Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_DATE,Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,""));
+                            Log.i("Social", "date of marriage: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DATE,""));
+
+                        } else{
+                            marriageDate = strDay + "-" + strMonth + "-" + strYear;
                             Log.d("Rahul", "date_of_marriage: " + marriageDate);
+                            Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_DATE,Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,""));
+                            Log.i("Social", "date of marriage: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DATE,""));
                             txtMonthMarriage.setText(strMonth);
+                            Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_MONTH, strMonth);
+                            Log.i("Social", "marriage month: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,""));
                         }
                     }
                 }, strMonth);
@@ -179,7 +198,11 @@ public class SurveyFormTwoFragment extends Fragment {
                         marriageDate = "0" +strDay + "-" + "0" + strMonth + "-" + strYear;
                         txtYearMarriage.setText(strYear);
                         Log.d("Rahul", "date_of_marriage: " + marriageDate);
-                        Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_DATE, marriageDate);
+
+                        Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_YEAR, strYear);
+                        Log.i("Social", "marriage year: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,""));
+                        Prefs.putString(AUtils.PREFS.SUR_MARRIAGE_DATE,Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,""));
+                        Log.i("Social", "date of marriage: "+Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DATE,""));
                     }
                 }, strYear);
                 yearPickerDialog.setCancelable(false);

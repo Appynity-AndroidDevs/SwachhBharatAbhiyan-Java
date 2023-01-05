@@ -30,6 +30,7 @@ public class SurPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        boolean isValid = false;
         switch (position){
             case 0:
                 Log.i("FragRahul", "createFragment: "+position);

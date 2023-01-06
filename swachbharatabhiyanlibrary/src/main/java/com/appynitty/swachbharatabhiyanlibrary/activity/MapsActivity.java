@@ -27,7 +27,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.data.geojson.GeoJsonFeature;
+import com.google.maps.android.data.geojson.GeoJsonLayer;
+import com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -84,6 +90,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        try {
+            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.pk_buildings, MapsActivity.this);
+            layer.getDefaultPolygonStyle().setStrokeColor(Color.WHITE);
+            layer.addLayerToMap();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+
 
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         googleMap.setMyLocationEnabled(true);

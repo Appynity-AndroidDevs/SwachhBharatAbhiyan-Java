@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -19,6 +20,8 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.viewmodels.TokenViewModel;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.utils.LocaleHelper;
+
+import java.util.Locale;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String TAG = "SplashScreenActivity";
@@ -81,24 +84,20 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         if (Prefs.contains(AUtils.BEARER_TOKEN)) {
 
-            String inDate = AUtils.getInPunchDate();
-            String currentDate = AUtils.getServerDate();
-
-            String str = Prefs.getString(AUtils.BEARER_TOKEN, null);
-            if (str.isEmpty()) {
-                tokenViewModel.init();
-            } else if (!inDate.equals(currentDate)) {
-                Log.e(TAG, "onCreate: token was expired, getting new one!");
+            if (!DateUtils.isToday(Prefs.getLong(AUtils.BEARER_TOKEN_TIME, 0))) {
+                Log.e(TAG, " token was expired, getting new one!");
                 tokenViewModel.init();
             }
         } else {
             tokenViewModel.init();
+            Log.e(TAG, "onCreate: getting new token");
         }
 
         tokenViewModel.tokenLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String token_value) {
                 Prefs.putString(AUtils.BEARER_TOKEN, token_value);
+                Prefs.putLong(AUtils.BEARER_TOKEN_TIME, System.currentTimeMillis());
             }
         });
 

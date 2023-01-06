@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {LocationEntity.class, HouseLocationEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {LocationEntity.class, HouseLocationEntity.class}, version = 1, exportSchema = false)
 abstract class LocationsRoomDB extends RoomDatabase {
     abstract LocationsDao locationsDao();
     abstract HousePointDao housePointDao();

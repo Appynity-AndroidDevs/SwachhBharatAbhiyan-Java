@@ -10,6 +10,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -23,7 +24,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LifecycleService;
-import androidx.lifecycle.Observer;
 
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -31,7 +31,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.Priority;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pixplicity.easyprefs.library.Prefs;
 
@@ -55,35 +54,37 @@ public class GIS_LocationService extends LifecycleService {
     LocationManager locationManager;
     LocationRequest locationRequest;
     LocationCallback locationCallback;
-    private UserDetailPojo userDetailPojo;
     String userTypeId;
     private LocationRepository mLocationRepository;
     private HousePointRepo mHousePointRepo;
     private List<LocationEntity> mAllLocations = new ArrayList<>();
     private List<HouseLocationEntity> mAllHouses;
     String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
-
+    private Location lastLocation;
 
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-//            Location location = locationResult.getLastLocation();
+
             if (location != null) {
                 Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
-                Toast.makeText(GIS_LocationService.this, "new location received with acc: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & Speed: " + location.getSpeed(), Toast.LENGTH_SHORT).show();
 
                 if (location.hasAccuracy() && location.getAccuracy() <= 12) {
-                    Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude()
-                            + ", lon: " + location.getLongitude()
-                            + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+                    insertToDB(location);
+                    /*if (lastLocation == null) {
+                        insertToDB(location);
+                    } else {
+                        double dist = lastLocation.distanceTo(location);
+                        if (dist <= 11) {
+                            insertToDB(location);
+                        }
+                    }*/
 
-                    LocationEntity locEntity = new LocationEntity();
-                    locEntity.setLatLng(location.getLongitude() + " " + location.getLatitude());
-                    mLocationRepository.insert(locEntity);
                 }
 
             }
-//            sendLocationBroadcast(location, "new location");
+
         }
 
         @Override
@@ -102,6 +103,18 @@ public class GIS_LocationService extends LifecycleService {
         }
     };
 
+    private void insertToDB(Location location) {
+        Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+        lastLocation = location;
+        LocationEntity locEntity = new LocationEntity();
+        locEntity.setLineElement(location.getLongitude() + " " + location.getLatitude());
+        locEntity.setLat(location.getLatitude());
+        locEntity.setLon(location.getLongitude());
+        locEntity.setAccuracy(location.getAccuracy());
+        locEntity.setTimeStamp(AUtils.getGisDateTime());
+        mLocationRepository.insert(locEntity);
+    }
+
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -118,10 +131,7 @@ public class GIS_LocationService extends LifecycleService {
     }
 
     protected LocationRequest createLocationRequest() {
-        return new LocationRequest.Builder(3000)
-                .setMinUpdateDistanceMeters(10F)
-                .setWaitForAccurateLocation(true)
-                .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
+        return new LocationRequest.Builder(0).setMinUpdateDistanceMeters(10F).setWaitForAccurateLocation(true).setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
     }
 
     @Override
@@ -142,13 +152,22 @@ public class GIS_LocationService extends LifecycleService {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        final Criteria criteria = new Criteria();
+
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setSpeedRequired(true);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setPowerRequirement(Criteria.POWER_HIGH);
+
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10F, locationListenerGPS);
 
 
         Type type = new TypeToken<UserDetailPojo>() {
         }.getType();
-        userDetailPojo = new Gson().fromJson(Prefs.getString(AUtils.PREFS.USER_DETAIL_POJO, null), type);
-//        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
+        //        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
 //        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 //        locationRequest = createLocationRequest();
@@ -177,43 +196,37 @@ public class GIS_LocationService extends LifecycleService {
         };*/
 //        startLocationUpdates();
 
-        mLocationRepository.getAllLocations().observe(GIS_LocationService.this, new Observer<List<LocationEntity>>() {
-            @Override
-            public void onChanged(List<LocationEntity> locationEntities) {
-                mAllLocations.clear();
-                mAllLocations = locationEntities;
-            }
+        mLocationRepository.getAllLocations().observe(GIS_LocationService.this, locationEntities -> {
+            mAllLocations.clear();
+            mAllLocations = locationEntities;
         });
 
-        mHousePointRepo.getAllHousePoint().observe(GIS_LocationService.this, new Observer<List<HouseLocationEntity>>() {
-            @Override
-            public void onChanged(List<HouseLocationEntity> houseLocationEntities) {
-                mAllHouses = houseLocationEntities;
-                for (HouseLocationEntity houseEntity : houseLocationEntities) {
-                    Log.e(TAG, "onChanged: houseId: " + houseEntity.getHouseId() + ", UserName: " + houseEntity.getUserName() + ", Latlng: " + houseEntity.getLocationPoint());
-                    GISRequestDTO housePointDto = new GISRequestDTO();
-                    housePointDto.setCreateUser(Integer.parseInt(Prefs.getString(AUtils.PREFS.USER_ID, null)));
-                    housePointDto.setHouseId(Integer.parseInt(houseEntity.getHouseId()));
-                    housePointDto.setGeom("POINT (" + houseEntity.getLocationPoint() + ")");
-                    GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
-                    service.sendHousePoint(housePointDto).enqueue(new Callback<GISResponseDTO>() {
-                        @Override
-                        public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
+        mHousePointRepo.getAllHousePoint().observe(GIS_LocationService.this, houseLocationEntities -> {
+            mAllHouses = houseLocationEntities;
+            for (HouseLocationEntity houseEntity : houseLocationEntities) {
+                Log.e(TAG, "onChanged: houseId: " + houseEntity.getHouseId() + ", UserName: " + houseEntity.getUserName() + ", Latlng: " + houseEntity.getLocationPoint());
+                GISRequestDTO housePointDto = new GISRequestDTO();
+                housePointDto.setCreateUser(Integer.parseInt(Prefs.getString(AUtils.PREFS.USER_ID, null)));
+                housePointDto.setHouseId(Integer.parseInt(houseEntity.getHouseId()));
+                housePointDto.setGeom("POINT (" + houseEntity.getLocationPoint() + ")");
+                GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
+                service.sendHousePoint(housePointDto).enqueue(new Callback<GISResponseDTO>() {
+                    @Override
+                    public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
 
-                            if (response.isSuccessful()) {
-                                if (response.body().getStatus().equals("Success")) {
-                                    mHousePointRepo.deleteHouse(houseEntity.getHouseId());
-                                }
+                        if (response.isSuccessful()) {
+                            if (response.body().getStatus().equals("Success")) {
+                                mHousePointRepo.deleteHouse(houseEntity.getHouseId());
                             }
-                            Log.e(TAG, "onResponse: " + response.body());
                         }
+                        Log.e(TAG, "onResponse: " + response.body());
+                    }
 
-                        @Override
-                        public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
-                            Log.e(TAG, "onFailure: " + t.getMessage());
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure(@NonNull Call<GISResponseDTO> call, @NonNull Throwable t) {
+                        Log.e(TAG, "onFailure: " + t.getMessage());
+                    }
+                });
             }
         });
 
@@ -228,10 +241,10 @@ public class GIS_LocationService extends LifecycleService {
             if (mAllLocations.size() > 2) {
                 for (int i = 0; i < mAllLocations.size(); i++) {
                     if (i != mAllLocations.size() - 1)
-                        mLineString.append(mAllLocations.get(i).getLatLng()).append(", ");
+                        mLineString.append(mAllLocations.get(i).getLineElement()).append(", ");
                 }
 
-                mLineString.append(mAllLocations.get(mAllLocations.size() - 1).getLatLng()).append(")");
+                mLineString.append(mAllLocations.get(mAllLocations.size() - 1).getLineElement()).append(")");
                 Log.e(TAG, "sendLocations: LineString: " + mLineString);
                 Log.e(TAG, "sendLocations: userId: " + Prefs.getString(AUtils.PREFS.USER_ID, null));
                 GISRequestDTO gisRequestDTO = new GISRequestDTO();
@@ -289,8 +302,7 @@ public class GIS_LocationService extends LifecycleService {
             @Override
             public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
                 if (response.body() != null) {
-                    if (response.body().getStatus().equals("Success"))
-                        mLocationRepository.delete();
+                    if (response.body().getStatus().equals("Success")) mLocationRepository.delete();
                     mAllLocations.clear();
                 }
             }

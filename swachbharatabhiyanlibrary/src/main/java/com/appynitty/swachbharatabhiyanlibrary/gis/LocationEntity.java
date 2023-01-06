@@ -9,15 +9,60 @@ import androidx.room.PrimaryKey;
 public class LocationEntity {
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "LatLng")
-    private String mLatLng;
+    @ColumnInfo(name = "LineElement")
+    private String mLineElement;
+
+    @ColumnInfo(name = "Lat")
+    private double mLat;
+
+    @ColumnInfo(name = "Lon")
+    private double mLon;
+
+    @ColumnInfo(name = "Accuracy")
+    private double mAccuracy;
+
+    @ColumnInfo(name = "Timestamp")
+    private String mTimeStamp;
+
 
     @NonNull
-    public String getLatLng() {
-        return mLatLng;
+    public String getLineElement() {
+        return mLineElement;
     }
 
-    public void setLatLng(@NonNull String mLatLng) {
-        this.mLatLng = mLatLng;
+    public void setLineElement(@NonNull String mLineElement) {
+        this.mLineElement = mLineElement;
+    }
+
+    public double getLat() {
+        return mLat;
+    }
+
+    public void setLat(double mLat) {
+        this.mLat = mLat;
+    }
+
+    public double getLon() {
+        return mLon;
+    }
+
+    public void setLon(double mLon) {
+        this.mLon = mLon;
+    }
+
+    public double getAccuracy() {
+        return mAccuracy;
+    }
+
+    public void setAccuracy(double mAccuracy) {
+        this.mAccuracy = mAccuracy;
+    }
+
+    public String getTimeStamp() {
+        return mTimeStamp;
+    }
+
+    public void setTimeStamp(String mTimeStamp) {
+        this.mTimeStamp = mTimeStamp;
     }
 }

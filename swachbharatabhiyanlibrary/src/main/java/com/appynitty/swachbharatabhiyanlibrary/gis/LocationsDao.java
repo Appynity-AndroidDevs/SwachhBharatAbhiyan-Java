@@ -21,4 +21,13 @@ public interface LocationsDao {
 
     @Query("DELETE FROM locations_table")
     void deleteAll();
+
+    @Query("SELECT * FROM locations_table ORDER BY Lat DESC LIMIT 1")
+    double getLastLat();
+
+    @Query("SELECT * FROM locations_table ORDER BY Lon DESC LIMIT 1")
+    double getLastLon();
+
+    @Query("SELECT COUNT (LineElement) FROM locations_table")
+    int getCount();
 }

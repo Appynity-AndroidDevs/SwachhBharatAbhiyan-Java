@@ -75,6 +75,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 public class AUtils extends CommonUtils {
@@ -88,12 +89,6 @@ public class AUtils extends CommonUtils {
 //    public static final String SERVER_URL = "http://202.65.157.254:6560";
 
 
-    /**
-     * http://202.65.157.254:6590/
-     * https://akot.ictsbm.com/
-     * akot special
-     * app Id : 3127
-     ***/
     // public static final String SERVER_URL = "http://202.65.157.254:6590"; //akot
 
     /*//Nagpur staging server url
@@ -140,6 +135,8 @@ public class AUtils extends CommonUtils {
 
     public static final String CONTENT_TYPE = "application/json";
     public static final String BEARER_TOKEN = "bearer_token";
+    public static final String BEARER_TOKEN_TIME = "bearer_token_time";
+
     public static final String APP_ID = "AppId";
     public static final String VERSION_CODE = "AppVersion";
 
@@ -228,10 +225,6 @@ public class AUtils extends CommonUtils {
     public static final String AFTER_IMAGE = "imageA";
     public static final String QR_IMAGE_PATH = "qr_image_path";
     private static final String ALLOWED_CHARACTERS = "0123456789qwertyuiopasdfghjklzxcvbnm";
-
-    private static SyncServerAdapterClass syncServer;
-    private static ShareLocationAdapterClass shareLocationAdapterClass;
-    private static EmpSyncServerAdapterClass empSyncServer;
 
     public static boolean isSyncServerRequestEnable = false;
     public static boolean isLocationRequestEnable = false;
@@ -335,7 +328,7 @@ public class AUtils extends CommonUtils {
 
         SimpleDateFormat format = new SimpleDateFormat(AUtils.SERVER_DATE_FORMATE_LOCAL, Locale.ENGLISH);
         try {
-            return format.format(format.parse(date));
+            return format.format(Objects.requireNonNull(format.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -348,7 +341,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat local = new SimpleDateFormat(AUtils.SERVER_DATE_FORMATE_LOCAL, Locale.ENGLISH);
         SimpleDateFormat server = new SimpleDateFormat(AUtils.SERVER_DATE_FORMATE, Locale.ENGLISH);
         try {
-            return server.format(local.parse(date));
+            return server.format(Objects.requireNonNull(local.parse(date)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -402,7 +395,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat titleDateFormat = new SimpleDateFormat(TITLE_DATE_FORMATE, Locale.ENGLISH);
 
         try {
-            return titleDateFormat.format(serverFormat.parse(date));
+            return titleDateFormat.format(Objects.requireNonNull(serverFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -415,25 +408,11 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat titleDateFormat = new SimpleDateFormat(DATE_VALUE_FORMATE, Locale.ENGLISH);
 
         try {
-            return titleDateFormat.format(serverFormat.parse(date));
+            return titleDateFormat.format(Objects.requireNonNull(serverFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
         }
-    }
-
-    public static String getDumpSuperId(String dumpId) {
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-
-        /* bundle = getIntent().getExtras();*/
-
-        if (bundle != null) {
-            dumpId = bundle.getString(AUtils.dumpYardSuperId);
-            System.out.println("Dumpster Scan Id: " + dumpId);
-
-        }
-        return "";
     }
 
     public static String extractMonth(String date) {
@@ -442,7 +421,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat titleDateFormat = new SimpleDateFormat(SEMI_MONTH_FORMATE, Locale.ENGLISH);
 
         try {
-            return titleDateFormat.format(serverFormat.parse(date));
+            return titleDateFormat.format(Objects.requireNonNull(serverFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -455,7 +434,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat requiredFormat = new SimpleDateFormat(toFormat, Locale.ENGLISH);
 
         try {
-            return requiredFormat.format(providedFormat.parse(date));
+            return requiredFormat.format(Objects.requireNonNull(providedFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -468,7 +447,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat timelineFormat = new SimpleDateFormat(SERVER_TIME_FORMATE, Locale.ENGLISH);
 
         try {
-            return timelineFormat.format(serverFormat.parse(date));
+            return timelineFormat.format(Objects.requireNonNull(serverFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -481,7 +460,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat titleDateFormat = new SimpleDateFormat(TITLE_DATE_FORMATE, Locale.ENGLISH);
 
         try {
-            return titleDateFormat.format(serverFormat.parse(date));
+            return titleDateFormat.format(Objects.requireNonNull(serverFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -494,7 +473,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat titleDateFormat = new SimpleDateFormat(SERVER_DATE_FORMATE, Locale.ENGLISH);
 
         try {
-            return titleDateFormat.format(serverFormat.parse(date));
+            return titleDateFormat.format(Objects.requireNonNull(serverFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -507,7 +486,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat titleDateFormat = new SimpleDateFormat(DATE_VALUE_FORMATE, Locale.ENGLISH);
 
         try {
-            return titleDateFormat.format(serverFormat.parse(date));
+            return titleDateFormat.format(Objects.requireNonNull(serverFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -520,7 +499,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat titleDateFormat = new SimpleDateFormat(SEMI_MONTH_FORMATE, Locale.ENGLISH);
 
         try {
-            return titleDateFormat.format(serverFormat.parse(date));
+            return titleDateFormat.format(Objects.requireNonNull(serverFormat.parse(date)));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -587,9 +566,8 @@ public class AUtils extends CommonUtils {
     }
 
     public static Calendar getCurrentTime() {
-        Calendar now = Calendar.getInstance();
 
-        return now;
+        return Calendar.getInstance();
     }
 
     public static void setInPunchDate(Calendar calendar) {
@@ -723,7 +701,7 @@ public class AUtils extends CommonUtils {
         SimpleDateFormat local = new SimpleDateFormat(AUtils.SERVER_DATE_TIME_FORMATE_LOCAL, Locale.ENGLISH);
         SimpleDateFormat server = new SimpleDateFormat(AUtils.SERVER_TIME_FORMATE, Locale.ENGLISH);
         try {
-            return server.format(local.parse(date));
+            return server.format(Objects.requireNonNull(local.parse(date)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -770,56 +748,6 @@ public class AUtils extends CommonUtils {
         } else {
             throw new Resources.NotFoundException("Invalid Source Path");
         }
-        return bitmap;
-    }
-
-    @Nullable
-    public Bitmap getImageSourcePath(String _sourcePath, Context _context) throws Resources.NotFoundException, IOException {
-        File file = null;
-        Bitmap bitmap = null;
-
-        if (_sourcePath != null) {
-            file = new File(_sourcePath);
-//             if(file.exists()){
-//
-//                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//                      bitmap = BitmapFactory.decodeFile(file.getPath(), bmOptions);
-//                     bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
-//
-//             }
-
-
-            Uri uri = Uri.fromFile(file);
-
-            Log.d(TAG, "getImageSourcePath: " + _sourcePath);
-//            Log.d(TAG, "getImageSourcePath: "+uri);
-//            content://com.appynitty.basepta.fileProvider/external_files/Android/data/com.appynitty.basepta/files/Pictures/image_20201218_1830485390469829670621400.jpg
-//            content://com.appynitty.basepta.fileProvider/external_files/Android/data/com.appynitty.basepta/files/Pictures/image_20201218_1830485390469829670621400.jpg
-
-
-//            if (file.exists()) {
-//                bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-//            }
-
-//            /storage/emulated/0/Android/data/com.appynitty.basepta/files/Pictures/image_20201218_1814219021659496099062004.jpg
-//             /storage/emulated/0/Android/data/com.appynitty.basepta/files/Pictures/image_20201218_1814219021659496099062004.jpg
-//              /storage/emulated/0/Android/data/com.appynitty.basepta/files/Pictures/image_20201218_1814219021659496099062004.jpg
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                try {
-                    bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(_context.getContentResolver(), uri));
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    MDToast.makeText(_context, e.getMessage());
-                }
-            } else {
-                bitmap = MediaStore.Images.Media.getBitmap(_context.getContentResolver(), uri);
-            }
-        } else if (_sourcePath == null) {
-            throw new Resources.NotFoundException("Invalid Source Path");
-        }
-        Log.d(TAG, "getImageSourcePath:  Bitmap " + file);
         return bitmap;
     }
 

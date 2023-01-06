@@ -9,9 +9,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.gis.GIS_LocationService;
@@ -95,11 +93,11 @@ public class MyApplication extends Application {
     }
 
     public void startGISService() {
-        Intent mGIS_ServiceIntent = new Intent(this, GIS_LocationService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            startForegroundService(mGIS_ServiceIntent);
+        if (!AUtils.isMyServiceRunning(MyApplication.this, GIS_LocationService.class)) {
+            startService(new Intent(MyApplication.this, GIS_LocationService.class));
+//            Toast.makeText(this, "Location service started!", Toast.LENGTH_SHORT).show();
         } else {
-            startService(mGIS_ServiceIntent);
+            Toast.makeText(this, getClass().getSimpleName() + " is already running!", Toast.LENGTH_SHORT).show();
         }
     }
 

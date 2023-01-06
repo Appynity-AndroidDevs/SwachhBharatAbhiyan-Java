@@ -20,7 +20,6 @@ import com.pixplicity.easyprefs.library.Prefs;
 
 public class MyApplication extends Application {
 
-    private static final String TAG = "MyApplication";
     public static boolean activityVisible;
 
     @Override

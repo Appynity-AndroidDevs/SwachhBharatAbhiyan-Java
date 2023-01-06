@@ -439,4 +439,15 @@ public class SurveyFormThreeFragment extends Fragment {
         //return the string that you want
         return string;
     }
+
+    private boolean isValid(){
+        return true;
+    }
+
+    public Boolean checkFromThreeText(){
+        if (isValid()){
+            return true;
+        }
+        return false;
+    }
 }

@@ -368,11 +368,14 @@ public class SurveyFormOneFragment extends Fragment {
         }else if (edtMobile.getText().toString().length() <10){
             AUtils.warning(context,"Please enter ");
             return false;
+        }else if (cbFemale.isChecked() || cbMale.isChecked() || cbTransG.isChecked()){
+            AUtils.warning(context,"Please checked any one checkbox ");
+            return false;
         }
         return true;
     }
 
-    public Boolean checkEditText(){
+    public Boolean checkFromOneText(){
         if (isValid()){
             return true;
         }

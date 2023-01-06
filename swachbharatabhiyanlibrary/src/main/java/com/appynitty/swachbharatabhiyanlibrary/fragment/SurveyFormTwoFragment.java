@@ -315,4 +315,15 @@ public class SurveyFormTwoFragment extends Fragment {
         //return the string that you want
         return string;
     }
+
+    private boolean isValid(){
+        return true;
+    }
+
+    public Boolean checkFromTwoText(){
+        if (isValid()){
+            return true;
+        }
+        return false;
+    }
 }

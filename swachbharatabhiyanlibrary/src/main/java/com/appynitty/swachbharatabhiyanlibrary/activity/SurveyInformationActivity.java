@@ -172,7 +172,40 @@ public class SurveyInformationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (viewPager.getCurrentItem() < Objects.requireNonNull(viewPager.getAdapter()).getItemCount()) {
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                    setData();
+                    for (int i=0; i<viewPager.getCurrentItem(); i++){
+                        if (i == 0){
+                            if ( surveyFormOneFragment.checkFromOneText()) {
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                                return;
+                            }
+                            setData();
+                        }else if (i == 1){
+                            if ( surveyFormTwoFragment.checkFromTwoText()) {
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                                return;
+                            }
+                            setData();
+                        } else if (i == 2){
+                            if ( surveyFormThreeFragment.checkFromThreeText()) {
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                                return;
+                            }
+                            setData();
+                        }else if (i == 3){
+                            if ( surveyFormFourFragment.checkFromFourText()) {
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                                return;
+                            }
+                            setData();
+                        }else if (i == 4){
+                            if ( surveyFormFiveFragment.checkFromFiveText()) {
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() , true);
+                                return;
+                            }
+                            setData();
+                        }
+                    }
+                    /*setData();*/
                 }
             }
         });
@@ -238,34 +271,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     btnBack.setVisibility(View.VISIBLE);
                 }
                 if(position < Objects.requireNonNull(viewPager.getAdapter()).getItemCount() -1 ) {
-                    /*for (position=0;position<=4;position++){
-                        if (position ==0){
-                            if ( surveyFormOneFragment.checkEditText()) {
-                                viewPager.setCurrentItem(position);
-                                return;
-                            }
-                        }*//*else if (position ==1){
-                            if ( surveyFormTwoFragment.checkEditText()) {
-                                viewPager.setCurrentItem(position);
-                                return;
-                            }
-                        } else if (position ==2){
-                            if ( surveyFormThreeFragment.checkEditText()) {
-                                viewPager.setCurrentItem(position);
-                                return;
-                            }
-                        } else if (position ==3){
-                            if ( surveyFormFourFragment.checkEditText()) {
-                                viewPager.setCurrentItem(position);
-                                return;
-                            }
-                        } else if (position ==4){
-                            if ( surveyFormFiveFragment.checkEditText()) {
-                                viewPager.setCurrentItem(position);
-                                return;
-                            }
-                        }*//*
-                    }*/
                     btnNext.setVisibility(View.VISIBLE);
                     btnDone.setVisibility(View.GONE);
 

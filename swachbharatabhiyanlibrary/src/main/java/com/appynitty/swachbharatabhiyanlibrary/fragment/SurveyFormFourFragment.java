@@ -554,5 +554,14 @@ public class SurveyFormFourFragment extends Fragment {
         //return the string that you want
         return string;
     }
+    private boolean isValid(){
+        return true;
+    }
 
+    public Boolean checkFromFourText(){
+        if (isValid()){
+            return true;
+        }
+        return false;
+    }
 }

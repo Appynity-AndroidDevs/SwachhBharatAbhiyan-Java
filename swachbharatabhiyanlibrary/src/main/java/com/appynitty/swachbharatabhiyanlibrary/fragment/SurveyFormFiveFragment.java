@@ -247,4 +247,15 @@ public class SurveyFormFiveFragment extends Fragment {
         configuration.setLocale(new Locale(lang));
         return context.createConfigurationContext(configuration).getResources().getString(id);
     }
+
+    private boolean isValid(){
+        return true;
+    }
+
+    public Boolean checkFromFiveText(){
+        if (isValid()){
+            return true;
+        }
+        return false;
+    }
 }

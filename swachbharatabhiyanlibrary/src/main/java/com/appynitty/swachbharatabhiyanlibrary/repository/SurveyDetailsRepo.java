@@ -4,13 +4,15 @@ import android.util.Log;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResultPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.SurveyDetailsWebService;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -23,12 +25,12 @@ public class SurveyDetailsRepo {
     String appId = Prefs.getString(AUtils.APP_ID, null);
     Gson gson = new Gson();
     List<SurveyDetailsRequestPojo> requestPojo = new ArrayList<>();
-
     public static SurveyDetailsRepo getInstance() {
         return instance;
     }
 
     public void addSurveyDetails( ISurveyDetailsResponse iSurveyDetailsResponse){
+
         SurveyDetailsRequestPojo requestPojo = new SurveyDetailsRequestPojo();
         requestPojo.setReferanceId(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
         requestPojo.setHouseLat(Prefs.getString(AUtils.LAT,"0"));
@@ -64,15 +66,16 @@ public class SurveyDetailsRepo {
         requestPojo.setAyushmanBeneficiary(Prefs.getString(AUtils.PREFS.SUR_AYUSHMAN_BENE,""));
         requestPojo.setBoosterShot(Prefs.getString(AUtils.PREFS.SUR_BOOSTER_SHOT,""));
         requestPojo.setMemberDivyang(Prefs.getString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG,""));
-        requestPojo.setCreateUserId("");
-        requestPojo.setUpdateUserId("");
+        requestPojo.setCreateUserId("1");
+        requestPojo.setUpdateUserId("1");
+
 
         SurveyDetailsWebService surveyDetailsWebService = Connection.createService(SurveyDetailsWebService.class, AUtils.SURVEY_SERVER_URL);
-        Call<List<SurveyDetailsResultPojo>> detailsResultPojoCall = surveyDetailsWebService.saveSurveyDetails(AUtils.CONTENT_TYPE, appId, requestPojo);
+        Call<List<SurveyDetailsResponsePojo>> detailsResultPojoCall = surveyDetailsWebService.saveSurveyDetails(AUtils.CONTENT_TYPE, appId, Collections.singletonList(requestPojo));
 
-        detailsResultPojoCall.enqueue(new Callback<List<SurveyDetailsResultPojo>>() {
+        detailsResultPojoCall.enqueue(new Callback<List<SurveyDetailsResponsePojo>>() {
             @Override
-            public void onResponse(Call<List<SurveyDetailsResultPojo>> call, Response<List<SurveyDetailsResultPojo>> response) {
+            public void onResponse(Call<List<SurveyDetailsResponsePojo>> call, Response<List<SurveyDetailsResponsePojo>> response) {
                 Log.e(TAG, "onResponse: " + response.body().toString());
                 if (response.code() == 200) {
                     iSurveyDetailsResponse.onResponse(response.body());
@@ -85,7 +88,7 @@ public class SurveyDetailsRepo {
             }
 
             @Override
-            public void onFailure(Call<List<SurveyDetailsResultPojo>> call, Throwable t) {
+            public void onFailure(Call<List<SurveyDetailsResponsePojo>> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
                 iSurveyDetailsResponse.onFailure(t);
             }
@@ -95,7 +98,7 @@ public class SurveyDetailsRepo {
 
 
     public interface ISurveyDetailsResponse {
-        void onResponse(List<SurveyDetailsResultPojo>  surveyDetailsResponse);
+        void onResponse(List<SurveyDetailsResponsePojo>  surveyDetailsResponse);
 
         void onFailure(Throwable t);
     }

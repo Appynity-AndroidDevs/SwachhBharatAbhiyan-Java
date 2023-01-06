@@ -11,6 +11,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,18 +78,15 @@ public class SurveyFormOneFragment extends Fragment {
         liDayBox = view.findViewById(R.id.li_day_box);
         liYearBox = view.findViewById(R.id.li_year_box);
         LayoutInflater inflater = LayoutInflater.from(context);
+        edtName = view.findViewById(R.id.edt_your_name);
+        edtMobile = view.findViewById(R.id.edt_phone_call);
+
         atxtMonth = view.findViewById(R.id.auto_month);
         atxtDay = view.findViewById(R.id.auto_day);
         atxtYear = view.findViewById(R.id.auto_year);
         txtAge = view.findViewById(R.id.txt_age);
-        edtName = view.findViewById(R.id.edt_your_name);
-        String name = edtName.getText().toString().trim();
-        Prefs.putString(AUtils.PREFS.SUR_NAME,name);
-        Log.i("Social", "name is: "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
-        edtMobile = view.findViewById(R.id.edt_phone_call);
-        String mobile = edtMobile.getText().toString().trim();
-        Prefs.putString(AUtils.PREFS.SUR_MOBILE, mobile);
-        Log.i("Social", "mobile is: "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
+
+
         cbMale = view.findViewById(R.id.cb_male);
         cbFemale = view.findViewById(R.id.cb_female);
         cbTransG = view.findViewById(R.id.cb_transgender);
@@ -139,10 +138,18 @@ public class SurveyFormOneFragment extends Fragment {
 
 
         setOnClick();
-        setData();
+       // setData();
     }
 
     private void setData() {
+        edtName = view.findViewById(R.id.edt_your_name);
+        String name = edtName.getText().toString().trim();
+        Prefs.putString(AUtils.PREFS.SUR_NAME,name);
+        Log.i("Social", "name is: "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
+        edtMobile = view.findViewById(R.id.edt_phone_call);
+        String mobile = edtMobile.getText().toString().trim();
+        Prefs.putString(AUtils.PREFS.SUR_MOBILE, mobile);
+        Log.i("Social", "mobile is: "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
         Log.d(TAG, "name : "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
         Log.d(TAG, "mobile : "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
 
@@ -151,6 +158,44 @@ public class SurveyFormOneFragment extends Fragment {
 
 
     private void setOnClick() {
+        edtName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String name = editable.toString();
+                Prefs.putString(AUtils.PREFS.SUR_NAME,name);
+                Log.i("Social", "name is: "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
+            }
+        });
+
+        edtMobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String mobile = editable.toString();
+                Prefs.putString(AUtils.PREFS.SUR_MOBILE,mobile);
+                Log.i("Social", "mobile is: "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
+            }
+        });
+
         liMonthBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,8 +206,8 @@ public class SurveyFormOneFragment extends Fragment {
                         //
 
                         if (birthMonth.length() == 1) {
-                            birthDayDate = birthDay + "-" + "0" + birthMonth + "-" + birthYear;
-                            Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
+                            birthDayDate = birthYear + "-" + "0" + birthMonth + "-" +"0" +birthDay ;
+                            Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE, Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
                             Log.i("Social", "date of birth: "+Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,""));
                             atxtMonth.setText("0" + birthMonth);
                             Prefs.putString(AUtils.PREFS.SUR_BIRTH_MONTH, "0" + birthMonth);
@@ -170,7 +215,7 @@ public class SurveyFormOneFragment extends Fragment {
                         } else{
                             birthDayDate = birthDay + "-" + birthMonth + "-" + birthYear;
                             Log.d("Rahul", "date_of_birth: " + birthDayDate);
-                            Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
+                            Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
                             Log.i("Social", "date of birth: "+Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,""));
                             atxtMonth.setText(birthMonth);
                             Prefs.putString(AUtils.PREFS.SUR_BIRTH_MONTH, birthMonth);
@@ -193,7 +238,7 @@ public class SurveyFormOneFragment extends Fragment {
 
                         if (birthDay.length() == 1) {
                             birthDayDate = "0" +birthDay + "-" + "0" + birthMonth + "-" + birthYear;
-                            Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
+                            Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
                             Log.i("Social", "date of birth: "+Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,""));
                             atxtDay.setText("0" + birthDay);
                             Prefs.putString(AUtils.PREFS.SUR_BIRTH_DAY, "0" + birthDay);
@@ -201,7 +246,7 @@ public class SurveyFormOneFragment extends Fragment {
                         } else{
                             birthDayDate = birthDay + "-" + birthMonth + "-" + birthYear;
                             Log.d("Rahul", "date_of_birth: " + birthDayDate);
-                            Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
+                            Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
                             Log.i("Social", "date of birth: "+Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,""));
                             atxtDay.setText(birthDay);
                             Prefs.putString(AUtils.PREFS.SUR_BIRTH_DAY, birthDay);
@@ -227,7 +272,7 @@ public class SurveyFormOneFragment extends Fragment {
                         myAge(birthYear);
                         Prefs.putString(AUtils.PREFS.SUR_BIRTH_YEAR, birthYear);
                         Log.i("Social", "birth year: "+Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
-                        Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
+                        Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
                         Log.i("Social", "date of birth: "+Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,""));
                     }
                 }, birthYear);
@@ -240,13 +285,6 @@ public class SurveyFormOneFragment extends Fragment {
     }
 
 
-    private boolean isValidPhone(String pass) {
-        if (pass != null && pass.length() == 10) {
-            AUtils.warning(context, "please enter valid mobile number");
-            return false;
-        }
-        return true;
-    }
 
     private void myAge(String birthYear){
         Calendar today = getInstance();
@@ -324,8 +362,21 @@ public class SurveyFormOneFragment extends Fragment {
         if (edtName.getText().toString().trim().isEmpty()){
             AUtils.warning(context,"Please enter your nome");
             return false;
+        }else if (edtMobile.getText().toString().trim().isEmpty()){
+            AUtils.warning(context,"Please enter your nome");
+            return false;
+        }else if (edtMobile.getText().toString().length() <10){
+            AUtils.warning(context,"Please enter ");
+            return false;
         }
         return true;
+    }
+
+    public Boolean checkEditText(){
+        if (isValid()){
+            return true;
+        }
+        return false;
     }
 
 }

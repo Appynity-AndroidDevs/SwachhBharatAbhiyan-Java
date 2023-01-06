@@ -2,6 +2,8 @@ package com.appynitty.swachbharatabhiyanlibrary.pojos;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 public class SurveyDetailsRequestPojo {
     @SerializedName("ReferanceId")
     String ReferanceId;

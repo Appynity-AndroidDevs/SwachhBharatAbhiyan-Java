@@ -39,6 +39,7 @@
         android:screenOrientation="portrait"
         android:networkSecurityConfig="@xml/network_config"
         android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

@@ -1,19 +1,21 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.SurPagerAdapter;
@@ -23,13 +25,13 @@ import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResultPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.SurveyDetailsVM;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,6 +52,14 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
     private SurveyDetailsRepo surveyDetailsRepo;
     private SurveyDetailsRequestPojo requestPojo = new SurveyDetailsRequestPojo();
+    private SurveyDetailsVM surveyDetailsVM;
+
+    private SurveyFormOneFragment surveyFormOneFragment;
+    private SurveyFormTwoFragment surveyFormTwoFragment;
+    private SurveyFormThreeFragment surveyFormThreeFragment;
+    private SurveyFormFourFragment surveyFormFourFragment;
+    private SurveyFormFiveFragment surveyFormFiveFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +72,12 @@ public class SurveyInformationActivity extends AppCompatActivity {
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
         dotsIndicator = findViewById(R.id.dots_indicator);
+        surveyFormFiveFragment = new SurveyFormFiveFragment();
+        surveyFormFourFragment = new SurveyFormFourFragment();
+        surveyFormThreeFragment = new SurveyFormThreeFragment();
+        surveyFormTwoFragment = new SurveyFormTwoFragment();
+        surveyFormOneFragment = new SurveyFormOneFragment();
+
         pagerAdapter = new SurPagerAdapter(getSupportFragmentManager(),getLifecycle());
         imgBack = findViewById(R.id.img_survey_back);
         btnNext = findViewById(R.id.btn_next);
@@ -173,7 +189,36 @@ public class SurveyInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setData();
-                startActivity(new Intent(context, SurveyCompletActivity.class));
+                surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+                surveyDetailsVM.surveyFormApi();
+                surveyDetailsVM.getSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
+                    @Override
+                    public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
+                        Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
+                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                            } else {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                            }
+                            startActivity(new Intent(context, SurveyCompletActivity.class));
+                        }
+                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                            } else {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                            }
+                        }
+                    }
+                });
+                surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
+                    @Override
+                    public void onChanged(Throwable throwable) {
+                        AUtils.error(context, throwable.getMessage());
+                    }
+                });
+
             }
         });
 
@@ -193,6 +238,34 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     btnBack.setVisibility(View.VISIBLE);
                 }
                 if(position < Objects.requireNonNull(viewPager.getAdapter()).getItemCount() -1 ) {
+                    /*for (position=0;position<=4;position++){
+                        if (position ==0){
+                            if ( surveyFormOneFragment.checkEditText()) {
+                                viewPager.setCurrentItem(position);
+                                return;
+                            }
+                        }*//*else if (position ==1){
+                            if ( surveyFormTwoFragment.checkEditText()) {
+                                viewPager.setCurrentItem(position);
+                                return;
+                            }
+                        } else if (position ==2){
+                            if ( surveyFormThreeFragment.checkEditText()) {
+                                viewPager.setCurrentItem(position);
+                                return;
+                            }
+                        } else if (position ==3){
+                            if ( surveyFormFourFragment.checkEditText()) {
+                                viewPager.setCurrentItem(position);
+                                return;
+                            }
+                        } else if (position ==4){
+                            if ( surveyFormFiveFragment.checkEditText()) {
+                                viewPager.setCurrentItem(position);
+                                return;
+                            }
+                        }*//*
+                    }*/
                     btnNext.setVisibility(View.VISIBLE);
                     btnDone.setVisibility(View.GONE);
 

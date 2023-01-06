@@ -2,7 +2,7 @@ package com.appynitty.swachbharatabhiyanlibrary.pojos;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SurveyDetailsResultPojo {
+public class SurveyDetailsResponsePojo {
 
     @SerializedName("ID")
     int ID;
@@ -85,7 +85,7 @@ public class SurveyDetailsResultPojo {
 
     @Override
     public String toString() {
-        return "SurveyDetailsResultPojo{" +
+        return "SurveyDetailsResponsePojo{" +
                 "ID=" + ID +
                 ", status='" + status + '\'' +
                 ", message='" + message + '\'' +

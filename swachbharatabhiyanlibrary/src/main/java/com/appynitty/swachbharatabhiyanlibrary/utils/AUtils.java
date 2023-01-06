@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,16 +14,11 @@ import android.graphics.Color;
 import android.graphics.ImageDecoder;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,9 +31,6 @@ import com.appynitty.swachbharatabhiyanlibrary.activity.DashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.activity.EmpDashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.activity.WasteDashboardActivity;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.AppGeoAreaAdapter;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
-import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.SyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.entity.LastLocationEntity;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AppGeoArea;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
@@ -51,6 +42,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
@@ -58,11 +50,9 @@ import com.google.gson.reflect.TypeToken;
 import com.google.maps.android.PolyUtil;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.utils.CommonUtils;
-import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -141,7 +131,6 @@ public class AUtils extends CommonUtils {
     public static final String VERSION_CODE = "AppVersion";
 
     public static final String DIALOG_TYPE_VEHICLE = "DialogTypeVehicle";
-    public static final String DIALOG_NUMBER_VEHICLE = "DialogNumberVehicle";
     public static final String DIALOG_TYPE_LANGUAGE = "Dialog_Type_Language";
 
     public static final String DEFAULT_LANGUAGE_ID = LanguageConstants.ENGLISH;
@@ -158,10 +147,6 @@ public class AUtils extends CommonUtils {
     public static final String LONG = "Long";
     public static final String HOUSE_ID = "ReferanceId";
     public static final String HOUSE_ID_START = "ReferanceId";
-
-    public static final int LOCATION_INTERVAL = 5000;
-    //    public static final int LOCATION_INTERVAL = 1000 * 60 * 10; //10 Minute
-    public static final int FASTEST_LOCATION_INTERVAL = 5000;
 
     public static final String HISTORY_DETAILS_DATE = "HistoryDetailsDate";
     public static final String RADIO_SELECTED_HP = "house_point";
@@ -585,12 +570,6 @@ public class AUtils extends CommonUtils {
         Prefs.remove(PREFS.IN_PUNCH_DATE);
     }
 
-    public static void removeInDumpHouseId() {
-
-        Prefs.remove(AUtils.HOUSE_ID_START);
-        Prefs.remove(AUtils.HOUSE_ID);
-    }
-
     public static String getServerDate(Calendar calendar) {
 
         SimpleDateFormat format = new SimpleDateFormat(AUtils.SERVER_DATE_FORMATE, Locale.ENGLISH);
@@ -663,10 +642,6 @@ public class AUtils extends CommonUtils {
         }
 
         return languagePojoList;
-    }
-
-    public static void setLanguagePojoList(ArrayList<LanguagePojo> languagePojoList) {
-        AUtils.languagePojoList = languagePojoList;
     }
 
     public static String getPreviousDateDutyOffTime() {
@@ -808,15 +783,6 @@ public class AUtils extends CommonUtils {
         int xPos = (canvas.getWidth() / 2);
         int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
 
-        /*canvas.drawText("ID: " + mId, 25, yPos + 230, stkPaint);    //difference of 25
-        canvas.drawText("ID: " + mId, 25, yPos + 230, paint);
-        canvas.drawText("Lat: " + lat, 25, yPos + 255, stkPaint);
-        canvas.drawText("Lat: " + lat, 25, yPos + 255, paint);
-        canvas.drawText("Long: " + lon, 25, yPos + 280, stkPaint);
-        canvas.drawText("Long: " + lon, 25, yPos + 280, paint);
-        canvas.drawText(mDate, 25, yPos + 305, stkPaint);
-        canvas.drawText(mDate, 25, yPos + 305, paint);*/
-
         canvas.drawText("ID: " + mId, 26, yPos + 340, stkPaint);    //difference of 40
         canvas.drawText("ID: " + mId, 25, yPos + 340, paint);
         canvas.drawText("Lat: " + mLat, 28, yPos + 380, stkPaint);
@@ -836,9 +802,8 @@ public class AUtils extends CommonUtils {
         System.out.println("Current time => " + c);
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.ENGLISH);
-        String formattedDate = df.format(c);
 
-        return formattedDate;
+        return df.format(c);
     }
 
     /**
@@ -846,11 +811,10 @@ public class AUtils extends CommonUtils {
      */
     public static void gpsStatusCheck(Context ctx) {
 
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10);
-        mLocationRequest.setSmallestDisplacement(10);
-        mLocationRequest.setFastestInterval(10);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationRequest mLocationRequest = new LocationRequest.Builder(0)
+                .setMinUpdateDistanceMeters(10)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
+
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
 
@@ -908,84 +872,6 @@ public class AUtils extends CommonUtils {
         return image;
     }
 
-    public static File getCompressed(Context context, String path) throws IOException {
-
-        if (context == null) throw new NullPointerException("Context must not be null.");
-        //getting device external cache directory, might not be available on some devices,
-        // so our code fall back to internal storage cache directory, which is always available but in smaller quantity
-        File cacheDir = context.getExternalCacheDir();
-        if (cacheDir == null)
-            //fall back
-            cacheDir = context.getCacheDir();
-
-        String rootDir = cacheDir.getAbsolutePath() + "/ImageCompressor";
-        File root = new File(rootDir);
-
-        //Create ImageCompressor folder if it doesnt already exists.
-        if (!root.exists()) root.mkdirs();
-
-        //decode and resize the original bitmap from @param path.
-        Bitmap bitmap = decodeImageFromFiles(path, /* your desired width*/300, /*your desired height*/ 300);
-
-        //create placeholder for the compressed image file
-        File compressed = new File(root, "IMG_" + System.currentTimeMillis() + ".jpg" /*Your desired format*/);
-
-        //convert the decoded bitmap to stream
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        /*compress bitmap into byteArrayOutputStream
-            Bitmap.compress(Format, Quality, OutputStream)
-            Where Quality ranges from 1 - 100.
-         */
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-
-        /*
-        Right now, we have our bitmap inside byteArrayOutputStream Object, all we need next is to write it to the compressed file we created earlier,
-        java.io.FileOutputStream can help us do just That!
-         */
-        FileOutputStream fileOutputStream = new FileOutputStream(compressed);
-        fileOutputStream.write(byteArrayOutputStream.toByteArray());
-        fileOutputStream.flush();
-
-        fileOutputStream.close();
-
-        //File written, return to the caller. Done!
-        return compressed;
-    }
-
-    public static Bitmap decodeImageFromFiles(String path, int width, int height) {
-        BitmapFactory.Options scaleOptions = new BitmapFactory.Options();
-        scaleOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, scaleOptions);
-        int scale = 1;
-        while (scaleOptions.outWidth / scale / 2 >= width && scaleOptions.outHeight / scale / 2 >= height) {
-            scale *= 2;
-        }
-        // decode with the sample size
-        BitmapFactory.Options outOptions = new BitmapFactory.Options();
-        outOptions.inSampleSize = scale;
-        return BitmapFactory.decodeFile(path, outOptions);
-    }
-
-    // added by rahul
-
-    public static float dpFromPx(final Context context, final float px) {
-        return px / context.getResources().getDisplayMetrics().density;
-    }
-
-    public static float pxFromDp(final Context context, final float dp) {
-        return dp * context.getResources().getDisplayMetrics().density;
-    }
-
-    public static float convertDpToPixel(float dp, Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / displayMetrics.DENSITY_DEFAULT);
-    }
-
-    public static float convertPixelsToDp(float px, Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return px / ((float) context.getResources().getDisplayMetrics().densityDpi / displayMetrics.DENSITY_DEFAULT);
-    }
 
     public interface UlbConstants {
         String ETAPALLI = "Etapalli";
@@ -1213,25 +1099,6 @@ public class AUtils extends CommonUtils {
 
     public static String getTrailId() {
         return Prefs.getString(TRAIL_ID, null);
-    }
-
-    public static void playSound(Context context) throws IllegalArgumentException,
-            SecurityException,
-            IllegalStateException,
-            IOException {
-
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        MediaPlayer mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setDataSource(context, soundUri);
-        final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-
-        if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
-            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-            // Uncomment the following line if you aim to play it repeatedly
-            // mMediaPlayer.setLooping(true);
-            mMediaPlayer.prepare();
-            mMediaPlayer.start();
-        }
     }
 
 }

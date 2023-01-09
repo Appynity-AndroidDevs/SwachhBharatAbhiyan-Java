@@ -166,9 +166,10 @@ public class GIS_LocationService extends LifecycleService {
         criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
         criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
 
-
-        locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 0, 12F, locationListenerGPS);
-
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 0, 12F, locationListenerGPS);
+        else
+            Toast.makeText(this, "Please turn on the GPS!", Toast.LENGTH_SHORT).show();
 
         //        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);

@@ -25,16 +25,15 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LifecycleService;
 
-import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
-import com.google.gson.reflect.TypeToken;
 import com.pixplicity.easyprefs.library.Prefs;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -68,7 +67,7 @@ public class GIS_LocationService extends LifecycleService {
 
             if (location != null) {
                 Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
-                Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & Speed: " + location.getSpeed(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GIS_LocationService.this, "new location received with Accuracy: " + location.getAccuracy() + " , Speed: " + location.getSpeed() + " & Provider: " + location.getProvider(), Toast.LENGTH_SHORT).show();
 
                 if (location.hasAccuracy() && location.getAccuracy() <= 12) {
                     insertToDB(location);
@@ -157,43 +156,45 @@ public class GIS_LocationService extends LifecycleService {
 
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setSpeedRequired(true);
-        criteria.setAltitudeRequired(false);
+        /*criteria.setAltitudeRequired(false);
         criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        criteria.setCostAllowed(true);*/
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10F, locationListenerGPS);
+        //API level 9 and up
+        criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
+        criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
+        criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
 
 
-        Type type = new TypeToken<UserDetailPojo>() {
-        }.getType();
+        locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 0, 12F, locationListenerGPS);
+
+
         //        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-//        locationRequest = createLocationRequest();
+        locationRequest = createLocationRequest();
 
-        /*locationCallback = new LocationCallback() {
+        locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
                 if (location != null) {
                     Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
-                    Toast.makeText(GIS_LocationService.this, "new location received with acc: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & speed: " + location.getSpeed(), Toast.LENGTH_SHORT).show();
 
                     if (location.hasAccuracy() && location.getAccuracy() <= 12) {
                         Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude()
                                 + ", lon: " + location.getLongitude()
                                 + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
 
-                        LocationEntity locEntity = new LocationEntity();
-                        locEntity.setLatLng(location.getLongitude() + " " + location.getLatitude());
-                        mLocationRepository.insert(locEntity);
+                        insertToDB(location);
                     }
 
                 }
 
             }
-        };*/
+        };
 //        startLocationUpdates();
 
         mLocationRepository.getAllLocations().observe(GIS_LocationService.this, locationEntities -> {

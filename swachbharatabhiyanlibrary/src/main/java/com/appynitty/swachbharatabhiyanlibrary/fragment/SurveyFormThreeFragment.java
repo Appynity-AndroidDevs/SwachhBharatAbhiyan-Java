@@ -60,6 +60,8 @@ public class SurveyFormThreeFragment extends Fragment {
     private CheckBox[] chkArrayOtherCity;
 
     String yes,no;
+    String yesOtherC,noOtherC;
+    String land,shop,other;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,8 +128,11 @@ public class SurveyFormThreeFragment extends Fragment {
         chkArrayBusinessType[1].setOnClickListener(mListenerBusinessType);
 //Available
         cbLandA = view.findViewById(R.id.cb_land_available);
+        land = getResStringLanguage(R.string.str_land,"en");
         cbShopA = view.findViewById(R.id.cb_shop_available);
+        shop = getResStringLanguage(R.string.str_shop,"en");
         cbOtherA = view.findViewById(R.id.cb_other_available);
+        other = getResStringLanguage(R.string.str_other,"en");
 
         chkArrayAvailable = new CheckBox[3];
         chkArrayAvailable[0] = cbLandA;
@@ -138,7 +143,9 @@ public class SurveyFormThreeFragment extends Fragment {
         chkArrayAvailable[2].setOnClickListener(mListenerAvailable);
 //other city
         cbYesOCity = view.findViewById(R.id.cb_yes_member_other_city);
+        yesOtherC = getResStringLanguage(R.string.str_yes,"en");
         cbNoOCity = view.findViewById(R.id.cb_no_member_other_city);
+        noOtherC = getResStringLanguage(R.string.str_no,"en");
 
         chkArrayOtherCity = new CheckBox[2];
         chkArrayOtherCity[0] = cbYesOCity;
@@ -401,8 +408,19 @@ public class SurveyFormThreeFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxAvailable = view.findViewById(current.getId());
                     String cbValueAvailable = checkBoxAvailable.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueAvailable);
-                    Prefs.putString(AUtils.PREFS.SUR_RESOURCE_AVAILABLE,cbValueAvailable);
+                    if (checkedId == R.id.cb_land_available){
+                        cbValueAvailable = land;
+                        Log.i("Social", "onClick: "+cbValueAvailable);
+                        Prefs.putString(AUtils.PREFS.SUR_RESOURCE_AVAILABLE,cbValueAvailable);
+                    }else if (checkedId == R.id.cb_shop_available){
+                        cbValueAvailable = shop;
+                        Log.i("Social", "onClick: "+cbValueAvailable);
+                        Prefs.putString(AUtils.PREFS.SUR_RESOURCE_AVAILABLE,cbValueAvailable);
+                    }else if (checkedId == R.id.cb_other_available){
+                        cbValueAvailable = other;
+                        Log.i("Social", "onClick: "+cbValueAvailable);
+                        Prefs.putString(AUtils.PREFS.SUR_RESOURCE_AVAILABLE,cbValueAvailable);
+                    }
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -421,8 +439,16 @@ public class SurveyFormThreeFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxOtherCity = view.findViewById(current.getId());
                     String cbValueOtherCity = checkBoxOtherCity.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueOtherCity);
-                   // Prefs.putString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,cbValueOtherCity);
+                    if (checkedId == R.id.cb_yes_member_other_city){
+                        cbValueOtherCity = yesOtherC;
+                        Log.i("Social", "onClick: "+cbValueOtherCity);
+                        // Prefs.putString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,cbValueOtherCity);
+                    }else if (checkedId == R.id.cb_no_member_other_city){
+                        cbValueOtherCity = noOtherC;
+                        Log.i("Social", "onClick: "+cbValueOtherCity);
+                        // Prefs.putString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,cbValueOtherCity);
+                    }
+
                     Prefs.putString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,String.valueOf(false));
                     current.setChecked(true);
                 } else {

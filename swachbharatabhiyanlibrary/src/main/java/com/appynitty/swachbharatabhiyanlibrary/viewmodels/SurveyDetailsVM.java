@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
@@ -85,6 +86,13 @@ public class SurveyDetailsVM extends ViewModel {
                 surveyDetailsError.setValue(t);
             }
         });
+    }
+
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+
+        }
     }
 
 

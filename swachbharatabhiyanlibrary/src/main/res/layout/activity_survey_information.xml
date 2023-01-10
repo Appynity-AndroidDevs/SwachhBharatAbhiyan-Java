@@ -79,6 +79,17 @@
                 android:layout_height="match_parent"
                 android:layoutDirection="ltr"/>
 
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleLarge"
+                android:indeterminate="true"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="@color/colorWhite"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
         </FrameLayout>
 
         <RelativeLayout
@@ -136,6 +147,7 @@
                 android:padding="@dimen/dim_10_dp"
                 android:shadowColor="@color/colorGray"
                 android:text="Update"
+                android:visibility="gone"
                 android:textColor="@color/colorSurveyTextBlue"/>
             <Button
                 android:id="@+id/btn_back"
@@ -161,3 +173,4 @@
     </RelativeLayout>
 
 </RelativeLayout>
+

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
@@ -50,6 +51,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private SurPagerAdapter pagerAdapter;
     private View view;
+    private ProgressBar loader;
 
     private SurveyDetailsRepo surveyDetailsRepo;
     private SurveyDetailsRequestPojo requestPojo = new SurveyDetailsRequestPojo();
@@ -75,6 +77,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         headerReferenceId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
+        loader = findViewById(R.id.progress_bar);
         dotsIndicator = findViewById(R.id.dots_indicator);
         surveyFormFiveFragment = new SurveyFormFiveFragment();
         surveyFormFourFragment = new SurveyFormFourFragment();
@@ -91,6 +94,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
         btnDone.setVisibility(View.GONE);
         btnUpdate.setVisibility(View.GONE);
+        loader.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
 
@@ -258,6 +262,13 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     }
                 });
 
+                surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer visibility) {
+                        loader.setVisibility(visibility);
+                    }
+                });
+
             }
         });
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -296,8 +307,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     btnNext.setVisibility(View.GONE);
                     btnDone.setVisibility(View.VISIBLE);
                     if (apiReferenceId == null){
-                        btnUpdate.setVisibility(View.VISIBLE);
+                        btnUpdate.setVisibility(View.GONE);
+                        btnDone.setVisibility(View.VISIBLE);
+                    }else {
                         btnDone.setVisibility(View.GONE);
+                        btnUpdate.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -375,6 +389,13 @@ public class SurveyInformationActivity extends AppCompatActivity {
             @Override
             public void onChanged(Throwable throwable) {
                 AUtils.error(context, throwable.getMessage());
+            }
+        });
+
+        surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer visibility) {
+                loader.setVisibility(visibility);
             }
         });
 

@@ -39,6 +39,12 @@ public class SurveyFormFiveFragment extends Fragment {
     private CheckBox cbYesDivang, cbNoDivang;
     private CheckBox[] chkArrayDivang;
 
+    private String life,medical,both;
+    String gov,pri;
+    String yesAyu,noAyu;
+    String yesBooster,noBooster;
+    String yesDivyang,noDivyang;
+
 
 
 
@@ -57,8 +63,11 @@ public class SurveyFormFiveFragment extends Fragment {
         context = getActivity();
 //insurance
         cbLInsurance = view.findViewById(R.id.cb_life_insurance);
+        life = getResStringLanguage(R.string.str_life_insurance,"en");
         cbMInsurance = view.findViewById(R.id.cb_medical_insurance);
+        medical = getResStringLanguage(R.string.str_medical_insurance,"en");
         cbBothInsurance = view.findViewById(R.id.cb_both_insurance);
+        both = getResStringLanguage(R.string.str_both,"en");
 
         chkArrayInsurance = new CheckBox[3];
         chkArrayInsurance[0] = cbLInsurance;
@@ -70,7 +79,9 @@ public class SurveyFormFiveFragment extends Fragment {
 
 // Insurance Type
         cbGov = view.findViewById(R.id.cb_gov_insurance_type);
+        gov = getResStringLanguage(R.string.str_government,"en");
         cbPrivate = view.findViewById(R.id.cb_private_insurance_type);
+        pri = getResStringLanguage(R.string.str_private,"en");
 
         chkArrayIType = new CheckBox[2];
         chkArrayIType[0] = cbGov;
@@ -79,7 +90,9 @@ public class SurveyFormFiveFragment extends Fragment {
         chkArrayIType[1].setOnClickListener(mListenerIType);
 // Ayushman
         cbYesAyushman = view.findViewById(R.id.cb_yes_ayushman);
+        yesAyu = getResStringLanguage(R.string.str_yes,"en");
         cbNoAyushman = view.findViewById(R.id.cb_no_ayushman);
+        noAyu = getResStringLanguage(R.string.str_no,"en");
 
         chkArrayAyushman = new CheckBox[2];
         chkArrayAyushman[0] = cbYesAyushman;
@@ -88,7 +101,9 @@ public class SurveyFormFiveFragment extends Fragment {
         chkArrayAyushman[1].setOnClickListener(mListenerAyushman);
 //Booster Dose
         cbYesBooster = view.findViewById(R.id.cb_yes_booster);
+        yesBooster = getResStringLanguage(R.string.str_yes,"en");
         cbNoBooster = view.findViewById(R.id.cb_no_booster);
+        noBooster = getResStringLanguage(R.string.str_no,"en");
 
         chkArrayBooster = new CheckBox[2];
         chkArrayBooster[0] = cbYesBooster;
@@ -97,7 +112,9 @@ public class SurveyFormFiveFragment extends Fragment {
         chkArrayBooster[1].setOnClickListener(mListenerBooster);
 //Divang
         cbYesDivang = view.findViewById(R.id.cb_yes_divyang);
+        yesDivyang = getResStringLanguage(R.string.str_yes,"en");
         cbNoDivang = view.findViewById(R.id.cb_no_divyang);
+        noDivyang = getResStringLanguage(R.string.str_no,"en");
 
         chkArrayDivang = new CheckBox[2];
         chkArrayDivang[0] = cbYesDivang;
@@ -125,8 +142,20 @@ public class SurveyFormFiveFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxInsurance = view.findViewById(current.getId());
                     String cbValueInsurance = checkBoxInsurance.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueInsurance);
-                    Prefs.putString(AUtils.PREFS.SUR_INSURANCE,cbValueInsurance);
+                    if (checkedId == R.id.cb_life_insurance){
+                        cbValueInsurance = life;
+                        Log.i("Social", "onClick: "+cbValueInsurance);
+                        Prefs.putString(AUtils.PREFS.SUR_INSURANCE,cbValueInsurance);
+                    }else if (checkedId == R.id.cb_medical_insurance){
+                        cbValueInsurance = medical;
+                        Log.i("Social", "onClick: "+cbValueInsurance);
+                        Prefs.putString(AUtils.PREFS.SUR_INSURANCE,cbValueInsurance);
+                    }else if (checkedId == R.id.cb_both_insurance){
+                        cbValueInsurance = both;
+                        Log.i("Social", "onClick: "+cbValueInsurance);
+                        Prefs.putString(AUtils.PREFS.SUR_INSURANCE,cbValueInsurance);
+                    }
+
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -145,8 +174,16 @@ public class SurveyFormFiveFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxIType = view.findViewById(current.getId());
                     String cbValueIType = checkBoxIType.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueIType);
-                  //  Prefs.putString(AUtils.PREFS.SUR_UNDER_INSURANCE,cbValueIType);
+                    if (checkedId == R.id.cb_gov_insurance_type){
+                        cbValueIType = gov;
+                        Log.i("Social", "onClick: "+cbValueIType);
+                        //  Prefs.putString(AUtils.PREFS.SUR_UNDER_INSURANCE,cbValueIType);
+                    }else if (checkedId == R.id.cb_private_insurance_type){
+                        cbValueIType = pri;
+                        Log.i("Social", "onClick: "+cbValueIType);
+                        //  Prefs.putString(AUtils.PREFS.SUR_UNDER_INSURANCE,cbValueIType);
+                    }
+
                     Prefs.putString(AUtils.PREFS.SUR_UNDER_INSURANCE,String.valueOf(false));
                     current.setChecked(true);
                 } else {
@@ -167,8 +204,15 @@ public class SurveyFormFiveFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxAyushman = view.findViewById(current.getId());
                     String cbValueAyushman = checkBoxAyushman.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueAyushman);
-                   // Prefs.putString(AUtils.PREFS.SUR_AYUSHMAN_BENE,cbValueAyushman);
+                    if (checkedId == R.id.cb_yes_ayushman){
+                        cbValueAyushman = yesAyu;
+                        Log.i("Social", "onClick: "+cbValueAyushman);
+                        // Prefs.putString(AUtils.PREFS.SUR_AYUSHMAN_BENE,cbValueAyushman);
+                    }else if (checkedId == R.id.cb_no_ayushman){
+                        cbValueAyushman = noAyu;
+                        Log.i("Social", "onClick: "+cbValueAyushman);
+                        // Prefs.putString(AUtils.PREFS.SUR_AYUSHMAN_BENE,cbValueAyushman);
+                    }
                     Prefs.putString(AUtils.PREFS.SUR_AYUSHMAN_BENE,String.valueOf(false));
                     current.setChecked(true);
                 } else {
@@ -189,8 +233,15 @@ public class SurveyFormFiveFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxBooster = view.findViewById(current.getId());
                     String cbValueBooster = checkBoxBooster.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueBooster);
-                  //  Prefs.putString(AUtils.PREFS.SUR_BOOSTER_SHOT,cbValueBooster);
+                    if (checkedId == R.id.cb_yes_booster){
+                        cbValueBooster = yesBooster;
+                        Log.i("Social", "onClick: "+cbValueBooster);
+                        //  Prefs.putString(AUtils.PREFS.SUR_BOOSTER_SHOT,cbValueBooster);
+                    }else if (checkedId == R.id.cb_no_booster){
+                        cbValueBooster = noBooster;
+                        Log.i("Social", "onClick: "+cbValueBooster);
+                        //  Prefs.putString(AUtils.PREFS.SUR_BOOSTER_SHOT,cbValueBooster);
+                    }
                     Prefs.putString(AUtils.PREFS.SUR_BOOSTER_SHOT,String.valueOf(false));
                     current.setChecked(true);
                 } else {
@@ -211,7 +262,14 @@ public class SurveyFormFiveFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxDivang = view.findViewById(current.getId());
                     String cbValueDivang = checkBoxDivang.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueDivang);
+                    if (checkedId == R.id.cb_yes_divyang){
+                        cbValueDivang =yesDivyang;
+                        Log.i("Social", "onClick: "+cbValueDivang);
+                    }else if (checkedId == R.id.cb_no_divyang){
+                        cbValueDivang = noDivyang;
+                        Log.i("Social", "onClick: "+cbValueDivang);
+                    }
+
                     Prefs.putString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG, String.valueOf(false));
                     current.setChecked(true);
                 } else {

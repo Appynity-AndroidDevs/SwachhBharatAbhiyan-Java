@@ -64,6 +64,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private SurveyFormFiveFragment surveyFormFiveFragment;
     private List<GetSurveyResponsePojo> getSurveyDetailsPojo;
     String headerReferenceId, apiReferenceId;
+    private int fragPosition = 0;
 
 
     @Override
@@ -181,41 +182,36 @@ public class SurveyInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (viewPager.getCurrentItem() < Objects.requireNonNull(viewPager.getAdapter()).getItemCount()) {
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                    /*for (int i=0; i<viewPager.getCurrentItem()+1; i++){
-                        if (i == 0){
-                            if ( surveyFormOneFragment.checkFromOneText()) {
-                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                                return;
-                            }
-                            setData();
-                        }else if (i == 1){
-                            if ( surveyFormTwoFragment.checkFromTwoText()) {
-                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                                return;
-                            }
-                            setData();
-                        } else if (i == 2){
-                            if ( surveyFormThreeFragment.checkFromThreeText()) {
-                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                                return;
-                            }
-                            setData();
-                        }else if (i == 3){
-                            if ( surveyFormFourFragment.checkFromFourText()) {
-                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                                return;
-                            }
-                            setData();
-                        }else if (i == 4){
-                            if ( surveyFormFiveFragment.checkFromFiveText()) {
-                                viewPager.setCurrentItem(viewPager.getCurrentItem() , true);
-                                return;
-                            }
+
+                    if (fragPosition == 0){
+                        if ( isValidFragOne()) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+
                             setData();
                         }
-                    }*/
-                    setData();
+                    }else if (fragPosition == 1){
+                        if ( surveyFormTwoFragment.checkFromTwoText()) {
+                            setData();
+                            return;
+                        }
+                    }else if (fragPosition == 2){
+                        if ( surveyFormThreeFragment.checkFromThreeText()) {
+                            setData();
+                            return;
+                        }
+                    }else if (fragPosition == 3){
+                        if ( surveyFormFourFragment.checkFromFourText()) {
+                            setData();
+                            return;
+                        }
+
+                    } else if (fragPosition == 4){
+                        if ( surveyFormFiveFragment.checkFromFiveText()) {
+                            setData();
+                            return;
+                        }
+
+                    }
                 }
             }
         });
@@ -289,7 +285,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 Log.i("Rahul", "PageChange: "+position);
-
+                fragPosition = position;
                 if(position==0) {
                     btnBack.setVisibility(View.GONE);
                 }else  {
@@ -413,5 +409,25 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
             }
         });*/
+    }
+
+    private boolean isValidFragOne(){
+        String surName = Prefs.getString(AUtils.PREFS.SUR_NAME,"");
+        String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
+        String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
+        String bMonth = Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"");
+        String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
+        if (surName.trim().isEmpty()){
+            AUtils.warning(context,"Please enter your nome");
+            return false;
+        }else if (surMobile.trim().isEmpty()){
+            AUtils.warning(context,"Please enter your mobile number");
+            return false;
+        }else if (surMobile.length()<10){
+            AUtils.warning(context,"Please enter your valid mobile number");
+            return false;
+        }
+
+        return true;
     }
 }

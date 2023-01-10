@@ -48,6 +48,10 @@ public class SurveyFormTwoFragment extends Fragment {
     private CheckBox[] chkArrayMarital;
     private CheckBox cbOwnHouse,cbRanted,cbLease;
     private CheckBox[] chkArrayLiving;
+    String ug,g,pg;
+    String service,business,professional;
+    String married,unmarried;
+    String own,rent,lease;
 
 
     @Override
@@ -72,8 +76,11 @@ public class SurveyFormTwoFragment extends Fragment {
         txtYearMarriage = view.findViewById(R.id.auto_year_anniversary);
 
         cbUg = view.findViewById(R.id.cb_un_graduate);
+        ug = getResStringLanguage(R.string.str_ug,"en");
         cbG = view.findViewById(R.id.cb_graduate);
+        g = getResStringLanguage(R.string.str_graduate,"en");
         cbPg = view.findViewById(R.id.cb_pst_graduate);
+        pg = getResStringLanguage(R.string.str_pg,"en");
 
         chkArrayQualification = new CheckBox[3];
         chkArrayQualification[0] = cbUg;
@@ -84,8 +91,11 @@ public class SurveyFormTwoFragment extends Fragment {
         chkArrayQualification[2].setOnClickListener(mListenerQualification);
 
         cbServiceO = view.findViewById(R.id.cb_service_occupation);
+        service = getResStringLanguage(R.string.str_service,"en");
         cbBusinessO = view.findViewById(R.id.cb_business_occupation);
+        business = getResStringLanguage(R.string.str_business,"en");
         cbProfessionalO = view.findViewById(R.id.cb_professional_occupation);
+        professional = getResStringLanguage(R.string.str_professional,"en");
 
         chkArrayOccupation = new CheckBox[3];
         chkArrayOccupation[0] = cbServiceO;
@@ -96,7 +106,9 @@ public class SurveyFormTwoFragment extends Fragment {
         chkArrayOccupation[2].setOnClickListener(mListenerOccupation);
 
         cbMarried = view.findViewById(R.id.cb_married);
+        married = getResStringLanguage(R.string.str_married,"en");
         cbUnMarried = view.findViewById(R.id.cb_unmarried);
+        unmarried = getResStringLanguage(R.string.str_unmarried,"en");
 
         chkArrayMarital = new CheckBox[2];
         chkArrayMarital[0] = cbMarried;
@@ -105,8 +117,11 @@ public class SurveyFormTwoFragment extends Fragment {
         chkArrayMarital[1].setOnClickListener(mListenerMarital);
 
         cbOwnHouse = view.findViewById(R.id.cb_own_house_li_status);
+        own = getResStringLanguage(R.string.str_own_house,"en");
         cbRanted = view.findViewById(R.id.cb_ranted_li_status);
+        rent = getResStringLanguage(R.string.str_ranted,"en");
         cbLease = view.findViewById(R.id.cb_lease_li_status);
+        lease = getResStringLanguage(R.string.str_lease,"en");
 
         chkArrayLiving = new CheckBox[3];
         chkArrayLiving[0] = cbOwnHouse;
@@ -222,8 +237,19 @@ public class SurveyFormTwoFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxQualification = view.findViewById(current.getId());
                     String cbValueQualification = checkBoxQualification.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueQualification);
-                    Prefs.putString(AUtils.PREFS.SUR_QUALIFICATION,cbValueQualification);
+                    if (checkedId == R.id.cb_un_graduate){
+                        cbValueQualification = ug;
+                        Log.i("Social", "onClick: "+cbValueQualification);
+                        Prefs.putString(AUtils.PREFS.SUR_QUALIFICATION,cbValueQualification);
+                    }else if (checkedId == R.id.cb_graduate){
+                        cbValueQualification = g;
+                        Log.i("Social", "onClick: "+cbValueQualification);
+                        Prefs.putString(AUtils.PREFS.SUR_QUALIFICATION,cbValueQualification);
+                    }else if (checkedId == R.id.cb_pst_graduate){
+                        cbValueQualification = pg;
+                        Log.i("Social", "onClick: "+cbValueQualification);
+                        Prefs.putString(AUtils.PREFS.SUR_QUALIFICATION,cbValueQualification);
+                    }
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -243,8 +269,19 @@ public class SurveyFormTwoFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxOccupation = view.findViewById(current.getId());
                     String cbValueOccupation = checkBoxOccupation.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueOccupation);
-                    Prefs.putString(AUtils.PREFS.SUR_OCCUPATION,cbValueOccupation);
+                    if (checkedId == R.id.cb_service_occupation){
+                        cbValueOccupation = service;
+                        Log.i("Social", "onClick: "+cbValueOccupation);
+                        Prefs.putString(AUtils.PREFS.SUR_OCCUPATION,cbValueOccupation);
+                    }else if (checkedId == R.id.cb_business_occupation){
+                        cbValueOccupation = business;
+                        Log.i("Social", "onClick: "+cbValueOccupation);
+                        Prefs.putString(AUtils.PREFS.SUR_OCCUPATION,cbValueOccupation);
+                    }else if (checkedId == R.id.cb_professional_occupation){
+                        cbValueOccupation = professional;
+                        Log.i("Social", "onClick: "+cbValueOccupation);
+                        Prefs.putString(AUtils.PREFS.SUR_OCCUPATION,cbValueOccupation);
+                    }
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -265,8 +302,16 @@ public class SurveyFormTwoFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxMarital = view.findViewById(current.getId());
                     String cbValueMarital = checkBoxMarital.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueMarital);
-                    Prefs.putString(AUtils.PREFS.SUR_MARITAL_STATUS,cbValueMarital);
+                    if (checkedId == R.id.cb_married){
+                        cbValueMarital = married;
+                        Log.i("Social", "onClick: "+cbValueMarital);
+                        Prefs.putString(AUtils.PREFS.SUR_MARITAL_STATUS,cbValueMarital);
+                    }else if (checkedId == R.id.cb_unmarried){
+                        cbValueMarital = unmarried;
+                        Log.i("Social", "onClick: "+cbValueMarital);
+                        Prefs.putString(AUtils.PREFS.SUR_MARITAL_STATUS,cbValueMarital);
+                    }
+
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -286,8 +331,19 @@ public class SurveyFormTwoFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxLiving = view.findViewById(current.getId());
                     String cbValueLiving = checkBoxLiving.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueLiving);
-                    Prefs.putString(AUtils.PREFS.SUR_LIVING_STATUS,cbValueLiving);
+                    if (checkedId == R.id.cb_own_house_li_status){
+                        cbValueLiving = own;
+                        Log.i("Social", "onClick: "+cbValueLiving);
+                        Prefs.putString(AUtils.PREFS.SUR_LIVING_STATUS,cbValueLiving);
+                    }else if (checkedId == R.id.cb_ranted_li_status){
+                        cbValueLiving = rent;
+                        Log.i("Social", "onClick: "+cbValueLiving);
+                        Prefs.putString(AUtils.PREFS.SUR_LIVING_STATUS,cbValueLiving);
+                    }else if (checkedId == R.id.cb_lease_li_status){
+                        cbValueLiving = lease;
+                        Log.i("Social", "onClick: "+cbValueLiving);
+                        Prefs.putString(AUtils.PREFS.SUR_LIVING_STATUS,cbValueLiving);
+                    }
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);

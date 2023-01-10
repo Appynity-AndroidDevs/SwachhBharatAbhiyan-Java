@@ -2,11 +2,14 @@ package com.appynitty.swachbharatabhiyanlibrary.fragment;
 
 import static java.util.Calendar.*;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -34,6 +38,7 @@ import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthYearPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -56,10 +61,14 @@ public class SurveyFormOneFragment extends Fragment {
     private CheckBox cbMale, cbFemale,cbTransG;
     private boolean isCheckGender = false;
     private CheckBox[] chkArrayGender;
+    public static ArrayList<String> genderArray = new ArrayList<String>();
     private CheckBox[] chkArrayBloodGroup;
 
     private CheckBox cbBloodPosA,cbBloodPosB,cbBloodPosAB,cbBloodPosO;
     private CheckBox cbBloodNegA,cbBloodNegB,cbBloodNegAB,cbBloodNegO;
+
+    String male,female,other;
+    String posA,posB,posAB,posO,negA,negB,negAB,negO;
 
 
     @Override
@@ -88,8 +97,11 @@ public class SurveyFormOneFragment extends Fragment {
 
 
         cbMale = view.findViewById(R.id.cb_male);
+        male = getResStringLanguage(R.string.str_male,"en");
         cbFemale = view.findViewById(R.id.cb_female);
+        female = getResStringLanguage(R.string.str_female,"en");
         cbTransG = view.findViewById(R.id.cb_transgender);
+        other = getResStringLanguage(R.string.str_transgender,"en");
 
         chkArrayGender = new CheckBox[3];
         chkArrayGender[0] = cbMale;
@@ -102,14 +114,22 @@ public class SurveyFormOneFragment extends Fragment {
         chkArrayGender[2].setOnClickListener(mListenerGender);
 
         cbBloodPosA = view.findViewById(R.id.cb_positive_a);
+        posA = getResStringLanguage(R.string.str_pos_a,"en");
         cbBloodPosO = view.findViewById(R.id.cb_positive_o);
+        posO = getResStringLanguage(R.string.str_pos_o,"en");
         cbBloodPosB = view.findViewById(R.id.cb_positive_b);
+        posB = getResStringLanguage(R.string.str_pos_b,"en");
         cbBloodPosAB = view.findViewById(R.id.cb_positive_ab);
+        posAB = getResStringLanguage(R.string.str_pos_ab,"en");
 
         cbBloodNegA = view.findViewById(R.id.cb_negative_a);
+        negA = getResStringLanguage(R.string.str_neg_a,"en");
         cbBloodNegO = view.findViewById(R.id.cb_negative_o);
+        negO = getResStringLanguage(R.string.str_neg_o,"en");
         cbBloodNegB = view.findViewById(R.id.cb_negative_b);
+        negB = getResStringLanguage(R.string.str_neg_b,"en");
         cbBloodNegAB = view.findViewById(R.id.cb_negative_ab);
+        negAB = getResStringLanguage(R.string.str_neg_ab,"en");
 
         chkArrayBloodGroup = new CheckBox[8];
         chkArrayBloodGroup[0] = cbBloodPosA;
@@ -299,6 +319,7 @@ public class SurveyFormOneFragment extends Fragment {
 
     private View.OnClickListener mListenerGender = new View.OnClickListener() {
 
+        @SuppressLint("ResourceType")
         @Override
         public void onClick(View v) {
             final int checkedId = v.getId();
@@ -307,8 +328,20 @@ public class SurveyFormOneFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxGender = view.findViewById(current.getId());
                     String cbValueGender = checkBoxGender.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueGender);
-                    Prefs.putString(AUtils.PREFS.SUR_GENDER,cbValueGender);
+                    if (checkedId == R.id.cb_male){
+                        cbValueGender = male;
+                        Log.i("Social", "onClick: "+cbValueGender);
+                        Prefs.putString(AUtils.PREFS.SUR_GENDER,cbValueGender);
+                    }else if (checkedId == R.id.cb_female){
+                        cbValueGender = female;
+                        Log.i("Social", "onClick: "+cbValueGender);
+                        Prefs.putString(AUtils.PREFS.SUR_GENDER,cbValueGender);
+
+                    }else if (checkedId == R.id.cb_transgender){
+                        cbValueGender = other;
+                        Log.i("Social", "onClick: "+cbValueGender);
+                        Prefs.putString(AUtils.PREFS.SUR_GENDER,cbValueGender);
+                    }
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -328,8 +361,39 @@ public class SurveyFormOneFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxBloodGroup = view.findViewById(current.getId());
                     String cbValueBloodGroup = checkBoxBloodGroup.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueBloodGroup);
-                    Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    if (checkedId == R.id.cb_positive_a){
+                        cbValueBloodGroup = posA;
+                        Log.i("Social", "onClick: "+cbValueBloodGroup);
+                        Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    }else if (checkedId == R.id.cb_positive_o){
+                        cbValueBloodGroup = posO;
+                        Log.i("Social", "onClick: "+cbValueBloodGroup);
+                        Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    }else if (checkedId == R.id.cb_positive_b){
+                        cbValueBloodGroup = posB;
+                        Log.i("Social", "onClick: "+cbValueBloodGroup);
+                        Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    }else if (checkedId == R.id.cb_positive_ab){
+                        cbValueBloodGroup = posAB;
+                        Log.i("Social", "onClick: "+cbValueBloodGroup);
+                        Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    }else if (checkedId == R.id.cb_negative_a){
+                        cbValueBloodGroup = negA;
+                        Log.i("Social", "onClick: "+cbValueBloodGroup);
+                        Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    }else if (checkedId == R.id.cb_negative_o){
+                        cbValueBloodGroup = negO;
+                        Log.i("Social", "onClick: "+cbValueBloodGroup);
+                        Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    }else if (checkedId == R.id.cb_negative_b){
+                        cbValueBloodGroup = negB;
+                        Log.i("Social", "onClick: "+cbValueBloodGroup);
+                        Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    }else if (checkedId == R.id.cb_negative_ab){
+                        cbValueBloodGroup = negAB;
+                        Log.i("Social", "onClick: "+cbValueBloodGroup);
+                        Prefs.putString(AUtils.PREFS.SUR_BLOOD_GROUP,cbValueBloodGroup);
+                    }
                     current.setChecked(true);
                 } else {
                     current.setChecked(false);
@@ -358,6 +422,7 @@ public class SurveyFormOneFragment extends Fragment {
         return string;
     }
 
+
     private boolean isValid(){
         if (edtName.getText().toString().trim().isEmpty()){
             AUtils.warning(context,"Please enter your nome");
@@ -380,6 +445,17 @@ public class SurveyFormOneFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    private static Context updateResources(Context context, String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+
+        Configuration configuration = context.getResources().getConfiguration();
+        configuration.setLocale(locale);
+        configuration.setLayoutDirection(locale);
+
+        return context.createConfigurationContext(configuration);
     }
 
 }

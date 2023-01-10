@@ -3,6 +3,7 @@ package com.appynitty.swachbharatabhiyanlibrary.repository;
 import android.util.Log;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -95,10 +96,43 @@ public class SurveyDetailsRepo {
         });
     }
 
+    public void getSurveyDetails(String referenceId,IGetSurveyResponse iGetSurveyResponse){
+        SurveyDetailsWebService getSurveyWebService = Connection.createService(SurveyDetailsWebService.class, AUtils.SURVEY_SERVER_URL);
+        Call<List<GetSurveyResponsePojo>> getSurveyCall = getSurveyWebService.getSurveyDetails(AUtils.CONTENT_TYPE, appId,referenceId);
+
+        getSurveyCall.enqueue(new Callback<List<GetSurveyResponsePojo>>() {
+            @Override
+            public void onResponse(Call<List<GetSurveyResponsePojo>> call, Response<List<GetSurveyResponsePojo>> response) {
+                if (response.body() != null){
+                    Log.e(TAG, "onResponse: " + response.body().toString());
+                    if (response.code() == 200){
+                        iGetSurveyResponse.onResponse(response.body());
+                        Log.e(TAG, "onResponse: " + response.body());
+                    }else if (response.code() == 500){
+                        iGetSurveyResponse.onResponse(response.body());
+                        Log.e(TAG, "onResponse: " + response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GetSurveyResponsePojo>> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                iGetSurveyResponse.onFailure(t);
+            }
+        });
+    }
+
 
 
     public interface ISurveyDetailsResponse {
         void onResponse(List<SurveyDetailsResponsePojo>  surveyDetailsResponse);
+
+        void onFailure(Throwable t);
+    }
+
+    public interface IGetSurveyResponse {
+        void onResponse(List<GetSurveyResponsePojo>  getSurveyResponsePojo);
 
         void onFailure(Throwable t);
     }

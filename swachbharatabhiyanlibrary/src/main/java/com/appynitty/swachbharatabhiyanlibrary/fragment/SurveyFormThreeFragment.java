@@ -59,6 +59,8 @@ public class SurveyFormThreeFragment extends Fragment {
     private CheckBox cbYesOCity,cbNoOCity;
     private CheckBox[] chkArrayOtherCity;
 
+    String yes,no;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,7 +115,9 @@ public class SurveyFormThreeFragment extends Fragment {
         n = Integer.parseInt(txtNumTotalVehicle.getText().toString());
 //Business Type
         cbBusinessTypeYes = view.findViewById(R.id.cb_business_yes);
+        yes = getResStringLanguage(R.string.str_yes,"en");
         cbBusinessTypeNo = view.findViewById(R.id.cb_business_no);
+        no = getResStringLanguage(R.string.str_no,"en");
 
         chkArrayBusinessType = new CheckBox[2];
         chkArrayBusinessType[0] = cbBusinessTypeYes;
@@ -367,8 +371,16 @@ public class SurveyFormThreeFragment extends Fragment {
                 if (current.getId() == checkedId) {
                     CheckBox checkBoxBusinessType = view.findViewById(current.getId());
                     String cbValueBusinessType = checkBoxBusinessType.getText().toString();
-                    Log.i("Social", "onClick: "+cbValueBusinessType);
-                   // Prefs.putString(AUtils.PREFS.SUR_WILLING_START,cbValueBusinessType);
+                    if (checkedId == R.id.cb_business_yes){
+                        cbValueBusinessType = yes;
+                        Log.i("Social", "onClick: "+cbValueBusinessType);
+                        // Prefs.putString(AUtils.PREFS.SUR_WILLING_START,cbValueBusinessType);
+
+                    }else if (checkedId == R.id.cb_business_no){
+                        cbValueBusinessType = no;
+                        Log.i("Social", "onClick: "+cbValueBusinessType);
+                        // Prefs.putString(AUtils.PREFS.SUR_WILLING_START,cbValueBusinessType);
+                    }
                     Prefs.putString(AUtils.PREFS.SUR_WILLING_START,String.valueOf(false));
                     current.setChecked(true);
                 } else {

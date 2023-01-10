@@ -24,6 +24,7 @@ import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
@@ -43,7 +44,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private FrameLayout frameLayout;
     private DotsIndicator dotsIndicator;
 
-    private Button btnBack,btnNext, btnDone;
+    private Button btnBack,btnNext, btnDone,btnUpdate;
     private ImageView imgBack;
 
     private ViewPager2 viewPager;
@@ -59,6 +60,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private SurveyFormThreeFragment surveyFormThreeFragment;
     private SurveyFormFourFragment surveyFormFourFragment;
     private SurveyFormFiveFragment surveyFormFiveFragment;
+    private List<GetSurveyResponsePojo> getSurveyDetailsPojo;
+    String headerReferenceId, apiReferenceId;
 
 
     @Override
@@ -69,6 +72,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     }
     private void init(){
         context = this;
+        headerReferenceId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
         dotsIndicator = findViewById(R.id.dots_indicator);
@@ -83,8 +87,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnBack = findViewById(R.id.btn_back);
         btnDone = findViewById(R.id.btn_done);
+        btnUpdate = findViewById(R.id.btn_update);
 
         btnDone.setVisibility(View.GONE);
+        btnUpdate.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
 
@@ -172,7 +178,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (viewPager.getCurrentItem() < Objects.requireNonNull(viewPager.getAdapter()).getItemCount()) {
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                    for (int i=0; i<viewPager.getCurrentItem(); i++){
+                    /*for (int i=0; i<viewPager.getCurrentItem()+1; i++){
                         if (i == 0){
                             if ( surveyFormOneFragment.checkFromOneText()) {
                                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
@@ -204,8 +210,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
                             }
                             setData();
                         }
-                    }
-                    /*setData();*/
+                    }*/
+                    setData();
                 }
             }
         });
@@ -224,7 +230,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 setData();
                 surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
                 surveyDetailsVM.surveyFormApi();
-                surveyDetailsVM.getSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
+                surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
                     @Override
                     public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
                         Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
@@ -254,6 +260,14 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
             }
         });
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(context, SurveyCompletActivity.class));
+                Prefs.remove(AUtils.GET_API_REFERENCE_ID);
+            }
+        });
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -273,10 +287,18 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 if(position < Objects.requireNonNull(viewPager.getAdapter()).getItemCount() -1 ) {
                     btnNext.setVisibility(View.VISIBLE);
                     btnDone.setVisibility(View.GONE);
+                    if (headerReferenceId.equals(Prefs.getString(AUtils.GET_API_REFERENCE_ID,""))){
+                        btnUpdate.setVisibility(View.VISIBLE);
+                        btnDone.setVisibility(View.GONE);
+                    }
 
                 }else  {
                     btnNext.setVisibility(View.GONE);
                     btnDone.setVisibility(View.VISIBLE);
+                    if (apiReferenceId == null){
+                        btnUpdate.setVisibility(View.VISIBLE);
+                        btnDone.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -325,5 +347,50 @@ public class SurveyInformationActivity extends AppCompatActivity {
         requestPojo.setMemberDivyang(Prefs.getString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG,""));
         requestPojo.setCreateUserId("");
         requestPojo.setUpdateUserId("");
+    }
+
+    private void getSurveyApi(){
+        surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+        surveyDetailsVM.getSurveyResponseApi();
+        surveyDetailsVM.getSurveyMutableLiveData().observe((LifecycleOwner) context, new Observer<List<GetSurveyResponsePojo>>() {
+            @Override
+            public void onChanged(List<GetSurveyResponsePojo> getSurveyResponsePojos) {
+                if (getSurveyResponsePojos != null){
+                    Log.e(TAG, "SurveyLiveData: " + getSurveyResponsePojos.toString());
+                    getSurveyDetailsPojo = getSurveyResponsePojos;
+                    if (getSurveyDetailsPojo != null){
+                        apiReferenceId = getSurveyDetailsPojo.get(0).getReferanceId();
+                        if (apiReferenceId != null){
+                            Prefs.putString(AUtils.GET_API_REFERENCE_ID, apiReferenceId);
+                            if (apiReferenceId.equals(headerReferenceId)){
+                                Toast.makeText(context, "Survey Already Done", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
+            @Override
+            public void onChanged(Throwable throwable) {
+                AUtils.error(context, throwable.getMessage());
+            }
+        });
+
+        /*surveyDetailsRepo.getSurveyDetails(referenceId, new SurveyDetailsRepo.IGetSurveyResponse() {
+            @Override
+            public void onResponse(List<GetSurveyResponsePojo> getSurveyResponsePojo) {
+                if (getSurveyResponsePojo != null){
+                    Log.e(TAG, "getSurveyResponse: " + getSurveyResponsePojo.toString());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });*/
     }
 }

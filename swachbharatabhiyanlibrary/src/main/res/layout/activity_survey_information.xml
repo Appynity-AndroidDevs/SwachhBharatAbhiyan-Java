@@ -122,6 +122,22 @@
                 android:text="Done"
                 android:textColor="@color/colorSurveyTextBlue"/>
             <Button
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/dim_20_dp"
+                android:layout_marginEnd="@dimen/dim_10_dp"
+                android:background="@drawable/round_button"
+                android:elevation="@dimen/dim_10_dp"
+                android:fontFamily="@font/font_bold"
+                android:textAllCaps="false"
+                android:padding="@dimen/dim_10_dp"
+                android:shadowColor="@color/colorGray"
+                android:text="Update"
+                android:textColor="@color/colorSurveyTextBlue"/>
+            <Button
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

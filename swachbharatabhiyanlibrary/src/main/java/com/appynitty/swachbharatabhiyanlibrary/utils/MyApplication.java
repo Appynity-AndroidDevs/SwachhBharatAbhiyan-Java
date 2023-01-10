@@ -87,7 +87,7 @@ public class MyApplication extends Application {
             startService(new Intent(MyApplication.this, LocationService.class));
 //            Toast.makeText(this, "Location service started!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Location service is already running!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Location service is already running!", Toast.LENGTH_SHORT).show();
         }
     }
 

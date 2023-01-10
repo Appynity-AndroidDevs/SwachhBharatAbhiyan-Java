@@ -24,6 +24,9 @@ public class LocationEntity {
     @ColumnInfo(name = "Timestamp")
     private String mTimeStamp;
 
+    @ColumnInfo(name = "Speed")
+    private float mSpeed;
+
 
     @NonNull
     public String getLineElement() {
@@ -64,5 +67,13 @@ public class LocationEntity {
 
     public void setTimeStamp(String mTimeStamp) {
         this.mTimeStamp = mTimeStamp;
+    }
+
+    public float getSpeed() {
+        return mSpeed;
+    }
+
+    public void setSpeed(float mSpeed) {
+        this.mSpeed = mSpeed;
     }
 }

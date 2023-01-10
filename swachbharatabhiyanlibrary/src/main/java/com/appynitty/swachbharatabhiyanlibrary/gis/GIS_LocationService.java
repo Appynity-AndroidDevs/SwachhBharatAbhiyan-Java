@@ -69,7 +69,7 @@ public class GIS_LocationService extends LifecycleService {
                 Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
                 Toast.makeText(GIS_LocationService.this, "new location received with Accuracy: " + location.getAccuracy() + " , Speed: " + location.getSpeed() + " & Provider: " + location.getProvider(), Toast.LENGTH_SHORT).show();
 
-                if (location.hasAccuracy() && location.getAccuracy() <= 12) {
+                if (location.hasAccuracy() && location.getAccuracy() <= 12 && location.getSpeed() > 0F) {
                     insertToDB(location);
                     /*if (lastLocation == null) {
                         insertToDB(location);
@@ -111,6 +111,7 @@ public class GIS_LocationService extends LifecycleService {
         locEntity.setLon(location.getLongitude());
         locEntity.setAccuracy(location.getAccuracy());
         locEntity.setTimeStamp(AUtils.getGisDateTime());
+        locEntity.setSpeed(location.getSpeed());
         mLocationRepository.insert(locEntity);
     }
 
@@ -166,10 +167,17 @@ public class GIS_LocationService extends LifecycleService {
         criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
         criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 0, 12F, locationListenerGPS);
-        else
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            if (Build.HARDWARE.contains("mt")) {
+                locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 0, 12F, locationListenerGPS);
+            } else if (Build.HARDWARE.contains("qcom")) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 12F, locationListenerGPS);
+            } else {
+                locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 0, 12F, locationListenerGPS);
+            }
+        } else {
             Toast.makeText(this, "Please turn on the GPS!", Toast.LENGTH_SHORT).show();
+        }
 
         //        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -185,9 +193,7 @@ public class GIS_LocationService extends LifecycleService {
                     Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & speed: " + location.getSpeed(), Toast.LENGTH_SHORT).show();
 
                     if (location.hasAccuracy() && location.getAccuracy() <= 12) {
-                        Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude()
-                                + ", lon: " + location.getLongitude()
-                                + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
 
                         insertToDB(location);
                     }

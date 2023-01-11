@@ -154,6 +154,44 @@ public class SurveyFormThreeFragment extends Fragment {
         chkArrayOtherCity[1].setOnClickListener(mListenerOtherCity);
 
         setOnClick();
+        setFillData();
+    }
+
+    private void setFillData() {
+        String totalMember = Prefs.getString(AUtils.PREFS.SUR_TOTAL_MEMBER,"");
+        txtNumTotalMember.setText(totalMember);
+        String adult = Prefs.getString(AUtils.PREFS.SUR_TOTAL_ADULT,"");
+        txtNumAdult.setText(adult);
+        String children = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CHILDREN,"");
+        txtNumChild.setText(children);
+        String citizen = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CITIZEN,"");
+        txtNumSCitizen.setText(citizen);
+        String willingStart = Prefs.getString(AUtils.PREFS.SUR_WILLING_START,"");
+        if (willingStart.equals(String.valueOf(false))){
+            cbBusinessTypeYes.setChecked(true);
+        }else if (willingStart.equals(String.valueOf(true))){
+            cbBusinessTypeNo.setChecked(true);
+        }
+        String resourceA = Prefs.getString(AUtils.PREFS.SUR_RESOURCE_AVAILABLE,"");
+        if (resourceA.equals(land)){
+            cbLandA.setChecked(true);
+        }else if (resourceA.equals(shop)){
+            cbShopA.setChecked(true);
+        }else if (resourceA.equals(other)){
+            cbOtherA.setChecked(true);
+        }
+        String otherCity = Prefs.getString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,"");
+        if (otherCity.equals(String.valueOf(false))){
+            cbYesOCity.setChecked(true);
+        }else if (otherCity.equals(String.valueOf(true))){
+            cbNoOCity.setChecked(true);
+        }
+        String totalVehicle = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_VEHICLE,"");
+        txtNumTotalVehicle.setText(totalVehicle);
+        String twoWheeler = Prefs.getString(AUtils.PREFS.SUR_TWO_WHEELER_QTY,"");
+        txtNumTwoWheel.setText(twoWheeler);
+        String fourWheeler = Prefs.getString(AUtils.PREFS.SUR_FOUR_WHEELER_QTY,"");
+        txtNumFourWheel.setText(fourWheeler);
     }
 
     private void setOnClick(){

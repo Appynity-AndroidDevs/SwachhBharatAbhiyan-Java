@@ -134,6 +134,49 @@ public class SurveyFormTwoFragment extends Fragment {
         chkArrayLiving[2].setOnClickListener(mListenerLiving);
 
         setOnClick();
+        setFillData();
+    }
+
+    private void setFillData() {
+        String qualification = Prefs.getString(AUtils.PREFS.SUR_QUALIFICATION,"");
+        if (qualification.equals(ug)){
+            cbUg.setChecked(true);
+        }else if (qualification.equals(g)){
+            cbG.setChecked(true);
+        }else if (qualification.equals(pg)){
+            cbPg.setChecked(true);
+        }
+        String occupation = Prefs.getString(AUtils.PREFS.SUR_OCCUPATION,"");
+        if (occupation.equals(service)){
+            cbServiceO.setChecked(true);
+        }else if (occupation.equals(business)){
+            cbBusinessO.setChecked(true);
+        }else if (occupation.equals(professional)){
+            cbProfessionalO.setChecked(true);
+        }
+        String maritalStatus = Prefs.getString(AUtils.PREFS.SUR_MARITAL_STATUS,"");
+        if (maritalStatus.equals(married)){
+            cbMarried.setChecked(true);
+            marriageBox.setVisibility(View.VISIBLE);
+        }else if (maritalStatus.equals(unmarried)){
+            cbUnMarried.setChecked(true);
+            marriageBox.setVisibility(View.GONE);
+        }
+        String mDay = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"");
+        txtDayMarriage.setText(mDay);
+        String mMonth = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"");
+        txtMonthMarriage.setText(mMonth);
+        String mYear = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,"");
+        txtYearMarriage.setText(mYear);
+
+        String living = Prefs.getString(AUtils.PREFS.SUR_LIVING_STATUS,"");
+        if (living.equals(own)){
+            cbOwnHouse.setChecked(true);
+        }else if (living.equals(rent)){
+            cbRanted.setChecked(true);
+        }else if (living.equals(lease)){
+            cbLease.setChecked(true);
+        }
     }
 
     private void setOnClick() {

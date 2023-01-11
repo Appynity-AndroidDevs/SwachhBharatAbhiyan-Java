@@ -158,20 +158,48 @@ public class SurveyFormOneFragment extends Fragment {
 
 
         setOnClick();
-       // setData();
+        setFillData();
     }
 
-    private void setData() {
-        edtName = view.findViewById(R.id.edt_your_name);
-        String name = edtName.getText().toString().trim();
-        Prefs.putString(AUtils.PREFS.SUR_NAME,name);
-        Log.i("Social", "name is: "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
-        edtMobile = view.findViewById(R.id.edt_phone_call);
-        String mobile = edtMobile.getText().toString().trim();
-        Prefs.putString(AUtils.PREFS.SUR_MOBILE, mobile);
-        Log.i("Social", "mobile is: "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
-        Log.d(TAG, "name : "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
-        Log.d(TAG, "mobile : "+Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
+    private void setFillData() {
+        String surName = Prefs.getString(AUtils.PREFS.SUR_NAME,"");
+        edtName.setText(surName);
+        String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
+        edtMobile.setText(surMobile);
+        String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
+        atxtDay.setText(bDay);
+        String bMonth = Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"");
+        atxtMonth.setText(bMonth);
+        String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
+        atxtYear.setText(bYear);
+        String age = Prefs.getString(AUtils.PREFS.SUR_AGE,"");
+        txtAge.setText(age);
+        String mGender = Prefs.getString(AUtils.PREFS.SUR_GENDER,"");
+        if (mGender.equals(male)){
+            cbMale.setChecked(true);
+        }else if (mGender.equals(female)){
+            cbFemale.setChecked(true);
+        }else if (mGender.equals(other)){
+            cbTransG.setChecked(true);
+        }
+        String bloodGroup = Prefs.getString(AUtils.PREFS.SUR_BLOOD_GROUP,"");
+        if (bloodGroup.equals(posA)){
+            cbBloodPosA.setChecked(true);
+        }else if (bloodGroup.equals(posO)){
+            cbBloodPosO.setChecked(true);
+        }else if (bloodGroup.equals(posB)){
+            cbBloodPosB.setChecked(true);
+        }else if (bloodGroup.equals(posAB)){
+            cbBloodPosAB.setChecked(true);
+        }else if (bloodGroup.equals(negA)){
+            cbBloodNegA.setChecked(true);
+        }else if (bloodGroup.equals(negO)){
+            cbBloodNegO.setChecked(true);
+        }else if (bloodGroup.equals(negB)){
+            cbBloodNegB.setChecked(true);
+        }else if (bloodGroup.equals(negAB)){
+            cbBloodNegAB.setChecked(true);
+        }
 
 
     }

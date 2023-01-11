@@ -200,11 +200,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
                             setData();
                         }
                     } else if (fragPosition == 4){
-                        if ( surveyFormFiveFragment.checkFromFiveText()) {
+                        if ( isValidFragFive()) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
                             setData();
-                            return;
                         }
-
                     }
                 }
             }
@@ -221,7 +220,56 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setData();
+                 if (fragPosition == 4){
+
+                    if ( isValidFragFive()) {
+                        setData();
+                        surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+                        surveyDetailsVM.surveyFormApi();
+                        surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
+                            @Override
+                            public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
+                                Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
+                                if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                        AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                                    } else {
+                                        AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                                    }
+                                    startActivity(new Intent(context, SurveyCompletActivity.class));
+                                }
+                                if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                        AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                                    } else {
+                                        AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                                    }
+                                }
+                            }
+                        });
+                        surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
+                            @Override
+                            public void onChanged(Throwable throwable) {
+                                AUtils.error(context, throwable.getMessage());
+                            }
+                        });
+
+                        surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
+                            @Override
+                            public void onChanged(Integer visibility) {
+                                loader.setVisibility(visibility);
+                            }
+                        });
+
+                    }
+                        /*if ( surveyFormFiveFragment.checkFromFiveText()) {
+                            setData();
+                            return;
+                        }*/
+
+                }
+
+                /*setData();
                 surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
                 surveyDetailsVM.surveyFormApi();
                 surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
@@ -257,10 +305,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     public void onChanged(Integer visibility) {
                         loader.setVisibility(visibility);
                     }
-                });
+                });*/
 
             }
         });
+
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -464,6 +513,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             if (isMarriageValidation()){
                 return true;
             }
+            return false;
         }else if (living.trim().isEmpty()){
             AUtils.warning(context,"Please select living status");
             return false;
@@ -495,15 +545,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (!mYear.isEmpty()){
             if (marriageAge < 18){
                 AUtils.warning(context,"Your age below 18, please select valid marriage date");
-                return false;
-            }else {
-                AUtils.warning(context,"Congratulation your marriage "+marriageAge+" years.");
-                return true;
             }
+             return false;
         }
          return true;
     }
-
     private boolean isValidFragThree(){
         String totalMember = Prefs.getString(AUtils.PREFS.SUR_TOTAL_MEMBER,"");
         String adult = Prefs.getString(AUtils.PREFS.SUR_TOTAL_ADULT,"");
@@ -562,6 +608,33 @@ public class SurveyInformationActivity extends AppCompatActivity {
             AUtils.warning(context,"Please select your used payment mode app");
             return false;
         }
+        return true;
+    }
+
+    private boolean isValidFragFive(){
+        String insurance = Prefs.getString(AUtils.PREFS.SUR_INSURANCE,"");
+        String insuredType = Prefs.getString(AUtils.PREFS.SUR_UNDER_INSURANCE,"");
+        String ayushman = Prefs.getString(AUtils.PREFS.SUR_AYUSHMAN_BENE,"");
+        String booster = Prefs.getString(AUtils.PREFS.SUR_BOOSTER_SHOT,"");
+        String divyang = Prefs.getString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG,"");
+
+        if (insurance.trim().isEmpty()){
+            AUtils.warning(context,"Please select your insurance");
+            return false;
+        }else if (insuredType.trim().isEmpty()){
+            AUtils.warning(context,"Please select your insurance type");
+            return false;
+        }else if (ayushman.trim().isEmpty()){
+            AUtils.warning(context,"Please select yes/no type question");
+            return false;
+        }else if (booster.trim().isEmpty()){
+            AUtils.warning(context,"Please select yes/no type question");
+            return false;
+        }else if (divyang.trim().isEmpty()){
+            AUtils.warning(context,"Please select yes/no type question");
+            return false;
+        }
+
         return true;
     }
 

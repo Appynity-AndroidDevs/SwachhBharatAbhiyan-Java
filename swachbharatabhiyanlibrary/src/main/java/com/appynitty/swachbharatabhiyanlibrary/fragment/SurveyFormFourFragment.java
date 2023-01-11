@@ -98,6 +98,15 @@ public class SurveyFormFourFragment extends Fragment {
         cbOtherP = view.findViewById(R.id.cb_other_online_payment);
 
         setOnClick();
+        setFillData();
+    }
+
+    private void setFillData() {
+        String totalVote = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,"");
+        txtNumVote.setText(totalVote);
+        String socialMedia = Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,"");
+        String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
+        String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");
     }
 
     private void setOnClick() {

@@ -52,7 +52,7 @@ public class SurveyFormTwoFragment extends Fragment {
     String service,business,professional;
     String married,unmarried;
     String own,rent,lease;
-
+    private LinearLayout marriageBox;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +70,9 @@ public class SurveyFormTwoFragment extends Fragment {
         liDayMarriage = view.findViewById(R.id.li_day_marriage_box);
         liMonthMarriage = view.findViewById(R.id.li_month_marriage_box);
         liYearMarriage = view.findViewById(R.id.li_year_marriage_box);
-        
+        marriageBox = view.findViewById(R.id.li_anniversary_date_box);
+        marriageBox.setVisibility(View.GONE);
+
         txtDayMarriage = view.findViewById(R.id.auto_day_anniversary);
         txtMonthMarriage = view.findViewById(R.id.auto_month_anniversary);
         txtYearMarriage = view.findViewById(R.id.auto_year_anniversary);
@@ -306,10 +308,12 @@ public class SurveyFormTwoFragment extends Fragment {
                         cbValueMarital = married;
                         Log.i("Social", "onClick: "+cbValueMarital);
                         Prefs.putString(AUtils.PREFS.SUR_MARITAL_STATUS,cbValueMarital);
+                        marriageBox.setVisibility(View.VISIBLE);
                     }else if (checkedId == R.id.cb_unmarried){
                         cbValueMarital = unmarried;
                         Log.i("Social", "onClick: "+cbValueMarital);
                         Prefs.putString(AUtils.PREFS.SUR_MARITAL_STATUS,cbValueMarital);
+                        marriageBox.setVisibility(View.GONE);
                     }
 
                     current.setChecked(true);

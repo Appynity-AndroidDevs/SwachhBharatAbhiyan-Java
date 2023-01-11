@@ -179,6 +179,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeSurveyData();
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
@@ -420,7 +421,6 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         getPermission();
         generateId();
         registerEvents();
-        removeSurveyData();
         initData();
 
 

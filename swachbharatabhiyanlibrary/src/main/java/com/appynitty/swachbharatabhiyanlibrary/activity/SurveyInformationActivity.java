@@ -103,9 +103,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         dotsIndicator.attachTo(viewPager);
 
         setOnClick();
-
     }
-
     private void setData() {
         String surName = Prefs.getString(AUtils.PREFS.SUR_NAME,"");
         Log.d(TAG, "surName: "+surName);
@@ -168,8 +166,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String surDivyangMember = Prefs.getString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG,"");
         Log.d(TAG, "surDivyangMember: "+surDivyangMember);
     }
-
-
     private void setOnClick(){
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,25 +182,23 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     if (fragPosition == 0){
                         if ( isValidFragOne()) {
                             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-
                             setData();
                         }
                     }else if (fragPosition == 1){
-                        if ( surveyFormTwoFragment.checkFromTwoText()) {
+                        if ( isValidFragTwo()) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
                             setData();
-                            return;
                         }
                     }else if (fragPosition == 2){
-                        if ( surveyFormThreeFragment.checkFromThreeText()) {
+                        if ( isValidFragThree()) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
                             setData();
-                            return;
                         }
                     }else if (fragPosition == 3){
-                        if ( surveyFormFourFragment.checkFromFourText()) {
+                        if ( isValidFragFour()) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
                             setData();
-                            return;
                         }
-
                     } else if (fragPosition == 4){
                         if ( surveyFormFiveFragment.checkFromFiveText()) {
                             setData();
@@ -275,13 +269,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 Prefs.remove(AUtils.GET_API_REFERENCE_ID);
             }
         });
-
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
-
             @Override
             public void onPageSelected(int position) {
                 Log.i("Rahul", "PageChange: "+position);
@@ -298,7 +290,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
                         btnUpdate.setVisibility(View.VISIBLE);
                         btnDone.setVisibility(View.GONE);
                     }
-
                 }else  {
                     btnNext.setVisibility(View.GONE);
                     btnDone.setVisibility(View.VISIBLE);
@@ -311,15 +302,12 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
             }
         });
-
     }
-
     private void modelData(){
         requestPojo.setReferanceId(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
         requestPojo.setHouseLat(Prefs.getString(AUtils.LAT,"0"));
@@ -380,21 +368,18 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 }
             }
         });
-
         surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
             @Override
             public void onChanged(Throwable throwable) {
                 AUtils.error(context, throwable.getMessage());
             }
         });
-
         surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
             @Override
             public void onChanged(Integer visibility) {
                 loader.setVisibility(visibility);
             }
         });
-
         /*surveyDetailsRepo.getSurveyDetails(referenceId, new SurveyDetailsRepo.IGetSurveyResponse() {
             @Override
             public void onResponse(List<GetSurveyResponsePojo> getSurveyResponsePojo) {
@@ -410,15 +395,17 @@ public class SurveyInformationActivity extends AppCompatActivity {
             }
         });*/
     }
-
     private boolean isValidFragOne(){
         String surName = Prefs.getString(AUtils.PREFS.SUR_NAME,"");
         String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
         String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
         String bMonth = Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"");
         String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
+        String age = Prefs.getString(AUtils.PREFS.SUR_AGE,"");
+        String mGender = Prefs.getString(AUtils.PREFS.SUR_GENDER,"");
+        String bloodGroup = Prefs.getString(AUtils.PREFS.SUR_BLOOD_GROUP,"");
         if (surName.trim().isEmpty()){
-            AUtils.warning(context,"Please enter your nome");
+            AUtils.warning(context,"Please enter your name");
             return false;
         }else if (surMobile.trim().isEmpty()){
             AUtils.warning(context,"Please enter your mobile number");
@@ -426,8 +413,156 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (surMobile.length()<10){
             AUtils.warning(context,"Please enter your valid mobile number");
             return false;
+        }else if (bDay.trim().isEmpty()){
+            AUtils.warning(context,"Please select your birthday date");
+            return false;
+        }else if (bMonth.trim().isEmpty()){
+            AUtils.warning(context,"Please select your birthday Month");
+            return false;
+        }else if (bYear.trim().isEmpty()){
+            AUtils.warning(context,"Please select your birthday Year");
+            return false;
+        }else if (age.trim().isEmpty()){
+            AUtils.warning(context,"Your age calculate successfully");
+            return true;
+        }else if (bYear.equalsIgnoreCase("2023")){
+            AUtils.warning(context,"Please select your valid birthday Year");
+            return false;
+        }else if (bYear.equalsIgnoreCase("2024")){
+            AUtils.warning(context,"Please select your valid birthday Year");
+            return false;
+        }else if (bYear.equalsIgnoreCase("2022")){
+            AUtils.warning(context,"Please select your valid birthday Year");
+            return false;
+        }else if (bYear.equalsIgnoreCase("2021")){
+            AUtils.warning(context,"Please select your valid birthday Year");
+            return false;
+        }else if (mGender.isEmpty()){
+            AUtils.warning(context,"Please check your gender");
+            return false;
+        }else if (bloodGroup.isEmpty()){
+            AUtils.warning(context,"Please select your blood group");
+            return false;
         }
-
         return true;
     }
+    private boolean isValidFragTwo(){
+        String qualification = Prefs.getString(AUtils.PREFS.SUR_QUALIFICATION,"");
+        String occupation = Prefs.getString(AUtils.PREFS.SUR_OCCUPATION,"");
+        String maritalStatus = Prefs.getString(AUtils.PREFS.SUR_MARITAL_STATUS,"");
+        String living = Prefs.getString(AUtils.PREFS.SUR_LIVING_STATUS,"");
+        if (qualification.trim().isEmpty()){
+            AUtils.warning(context,"Please select your qualification");
+            return false;
+        }else if (occupation.trim().isEmpty()){
+            AUtils.warning(context,"Please select your occupation");
+            return false;
+        }else if (maritalStatus.trim().isEmpty()){
+            AUtils.warning(context,"Please select your marital status");
+            return false;
+        }else if (maritalStatus.equals("Married")){
+            if (isMarriageValidation()){
+                return true;
+            }
+        }else if (living.trim().isEmpty()){
+            AUtils.warning(context,"Please select living status");
+            return false;
+        }
+        return true;
+    }
+    private boolean isMarriageValidation(){
+        String mDay = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"");
+        String mMonth = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"");
+        String mYear = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,"");
+        int marriageAge = 0;
+        try {
+            String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
+            String maYear = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,"");
+            marriageAge = Integer.parseInt(maYear) - Integer.parseInt(bYear);
+        } catch (NumberFormatException e) {
+            // The format was incorrect
+        }
+
+         if (mDay.trim().isEmpty()){
+            AUtils.warning(context,"Please select your marriage date");
+            return false;
+        }else if (mMonth.trim().isEmpty()){
+            AUtils.warning(context,"Please select your marriage Month");
+            return false;
+        }else if (mYear.trim().isEmpty()){
+            AUtils.warning(context,"Please select your marriage Year");
+            return false;
+        }else if (!mYear.isEmpty()){
+            if (marriageAge < 18){
+                AUtils.warning(context,"Your age below 18, please select valid marriage date");
+                return false;
+            }else {
+                AUtils.warning(context,"Congratulation your marriage "+marriageAge+" years.");
+                return true;
+            }
+        }
+         return true;
+    }
+
+    private boolean isValidFragThree(){
+        String totalMember = Prefs.getString(AUtils.PREFS.SUR_TOTAL_MEMBER,"");
+        String adult = Prefs.getString(AUtils.PREFS.SUR_TOTAL_ADULT,"");
+        String children = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CHILDREN,"");
+        String citizen = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CITIZEN,"");
+        String willingStart = Prefs.getString(AUtils.PREFS.SUR_WILLING_START,"");
+        String resourceA = Prefs.getString(AUtils.PREFS.SUR_RESOURCE_AVAILABLE,"");
+        String otherCity = Prefs.getString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,"");
+        String totalVehicle = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_VEHICLE,"");
+        String twoWheeler = Prefs.getString(AUtils.PREFS.SUR_TWO_WHEELER_QTY,"");
+        String fourWheeler = Prefs.getString(AUtils.PREFS.SUR_FOUR_WHEELER_QTY,"");
+
+        if (adult.trim().isEmpty()){
+            AUtils.warning(context,"Please add total adults");
+            return false;
+        }else if (children.trim().isEmpty()){
+            AUtils.warning(context,"Please add total children");
+            return false;
+        }else if (citizen.trim().isEmpty()){
+            AUtils.warning(context,"Please add total Senior Citizen");
+            return false;
+        }else if (willingStart.trim().isEmpty()){
+            AUtils.warning(context,"Please select yes/no type question");
+            return false;
+        }else if (resourceA.trim().isEmpty()){
+            AUtils.warning(context,"Please select your resources");
+            return false;
+        }else if (otherCity.trim().isEmpty()){
+            AUtils.warning(context,"Please select yes/no type question");
+            return false;
+        }else if (twoWheeler.trim().isEmpty()){
+            AUtils.warning(context,"Please add total two wheeler");
+            return false;
+        }else if (fourWheeler.trim().isEmpty()){
+            AUtils.warning(context,"Please add total four wheeler");
+            return false;
+        }
+        return true;
+    }
+    private boolean isValidFragFour(){
+        String totalVote = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,"");
+        String socialMedia = Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,"");
+        String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
+        String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");
+
+        if (totalVote.trim().isEmpty()){
+            AUtils.warning(context,"Please add total vote member");
+            return false;
+        }else if (socialMedia.trim().isEmpty()){
+            AUtils.warning(context,"Please select your used social media app");
+            return false;
+        }else if (shopping.trim().isEmpty()){
+            AUtils.warning(context,"Please select your used shopping app");
+            return false;
+        }else if (paymentApp.trim().isEmpty()){
+            AUtils.warning(context,"Please select your used payment mode app");
+            return false;
+        }
+        return true;
+    }
+
 }

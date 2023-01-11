@@ -167,9 +167,9 @@ public class SurveyFormThreeFragment extends Fragment {
         String citizen = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CITIZEN,"");
         txtNumSCitizen.setText(citizen);
         String willingStart = Prefs.getString(AUtils.PREFS.SUR_WILLING_START,"");
-        if (willingStart.equals(String.valueOf(false))){
+        if (willingStart.equals(String.valueOf(true))){
             cbBusinessTypeYes.setChecked(true);
-        }else if (willingStart.equals(String.valueOf(true))){
+        }else if (willingStart.equals(String.valueOf(false))){
             cbBusinessTypeNo.setChecked(true);
         }
         String resourceA = Prefs.getString(AUtils.PREFS.SUR_RESOURCE_AVAILABLE,"");
@@ -181,9 +181,9 @@ public class SurveyFormThreeFragment extends Fragment {
             cbOtherA.setChecked(true);
         }
         String otherCity = Prefs.getString(AUtils.PREFS.SUR_MEMBER_JOB_OTHER_CITY,"");
-        if (otherCity.equals(String.valueOf(false))){
+        if (otherCity.equals(String.valueOf(true))){
             cbYesOCity.setChecked(true);
-        }else if (otherCity.equals(String.valueOf(true))){
+        }else if (otherCity.equals(String.valueOf(false))){
             cbNoOCity.setChecked(true);
         }
         String totalVehicle = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_VEHICLE,"");

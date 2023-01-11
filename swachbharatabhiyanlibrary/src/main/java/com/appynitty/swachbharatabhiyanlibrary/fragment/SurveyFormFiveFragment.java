@@ -139,27 +139,27 @@ public class SurveyFormFiveFragment extends Fragment {
             cbBothInsurance.setChecked(true);
         }
         String insuredType = Prefs.getString(AUtils.PREFS.SUR_UNDER_INSURANCE,"");
-        if (insuredType.equals(String.valueOf(false))){
+        if (insuredType.equals(String.valueOf(true))){
             cbGov.setChecked(true);
-        }else if (insuredType.equals(String.valueOf(true))){
+        }else if (insuredType.equals(String.valueOf(false))){
             cbPrivate.setChecked(true);
         }
         String ayushman = Prefs.getString(AUtils.PREFS.SUR_AYUSHMAN_BENE,"");
-        if (ayushman.equals(String.valueOf(false))){
+        if (ayushman.equals(String.valueOf(true))){
             cbYesAyushman.setChecked(true);
-        }else if (ayushman.equals(String.valueOf(true))){
+        }else if (ayushman.equals(String.valueOf(false))){
             cbNoAyushman.setChecked(true);
         }
         String booster = Prefs.getString(AUtils.PREFS.SUR_BOOSTER_SHOT,"");
-        if (booster.equals(String.valueOf(false))){
+        if (booster.equals(String.valueOf(true))){
             cbYesBooster.setChecked(true);
-        }else if (booster.equals(String.valueOf(true))){
+        }else if (booster.equals(String.valueOf(false))){
             cbNoBooster.setChecked(true);
         }
         String divyang = Prefs.getString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG,"");
-        if (divyang.equals(String.valueOf(false))){
+        if (divyang.equals(String.valueOf(true))){
             cbYesDivang.setChecked(true);
-        }else if (divyang.equals(String.valueOf(true))){
+        }else if (divyang.equals(String.valueOf(false))){
             cbNoDivang.setChecked(true);
         }
     }

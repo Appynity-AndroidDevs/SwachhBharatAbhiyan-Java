@@ -511,9 +511,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
             return false;
         }else if (maritalStatus.equals("Married")){
             if (isMarriageValidation()){
-                return true;
+                AUtils.warning(context,"success");
+                return false;
             }
-            return false;
+            return true;
         }else if (living.trim().isEmpty()){
             AUtils.warning(context,"Please select living status");
             return false;

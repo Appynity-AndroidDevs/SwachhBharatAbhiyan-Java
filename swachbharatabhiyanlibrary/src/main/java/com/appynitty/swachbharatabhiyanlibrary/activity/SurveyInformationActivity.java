@@ -101,7 +101,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
         viewPager.setAdapter(pagerAdapter);
         dotsIndicator.attachTo(viewPager);
-
+        getSurveyApi();
         setOnClick();
     }
     private void setData() {
@@ -402,15 +402,204 @@ public class SurveyInformationActivity extends AppCompatActivity {
         surveyDetailsVM.getSurveyMutableLiveData().observe((LifecycleOwner) context, new Observer<List<GetSurveyResponsePojo>>() {
             @Override
             public void onChanged(List<GetSurveyResponsePojo> getSurveyResponsePojos) {
-                if (getSurveyResponsePojos != null){
+                if (getSurveyResponsePojos == null){
+                    Log.e(TAG, "SurveyLiveData: " + getSurveyResponsePojos.toString());
+
+                    btnDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (fragPosition == 4){
+
+                                if ( isValidFragFive()) {
+                                    setData();
+                                    surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+                                    surveyDetailsVM.surveyFormApi();
+                                    surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
+                                        @Override
+                                        public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
+                                            Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
+                                            if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                                    AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                                                } else {
+                                                    AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                                                }
+                                                startActivity(new Intent(context, SurveyCompletActivity.class));
+                                            }
+                                            if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                                    AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                                                } else {
+                                                    AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                                                }
+                                            }
+                                        }
+                                    });
+                                    surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
+                                        @Override
+                                        public void onChanged(Throwable throwable) {
+                                            AUtils.error(context, throwable.getMessage());
+                                        }
+                                    });
+
+                                    surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
+                                        @Override
+                                        public void onChanged(Integer visibility) {
+                                            loader.setVisibility(visibility);
+                                        }
+                                    });
+
+                                }
+                        /*if ( surveyFormFiveFragment.checkFromFiveText()) {
+                            setData();
+                            return;
+                        }*/
+
+                            }
+
+                /*setData();
+                surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+                surveyDetailsVM.surveyFormApi();
+                surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
+                    @Override
+                    public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
+                        Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
+                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                            } else {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                            }
+                            startActivity(new Intent(context, SurveyCompletActivity.class));
+                        }
+                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                            } else {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                            }
+                        }
+                    }
+                });
+                surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
+                    @Override
+                    public void onChanged(Throwable throwable) {
+                        AUtils.error(context, throwable.getMessage());
+                    }
+                });
+
+                surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer visibility) {
+                        loader.setVisibility(visibility);
+                    }
+                });*/
+
+                        }
+                    });
+
+                }else {
                     Log.e(TAG, "SurveyLiveData: " + getSurveyResponsePojos.toString());
                     getSurveyDetailsPojo = getSurveyResponsePojos;
                     if (getSurveyDetailsPojo != null){
                         apiReferenceId = getSurveyDetailsPojo.get(0).getReferanceId();
                         if (apiReferenceId != null){
                             Prefs.putString(AUtils.GET_API_REFERENCE_ID, apiReferenceId);
-                            if (apiReferenceId.equals(headerReferenceId)){
+                            if (headerReferenceId.equals(apiReferenceId)){
                                 Toast.makeText(context, "Survey Already Done", Toast.LENGTH_SHORT).show();
+                                btnDone.setText("Update");
+                                btnDone.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (fragPosition == 4){
+
+                                            if ( isValidFragFive()) {
+                                                setData();
+                                                surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+                                                surveyDetailsVM.surveyFormApi();
+                                                surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
+                                                    @Override
+                                                    public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
+                                                        Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
+                                                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                                                            } else {
+                                                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                                                            }
+                                                            startActivity(new Intent(context, SurveyCompletActivity.class));
+                                                        }
+                                                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                                                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                                                            } else {
+                                                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                                surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
+                                                    @Override
+                                                    public void onChanged(Throwable throwable) {
+                                                        AUtils.error(context, throwable.getMessage());
+                                                    }
+                                                });
+
+                                                surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
+                                                    @Override
+                                                    public void onChanged(Integer visibility) {
+                                                        loader.setVisibility(visibility);
+                                                    }
+                                                });
+
+                                            }
+                        /*if ( surveyFormFiveFragment.checkFromFiveText()) {
+                            setData();
+                            return;
+                        }*/
+
+                                        }
+
+                /*setData();
+                surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+                surveyDetailsVM.surveyFormApi();
+                surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
+                    @Override
+                    public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
+                        Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
+                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                            } else {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                            }
+                            startActivity(new Intent(context, SurveyCompletActivity.class));
+                        }
+                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                            } else {
+                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                            }
+                        }
+                    }
+                });
+                surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
+                    @Override
+                    public void onChanged(Throwable throwable) {
+                        AUtils.error(context, throwable.getMessage());
+                    }
+                });
+
+                surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer visibility) {
+                        loader.setVisibility(visibility);
+                    }
+                });*/
+
+                                    }
+                                });
                             }
                         }
                     }
@@ -611,7 +800,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }
         return true;
     }
-
     private boolean isValidFragFive(){
         String insurance = Prefs.getString(AUtils.PREFS.SUR_INSURANCE,"");
         String insuredType = Prefs.getString(AUtils.PREFS.SUR_UNDER_INSURANCE,"");

@@ -64,6 +64,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private SurveyFormFiveFragment surveyFormFiveFragment;
     private List<GetSurveyResponsePojo> getSurveyDetailsPojo;
     String headerReferenceId, apiReferenceId;
+    String getApiHouseId,getApiName,getApiMobile,getApiAge, getApiDob,getApiGender,getApiBloodGroup;
+    String getApiQualification,getApiOccupation,getApiMaritalStatus,getApiMarriageDate,getApiLivingStatus;
+    String getApiTotalMember,getApiWillingStart,getApiResAvailable,getApiJobOtherCity,getApiTotalVehicle;
+    String getApiTwoWheeler,getApiFourWheeler,getApiTotalVote,getApiSocialMedia,getApiShopping,getApiPaymentApp;
+    String getApiInsurance,getApiUnderI,getApiAyushman,getApiBoosterDose,getApiDivyang,getApiAdult,getApiChildren,getApiSeniorCitizen;
     private int fragPosition = 0;
 
 
@@ -505,10 +510,76 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     for (int i=0; i< getSurveyDetailsPojo.size(); i++){
                         if (getSurveyDetailsPojo.get(i) != null){
                             apiReferenceId = getSurveyDetailsPojo.get(i).getReferanceId();
+                            Log.i("social", "getApiSurvey: " + apiReferenceId);
+                            getApiHouseId = String.valueOf(getSurveyDetailsPojo.get(i).getHouseId());
+                            Log.i("social", "getApiSurvey: " + getApiHouseId);
+                            getApiName = getSurveyDetailsPojo.get(i).getName();
+                            Log.i("social", "getApiSurvey: " + getApiName);
+                            getApiMobile = getSurveyDetailsPojo.get(i).getMobileNumber();
+                            Log.i("social", "getApiSurvey: " + getApiMobile);
+                            getApiAge = String.valueOf(getSurveyDetailsPojo.get(i).getAge());
+                            Log.i("social", "getApiSurvey: " + getApiAge);
+                            getApiDob = getSurveyDetailsPojo.get(i).getDateOfBirth();
+                            Log.i("social", "getApiSurvey: " + getApiDob);
+                            getApiGender = getSurveyDetailsPojo.get(i).getGender();
+                            Log.i("social", "getApiSurvey: " + getApiGender);
+                            getApiBloodGroup = getSurveyDetailsPojo.get(i).getBloodGroup();
+                            Log.i("social", "getApiSurvey: " + getApiBloodGroup);
+                            getApiQualification = getSurveyDetailsPojo.get(i).getQualification();
+                            Log.i("social", "getApiSurvey: " + getApiQualification);
+                            getApiOccupation = getSurveyDetailsPojo.get(i).getReferanceId();
+                            Log.i("social", "getApiSurvey: " + getApiOccupation);
+                            getApiMaritalStatus = getSurveyDetailsPojo.get(i).getMaritalStatus();
+                            Log.i("social", "getApiSurvey: " + getApiMaritalStatus);
+                            getApiMarriageDate = getSurveyDetailsPojo.get(i).getMarriageDate();
+                            Log.i("social", "getApiSurvey: " + getApiMarriageDate);
+                            getApiLivingStatus = getSurveyDetailsPojo.get(i).getLivingStatus();
+                            Log.i("social", "getApiSurvey: " + getApiLivingStatus);
+                            getApiTotalMember = String.valueOf(getSurveyDetailsPojo.get(i).getTotalMember());
+                            Log.i("social", "getApiSurvey: " + getApiTotalMember);
+                            getApiWillingStart = String.valueOf(getSurveyDetailsPojo.get(i).isWillingStart());
+                            Log.i("social", "getApiSurvey: " + getApiWillingStart);
+                            getApiResAvailable = getSurveyDetailsPojo.get(i).getResourcesAvailable();
+                            Log.i("social", "getApiSurvey: " + getApiResAvailable);
+                            getApiJobOtherCity = String.valueOf(getSurveyDetailsPojo.get(i).isMemberJobOtherCity());
+                            Log.i("social", "getApiSurvey: " + getApiJobOtherCity);
+                            getApiTotalVehicle = String.valueOf(getSurveyDetailsPojo.get(i).getNoOfVehicle());
+                            Log.i("social", "getApiSurvey: " + getApiTotalVehicle);
+                            getApiTwoWheeler = String.valueOf(getSurveyDetailsPojo.get(i).getTwoWheelerQty());
+                            Log.i("social", "getApiSurvey: " + getApiTwoWheeler);
+                            getApiFourWheeler = String.valueOf(getSurveyDetailsPojo.get(i).getFourWheelerQty());
+                            Log.i("social", "getApiSurvey: " + getApiFourWheeler);
+                            getApiTotalVote = String.valueOf(getSurveyDetailsPojo.get(i).getNoPeopleVote());
+                            Log.i("social", "getApiSurvey: " + getApiTotalVote);
+                            getApiSocialMedia = getSurveyDetailsPojo.get(i).getSocialMedia();
+                            Log.i("social", "getApiSurvey: " + getApiSocialMedia);
+                            getApiShopping = getSurveyDetailsPojo.get(i).getOnlineShopping();
+                            Log.i("social", "getApiSurvey: " + getApiShopping);
+                            getApiPaymentApp = getSurveyDetailsPojo.get(i).getOnlinePayApp();
+                            Log.i("social", "getApiSurvey: " + getApiPaymentApp);
+                            getApiInsurance = getSurveyDetailsPojo.get(i).getInsurance();
+                            Log.i("social", "getApiSurvey: " + getApiInsurance);
+                            getApiUnderI = String.valueOf(getSurveyDetailsPojo.get(i).isUnderInsurer());
+                            Log.i("social", "getApiSurvey: " + getApiUnderI);
+                            getApiAyushman = String.valueOf(getSurveyDetailsPojo.get(i).isAyushmanBeneficiary());
+                            Log.i("social", "getApiSurvey: " + getApiAyushman);
+                            getApiBoosterDose = String.valueOf(getSurveyDetailsPojo.get(i).isBoosterShot());
+                            Log.i("social", "getApiSurvey: " + getApiBoosterDose);
+                            getApiDivyang = String.valueOf(getSurveyDetailsPojo.get(i).isMemberDivyang());
+                            Log.i("social", "getApiSurvey: " + getApiDivyang);
+                            getApiAdult = String.valueOf(getSurveyDetailsPojo.get(i).getTotalAdults());
+                            Log.i("social", "getApiSurvey: " + getApiAdult);
+                            getApiChildren = String.valueOf(getSurveyDetailsPojo.get(i).getTotalChildren());
+                            Log.i("social", "getApiSurvey: " + getApiChildren);
+                            getApiSeniorCitizen = String.valueOf(getSurveyDetailsPojo.get(i).getTotalSrCitizen());
+                            Log.i("social", "getApiSurvey: " + getApiSeniorCitizen);
+
+
                             if (apiReferenceId != null){
                                 Prefs.putString(AUtils.GET_API_REFERENCE_ID, apiReferenceId);
                                 if (headerReferenceId.equals(apiReferenceId)){
                                     Toast.makeText(context, "Survey Already Done", Toast.LENGTH_SHORT).show();
+                                    Log.i("social", "getApiSurvey: " + "property "+apiReferenceId+" survey form already filled");
                                     btnDone.setText("Update");
                                     btnDone.setOnClickListener(new View.OnClickListener() {
                                         @Override

@@ -96,10 +96,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnBack = findViewById(R.id.btn_back);
         btnDone = findViewById(R.id.btn_done);
-        btnUpdate = findViewById(R.id.btn_update);
+       /* btnUpdate = findViewById(R.id.btn_update);*/
 
         btnDone.setVisibility(View.GONE);
-        btnUpdate.setVisibility(View.GONE);
+        /*btnUpdate.setVisibility(View.GONE);*/
         loader.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
@@ -242,6 +242,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                                         AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
                                     }
                                     startActivity(new Intent(context, SurveyCompletActivity.class));
+                                    Prefs.remove(AUtils.GET_API_REFERENCE_ID);
                                 }
                                 if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
                                     if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
@@ -315,14 +316,14 @@ public class SurveyInformationActivity extends AppCompatActivity {
             }
         });
 
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
+        /*btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 startActivity(new Intent(context, SurveyCompletActivity.class));
                 Prefs.remove(AUtils.GET_API_REFERENCE_ID);
             }
-        });
+        });*/
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -340,20 +341,20 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 if(position < Objects.requireNonNull(viewPager.getAdapter()).getItemCount() -1 ) {
                     btnNext.setVisibility(View.VISIBLE);
                     btnDone.setVisibility(View.GONE);
-                    if (headerReferenceId.equals(Prefs.getString(AUtils.GET_API_REFERENCE_ID,""))){
+                    /*if (headerReferenceId.equals(Prefs.getString(AUtils.GET_API_REFERENCE_ID,""))){
                         btnUpdate.setVisibility(View.VISIBLE);
                         btnDone.setVisibility(View.GONE);
-                    }
+                    }*/
                 }else  {
                     btnNext.setVisibility(View.GONE);
                     btnDone.setVisibility(View.VISIBLE);
-                    if (apiReferenceId == null){
+                    /*if (apiReferenceId == null){
                         btnUpdate.setVisibility(View.GONE);
                         btnDone.setVisibility(View.VISIBLE);
                     }else {
                         btnDone.setVisibility(View.GONE);
                         btnUpdate.setVisibility(View.VISIBLE);
-                    }
+                    }*/
                 }
             }
             @Override

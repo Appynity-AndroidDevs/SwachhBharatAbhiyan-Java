@@ -31,6 +31,7 @@ public class SurveyCompletActivity extends AppCompatActivity {
     }
 
     private void removeSurveyData(){
+        Prefs.remove(AUtils.GET_API_REFERENCE_ID);
         Prefs.remove(AUtils.PREFS.SUR_REFERENCE_ID);
         Prefs.remove(AUtils.PREFS.SUR_NAME);
         Prefs.remove(AUtils.PREFS.SUR_MOBILE);
@@ -45,6 +46,9 @@ public class SurveyCompletActivity extends AppCompatActivity {
         Prefs.remove(AUtils.PREFS.SUR_BIRTH_MONTH);
         Prefs.remove(AUtils.PREFS.SUR_BIRTH_DAY);
         Prefs.remove(AUtils.PREFS.SUR_MARRIAGE_DATE);
+        Prefs.remove(AUtils.PREFS.SUR_MARRIAGE_DAY);
+        Prefs.remove(AUtils.PREFS.SUR_MARRIAGE_MONTH);
+        Prefs.remove(AUtils.PREFS.SUR_MARRIAGE_YEAR);
         Prefs.remove(AUtils.PREFS.SUR_LIVING_STATUS);
         Prefs.remove(AUtils.PREFS.SUR_TOTAL_ADULT);
         Prefs.remove(AUtils.PREFS.SUR_TOTAL_CHILDREN);

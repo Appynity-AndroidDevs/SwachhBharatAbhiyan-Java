@@ -13,7 +13,7 @@ public interface GISWebService {
     //for sending locations from House_Scanify employee
     @Headers({"Accept: application/json"})
     @POST("/api/Save/HouseMapTrail")
-    Call<List<GISResponseDTO>> sendHouseMapTrail(@Header("Authorization") String auth_token, @Header("AppId") String appId, @Body List<GISRequestDTO> locationReqDTOList);
+    Call<List<GISResponseDTO>> sendHouseMapTrail(@Header("Authorization") String auth_token, @Header("AppId") String appId, @Body /*List<*/GISRequestDTO/*>*/ locationReqDTOList);
 
     //for sending locations from GhantaGadi employee
     @Headers({"Accept: application/json"})

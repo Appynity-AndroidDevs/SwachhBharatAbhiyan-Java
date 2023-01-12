@@ -157,23 +157,26 @@ public class GIS_LocationService extends LifecycleService {
 
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setSpeedRequired(true);
-        /*criteria.setAltitudeRequired(false);
+        criteria.setAltitudeRequired(false);
         criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);*/
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setCostAllowed(false);
+        criteria.setPowerRequirement(Criteria.POWER_HIGH);
 
         //API level 9 and up
         criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
         criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
         criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
 
+        String fusedProvider = locationManager.getBestProvider(criteria, true);
+        String gpsProvider = LocationManager.GPS_PROVIDER;
+
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             if (Build.HARDWARE.contains("mt")) {
-                locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 0, 12F, locationListenerGPS);
+                locationManager.requestLocationUpdates(fusedProvider, 0, 12F, locationListenerGPS);
             } else if (Build.HARDWARE.contains("qcom")) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 12F, locationListenerGPS);
+                locationManager.requestLocationUpdates(gpsProvider, 0, 12F, locationListenerGPS);
             } else {
-                locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 0, 12F, locationListenerGPS);
+                locationManager.requestLocationUpdates(fusedProvider, 0, 12F, locationListenerGPS);
             }
         } else {
             Toast.makeText(this, "Please turn on the GPS!", Toast.LENGTH_SHORT).show();
@@ -279,7 +282,7 @@ public class GIS_LocationService extends LifecycleService {
                 GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
 
                 if (userTypeId.equals(AUtils.USER_TYPE.USER_TYPE_EMP_SCANNIFY)) {
-                    sendHouseMapTrail(service, gisRequestDTOList);
+                    sendHouseMapTrail(service, gisRequestDTO);
                 } else {
                     sendGarbageTrail(service, gisRequestDTO);
                 }
@@ -287,7 +290,7 @@ public class GIS_LocationService extends LifecycleService {
         }
     }
 
-    public void sendHouseMapTrail(GISWebService mService, List<GISRequestDTO> gisRequestDTOList) {
+    public void sendHouseMapTrail(GISWebService mService, /*List<*/GISRequestDTO/*>*/ gisRequestDTOList) {
         mService.sendHouseMapTrail(auth_token, Prefs.getString(AUtils.APP_ID, null), gisRequestDTOList).enqueue(new Callback<List<GISResponseDTO>>() {
             @Override
             public void onResponse(@NonNull Call<List<GISResponseDTO>> call, @NonNull Response<List<GISResponseDTO>> response) {

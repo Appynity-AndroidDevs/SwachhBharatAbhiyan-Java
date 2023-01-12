@@ -813,12 +813,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (maritalStatus.trim().isEmpty()){
             AUtils.warning(context,"Please select your marital status");
             return false;
-        }else if (maritalStatus.equals("Married")){
-            if (isMarriageValidation()){
-                AUtils.warning(context,"success");
-                return false;
-            }
-            return true;
+        }else if (maritalStatus.equals("Married") && !isMarriageValidation()){
+            return false;
         }else if (living.trim().isEmpty()){
             AUtils.warning(context,"Please select living status");
             return false;
@@ -850,8 +846,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (!mYear.isEmpty()){
             if (marriageAge < 18){
                 AUtils.warning(context,"Your age below 18, please select valid marriage date");
+                return false;
             }
-             return false;
         }
          return true;
     }
@@ -954,7 +950,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean dataSendFragment(int position){
+    /*private boolean dataSendFragment(int position){
         Fragment fragment = null;
         switch (position) {
             case 0:
@@ -974,6 +970,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 break;
         }
         return loadFragment(fragment);
-    }
+    }*/
 
 }

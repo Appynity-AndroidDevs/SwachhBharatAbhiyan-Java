@@ -884,10 +884,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (twoWheeler.trim().isEmpty()){
             AUtils.warning(context,"Please add total two wheeler");
             return false;
-        }else if (fourWheeler.trim().isEmpty()){
+        }/*else if (fourWheeler.trim().isEmpty()){
             AUtils.warning(context,"Please add total four wheeler");
             return false;
-        }
+        }*/
         return true;
     }
     private boolean isValidFragFour(){

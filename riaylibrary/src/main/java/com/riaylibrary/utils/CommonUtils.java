@@ -101,6 +101,7 @@ public class CommonUtils {
     public static Application mainApplicationConstant;
     public static Context currentContextConstant;
     public static Snackbar mSnackbar;
+    public static Snackbar syncSnackbar;
 
     //app setting for permissions dialog
     public static void showPermissionDialog(Context context, String message,
@@ -1197,6 +1198,14 @@ public class CommonUtils {
         View layout = LayoutInflater.from(currentContextConstant).inflate(R.layout.snackbar_custom_layout, null);
         v.addView(layout, 0);
         mSnackbar.show();
+    }
+
+    public static void showSyncSnackBar(View parent , String msg) {
+        syncSnackbar = Snackbar.make(parent, msg , Snackbar.LENGTH_INDEFINITE);
+      //  Snackbar.SnackbarLayout v = (Snackbar.SnackbarLayout) mSnackbar.getView();
+//        View layout = LayoutInflater.from(currentContextConstant).inflate(R.layout.snackbar_custom_layout, null);
+//        v.addView(layout, 0);
+        syncSnackbar.show();
     }
 
     public static GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> getGenericRequestBuilder

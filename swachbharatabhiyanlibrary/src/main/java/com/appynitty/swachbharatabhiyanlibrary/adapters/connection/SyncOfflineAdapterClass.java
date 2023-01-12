@@ -54,6 +54,8 @@ public class SyncOfflineAdapterClass {
 
     public void SyncOfflineData() {
 
+        Prefs.putBoolean(AUtils.isConnectionTimeOut, false);
+
         if (!AUtils.isSyncOfflineScanDataRequestEnable) {
 
             setOfflineData();
@@ -78,16 +80,17 @@ public class SyncOfflineAdapterClass {
                                 if (response.code() == 200) {
 
                                     onResponseReceived(response.body());
-                                  //  SyncOfflineData();
+                                    SyncOfflineData();
 
+                                    Prefs.putBoolean(AUtils.isConnectionTimeOut, false);
 
                                 } else {
                                     Log.d(TAG, "onResponse: " + response);
-                                    AUtils.warning(mContext, mContext.getResources().getString(R.string.connection_timeout), Toast.LENGTH_SHORT);
+                                    AUtils.warning(mContext, mContext.getResources().getString(R.string.please_sync_again), Toast.LENGTH_SHORT);
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.code());
                                     Log.i("SyncOfflineClass", "onFailureCallback: Response Code-" + response.message());
                                     AUtils.isSyncOfflineScanDataRequestEnable = false;
-                                    //            Prefs.putBoolean(AUtils.isSyncingOn, false);
+
                                     syncOfflineListener.onFailureCallback();
                                 }
                             }
@@ -95,20 +98,20 @@ public class SyncOfflineAdapterClass {
                             @Override
                             public void onFailure(Call<List<OfflineGcResultPojo>> call, Throwable t) {
                                 Log.i(AUtils.TAG_HTTP_RESPONSE, "onFailureCallback: Response Code-" + t.getMessage());
-                                AUtils.warning(mContext, mContext.getResources().getString(R.string.connection_timeout), Toast.LENGTH_SHORT);
+                                AUtils.warning(mContext, mContext.getResources().getString(R.string.please_sync_again), Toast.LENGTH_LONG);
                                 AUtils.isSyncOfflineScanDataRequestEnable = false;
                                 Prefs.putBoolean(AUtils.isSyncingOn, false);
                                 syncOfflineListener.onErrorCallback();
+                                Prefs.putBoolean(AUtils.isConnectionTimeOut, true);
                                 Log.i("RESPONSE_CODE", "onResponse: " + t.getMessage());
 
                             }
 
                         });
             } else {
-                //       Prefs.putBoolean(AUtils.isSyncingOn, false);
+
                 if (syncOfflineListener != null) {
                     syncOfflineListener.onSuccessCallback();
-
                 }
 
             }
@@ -151,11 +154,16 @@ public class SyncOfflineAdapterClass {
                                     areaWarningListener.onError(result.getMessage());
 
                             } else {
-//
-//                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
-//                                AUtils.error(mContext, result.getMessageMar());
-//                            else
-//                                AUtils.error(mContext, result.getMessage());
+
+                                if (!result.getMessage().contains("wrong")) {
+
+                                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI))
+                                        AUtils.error(mContext, result.getMessageMar());
+                                    else
+                                        AUtils.error(mContext, result.getMessage());
+
+                                }
+
                             }
                         }
 
@@ -208,24 +216,27 @@ public class SyncOfflineAdapterClass {
                     }
                 }
             }
-        }
 
-        if (results.size() > 1) {
-            boolean isSuccess = false;
-            for (OfflineGcResultPojo result : results) {
-                if (result.getStatus() != null) {
-                    if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
-                        isSuccess = true;
+            if (results.size() > 1) {
+                boolean isSuccess = false;
+                for (OfflineGcResultPojo result : results) {
+                    if (result.getStatus() != null) {
+                        if (result.getStatus().equals(AUtils.STATUS_SUCCESS)) {
+                            isSuccess = true;
+                        }
                     }
                 }
-            }
-            if (isSuccess) {
+                if (isSuccess) {
+                    if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
+                        AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
+                        Prefs.putBoolean(AUtils.isSyncingOn, false);
+                    }
+                }
+            }else if (results.size() == 1){
                 if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
-                    AUtils.success(mContext, mContext.getResources().getString(R.string.success_offline_sync));
                     Prefs.putBoolean(AUtils.isSyncingOn, false);
                 }
             }
-
         }
 
         AUtils.isSyncOfflineScanDataRequestEnable = false;

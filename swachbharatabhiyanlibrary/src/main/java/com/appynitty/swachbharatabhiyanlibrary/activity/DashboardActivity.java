@@ -182,6 +182,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
         initComponents();
         AUtils.gpsStatusCheck(DashboardActivity.this);
         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
+        Prefs.putBoolean(AUtils.isSyncingOn, false);
 
         Log.i("DashboardLifecycle", "onCreate: ");
         onSwitchStatus(AUtils.isIsOnduty());
@@ -449,7 +450,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         //syncOfflineData();
         if (AUtils.isInternetAvailable()) {
-            Prefs.putBoolean(AUtils.isSyncingOn, false);
+
             if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
                 syncOfflineData(isSync);
             }

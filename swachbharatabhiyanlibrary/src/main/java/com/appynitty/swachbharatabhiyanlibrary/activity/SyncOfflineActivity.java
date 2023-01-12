@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -92,6 +93,30 @@ public class SyncOfflineActivity extends AppCompatActivity {
         alertDialog.setView(view);
         remainingCountTv = view.findViewById(R.id.remaining_count_tv);
 
+        alertDialog.setOnCancelListener(dialogInterface -> {
+
+            if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+
+                showDialogWithCount();
+                btnSyncOfflineData.setVisibility(View.GONE);
+                AUtils.showSyncSnackBar(findViewById(R.id.parent), getResources().getString(R.string.syncing_is_on));
+
+            } else {
+                AUtils.hideSyncSnackBar();
+            }
+
+        });
+
+
+        alertDialog.setOnKeyListener((dialogInterface, keyCode, keyEvent) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+
+                alertDialog.dismiss();
+                //  finish();
+
+            }
+            return true;
+        });
     }
 
     private void registerEvents() {
@@ -100,42 +125,12 @@ public class SyncOfflineActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
                 if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                    Prefs.putBoolean(AUtils.isConnectionTimeOut, false);
                     syncOfflineAdapter.SyncOfflineData();
                     showDialogWithCount();
+                    btnSyncOfflineData.setVisibility(View.GONE);
                 }
-
-//
-//                executor.execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (InternetWorking.isOnline()) {
-//
-//                            Handler handler = new Handler(Looper.getMainLooper());
-//                            handler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    syncOfflineAdapter.SyncOfflineData();
-//                                    if (!alertDialog.isShowing())
-//                                        alertDialog.show();
-//                                }
-//                            });
-//                        } else {
-//
-//                            Handler handler = new Handler(Looper.getMainLooper());
-//                            handler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//
-//                                    if (alertDialog.isShowing())
-//                                        alertDialog.hide();
-//                                    AUtils.warning(mContext, getResources().getString(R.string.no_internet_error));
-//                                }
-//                            });
-//                        }
-//                    }
-//                });
 
 
             }
@@ -152,15 +147,17 @@ public class SyncOfflineActivity extends AppCompatActivity {
 
             @Override
             public void onFailureCallback() {
-//                if (alertDialog.isShowing())
-//                    alertDialog.hide();
+                if (alertDialog.isShowing())
+                    alertDialog.hide();
+
+                btnSyncOfflineData.setVisibility(View.VISIBLE);
 //                AUtils.warning(mContext, getResources().getString(R.string.try_after_sometime));
             }
 
             @Override
             public void onErrorCallback() {
 //                if (alertDialog.isShowing())
-//                    alertDialog.hide();
+                alertDialog.hide();
                 //   AUtils.warning(mContext, getResources().getString(R.string.serverError));
             }
         });
@@ -168,11 +165,14 @@ public class SyncOfflineActivity extends AppCompatActivity {
 
     private void initData() {
 
-
         if (syncOfflineRepository.fetchCollectionCount().size() > 0) {
             if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-                showDialogWithCount();
-                btnSyncOfflineData.setVisibility(View.GONE);
+                if (AUtils.isInternetAvailable()) {
+                    showDialogWithCount();
+                    btnSyncOfflineData.setVisibility(View.GONE);
+                } else {
+                    inflateData();
+                }
                 Log.i("SANATH_SYNC", "initData: " + "isSyncingOn");
             } else {
                 inflateData();
@@ -192,8 +192,10 @@ public class SyncOfflineActivity extends AppCompatActivity {
         else
             alertDialog.hide();
 
+
         if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
             //   if (syncOfflineRepository.fetchCollectionCount().size() > 0) {
+
 
             executor.execute(new Runnable() {
                 @Override
@@ -205,7 +207,27 @@ public class SyncOfflineActivity extends AppCompatActivity {
 
                     while (isSyncing[0]) {
 
-//                        if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (Prefs.getBoolean(AUtils.isConnectionTimeOut, false)) {
+
+                                    if (AUtils.isInternetAvailable()) {
+                                        btnSyncOfflineData.setText(getResources().getText(R.string.sync_again));
+
+                                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                                    } else {
+
+                                        isSyncing[0] = false;
+                                        if (alertDialog.isShowing())
+                                            alertDialog.hide();
+
+                                        btnSyncOfflineData.setVisibility(View.GONE);
+                                        AUtils.showSnackBar(findViewById(R.id.parent));
+                                    }
+                                }
+                            }
+                        });
 
                         List<TableDataCountPojo.WorkHistory> mList = syncOfflineRepository.fetchCollectionCount();
                         if (mList.size() > 0) {
@@ -243,6 +265,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
 
                                     if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
                                         isSyncing[0] = false;
+                                        AUtils.hideSnackBar();
                                     }
                                     inflateData();
                                 }
@@ -258,7 +281,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
                                     public void run() {
                                         Log.i("SyncCountTest", "run: " + "count");
                                         inflateData();
-
+                                        AUtils.hideSnackBar();
                                     }
                                 });
                             }
@@ -277,6 +300,18 @@ public class SyncOfflineActivity extends AppCompatActivity {
 
     private void inflateData() {
 
+
+        boolean isSync = Prefs.getBoolean(AUtils.isSyncingOn, false);
+        Log.i("SYNC_CHECK", "inflateData: " + isSync);
+
+        if (Prefs.getBoolean(AUtils.isConnectionTimeOut, false)) {
+            btnSyncOfflineData.setText(getResources().getText(R.string.sync_again));
+            if (alertDialog.isShowing())
+                alertDialog.hide();
+
+            btnSyncOfflineData.setVisibility(View.VISIBLE);
+        }
+
         workHistoryList.clear();
         workHistoryList = syncOfflineRepository.fetchCollectionCount();
         int size = workHistoryList.size();
@@ -284,10 +319,9 @@ public class SyncOfflineActivity extends AppCompatActivity {
         if (workHistoryList.size() > 0) {
             if (Integer.parseInt(workHistoryList.get(0).getHouseCollection()) > 0) {
                 gridOfflineData.setVisibility(View.VISIBLE);
-                if (Integer.parseInt(workHistoryList.get(0).getHouseCollection()) == 0) {
+                if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
                     btnSyncOfflineData.setVisibility(View.VISIBLE);
                 }
-
                 layoutNoOfflineData.setVisibility(View.GONE);
                 InflateOfflineWorkAdapter historyAdapter = new InflateOfflineWorkAdapter(mContext, workHistoryList);
                 Log.e(TAG, "inflateData:- " + "OfflineWorkHistory=> " + workHistoryList);
@@ -377,4 +411,5 @@ public class SyncOfflineActivity extends AppCompatActivity {
         super.onDestroy();
         alertDialog.dismiss();
     }
+
 }

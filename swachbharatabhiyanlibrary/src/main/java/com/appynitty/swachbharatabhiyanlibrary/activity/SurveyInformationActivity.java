@@ -1,6 +1,8 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.SurfaceControl;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -34,6 +37,7 @@ import com.appynitty.swachbharatabhiyanlibrary.viewmodels.SurveyDetailsVM;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,7 +73,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
     String getApiTotalMember,getApiWillingStart,getApiResAvailable,getApiJobOtherCity,getApiTotalVehicle;
     String getApiTwoWheeler,getApiFourWheeler,getApiTotalVote,getApiSocialMedia,getApiShopping,getApiPaymentApp;
     String getApiInsurance,getApiUnderI,getApiAyushman,getApiBoosterDose,getApiDivyang,getApiAdult,getApiChildren,getApiSeniorCitizen;
+    private List<String> selectedSocialMediaList = new ArrayList<>();
+    private List<String> selectedShoppingList = new ArrayList<>();
+    private List<String> selectedPaymentList = new ArrayList<>();
     private int fragPosition = 0;
+    private Bundle bundle;
 
 
     @Override
@@ -86,12 +94,21 @@ public class SurveyInformationActivity extends AppCompatActivity {
         loader = findViewById(R.id.progress_bar);
         dotsIndicator = findViewById(R.id.dots_indicator);
         surveyFormFiveFragment = new SurveyFormFiveFragment();
+        //surveyFormFiveFragment.setArguments(bundle);
         surveyFormFourFragment = new SurveyFormFourFragment();
+        //surveyFormFourFragment.setArguments(bundle);
         surveyFormThreeFragment = new SurveyFormThreeFragment();
+        //surveyFormThreeFragment.setArguments(bundle);
         surveyFormTwoFragment = new SurveyFormTwoFragment();
+       // surveyFormTwoFragment.setArguments(bundle);
         surveyFormOneFragment = new SurveyFormOneFragment();
+      //  surveyFormOneFragment.setArguments(bundle);
 
         pagerAdapter = new SurPagerAdapter(getSupportFragmentManager(),getLifecycle());
+        viewPager.setAdapter(pagerAdapter);
+        dotsIndicator.attachTo(viewPager);
+        bundle = new Bundle();
+
         imgBack = findViewById(R.id.img_survey_back);
         btnNext = findViewById(R.id.btn_next);
         btnBack = findViewById(R.id.btn_back);
@@ -104,8 +121,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
 
-        viewPager.setAdapter(pagerAdapter);
-        dotsIndicator.attachTo(viewPager);
         getSurveyApi();
         setOnClick();
     }
@@ -334,6 +349,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 Log.i("Rahul", "PageChange: "+position);
                 fragPosition = position;
                 if(position==0) {
+                   // loadFragment(surveyFormOneFragment);
                     btnBack.setVisibility(View.GONE);
                 }else  {
                     btnBack.setVisibility(View.VISIBLE);
@@ -511,21 +527,29 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     for (int i=0; i< getSurveyDetailsPojo.size(); i++){
                         if (getSurveyDetailsPojo.get(i) != null){
                             apiReferenceId = getSurveyDetailsPojo.get(i).getReferanceId();
+
+                            /*loadFragment(surveyFormOneFragment);*/
                             Log.i("social", "getApiSurvey: " + apiReferenceId);
                             getApiHouseId = String.valueOf(getSurveyDetailsPojo.get(i).getHouseId());
                             Log.i("social", "getApiSurvey: " + getApiHouseId);
                             getApiName = getSurveyDetailsPojo.get(i).getName();
                             Log.i("social", "getApiSurvey: " + getApiName);
+                            bundle.putString("fragmentOneName", getApiName);
                             getApiMobile = getSurveyDetailsPojo.get(i).getMobileNumber();
                             Log.i("social", "getApiSurvey: " + getApiMobile);
+                            bundle.putString("fragmentOneMobile", getApiMobile);
                             getApiAge = String.valueOf(getSurveyDetailsPojo.get(i).getAge());
                             Log.i("social", "getApiSurvey: " + getApiAge);
+                            bundle.putString("fragmentOneAge", getApiAge);
                             getApiDob = getSurveyDetailsPojo.get(i).getDateOfBirth();
                             Log.i("social", "getApiSurvey: " + getApiDob);
                             getApiGender = getSurveyDetailsPojo.get(i).getGender();
                             Log.i("social", "getApiSurvey: " + getApiGender);
+                            bundle.putString("fragmentOneGender", getApiGender);
                             getApiBloodGroup = getSurveyDetailsPojo.get(i).getBloodGroup();
                             Log.i("social", "getApiSurvey: " + getApiBloodGroup);
+
+                            //loadFragment(surveyFormTwoFragment);
                             getApiQualification = getSurveyDetailsPojo.get(i).getQualification();
                             Log.i("social", "getApiSurvey: " + getApiQualification);
                             getApiOccupation = getSurveyDetailsPojo.get(i).getReferanceId();
@@ -536,6 +560,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
                             Log.i("social", "getApiSurvey: " + getApiMarriageDate);
                             getApiLivingStatus = getSurveyDetailsPojo.get(i).getLivingStatus();
                             Log.i("social", "getApiSurvey: " + getApiLivingStatus);
+
+                            //loadFragment(surveyFormThreeFragment);
                             getApiTotalMember = String.valueOf(getSurveyDetailsPojo.get(i).getTotalMember());
                             Log.i("social", "getApiSurvey: " + getApiTotalMember);
                             getApiWillingStart = String.valueOf(getSurveyDetailsPojo.get(i).isWillingStart());
@@ -550,14 +576,28 @@ public class SurveyInformationActivity extends AppCompatActivity {
                             Log.i("social", "getApiSurvey: " + getApiTwoWheeler);
                             getApiFourWheeler = String.valueOf(getSurveyDetailsPojo.get(i).getFourWheelerQty());
                             Log.i("social", "getApiSurvey: " + getApiFourWheeler);
+
+                           // loadFragment(surveyFormFourFragment);
                             getApiTotalVote = String.valueOf(getSurveyDetailsPojo.get(i).getNoPeopleVote());
                             Log.i("social", "getApiSurvey: " + getApiTotalVote);
                             getApiSocialMedia = getSurveyDetailsPojo.get(i).getSocialMedia();
                             Log.i("social", "getApiSurvey: " + getApiSocialMedia);
+                            if (getApiSocialMedia != null && !getApiSocialMedia.equals("")){
+                                String[] items = getApiSocialMedia.split(",");
+                                Log.e(TAG, "socialMedia: "+items );
+                                selectedSocialMediaList.clear();
+                                for (int k =0 ; k<items.length; k++){
+                                    selectedSocialMediaList.add(items[k].trim().replaceAll("\\s",""));
+                                }
+                                Log.e(TAG, "already exist social media list: "+selectedSocialMediaList);
+                            }
+
                             getApiShopping = getSurveyDetailsPojo.get(i).getOnlineShopping();
                             Log.i("social", "getApiSurvey: " + getApiShopping);
                             getApiPaymentApp = getSurveyDetailsPojo.get(i).getOnlinePayApp();
                             Log.i("social", "getApiSurvey: " + getApiPaymentApp);
+
+                           // loadFragment(surveyFormFiveFragment);
                             getApiInsurance = getSurveyDetailsPojo.get(i).getInsurance();
                             Log.i("social", "getApiSurvey: " + getApiInsurance);
                             getApiUnderI = String.valueOf(getSurveyDetailsPojo.get(i).isUnderInsurer());
@@ -900,6 +940,40 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.container_frame_layout, fragment);
+            ft.commit();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean dataSendFragment(int position){
+        Fragment fragment = null;
+        switch (position) {
+            case 0:
+                fragment = surveyFormOneFragment;
+                break;
+            case 1:
+                fragment = surveyFormTwoFragment;
+                break;
+            case 2:
+                fragment = surveyFormThreeFragment;
+                break;
+            case 3:
+                fragment = surveyFormFourFragment;
+                break;
+            case 4:
+                fragment = surveyFormFiveFragment;
+                break;
+        }
+        return loadFragment(fragment);
     }
 
 }

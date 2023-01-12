@@ -14,6 +14,8 @@ import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +24,11 @@ public class SurPagerAdapter extends FragmentStateAdapter {
 
     private Context mContext;
     private ArrayList<Fragment> arrayList = new ArrayList<>();
-
-    public SurPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    private GetSurveyResponsePojo requestPojo;
+    public SurPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle/*, GetSurveyResponsePojo requestPojo*/) {
         super(fragmentManager, lifecycle);
+
+       // this.requestPojo = requestPojo;
     }
 
     @NonNull

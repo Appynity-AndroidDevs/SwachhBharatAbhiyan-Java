@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class SurveyFormFourFragment extends Fragment {
@@ -51,6 +52,9 @@ public class SurveyFormFourFragment extends Fragment {
 
     private String socialList,shoppingList,paymentList;
     String regex = "\\[|\\]";
+    private List<String> selectedSocialMediaList = new ArrayList<>();
+    private List<String> selectedShoppingList = new ArrayList<>();
+    private List<String> selectedPaymentList = new ArrayList<>();
 
 
 

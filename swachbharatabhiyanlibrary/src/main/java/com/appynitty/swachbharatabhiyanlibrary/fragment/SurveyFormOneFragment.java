@@ -35,6 +35,8 @@ import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.DaysPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthYearPickerDialog;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
 
@@ -70,12 +72,21 @@ public class SurveyFormOneFragment extends Fragment {
     String male,female,other;
     String posA,posB,posAB,posO,negA,negB,negAB,negO;
 
+    String getApiName,getApiMobile,getApiAge,getApiGender,getApiBloodGroup;
+    /*private GetSurveyResponsePojo getSurveyResponsePojo;
+
+    public SurveyFormOneFragment(){}
+    public SurveyFormOneFragment(GetSurveyResponsePojo requestPojo){
+        this.getSurveyResponsePojo = requestPojo;
+    }*/
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_survey_form_one, container, false);
+
             init();
         }
         return view;
@@ -156,9 +167,21 @@ public class SurveyFormOneFragment extends Fragment {
         chkArrayBloodGroup[7] = cbBloodNegAB;
         chkArrayBloodGroup[7].setOnClickListener(mListenerBloodGroup);
 
-
         setOnClick();
         setFillData();
+        getApiResponse();
+    }
+
+    private void getApiResponse() {
+        if (getArguments() != null){
+
+            getApiName = getArguments().getString("fragmentOneName");
+            Log.i("social", "getApiResponse: "+getApiName);
+            edtName.setText(getApiName);
+            getApiMobile = getArguments().getString("fragmentOneMobile");
+            Log.i("social", "getApiResponse: "+getApiMobile);
+            edtMobile.setText(getApiMobile);
+        }
     }
 
     private void setFillData() {

@@ -158,15 +158,15 @@ public class SurveyFormThreeFragment extends Fragment {
     }
 
     private void setFillData() {
-        String totalMember = Prefs.getString(AUtils.PREFS.SUR_TOTAL_MEMBER,"");
+        String totalMember = Prefs.getString(AUtils.PREFS.SUR_TOTAL_MEMBER,"0");
         txtNumTotalMember.setText(totalMember);
-        String adult = Prefs.getString(AUtils.PREFS.SUR_TOTAL_ADULT,"");
+        String adult = Prefs.getString(AUtils.PREFS.SUR_TOTAL_ADULT,"0");
         txtNumAdult.setText(adult);
-        String children = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CHILDREN,"");
+        String children = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CHILDREN,"0");
         txtNumChild.setText(children);
-        String citizen = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CITIZEN,"");
+        String citizen = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CITIZEN,"0");
         txtNumSCitizen.setText(citizen);
-        String willingStart = Prefs.getString(AUtils.PREFS.SUR_WILLING_START,"");
+        String willingStart = Prefs.getString(AUtils.PREFS.SUR_WILLING_START,"0");
         if (willingStart.equals(String.valueOf(true))){
             cbBusinessTypeYes.setChecked(true);
         }else if (willingStart.equals(String.valueOf(false))){
@@ -186,11 +186,11 @@ public class SurveyFormThreeFragment extends Fragment {
         }else if (otherCity.equals(String.valueOf(false))){
             cbNoOCity.setChecked(true);
         }
-        String totalVehicle = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_VEHICLE,"");
+        String totalVehicle = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_VEHICLE,"0");
         txtNumTotalVehicle.setText(totalVehicle);
-        String twoWheeler = Prefs.getString(AUtils.PREFS.SUR_TWO_WHEELER_QTY,"");
+        String twoWheeler = Prefs.getString(AUtils.PREFS.SUR_TWO_WHEELER_QTY,"0");
         txtNumTwoWheel.setText(twoWheeler);
-        String fourWheeler = Prefs.getString(AUtils.PREFS.SUR_FOUR_WHEELER_QTY,"");
+        String fourWheeler = Prefs.getString(AUtils.PREFS.SUR_FOUR_WHEELER_QTY,"0");
         txtNumFourWheel.setText(fourWheeler);
     }
 

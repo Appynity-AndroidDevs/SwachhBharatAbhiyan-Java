@@ -102,7 +102,7 @@ public class SurveyFormFourFragment extends Fragment {
     }
 
     private void setFillData() {
-        String totalVote = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,"");
+        String totalVote = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,"0");
         txtNumVote.setText(totalVote);
         String socialMedia = Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,"");
         String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");

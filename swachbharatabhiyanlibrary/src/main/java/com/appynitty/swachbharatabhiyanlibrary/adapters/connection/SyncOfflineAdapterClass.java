@@ -232,7 +232,7 @@ public class SyncOfflineAdapterClass {
                         Prefs.putBoolean(AUtils.isSyncingOn, false);
                     }
                 }
-            }else if (results.size() == 1){
+            } else if (results.size() == 1) {
                 if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
                     Prefs.putBoolean(AUtils.isSyncingOn, false);
                 }

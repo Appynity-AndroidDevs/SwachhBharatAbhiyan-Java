@@ -38,7 +38,7 @@ public class SyncOfflineRepository {
     private static final int streetCollectionId = 5;
     private static final int DumpYardPlantCollectionId = 6; //added by rahul
 
-    private static final int DATA_LIMIT = 102;    //it was set to 25 before.
+    private static final int DATA_LIMIT = 10;    //it was set to 25 before.
     private final static String COLUMN_ID = "_offlineSyncId";
     private final static String COLUMN_POJO = "offlineSyncPojo";
     public final static String COLUMN_DATE = "offlineSyncDate";

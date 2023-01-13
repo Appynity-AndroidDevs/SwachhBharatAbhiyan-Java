@@ -91,13 +91,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
 
-        try {
-            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.pk_buildings, MapsActivity.this);
-            layer.getDefaultPolygonStyle().setStrokeColor(Color.WHITE);
-            layer.addLayerToMap();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.pk_buildings, MapsActivity.this);
+//            layer.getDefaultPolygonStyle().setStrokeColor(Color.WHITE);
+//            layer.addLayerToMap();
+//        } catch (IOException | JSONException e) {
+//            e.printStackTrace();
+//        }
 
 
 

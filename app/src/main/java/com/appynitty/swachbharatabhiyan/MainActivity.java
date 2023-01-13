@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 //        initLanguageList();
 
         startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+
     }
 
     private void initLanguageList() {

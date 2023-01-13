@@ -14,6 +14,7 @@ import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.GetApiResponseModel;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 
@@ -24,11 +25,10 @@ public class SurPagerAdapter extends FragmentStateAdapter {
 
     private Context mContext;
     private ArrayList<Fragment> arrayList = new ArrayList<>();
-    private GetSurveyResponsePojo requestPojo;
-    public SurPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle/*, GetSurveyResponsePojo requestPojo*/) {
+    private GetApiResponseModel getApiResponseModel;
+    public SurPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, GetApiResponseModel getApiResponseModel) {
         super(fragmentManager, lifecycle);
-
-       // this.requestPojo = requestPojo;
+        this.getApiResponseModel = getApiResponseModel;
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class SurPagerAdapter extends FragmentStateAdapter {
         switch (position){
             case 0:
                 Log.i("FragRahul", "createFragment: "+position);
-                return new SurveyFormOneFragment();
+                return new SurveyFormOneFragment(getApiResponseModel);
             case 1:
                 Log.i("FragRahul", "createFragment: "+position);
                 return new SurveyFormTwoFragment();

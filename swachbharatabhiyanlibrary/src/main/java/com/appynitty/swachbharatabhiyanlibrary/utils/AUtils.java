@@ -19,6 +19,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -59,10 +60,14 @@ import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.utils.CommonUtils;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -1507,6 +1512,32 @@ public class AUtils extends CommonUtils {
         }
 
         return ageInteger;
+    }
+
+    public static <T extends Serializable> T stringToObjectS(String string) {
+        byte[] bytes = Base64.decode(string, 0);
+        T object = null;
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
+            object = (T) objectInputStream.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    public static String objectToString(Parcelable object) {
+        String encoded = null;
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(object);
+            objectOutputStream.close();
+            encoded = new String(Base64.encodeToString(byteArrayOutputStream.toByteArray(), 0));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return encoded;
     }
 
 }

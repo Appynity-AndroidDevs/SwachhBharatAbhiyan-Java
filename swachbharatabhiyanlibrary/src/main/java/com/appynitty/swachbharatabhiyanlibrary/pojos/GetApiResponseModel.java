@@ -1,84 +1,126 @@
 package com.appynitty.swachbharatabhiyanlibrary.pojos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetApiResponseModel extends Throwable {
+public class GetApiResponseModel extends Throwable implements Parcelable {
 
     @SerializedName("houseId")
+    @Expose
     String houseId;
     @SerializedName("ReferanceId")
+    @Expose
     String ReferanceId;
     @SerializedName("name")
+    @Expose
     String name;
     @SerializedName("mobileNumber")
+    @Expose
     String mobileNumber;
     @SerializedName("age")
+    @Expose
     String age;
     @SerializedName("dateOfBirth")
+    @Expose
     String dateOfBirth;
     @SerializedName("birtDay")
+    @Expose
     String birtDay;
     @SerializedName("birthMonth")
+    @Expose
     String birthMonth;
     @SerializedName("birthYear")
+    @Expose
     String birthYear;
     @SerializedName("gender")
+    @Expose
     String gender;
     @SerializedName("bloodGroup")
+    @Expose
     String bloodGroup;
     @SerializedName("qualification")
+    @Expose
     String qualification;
     @SerializedName("occupation")
+    @Expose
     String occupation;
     @SerializedName("maritalStatus")
+    @Expose
     String maritalStatus;
     @SerializedName("marriageDate")
+    @Expose
     String marriageDate;
     @SerializedName("marriageDay")
+    @Expose
     String marriageDay;
     @SerializedName("marriageMonth")
+    @Expose
     String marriageMonth;
     @SerializedName("marriageYear")
+    @Expose
     String marriageYear;
     @SerializedName("livingStatus")
+    @Expose
     String livingStatus;
     @SerializedName("totalMember")
+    @Expose
     String totalMember;
     @SerializedName("adults")
+    @Expose
     String adults;
     @SerializedName("children")
+    @Expose
     String children;
     @SerializedName("srCitizen")
+    @Expose
     String srCitizen;
     @SerializedName("willingStart")
+    @Expose
     String willingStart;
     @SerializedName("resourcesAvailable")
+    @Expose
     String resourcesAvailable;
     @SerializedName("memberJobOtherCity")
+    @Expose
     String memberJobOtherCity;
     @SerializedName("totalVehicle")
+    @Expose
     String totalVehicle;
     @SerializedName("twoWheelerQty")
+    @Expose
     String twoWheelerQty;
     @SerializedName("fourWheelerQty")
+    @Expose
     String fourWheelerQty;
     @SerializedName("noPeopleVote")
+    @Expose
     String noPeopleVote;
     @SerializedName("socialMedia")
+    @Expose
     String socialMedia;
     @SerializedName("onlineShopping")
+    @Expose
     String onlineShopping;
     @SerializedName("onlinePayApp")
+    @Expose
     String onlinePayApp;
     @SerializedName("insurance")
+    @Expose
     String insurance;
     @SerializedName("underInsurer")
+    @Expose
     String underInsurer;
     @SerializedName("ayushmanBeneficiary")
+    @Expose
     String ayushmanBeneficiary;
     @SerializedName("boosterShot")
+    @Expose
     String boosterShot;
     @SerializedName("memberDivyang")
+    @Expose
     String memberDivyang;
 
 
@@ -125,6 +167,59 @@ public class GetApiResponseModel extends Throwable {
 
     public GetApiResponseModel() {
     }
+
+    protected GetApiResponseModel(Parcel in) {
+        houseId = in.readString();
+        ReferanceId = in.readString();
+        name = in.readString();
+        mobileNumber = in.readString();
+        age = in.readString();
+        dateOfBirth = in.readString();
+        birtDay = in.readString();
+        birthMonth = in.readString();
+        birthYear = in.readString();
+        gender = in.readString();
+        bloodGroup = in.readString();
+        qualification = in.readString();
+        occupation = in.readString();
+        maritalStatus = in.readString();
+        marriageDate = in.readString();
+        marriageDay = in.readString();
+        marriageMonth = in.readString();
+        marriageYear = in.readString();
+        livingStatus = in.readString();
+        totalMember = in.readString();
+        adults = in.readString();
+        children = in.readString();
+        srCitizen = in.readString();
+        willingStart = in.readString();
+        resourcesAvailable = in.readString();
+        memberJobOtherCity = in.readString();
+        totalVehicle = in.readString();
+        twoWheelerQty = in.readString();
+        fourWheelerQty = in.readString();
+        noPeopleVote = in.readString();
+        socialMedia = in.readString();
+        onlineShopping = in.readString();
+        onlinePayApp = in.readString();
+        insurance = in.readString();
+        underInsurer = in.readString();
+        ayushmanBeneficiary = in.readString();
+        boosterShot = in.readString();
+        memberDivyang = in.readString();
+    }
+
+    public static final Creator<GetApiResponseModel> CREATOR = new Creator<GetApiResponseModel>() {
+        @Override
+        public GetApiResponseModel createFromParcel(Parcel in) {
+            return new GetApiResponseModel(in);
+        }
+
+        @Override
+        public GetApiResponseModel[] newArray(int size) {
+            return new GetApiResponseModel[size];
+        }
+    };
 
     public String getHouseId() {
         return houseId;
@@ -472,5 +567,52 @@ public class GetApiResponseModel extends Throwable {
                 ", boosterShot='" + boosterShot + '\'' +
                 ", memberDivyang='" + memberDivyang + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(houseId);
+        parcel.writeString(ReferanceId);
+        parcel.writeString(name);
+        parcel.writeString(mobileNumber);
+        parcel.writeString(age);
+        parcel.writeString(dateOfBirth);
+        parcel.writeString(birtDay);
+        parcel.writeString(birthMonth);
+        parcel.writeString(birthYear);
+        parcel.writeString(gender);
+        parcel.writeString(bloodGroup);
+        parcel.writeString(qualification);
+        parcel.writeString(occupation);
+        parcel.writeString(maritalStatus);
+        parcel.writeString(marriageDate);
+        parcel.writeString(marriageDay);
+        parcel.writeString(marriageMonth);
+        parcel.writeString(marriageYear);
+        parcel.writeString(livingStatus);
+        parcel.writeString(totalMember);
+        parcel.writeString(adults);
+        parcel.writeString(children);
+        parcel.writeString(srCitizen);
+        parcel.writeString(willingStart);
+        parcel.writeString(resourcesAvailable);
+        parcel.writeString(memberJobOtherCity);
+        parcel.writeString(totalVehicle);
+        parcel.writeString(twoWheelerQty);
+        parcel.writeString(fourWheelerQty);
+        parcel.writeString(noPeopleVote);
+        parcel.writeString(socialMedia);
+        parcel.writeString(onlineShopping);
+        parcel.writeString(onlinePayApp);
+        parcel.writeString(insurance);
+        parcel.writeString(underInsurer);
+        parcel.writeString(ayushmanBeneficiary);
+        parcel.writeString(boosterShot);
+        parcel.writeString(memberDivyang);
     }
 }

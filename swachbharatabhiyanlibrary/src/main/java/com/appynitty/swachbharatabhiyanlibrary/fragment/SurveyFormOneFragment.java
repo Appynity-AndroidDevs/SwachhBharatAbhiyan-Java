@@ -1,5 +1,8 @@
 package com.appynitty.swachbharatabhiyanlibrary.fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.appynitty.swachbharatabhiyanlibrary.utils.AUtils.stringToObjectS;
+import static com.pixplicity.easyprefs.library.Prefs.getPreferences;
 import static java.util.Calendar.*;
 
 import android.annotation.SuppressLint;
@@ -12,6 +15,8 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -74,12 +79,14 @@ public class SurveyFormOneFragment extends Fragment {
     String posA,posB,posAB,posO,negA,negB,negAB,negO;
 
     String getApiName,getApiMobile,getApiAge,getApiGender,getApiBloodGroup;
-    /*private GetApiResponseModel apiResponseModel;
+    private GetApiResponseModel apiResponseModel;
 
-    public SurveyFormOneFragment(){}
+    public SurveyFormOneFragment(){
+
+    }
     public SurveyFormOneFragment(GetApiResponseModel apiResponseModel){
         this.apiResponseModel = apiResponseModel;
-    }*/
+    }
 
 
     @Override
@@ -91,6 +98,49 @@ public class SurveyFormOneFragment extends Fragment {
             init();
         }
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (apiResponseModel != null){
+
+            Log.d(TAG, "onViewCreated: "+apiResponseModel);
+            edtName.setText(apiResponseModel.getName());
+            edtMobile.setText(apiResponseModel.getMobileNumber());
+            atxtDay.setText(apiResponseModel.getBirtDay());
+            atxtMonth.setText(apiResponseModel.getBirthMonth());
+            atxtYear.setText(apiResponseModel.getBirthYear());
+            txtAge.setText(apiResponseModel.getAge());
+            if (apiResponseModel.getGender().equals(male)){
+                cbMale.setChecked(true);
+            }else if (apiResponseModel.getGender().equals(female)){
+                cbFemale.setChecked(true);
+            }else if (apiResponseModel.getGender().equals(other)){
+                cbTransG.setChecked(true);
+            }
+            if (apiResponseModel.getBloodGroup().equals(posA)){
+                cbBloodPosA.setChecked(true);
+            }else if (apiResponseModel.getBloodGroup().equals(posO)){
+                cbBloodPosO.setChecked(true);
+            }else if (apiResponseModel.getBloodGroup().equals(posB)){
+                cbBloodPosB.setChecked(true);
+            }else if (apiResponseModel.getBloodGroup().equals(posAB)){
+                cbBloodPosAB.setChecked(true);
+            }else if (apiResponseModel.getBloodGroup().equals(negA)){
+                cbBloodNegA.setChecked(true);
+            }else if (apiResponseModel.getBloodGroup().equals(negO)){
+                cbBloodNegO.setChecked(true);
+            }else if (apiResponseModel.getBloodGroup().equals(negB)){
+                cbBloodNegB.setChecked(true);
+            }else if (apiResponseModel.getBloodGroup().equals(negAB)){
+                cbBloodNegAB.setChecked(true);
+            }
+        }else {
+            Log.d(TAG, "onViewCreated: ");
+            init();
+        }
     }
 
     private void init() {
@@ -168,12 +218,20 @@ public class SurveyFormOneFragment extends Fragment {
         chkArrayBloodGroup[7] = cbBloodNegAB;
         chkArrayBloodGroup[7].setOnClickListener(mListenerBloodGroup);
 
+        /*SharedPreferences  mPrefs = getPreferences();
+        String value= mPrefs.getString("MyObject", "");
+        apiResponseModel = stringToObjectS(value);
+        Log.d(TAG, "init: "+apiResponseModel);*/
+
         setOnClick();
         setFillData();
         getApiResponse();
     }
 
     private void getApiResponse() {
+       // edtName.setText(apiResponseModel.getName());
+
+
         if (getArguments() != null){
 
             getApiName = getArguments().getString("fragmentOneName");

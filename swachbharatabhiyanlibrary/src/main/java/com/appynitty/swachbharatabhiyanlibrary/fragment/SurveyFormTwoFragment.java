@@ -23,6 +23,7 @@ import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.DaysPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthYearPickerDialog;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.GetApiResponseModel;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
 
@@ -53,6 +54,13 @@ public class SurveyFormTwoFragment extends Fragment {
     String married,unmarried;
     String own,rent,lease;
     private LinearLayout marriageBox;
+
+    private GetApiResponseModel apiResponseModel;
+
+    /*public SurveyFormTwoFragment(){}
+    public SurveyFormTwoFragment(GetApiResponseModel apiResponseModel){
+        this.apiResponseModel = apiResponseModel;
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

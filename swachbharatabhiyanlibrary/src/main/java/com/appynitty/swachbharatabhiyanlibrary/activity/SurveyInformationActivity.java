@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
@@ -54,6 +55,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
     private Button btnBack,btnNext, btnDone,btnUpdate;
     private ImageView imgBack;
+    private TextView txtHouseId;
 
     private ViewPager2 viewPager;
     private SurPagerAdapter pagerAdapter;
@@ -95,6 +97,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         headerReferenceId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
+        txtHouseId = findViewById(R.id.txt_house_id);
+        txtHouseId.setText(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
         loader = findViewById(R.id.progress_bar);
         dotsIndicator = findViewById(R.id.dots_indicator);
         surveyFormFiveFragment = new SurveyFormFiveFragment();
@@ -743,7 +747,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                                     prefsEditor.putString("MyObject", AUtils.objectToString(apiResponseModel));
                                     prefsEditor.commit();
 
-                                    btnDone.setText("Update");
+                                    btnDone.setText(R.string.btn_update);
                                     btnDone.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {

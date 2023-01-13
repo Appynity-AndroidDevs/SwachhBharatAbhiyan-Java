@@ -324,6 +324,11 @@
     <string name="str_que_ayushman_bharat">तुम्ही आयुष्मान भारत लाभार्थी आहात का?</string>
     <string name="str_que_booster_shot">तुम्ही तुमचा बूस्टर औषध घेतला आहे का?</string>
     <string name="str_que_divyang">तुमच्या कुटुंबातील कोणताही सदस्य दिव्यांग किंवा अपंग आहे का?</string>
+    <string name="btn_done">झाले</string>
+    <string name="btn_update">पूर्ण</string>
+    <string name="btn_back">मागे</string>
+    <string name="btn_next">पुढे</string>
+    <string name="str_survey_ncompleted">सर्वेक्षण \nपूर्ण झाले</string>
 
 
 </resources>

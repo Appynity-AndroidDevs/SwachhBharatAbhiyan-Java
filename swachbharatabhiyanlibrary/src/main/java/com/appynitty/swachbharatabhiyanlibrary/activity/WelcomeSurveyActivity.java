@@ -8,13 +8,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.pixplicity.easyprefs.library.Prefs;
 
 public class WelcomeSurveyActivity extends AppCompatActivity {
     private Context context;
     private ImageView imgBack;
     private Button btnLetsGo;
+    private TextView txtHouseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class WelcomeSurveyActivity extends AppCompatActivity {
         context = this;
         imgBack = findViewById(R.id.img_survey_back);
         btnLetsGo = findViewById(R.id.btn_less_go);
+        txtHouseId = findViewById(R.id.txt_house_id);
         setOnClick();
     }
     private void setOnClick(){

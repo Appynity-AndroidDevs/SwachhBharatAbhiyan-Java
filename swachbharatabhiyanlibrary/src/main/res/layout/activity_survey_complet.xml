@@ -31,7 +31,7 @@
             android:textSize="35sp"
             android:fontFamily="@font/font_bold"
             android:textColor="@color/white"
-            android:text="Survey\nCompleted"/>
+            android:text="@string/str_survey_ncompleted"/>
 
     </LinearLayout>
 

@@ -120,12 +120,14 @@ public class SurveyFormFourFragment extends Fragment {
         txtNumVote.setText(totalVote);
         String socialMedia = Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,"");
         if (socialMedia != null && !socialMedia.equals("")){
-            String[] items = socialMedia.split(",");
-            Log.e(TAG, "socialMedia: "+items );
-            selectedSocialMediaList.clear();
-            for (int k =0 ; k<items.length; k++){
-
-            }
+            String[] separatedSocialMedia = socialMedia.split(",");
+            String twit = separatedSocialMedia[0];
+            String inst = separatedSocialMedia[1];
+            String fb = separatedSocialMedia[2];
+            String whats = separatedSocialMedia[3];
+            String link = separatedSocialMedia[4];
+            String snap = separatedSocialMedia[5];
+            String other = separatedSocialMedia[6];
         }
         String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
         String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");

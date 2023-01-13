@@ -265,7 +265,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
 
                                     if (syncOfflineRepository.fetchCollectionCount().size() == 0) {
                                         isSyncing[0] = false;
-                                        AUtils.hideSnackBar();
+                                        AUtils.hideSyncSnackBar();
                                     }
                                     inflateData();
                                 }
@@ -281,7 +281,7 @@ public class SyncOfflineActivity extends AppCompatActivity {
                                     public void run() {
                                         Log.i("SyncCountTest", "run: " + "count");
                                         inflateData();
-                                        AUtils.hideSnackBar();
+                                        AUtils.hideSyncSnackBar();
                                     }
                                 });
                             }

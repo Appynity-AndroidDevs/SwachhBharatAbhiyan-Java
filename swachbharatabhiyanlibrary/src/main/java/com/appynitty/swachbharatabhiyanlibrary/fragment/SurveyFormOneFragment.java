@@ -35,6 +35,7 @@ import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.DaysPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthPickerDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.MonthYearPickerDialog;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.GetApiResponseModel;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
@@ -73,11 +74,11 @@ public class SurveyFormOneFragment extends Fragment {
     String posA,posB,posAB,posO,negA,negB,negAB,negO;
 
     String getApiName,getApiMobile,getApiAge,getApiGender,getApiBloodGroup;
-    /*private GetSurveyResponsePojo getSurveyResponsePojo;
+    /*private GetApiResponseModel apiResponseModel;
 
     public SurveyFormOneFragment(){}
-    public SurveyFormOneFragment(GetSurveyResponsePojo requestPojo){
-        this.getSurveyResponsePojo = requestPojo;
+    public SurveyFormOneFragment(GetApiResponseModel apiResponseModel){
+        this.apiResponseModel = apiResponseModel;
     }*/
 
 

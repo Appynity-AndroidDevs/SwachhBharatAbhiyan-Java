@@ -43,6 +43,7 @@ public class SurveyFormFourFragment extends Fragment {
 
     private CheckBox cbFbS,cbTwitSocial,cbInstagram,cbWhatsapp,cbLinkedIn,cbSnapChat,cbOtherS;
     public static ArrayList<String> socialMArray = new ArrayList<String>();
+    private String strFaceBook, strTwitter,strInstagram,strWhatsApp,strSnapChat,strLinkedIn,strOtherSocial;
 
     private CheckBox cbAmazonS,cbFlifkartS,cbNaykkaS,cbTataCliqS,cbSnapS, cbOtherShopping;
     private static  ArrayList<String> shoppingArray = new ArrayList<>();
@@ -55,6 +56,8 @@ public class SurveyFormFourFragment extends Fragment {
     private List<String> selectedSocialMediaList = new ArrayList<>();
     private List<String> selectedShoppingList = new ArrayList<>();
     private List<String> selectedPaymentList = new ArrayList<>();
+
+
 
 
 
@@ -80,12 +83,19 @@ public class SurveyFormFourFragment extends Fragment {
         o = Integer.parseInt(txtNumVote.getText().toString());
 //Social Media
         cbTwitSocial = view.findViewById(R.id.cb_twitter_social);
+        strTwitter = getResStringLanguage(R.string.str_twitter, "en");
         cbInstagram = view.findViewById(R.id.cb_instagram_social);
+        strInstagram = getResStringLanguage(R.string.str_instagram, "en");
         cbFbS = view.findViewById(R.id.cb_fb_social);
+        strFaceBook = getResStringLanguage(R.string.str_facebook, "en");
         cbWhatsapp = view.findViewById(R.id.cb_whatsapp_social);
+        strWhatsApp = getResStringLanguage(R.string.str_whatsapp, "en");
         cbLinkedIn = view.findViewById(R.id.cb_linkedin_social);
+        strLinkedIn = getResStringLanguage(R.string.str_linkedin, "en");
         cbSnapChat = view.findViewById(R.id.cb_snapchat_social);
+        strSnapChat = getResStringLanguage(R.string.str_snapchat, "en");
         cbOtherS = view.findViewById(R.id.cb_other_social);
+        strOtherSocial = getResStringLanguage(R.string.str_other, "en");
 //Shopping
         cbAmazonS = view.findViewById(R.id.cb_amazon_shopping);
         cbFlifkartS = view.findViewById(R.id.cb_flipkart);
@@ -109,9 +119,28 @@ public class SurveyFormFourFragment extends Fragment {
         String totalVote = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,"0");
         txtNumVote.setText(totalVote);
         String socialMedia = Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,"");
+        if (socialMedia != null && !socialMedia.equals("")){
+            String[] items = socialMedia.split(",");
+            Log.e(TAG, "socialMedia: "+items );
+            selectedSocialMediaList.clear();
+            for (int k =0 ; k<items.length; k++){
+
+            }
+        }
         String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
         String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");
     }
+
+    /*private ArrayList<String> getCheckBoxData(){
+        ArrayList<String> checkedBox = new ArrayList<>();
+        for (int a = 0; a < layout.getChildCount(); a++) {
+            checkBox = (CheckBox) layout.getChildAt(a);
+            if (checkBox.isChecked()) {
+                checkedBox.add(checkBox.getText().toString());
+            }
+        }
+        return checkedBox;
+    }*/
 
     private void setOnClick() {
         //Vote
@@ -144,7 +173,6 @@ public class SurveyFormFourFragment extends Fragment {
             }
         });
 // Social Media
-        String strFaceBook = getResStringLanguage(R.string.str_facebook, "en");
         cbFbS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -165,7 +193,6 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strTwitter = getResStringLanguage(R.string.str_twitter, "en");
         cbTwitSocial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -186,7 +213,7 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strInstagram = getResStringLanguage(R.string.str_instagram, "en");
+
         cbInstagram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -207,7 +234,7 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strWhatsApp = getResStringLanguage(R.string.str_whatsapp, "en");
+
         cbWhatsapp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -228,7 +255,7 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strSnapChat = getResStringLanguage(R.string.str_snapchat, "en");
+
         cbSnapChat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -249,7 +276,7 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strLinkedIn = getResStringLanguage(R.string.str_linkedin, "en");
+
         cbLinkedIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -270,7 +297,7 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strOtherSocial = getResStringLanguage(R.string.str_other, "en");
+
         cbOtherS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

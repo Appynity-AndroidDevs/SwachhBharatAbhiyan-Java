@@ -68,7 +68,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -202,6 +206,8 @@ public class AUtils extends CommonUtils {
 
     public static final String SERVER_DATE_TIME_FORMATE = "MM-dd-yyyy HH:mm:ss";
     public static final String SERVER_DATE_TIME_FORMATE_LOCAL = "yyyy-MM-dd HH:mm:ss.SSS";
+    public static final String SERVER_DATE_SURVEY = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String SHOW_DATE_SURVEY = "yyyy-MM-dd";
 
     public static final long LOCATION_INTERVAL_MINUTES = 10 * 60 * 1000;
 
@@ -623,6 +629,19 @@ public class AUtils extends CommonUtils {
             return "";
         }
     }
+    public static String getApiSurveyResponseDateConvertToLocal(String date) {
+
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+           Date datee = inputFormat.parse(date);
+            return outputFormat.format(datee);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
 
     public static String getHistoryDetailsDateFormat(String date) {
 

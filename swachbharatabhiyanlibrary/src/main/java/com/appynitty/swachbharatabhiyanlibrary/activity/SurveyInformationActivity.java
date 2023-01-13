@@ -28,6 +28,7 @@ import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormThreeFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormTwoFragment;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.GetApiResponseModel;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
@@ -78,6 +79,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private List<String> selectedPaymentList = new ArrayList<>();
     private int fragPosition = 0;
     private Bundle bundle;
+    private GetApiResponseModel apiResponseModel;
 
 
     @Override
@@ -120,6 +122,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         loader.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
+        apiResponseModel = new GetApiResponseModel();
 
         getSurveyApi();
         setOnClick();
@@ -283,10 +286,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
                         });
 
                     }
-                        /*if ( surveyFormFiveFragment.checkFromFiveText()) {
-                            setData();
-                            return;
-                        }*/
 
                 }
 
@@ -530,52 +529,124 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
                             /*loadFragment(surveyFormOneFragment);*/
                             Log.i("social", "getApiSurvey: " + apiReferenceId);
+                            apiResponseModel.setReferanceId(apiReferenceId);
                             getApiHouseId = String.valueOf(getSurveyDetailsPojo.get(i).getHouseId());
                             Log.i("social", "getApiSurvey: " + getApiHouseId);
+                            apiResponseModel.setHouseId(getApiHouseId);
                             getApiName = getSurveyDetailsPojo.get(i).getName();
                             Log.i("social", "getApiSurvey: " + getApiName);
+                            apiResponseModel.setName(getApiName);
                             bundle.putString("fragmentOneName", getApiName);
                             getApiMobile = getSurveyDetailsPojo.get(i).getMobileNumber();
                             Log.i("social", "getApiSurvey: " + getApiMobile);
+                            apiResponseModel.setMobileNumber(getApiMobile);
                             bundle.putString("fragmentOneMobile", getApiMobile);
                             getApiAge = String.valueOf(getSurveyDetailsPojo.get(i).getAge());
                             Log.i("social", "getApiSurvey: " + getApiAge);
+                            apiResponseModel.setAge(getApiAge);
                             bundle.putString("fragmentOneAge", getApiAge);
                             getApiDob = getSurveyDetailsPojo.get(i).getDateOfBirth();
                             Log.i("social", "getApiSurvey: " + getApiDob);
+                            String normalBirthDate = AUtils.getApiSurveyResponseDateConvertToLocal(getApiDob);
+                            Log.i("social", "normalBirthDate: " + normalBirthDate);
+                            String[] separated = normalBirthDate.split("-");
+                            String yyyy = separated[0];
+                            String mm = separated[1];
+                            String  dd = separated[2];
+                            Log.i("social", "birthDay: " + dd.toString());
+                            Log.i("social", "birthMonth: " + mm.toString());
+                            Log.i("social", "birthYear: " + yyyy.toString());
+                            apiResponseModel.setDateOfBirth(normalBirthDate);
+                            apiResponseModel.setBirtDay(dd.toString());
+                            apiResponseModel.setBirthMonth(mm.toString());
+                            apiResponseModel.setBirthYear(yyyy.toString());
+
+                            /*if (getApiDob != null){
+                                String normalBirthDate = AUtils.getApiSurveyResponseDateConvertToLocal(getApiDob);
+                                Log.i("social", "normalBirthDate: " + normalBirthDate);
+                                apiResponseModel.setDateOfBirth(normalBirthDate);
+                            }else {
+                                apiResponseModel.setBirtDay(" ");
+                                apiResponseModel.setBirthMonth(" ");
+                                apiResponseModel.setBirthYear(" ");
+                            }*/
+
                             getApiGender = getSurveyDetailsPojo.get(i).getGender();
                             Log.i("social", "getApiSurvey: " + getApiGender);
+                            apiResponseModel.setGender(getApiGender);
                             bundle.putString("fragmentOneGender", getApiGender);
                             getApiBloodGroup = getSurveyDetailsPojo.get(i).getBloodGroup();
                             Log.i("social", "getApiSurvey: " + getApiBloodGroup);
+                            apiResponseModel.setBloodGroup(getApiBloodGroup);
 
                             //loadFragment(surveyFormTwoFragment);
                             getApiQualification = getSurveyDetailsPojo.get(i).getQualification();
                             Log.i("social", "getApiSurvey: " + getApiQualification);
+                            apiResponseModel.setQualification(getApiQualification);
                             getApiOccupation = getSurveyDetailsPojo.get(i).getReferanceId();
                             Log.i("social", "getApiSurvey: " + getApiOccupation);
+                            apiResponseModel.setOccupation(getApiOccupation);
                             getApiMaritalStatus = getSurveyDetailsPojo.get(i).getMaritalStatus();
                             Log.i("social", "getApiSurvey: " + getApiMaritalStatus);
+                            apiResponseModel.setMaritalStatus(getApiMaritalStatus);
                             getApiMarriageDate = getSurveyDetailsPojo.get(i).getMarriageDate();
                             Log.i("social", "getApiSurvey: " + getApiMarriageDate);
+
+                            if (getApiMarriageDate != null){
+                                String normalMarriageDate = AUtils.getApiSurveyResponseDateConvertToLocal(getApiMarriageDate);
+                                Log.i("social", "normalMarriageDate: " + normalMarriageDate);
+                                apiResponseModel.setMarriageDate(normalMarriageDate);
+                                String[] separatedMarriage = normalMarriageDate.split("-");
+                                String mYear = separatedMarriage[0];
+                                String mMonth = separatedMarriage[1];
+                                String mDay = separatedMarriage[2];
+                                Log.i("social", "marriageDay: " + mDay.toString());
+                                Log.i("social", "marriageMonth: " + mMonth.toString());
+                                Log.i("social", "marriageYear: " +mYear.toString());
+                                apiResponseModel.setMarriageDay(mDay.toString());
+                                apiResponseModel.setMarriageMonth(mMonth.toString());
+                                apiResponseModel.setMarriageYear(mYear.toString());
+
+                            }else {
+                                apiResponseModel.setMarriageDay(" ");
+                                apiResponseModel.setMarriageMonth(" ");
+                                apiResponseModel.setMarriageYear(" ");
+                            }
                             getApiLivingStatus = getSurveyDetailsPojo.get(i).getLivingStatus();
                             Log.i("social", "getApiSurvey: " + getApiLivingStatus);
+                            apiResponseModel.setLivingStatus(getApiLivingStatus);
 
                             //loadFragment(surveyFormThreeFragment);
                             getApiTotalMember = String.valueOf(getSurveyDetailsPojo.get(i).getTotalMember());
                             Log.i("social", "getApiSurvey: " + getApiTotalMember);
+                            apiResponseModel.setTotalMember(getApiTotalMember);
+                            getApiAdult = String.valueOf(getSurveyDetailsPojo.get(i).getTotalAdults());
+                            Log.i("social", "getApiSurvey: " + getApiAdult);
+                            apiResponseModel.setAdults(getApiAdult);
+                            getApiChildren = String.valueOf(getSurveyDetailsPojo.get(i).getTotalChildren());
+                            Log.i("social", "getApiSurvey: " + getApiChildren);
+                            apiResponseModel.setChildren(getApiChildren);
+                            getApiSeniorCitizen = String.valueOf(getSurveyDetailsPojo.get(i).getTotalSrCitizen());
+                            Log.i("social", "getApiSurvey: " + getApiSeniorCitizen);
+                            apiResponseModel.setSrCitizen(getApiSeniorCitizen);
                             getApiWillingStart = String.valueOf(getSurveyDetailsPojo.get(i).isWillingStart());
                             Log.i("social", "getApiSurvey: " + getApiWillingStart);
+                            apiResponseModel.setWillingStart(getApiWillingStart);
                             getApiResAvailable = getSurveyDetailsPojo.get(i).getResourcesAvailable();
                             Log.i("social", "getApiSurvey: " + getApiResAvailable);
+                            apiResponseModel.setResourcesAvailable(getApiResAvailable);
                             getApiJobOtherCity = String.valueOf(getSurveyDetailsPojo.get(i).isMemberJobOtherCity());
                             Log.i("social", "getApiSurvey: " + getApiJobOtherCity);
+                            apiResponseModel.setMemberJobOtherCity(getApiJobOtherCity);
                             getApiTotalVehicle = String.valueOf(getSurveyDetailsPojo.get(i).getNoOfVehicle());
                             Log.i("social", "getApiSurvey: " + getApiTotalVehicle);
+                            apiResponseModel.setTotalVehicle(getApiTotalVehicle);
                             getApiTwoWheeler = String.valueOf(getSurveyDetailsPojo.get(i).getTwoWheelerQty());
                             Log.i("social", "getApiSurvey: " + getApiTwoWheeler);
+                            apiResponseModel.setTwoWheelerQty(getApiTwoWheeler);
                             getApiFourWheeler = String.valueOf(getSurveyDetailsPojo.get(i).getFourWheelerQty());
                             Log.i("social", "getApiSurvey: " + getApiFourWheeler);
+                            apiResponseModel.setFourWheelerQty(getApiFourWheeler);
 
                            // loadFragment(surveyFormFourFragment);
                             getApiTotalVote = String.valueOf(getSurveyDetailsPojo.get(i).getNoPeopleVote());
@@ -583,37 +654,37 @@ public class SurveyInformationActivity extends AppCompatActivity {
                             getApiSocialMedia = getSurveyDetailsPojo.get(i).getSocialMedia();
                             Log.i("social", "getApiSurvey: " + getApiSocialMedia);
                             if (getApiSocialMedia != null && !getApiSocialMedia.equals("")){
-                                String[] items = getApiSocialMedia.split(",");
-                                Log.e(TAG, "socialMedia: "+items );
-                                selectedSocialMediaList.clear();
-                                for (int k =0 ; k<items.length; k++){
-                                    selectedSocialMediaList.add(items[k].trim().replaceAll("\\s",""));
-                                }
-                                Log.e(TAG, "already exist social media list: "+selectedSocialMediaList);
+                                apiResponseModel.setSocialMedia(getApiSocialMedia);
                             }
 
                             getApiShopping = getSurveyDetailsPojo.get(i).getOnlineShopping();
                             Log.i("social", "getApiSurvey: " + getApiShopping);
+                            if (getApiShopping != null && !getApiShopping.equals("")){
+                                apiResponseModel.setOnlineShopping(getApiShopping);
+                            }
                             getApiPaymentApp = getSurveyDetailsPojo.get(i).getOnlinePayApp();
                             Log.i("social", "getApiSurvey: " + getApiPaymentApp);
+                            if (getApiPaymentApp != null && !getApiPaymentApp.equals("")){
+                                apiResponseModel.setOnlinePayApp(getApiPaymentApp);
+                            }
 
                            // loadFragment(surveyFormFiveFragment);
                             getApiInsurance = getSurveyDetailsPojo.get(i).getInsurance();
                             Log.i("social", "getApiSurvey: " + getApiInsurance);
+                            apiResponseModel.setInsurance(getApiInsurance);
                             getApiUnderI = String.valueOf(getSurveyDetailsPojo.get(i).isUnderInsurer());
                             Log.i("social", "getApiSurvey: " + getApiUnderI);
+                            apiResponseModel.setUnderInsurer(getApiUnderI);
                             getApiAyushman = String.valueOf(getSurveyDetailsPojo.get(i).isAyushmanBeneficiary());
                             Log.i("social", "getApiSurvey: " + getApiAyushman);
+                            apiResponseModel.setAyushmanBeneficiary(getApiAyushman);
                             getApiBoosterDose = String.valueOf(getSurveyDetailsPojo.get(i).isBoosterShot());
                             Log.i("social", "getApiSurvey: " + getApiBoosterDose);
+                            apiResponseModel.setBoosterShot(getApiBoosterDose);
                             getApiDivyang = String.valueOf(getSurveyDetailsPojo.get(i).isMemberDivyang());
                             Log.i("social", "getApiSurvey: " + getApiDivyang);
-                            getApiAdult = String.valueOf(getSurveyDetailsPojo.get(i).getTotalAdults());
-                            Log.i("social", "getApiSurvey: " + getApiAdult);
-                            getApiChildren = String.valueOf(getSurveyDetailsPojo.get(i).getTotalChildren());
-                            Log.i("social", "getApiSurvey: " + getApiChildren);
-                            getApiSeniorCitizen = String.valueOf(getSurveyDetailsPojo.get(i).getTotalSrCitizen());
-                            Log.i("social", "getApiSurvey: " + getApiSeniorCitizen);
+                            apiResponseModel.setMemberDivyang(getApiDivyang);
+
 
 
                             if (apiReferenceId != null){
@@ -621,6 +692,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                                 if (headerReferenceId.equals(apiReferenceId)){
                                     Toast.makeText(context, "Survey Already Done", Toast.LENGTH_SHORT).show();
                                     Log.i("social", "getApiSurvey: " + "property "+apiReferenceId+" survey form already filled");
+                                    Log.d(TAG, "apiResponseModel: ", apiResponseModel);
                                     btnDone.setText("Update");
                                     btnDone.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -667,50 +739,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
                                                     });
 
                                                 }
-                        /*if ( surveyFormFiveFragment.checkFromFiveText()) {
-                            setData();
-                            return;
-                        }*/
 
                                             }
-
-                /*setData();
-                surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
-                surveyDetailsVM.surveyFormApi();
-                surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
-                    @Override
-                    public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
-                        Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
-                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
-                            } else {
-                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
-                            }
-                            startActivity(new Intent(context, SurveyCompletActivity.class));
-                        }
-                        if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
-                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
-                            } else {
-                                AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
-                            }
-                        }
-                    }
-                });
-                surveyDetailsVM.getSurveyDetailsError().observe((LifecycleOwner) context, new Observer<Throwable>() {
-                    @Override
-                    public void onChanged(Throwable throwable) {
-                        AUtils.error(context, throwable.getMessage());
-                    }
-                });
-
-                surveyDetailsVM.getProgressStatusLiveData().observe((LifecycleOwner) context, new Observer<Integer>() {
-                    @Override
-                    public void onChanged(Integer visibility) {
-                        loader.setVisibility(visibility);
-                    }
-                });*/
 
                                         }
                                     });
@@ -733,20 +763,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 loader.setVisibility(visibility);
             }
         });
-        /*surveyDetailsRepo.getSurveyDetails(referenceId, new SurveyDetailsRepo.IGetSurveyResponse() {
-            @Override
-            public void onResponse(List<GetSurveyResponsePojo> getSurveyResponsePojo) {
-                if (getSurveyResponsePojo != null){
-                    Log.e(TAG, "getSurveyResponse: " + getSurveyResponsePojo.toString());
-
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });*/
     }
     private boolean isValidFragOne(){
         String surName = Prefs.getString(AUtils.PREFS.SUR_NAME,"");

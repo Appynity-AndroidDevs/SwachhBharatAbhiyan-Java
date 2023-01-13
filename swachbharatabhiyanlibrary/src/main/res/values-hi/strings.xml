@@ -201,6 +201,8 @@
     <string name="loc_allow_all_time_txt">बैकग्राउंड लोकेशन परमिशन की आवश्यकता है!, अगली स्क्रीन पे Allow all the time पर टैप करें</string>
 
     <string name="dump_yard">डंप यार्ड</string>
-    <string name="warn_distance_limit">आपने 50 मीटर की सीमा पार कर ली है!</string>
-    <string name="distance_warning">आप %1$d मीटर की सीमा पार कर चुके हैं!</string>
+    <string name="please_sync_again">कृपया फिर से सिंक करें</string>
+    <string name="sync_again">फिर से सिंक करें</string>
+    <string name="syncing_is_on">सिंकिंग चालू है</string>
+
 </resources>

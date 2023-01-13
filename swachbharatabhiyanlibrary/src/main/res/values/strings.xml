@@ -266,6 +266,9 @@
     <string name="perminssion_needed_title">Permission Needed!</string>
     <string name="loc_allow_all_time_txt"><br>Background Location Permission Needed!,</br><br> tap "Allow all the time" in the next screen</br></string>
     <string name="dump_yard">Dump Yard</string>
+    <string name="please_sync_again">Please sync again</string>
+    <string name="sync_again">Sync Again</string>
+    <string name="syncing_is_on">Syncing is on</string>
 
     <string name="distance_warning" >you have exceeded the %1$d meters limit!</string>
 

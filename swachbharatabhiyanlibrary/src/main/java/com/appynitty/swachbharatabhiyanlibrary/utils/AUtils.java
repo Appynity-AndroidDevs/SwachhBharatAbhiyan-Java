@@ -231,6 +231,7 @@ public class AUtils extends CommonUtils {
     public static boolean isSyncOfflineWasteManagementDataRequestEnable = false;
 
     public static String isSyncingOn = "isSyncingOn";
+    public static String isConnectionTimeOut = "isConnectionTimeOut";
 
     private static ArrayList<LanguagePojo> languagePojoList;
 
@@ -552,6 +553,12 @@ public class AUtils extends CommonUtils {
     public static void hideSnackBar() {
         if (mSnackbar != null && mSnackbar.isShown()) {
             mSnackbar.dismiss();
+        }
+    }
+
+    public static void hideSyncSnackBar() {
+        if (syncSnackbar != null && syncSnackbar.isShown()) {
+            syncSnackbar.dismiss();
         }
     }
 

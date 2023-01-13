@@ -49,14 +49,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
+import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpQrLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.ChooseActionPopUp;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.HouseOnMapPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.LatLong;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
+import com.appynitty.swachbharatabhiyanlibrary.webservices.HouseOnMapHistoryService;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -86,6 +90,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
@@ -122,6 +129,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private MyProgressDialog myProgressDialog;
     private ArrayList<Integer> mSelectedIndices;
     private boolean isFlashOn;
+    private ArrayList<LatLong> locationArrayList = new ArrayList<>();
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -136,6 +144,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initComponents();
+
 
     }
 
@@ -352,6 +361,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             beepManager.playBeepSoundAndVibrate();
 
             if (AUtils.isInternetAvailable()) {
+
                 openMapsActivityForResult();
             } else {
 
@@ -369,10 +379,54 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     };
 
     public void openMapsActivityForResult() {
-        Intent intent = new Intent(this, MapsActivity.class);
-        intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
-        intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
-        mapsActivityResultLauncher.launch(intent);
+
+        if (AUtils.isInternetAvailable()) {
+
+            HouseOnMapHistoryService service = Connection.createService(HouseOnMapHistoryService.class, AUtils.SERVER_URL);
+            Call<List<HouseOnMapPojo>> houseOnMapHistoryCall = service.getHouseOnMapHistory(Prefs.getString(AUtils.APP_ID, null),
+                    Prefs.getString(AUtils.PREFS.USER_ID, null), AUtils.getLocalDate());
+
+
+            houseOnMapHistoryCall.enqueue(new Callback<List<HouseOnMapPojo>>() {
+                @Override
+                public void onResponse(Call<List<HouseOnMapPojo>> call, Response<List<HouseOnMapPojo>> response) {
+                    if (response.body() != null) {
+
+                        if (!response.body().isEmpty()) {
+
+                            for (int i = 0; i < response.body().size(); i++) {
+
+                                LatLong latLong = new LatLong(response.body().get(i).getLatitude(), response.body().get(i).getLongitude());
+                                locationArrayList.add(latLong);
+
+                            }
+
+                            Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
+                            intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+                            intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+                            intent.putParcelableArrayListExtra("marked_lat_long", locationArrayList);
+                            mapsActivityResultLauncher.launch(intent);
+
+                        } else {
+                            Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
+                            intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+                            intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+                            mapsActivityResultLauncher.launch(intent);
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<HouseOnMapPojo>> call, Throwable t) {
+                    Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
+                    intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+                    intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+                    mapsActivityResultLauncher.launch(intent);
+                }
+            });
+        }
+
     }
 
     ActivityResultLauncher<Intent> mapsActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {

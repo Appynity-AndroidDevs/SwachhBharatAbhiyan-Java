@@ -65,7 +65,7 @@ public class SurveyFormOneFragment extends Fragment {
     private String birthDayDate;
     private String birthDay, birthMonth, birthYear;
 
-    private EditText edtName, edtMobile;
+    private EditText edtName,edtMName,edtLName, edtMobile;
     private CheckBox cbMale, cbFemale,cbTransG;
     private boolean isCheckGender = false;
     private CheckBox[] chkArrayGender;
@@ -77,6 +77,7 @@ public class SurveyFormOneFragment extends Fragment {
 
     String male,female,other;
     String posA,posB,posAB,posO,negA,negB,negAB,negO;
+    String fullName;
 
     String getApiName,getApiMobile,getApiAge,getApiGender,getApiBloodGroup;
     private GetApiResponseModel apiResponseModel;
@@ -107,7 +108,9 @@ public class SurveyFormOneFragment extends Fragment {
         if (apiResponseModel != null){
 
             Log.d(TAG, "onViewCreated: "+apiResponseModel);
-            edtName.setText(apiResponseModel.getName());
+            edtName.setText(apiResponseModel.getFirstName());
+            edtMName.setText(apiResponseModel.getMiddleName());
+            edtLName.setText(apiResponseModel.getLastName());
             edtMobile.setText(apiResponseModel.getMobileNumber());
             atxtDay.setText(apiResponseModel.getBirtDay());
             atxtMonth.setText(apiResponseModel.getBirthMonth());
@@ -150,6 +153,8 @@ public class SurveyFormOneFragment extends Fragment {
         liYearBox = view.findViewById(R.id.li_year_box);
         LayoutInflater inflater = LayoutInflater.from(context);
         edtName = view.findViewById(R.id.edt_your_name);
+        edtMName = view.findViewById(R.id.edt_middle_name);
+        edtLName = view.findViewById(R.id.edt_last_name);
         edtMobile = view.findViewById(R.id.edt_phone_call);
 
         atxtMonth = view.findViewById(R.id.auto_month);
@@ -244,8 +249,15 @@ public class SurveyFormOneFragment extends Fragment {
     }
 
     private void setFillData() {
-        String surName = Prefs.getString(AUtils.PREFS.SUR_NAME,"");
-        edtName.setText(surName);
+        String surFirstName = Prefs.getString(AUtils.PREFS.SUR_FIRST_NAME,"");
+        edtName.setText(surFirstName);
+        String surMiddleName = Prefs.getString(AUtils.PREFS.SUR_MIDDLE_NAME,"");
+        edtMName.setText(surMiddleName);
+        String surLastName = Prefs.getString(AUtils.PREFS.SUR_LAST_NAME,"");
+        edtName.setText(surLastName);
+        String surFullName = surFirstName+""+surMiddleName+""+surLastName;
+        Log.i(TAG, "surFullName: "+surFullName);
+        Prefs.putString(AUtils.PREFS.SUR_FULL_NAME,surFullName);
         String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
         edtMobile.setText(surMobile);
         String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
@@ -302,8 +314,45 @@ public class SurveyFormOneFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 String name = editable.toString();
-                Prefs.putString(AUtils.PREFS.SUR_NAME,name);
-                Log.i("Social", "name is: "+Prefs.getString(AUtils.PREFS.SUR_NAME,""));
+                Prefs.putString(AUtils.PREFS.SUR_FIRST_NAME,name);
+                Log.i("Social", "first name is: "+Prefs.getString(AUtils.PREFS.SUR_FIRST_NAME,""));
+            }
+        });
+
+        edtMName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String name = editable.toString();
+                Prefs.putString(AUtils.PREFS.SUR_MIDDLE_NAME,name);
+                Log.i("Social", "middle name is: "+Prefs.getString(AUtils.PREFS.SUR_MIDDLE_NAME,""));
+            }
+        });
+        edtLName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String name = editable.toString();
+                Prefs.putString(AUtils.PREFS.SUR_LAST_NAME,name);
+                Log.i("Social", "last name is: "+Prefs.getString(AUtils.PREFS.SUR_LAST_NAME,""));
             }
         });
 

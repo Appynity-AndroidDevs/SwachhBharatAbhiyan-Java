@@ -14,9 +14,18 @@ public class GetApiResponseModel extends Throwable implements Parcelable {
     @SerializedName("ReferanceId")
     @Expose
     String ReferanceId;
-    @SerializedName("name")
+    @SerializedName("fullName")
     @Expose
-    String name;
+    String fullName;
+    @SerializedName("firstName")
+    @Expose
+    String firstName;
+    @SerializedName("middleName")
+    @Expose
+    String middleName;
+    @SerializedName("lastName")
+    @Expose
+    String lastName;
     @SerializedName("mobileNumber")
     @Expose
     String mobileNumber;
@@ -124,10 +133,13 @@ public class GetApiResponseModel extends Throwable implements Parcelable {
     String memberDivyang;
 
 
-    public GetApiResponseModel(String houseId, String referanceId, String name, String mobileNumber, String age, String dateOfBirth, String birtDay, String birthMonth, String birthYear, String gender, String bloodGroup, String qualification, String occupation, String maritalStatus, String marriageDate, String marriageDay, String marriageMonth, String marriageYear, String livingStatus, String totalMember, String adults, String children, String srCitizen, String willingStart, String resourcesAvailable, String memberJobOtherCity, String totalVehicle, String twoWheelerQty, String fourWheelerQty, String noPeopleVote, String socialMedia, String onlineShopping, String onlinePayApp, String insurance, String underInsurer, String ayushmanBeneficiary, String boosterShot, String memberDivyang) {
+    public GetApiResponseModel(String houseId, String referanceId, String fullName,String firstName,String middleName, String lastName, String mobileNumber, String age, String dateOfBirth, String birtDay, String birthMonth, String birthYear, String gender, String bloodGroup, String qualification, String occupation, String maritalStatus, String marriageDate, String marriageDay, String marriageMonth, String marriageYear, String livingStatus, String totalMember, String adults, String children, String srCitizen, String willingStart, String resourcesAvailable, String memberJobOtherCity, String totalVehicle, String twoWheelerQty, String fourWheelerQty, String noPeopleVote, String socialMedia, String onlineShopping, String onlinePayApp, String insurance, String underInsurer, String ayushmanBeneficiary, String boosterShot, String memberDivyang) {
         this.houseId = houseId;
         ReferanceId = referanceId;
-        this.name = name;
+        this.fullName = fullName;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
         this.mobileNumber = mobileNumber;
         this.age = age;
         this.dateOfBirth = dateOfBirth;
@@ -171,7 +183,10 @@ public class GetApiResponseModel extends Throwable implements Parcelable {
     protected GetApiResponseModel(Parcel in) {
         houseId = in.readString();
         ReferanceId = in.readString();
-        name = in.readString();
+        fullName = in.readString();
+        firstName = in.readString();
+        middleName = in.readString();
+        lastName = in.readString();
         mobileNumber = in.readString();
         age = in.readString();
         dateOfBirth = in.readString();
@@ -237,12 +252,36 @@ public class GetApiResponseModel extends Throwable implements Parcelable {
         ReferanceId = referanceId;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMobileNumber() {
@@ -530,7 +569,10 @@ public class GetApiResponseModel extends Throwable implements Parcelable {
         return "GetApiResponseModel{" +
                 "houseId='" + houseId + '\'' +
                 ", ReferanceId='" + ReferanceId + '\'' +
-                ", name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", mobileNumber='" + mobileNumber + '\'' +
                 ", age='" + age + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
@@ -578,7 +620,10 @@ public class GetApiResponseModel extends Throwable implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(houseId);
         parcel.writeString(ReferanceId);
-        parcel.writeString(name);
+        parcel.writeString(fullName);
+        parcel.writeString(firstName);
+        parcel.writeString(middleName);
+        parcel.writeString(lastName);
         parcel.writeString(mobileNumber);
         parcel.writeString(age);
         parcel.writeString(dateOfBirth);

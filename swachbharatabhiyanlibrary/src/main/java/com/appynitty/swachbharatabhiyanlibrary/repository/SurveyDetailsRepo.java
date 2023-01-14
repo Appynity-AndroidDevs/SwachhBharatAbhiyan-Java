@@ -36,7 +36,7 @@ public class SurveyDetailsRepo {
         requestPojo.setReferanceId(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
         requestPojo.setHouseLat(Prefs.getString(AUtils.LAT,"0"));
         requestPojo.setHouseLong(Prefs.getString(AUtils.LONG,"0"));
-        requestPojo.setName(Prefs.getString(AUtils.PREFS.SUR_NAME,"0"));
+        requestPojo.setName(Prefs.getString(AUtils.PREFS.SUR_FULL_NAME,"0"));
         requestPojo.setMobileNumber(Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
         requestPojo.setDateOfBirth(Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,""));
         requestPojo.setAge(Prefs.getString(AUtils.PREFS.SUR_AGE,""));

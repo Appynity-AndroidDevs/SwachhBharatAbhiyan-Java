@@ -352,7 +352,10 @@ public class AUtils extends CommonUtils {
          * survey data store
          * */
         String SUR_REFERENCE_ID = "ReferanceId";
-        String SUR_NAME = "name";
+        String SUR_FULL_NAME = "fullName";
+        String SUR_FIRST_NAME = "firstName";
+        String SUR_MIDDLE_NAME = "middleName";
+        String SUR_LAST_NAME = "lastName";
         String SUR_MOBILE = "mobileNumber";
         String SUR_GENDER = "gender";
         String SUR_BLOOD_GROUP = "bloodGroup";

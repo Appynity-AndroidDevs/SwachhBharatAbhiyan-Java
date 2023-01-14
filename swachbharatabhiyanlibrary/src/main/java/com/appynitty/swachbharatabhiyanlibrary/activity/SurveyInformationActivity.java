@@ -131,8 +131,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         setOnClick();
     }
     private void setData() {
-        String surName = Prefs.getString(AUtils.PREFS.SUR_NAME,"");
-        Log.d(TAG, "surName: "+surName);
+        String surFullName = Prefs.getString(AUtils.PREFS.SUR_FULL_NAME,"");
+        Log.d(TAG, "surName: "+surFullName);
         String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
         Log.d(TAG, "surMobile: "+surMobile);
         String surBirthdayDate = Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,"");
@@ -385,7 +385,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         requestPojo.setReferanceId(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
         requestPojo.setHouseLat(Prefs.getString(AUtils.LAT,"0"));
         requestPojo.setHouseLong(Prefs.getString(AUtils.LONG,"0"));
-        requestPojo.setName(Prefs.getString(AUtils.PREFS.SUR_NAME,"0"));
+        requestPojo.setName(Prefs.getString(AUtils.PREFS.SUR_FULL_NAME,"0"));
         requestPojo.setMobileNumber(Prefs.getString(AUtils.PREFS.SUR_MOBILE,""));
         requestPojo.setDateOfBirth(Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,""));
         requestPojo.setAge(Prefs.getString(AUtils.PREFS.SUR_AGE,""));
@@ -543,9 +543,25 @@ public class SurveyInformationActivity extends AppCompatActivity {
                             apiResponseModel.setHouseId(getApiHouseId);
                             getApiName = getSurveyDetailsPojo.get(i).getName();
                             Log.i("social", "getApiSurvey: " + getApiName);
-                            apiResponseModel.setName(getApiName);
-                            Prefs.putString(AUtils.PREFS.SUR_NAME,getApiName);
+
+                            String[] separatedFullName = getApiName.split(" ");
+                            String firstName = separatedFullName[0];
+                            String middleName = separatedFullName[1];
+                            String  lastName = separatedFullName[2];
+                            Log.i("social", "firstName: " +firstName.toString());
+                            Log.i("social", "middleName: " +middleName.toString());
+                            Log.i("social", "lastName: " +lastName.toString());
+                            apiResponseModel.setFullName(getApiName);
+                            apiResponseModel.setFirstName(firstName);
+                            apiResponseModel.setMiddleName(middleName);
+                            apiResponseModel.setLastName(lastName);
+                            Prefs.putString(AUtils.PREFS.SUR_FULL_NAME,getApiName);
+                            Prefs.putString(AUtils.PREFS.SUR_FIRST_NAME,firstName.toString());
+                            Prefs.putString(AUtils.PREFS.SUR_MIDDLE_NAME,middleName.toString());
+                            Prefs.putString(AUtils.PREFS.SUR_LAST_NAME,lastName.toString());
                             bundle.putString("fragmentOneName", getApiName);
+
+
                             getApiMobile = getSurveyDetailsPojo.get(i).getMobileNumber();
                             Log.i("social", "getApiSurvey: " + getApiMobile);
                             apiResponseModel.setMobileNumber(getApiMobile);
@@ -819,7 +835,13 @@ public class SurveyInformationActivity extends AppCompatActivity {
         });
     }
     private boolean isValidFragOne(){
-        String surName = Prefs.getString(AUtils.PREFS.SUR_NAME,"");
+
+        String surFName = Prefs.getString(AUtils.PREFS.SUR_FIRST_NAME,"");
+        String surMName = Prefs.getString(AUtils.PREFS.SUR_MIDDLE_NAME,"");
+        String surLName = Prefs.getString(AUtils.PREFS.SUR_LAST_NAME,"");
+        String fullName = surFName+" "+surMName+" "+surLName ;
+        Log.d(TAG, "Full name is : "+fullName);
+        Prefs.putString(AUtils.PREFS.SUR_FULL_NAME,fullName);
         String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
         String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
         String bMonth = Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"");
@@ -827,10 +849,16 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String age = Prefs.getString(AUtils.PREFS.SUR_AGE,"");
         String mGender = Prefs.getString(AUtils.PREFS.SUR_GENDER,"");
         String bloodGroup = Prefs.getString(AUtils.PREFS.SUR_BLOOD_GROUP,"");
-        if (surName.trim().isEmpty()){
-            AUtils.warning(context,"Please enter your name");
+        if (surFName.trim().isEmpty()){
+            AUtils.warning(context,"Please enter your first name");
             return false;
-        }else if (surMobile.trim().isEmpty()){
+        }else if (surMName.trim().isEmpty()){
+            AUtils.warning(context,"Please enter your middle name");
+            return false;
+        }else if (surLName.trim().isEmpty()){
+            AUtils.warning(context,"Please enter your last name");
+            return false;
+        } else if (surMobile.trim().isEmpty()){
             AUtils.warning(context,"Please enter your mobile number");
             return false;
         }else if (surMobile.length()<10){

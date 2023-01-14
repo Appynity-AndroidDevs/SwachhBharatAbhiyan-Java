@@ -297,7 +297,7 @@
     <string name="str_government">सरकारी बीमा</string>
     <string name="str_private">निजी बीमा</string>
     <string name="str_que_ayushman_bharat">क्या आप आयुष्मान भारत के लाभार्थी हैं।</string>
-    <string name="str_que_booster_shot">क्या आपने अपनी बूस्टर खुराक ले ली है?</string>
+    <string name="str_que_booster_shot">क्या आपने अपनी कोविड बूस्टर खुराक ले ली है?</string>
     <string name="str_que_divyang">क्या आपके परिवार का कोई सदस्य दिव्यांग है या विकलांग है।</string>
     <string name="btn_done">समाप्त</string>
     <string name="btn_update">अद्यतन</string>

@@ -33,7 +33,10 @@ public class SurveyCompletActivity extends AppCompatActivity {
     private void removeSurveyData(){
         Prefs.remove(AUtils.GET_API_REFERENCE_ID);
         Prefs.remove(AUtils.PREFS.SUR_REFERENCE_ID);
-        Prefs.remove(AUtils.PREFS.SUR_NAME);
+        Prefs.remove(AUtils.PREFS.SUR_FULL_NAME);
+        Prefs.remove(AUtils.PREFS.SUR_FIRST_NAME);
+        Prefs.remove(AUtils.PREFS.SUR_MIDDLE_NAME);
+        Prefs.remove(AUtils.PREFS.SUR_LAST_NAME);
         Prefs.remove(AUtils.PREFS.SUR_MOBILE);
         Prefs.remove(AUtils.PREFS.SUR_GENDER);
         Prefs.remove(AUtils.PREFS.SUR_BLOOD_GROUP);

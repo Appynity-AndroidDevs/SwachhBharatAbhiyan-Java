@@ -364,7 +364,7 @@
     <string name="str_government">Government</string>
     <string name="str_private">Private</string>
     <string name="str_que_ayushman_bharat">Are You Ayushman Bharat Beneficiary.</string>
-    <string name="str_que_booster_shot">Have You Taken Your Booster dose?</string>
+    <string name="str_que_booster_shot">Have You Taken Your Covid Booster dose?</string>
     <string name="str_que_divyang">Is Any Members Of Your Family Is Divyang Or Differently Abled.</string>
     <string name="btn_done">Done</string>
     <string name="btn_update">Update</string>

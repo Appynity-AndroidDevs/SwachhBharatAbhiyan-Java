@@ -6,16 +6,18 @@ import android.os.Parcelable;
 
 public class LatLong implements Parcelable {
 
-    private String latitude , longitude;
+    private String latitude , longitude , referenceId;
 
-    public LatLong(String latitude , String longitude){
+    public LatLong(String latitude, String longitude, String referenceId) {
         this.latitude = latitude;
         this.longitude = longitude;
+        this.referenceId = referenceId;
     }
 
     protected LatLong(Parcel in) {
         latitude = in.readString();
         longitude = in.readString();
+        referenceId = in.readString();
     }
 
     public static final Creator<LatLong> CREATOR = new Creator<LatLong>() {
@@ -46,6 +48,14 @@ public class LatLong implements Parcelable {
         this.longitude = longitude;
     }
 
+    public String getReferenceId() {
+        return referenceId;
+    }
+
+    public void setReferenceId(String referenceId) {
+        this.referenceId = referenceId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -55,5 +65,6 @@ public class LatLong implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(latitude);
         parcel.writeString(longitude);
+        parcel.writeString(referenceId);
     }
 }

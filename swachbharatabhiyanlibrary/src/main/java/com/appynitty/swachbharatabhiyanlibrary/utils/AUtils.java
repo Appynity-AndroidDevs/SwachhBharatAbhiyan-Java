@@ -156,6 +156,7 @@ public class AUtils extends CommonUtils {
 
     public static final String LAT = "Lat";
     public static final String LONG = "Long";
+    public static final String BEARING = "location_bearing";
     public static final String HOUSE_ID = "ReferanceId";
     public static final String HOUSE_ID_START = "ReferanceId";
 

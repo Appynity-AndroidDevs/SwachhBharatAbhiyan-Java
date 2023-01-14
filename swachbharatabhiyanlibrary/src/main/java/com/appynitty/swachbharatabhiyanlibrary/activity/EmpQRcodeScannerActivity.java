@@ -396,7 +396,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
                             for (int i = 0; i < response.body().size(); i++) {
 
-                                LatLong latLong = new LatLong(response.body().get(i).getLatitude(), response.body().get(i).getLongitude());
+                                LatLong latLong = new LatLong(response.body().get(i).getLatitude(), response.body().get(i).getLongitude() , response.body().get(i).getRefferenceId());
                                 locationArrayList.add(latLong);
 
                             }
@@ -405,6 +405,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                             intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
                             intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
                             intent.putParcelableArrayListExtra("marked_lat_long", locationArrayList);
+
                             mapsActivityResultLauncher.launch(intent);
 
                         } else {

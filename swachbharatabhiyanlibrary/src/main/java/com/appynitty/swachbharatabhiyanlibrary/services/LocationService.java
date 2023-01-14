@@ -207,6 +207,7 @@ public class LocationService extends Service {
 //                    Log.e(TAG, "onLocationResult: Lat: " + location.getLatitude() + ", Long: " + location.getLongitude());
                     Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
                     Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
+                    Prefs.putString(AUtils.BEARING, String.valueOf(location.getBearing()));
 
                     if (Prefs.getBoolean(AUtils.PREFS.IS_ON_DUTY, false)) {
                         if (updatedTime == 0) {

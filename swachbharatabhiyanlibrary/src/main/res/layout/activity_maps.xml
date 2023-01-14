@@ -32,14 +32,15 @@
 
         <Button
             android:id="@+id/btnOk"
+            style="@style/MyButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
             android:drawableEnd="@drawable/ic_check"
             android:padding="10dp"
+            android:layout_marginHorizontal="64dp"
             android:paddingBottom="@dimen/dim_10_dp"
             android:text="Confirm Location"
-            android:textColor="@color/colorGrayList"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:visibility="gone" />
 

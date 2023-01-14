@@ -28,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
@@ -36,11 +37,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.data.geojson.GeoJsonLayer;
+import com.pixplicity.easyprefs.library.Prefs;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +49,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static final int DISTANCE_LIMIT = 50;
     private GoogleMap mMap;
     private Double oldLat, newLat, oldLong, newLong;
+    private float bearing;
     Button btnConfirmLocation;
 
     Polyline polyline;
@@ -73,6 +72,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bundle bundle = getIntent().getExtras();
         oldLat = Double.parseDouble(bundle.getString("lat"));
         oldLong = Double.parseDouble(bundle.getString("lon"));
+        bearing = Float.parseFloat(Prefs.getString(AUtils.BEARING, null));
         locationArrayList = bundle.getParcelableArrayList("marked_lat_long");
 
         if (locationArrayList != null && !locationArrayList.isEmpty()) {
@@ -103,8 +103,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        int size = locationArrayList.size();
-        Log.i("SanathMap", "onMapReady: " + size);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -116,13 +114,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
 
-        try {
-            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.pk_buildings, MapsActivity.this);
-            layer.getDefaultPolygonStyle().setStrokeColor(Color.WHITE);
-            layer.addLayerToMap();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.pk_buildings, MapsActivity.this);
+//            layer.getDefaultPolygonStyle().setStrokeColor(Color.WHITE);
+//            layer.addLayerToMap();
+//        } catch (IOException | JSONException e) {
+//            e.printStackTrace();
+//        }
 
 
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
@@ -135,8 +133,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             for (int i = 0; i < prevLatLongList.size(); i++) {
 
                 // below line is use to add marker to each location of our array list.
-                mMap.addMarker(new MarkerOptions().position(prevLatLongList.get(i)).title("Marker")
-                        .icon(BitmapFromVector(getApplicationContext(), R.drawable.icn_house)));
+                mMap.addMarker(new MarkerOptions().position(prevLatLongList.get(i)).title(locationArrayList.get(i).getReferenceId()).icon(BitmapFromVector(getApplicationContext(), R.drawable.icn_house)));
 
                 // below line is use to zoom our camera on map.
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(20.0f));
@@ -148,8 +145,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
+
         LatLng currentLocation = new LatLng(oldLat, oldLong);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 20.0f));
+        updateCameraBearing(mMap, bearing);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
@@ -161,12 +161,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 newLat = midLatLng.latitude;
                 newLong = midLatLng.longitude;
 
-                if (polyline != null)
-                    polyline.remove();
+                if (polyline != null) polyline.remove();
 
-                PolylineOptions options = new PolylineOptions().pattern(PATTERN_POLYGON_ALPHA)
-                        .color(Color.RED)
-                        .width(15);
+                PolylineOptions options = new PolylineOptions().pattern(PATTERN_POLYGON_ALPHA).color(Color.RED).width(15);
 
                 polyline = googleMap.addPolyline(options.add(new LatLng(oldLat, oldLong), midLatLng));
 
@@ -180,6 +177,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+    }
+
+
+    private void updateCameraBearing(GoogleMap googleMap, float bearing) {
+        if (googleMap == null) return;
+        CameraPosition camPos = CameraPosition
+                .builder(
+                        googleMap.getCameraPosition() // current Camera
+                )
+                .bearing(bearing)
+                .tilt(0)
+                .build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(camPos));
     }
 
     private double calcDistance(LatLng newPosition) {
@@ -201,21 +211,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
         // below line is use to generate a drawable.
+
+        Bitmap bitmap = null;
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
 
         // below line is use to set bounds to our vector drawable.
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        if (vectorDrawable != null)
+            vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
 
         // below line is use to create a bitmap for our
         // drawable which we have added.
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        if (vectorDrawable != null) {
 
-        // below line is use to add bitmap in our canvas.
-        Canvas canvas = new Canvas(bitmap);
+            bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            // below line is use to add bitmap in our canvas.
+            Canvas canvas = new Canvas(bitmap);
+            // below line is use to draw our
+            // vector drawable in canvas.
+            vectorDrawable.draw(canvas);
+        }
 
-        // below line is use to draw our
-        // vector drawable in canvas.
-        vectorDrawable.draw(canvas);
 
         // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap);

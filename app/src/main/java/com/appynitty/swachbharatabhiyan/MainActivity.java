@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         //   Prefs.putString(AUtils.APP_ID, "3128"); // chimur
         //    Prefs.putString(AUtils.APP_ID, "3127");  // akot
         Prefs.putString(AUtils.APP_ID, "3098");       //for Appynitty ULB APP_ID - 3098
+        // Prefs.putString(AUtils.APP_ID, "3134");       //for Appynitty ULB APP_ID - 3098
         // Prefs.putString(AUtils.APP_ID, "3122");       //for Appynitty ULB APP_ID - 3098
         // Prefs.putString(AUtils.APP_ID, "3111");       //for Shrirampur ULB APP_ID - 3111
         //Prefs.putString(AUtils.APP_ID, "3127");       //for Akot ULB APP_ID - 3127

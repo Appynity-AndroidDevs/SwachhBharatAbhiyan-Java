@@ -279,6 +279,13 @@ public class CameraActivity extends AppCompatActivity {
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
                     Toast.makeText(CameraActivity.this, "Changed", Toast.LENGTH_SHORT).show();
                 }
+
+                @Override
+                public void onClosed(@NonNull CameraCaptureSession session) {
+                    super.onClosed(session);
+
+                   // stopBackgroundThread();
+                }
             }, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -457,14 +464,18 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void stopBackgroundThread() {
-        mBackgroundThread.quitSafely();
-        try {
-            mBackgroundThread.join();
-            mBackgroundThread = null;
-            mBackgroundHandler = null;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        if (mBackgroundThread != null) {
+            mBackgroundThread.quitSafely();
+            try {
+                mBackgroundThread.join();
+                mBackgroundThread = null;
+                mBackgroundHandler = null;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     private void startBackgroundThread() {

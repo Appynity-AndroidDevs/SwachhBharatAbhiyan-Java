@@ -396,7 +396,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
                             for (int i = 0; i < response.body().size(); i++) {
 
-                                LatLong latLong = new LatLong(response.body().get(i).getLatitude(), response.body().get(i).getLongitude() , response.body().get(i).getRefferenceId());
+                                LatLong latLong = new LatLong(response.body().get(i).getLatitude(), response.body().get(i).getLongitude(), response.body().get(i).getRefferenceId());
                                 locationArrayList.add(latLong);
 
                             }

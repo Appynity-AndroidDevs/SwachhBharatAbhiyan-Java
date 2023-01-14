@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.GeomagneticField;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
@@ -208,6 +209,15 @@ public class LocationService extends Service {
                     Prefs.putString(AUtils.LAT, String.valueOf(location.getLatitude()));
                     Prefs.putString(AUtils.LONG, String.valueOf(location.getLongitude()));
                     Prefs.putString(AUtils.BEARING, String.valueOf(location.getBearing()));
+
+                    GeomagneticField field = new GeomagneticField(
+                            (float)location.getLatitude(),
+                            (float)location.getLongitude(),
+                            (float)location.getAltitude(),
+                            System.currentTimeMillis()
+                    );
+
+                    Prefs.putString(AUtils.Declination, String.valueOf(field.getDeclination()));
 
                     if (Prefs.getBoolean(AUtils.PREFS.IS_ON_DUTY, false)) {
                         if (updatedTime == 0) {

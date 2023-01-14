@@ -279,6 +279,13 @@ public class CameraActivity extends AppCompatActivity {
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
                     Toast.makeText(CameraActivity.this, "Changed", Toast.LENGTH_SHORT).show();
                 }
+
+                @Override
+                public void onClosed(@NonNull CameraCaptureSession session) {
+                    super.onClosed(session);
+                    stopBackgroundThread();
+
+                }
             }, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();

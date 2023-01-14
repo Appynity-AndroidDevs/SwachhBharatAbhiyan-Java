@@ -8,6 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener {
 
     private static final String TAG = "MapsActivity";
     public static final int DISTANCE_LIMIT = 50;
@@ -51,8 +55,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Double oldLat, newLat, oldLong, newLong;
     private float bearing;
     Button btnConfirmLocation;
-
     Polyline polyline;
+    private SensorManager mSensorManager;
+    private Sensor accelerometer;
+    private Sensor magnetometer;
+    private Sensor orientationMeter;
 
     public static final int PATTERN_DASH_LENGTH_PX = 20;
     public static final int PATTERN_GAP_LENGTH_PX = 20;
@@ -62,12 +69,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static final List<PatternItem> PATTERN_POLYGON_ALPHA = Arrays.asList(GAP, DOT);
     private ArrayList<LatLong> locationArrayList;
     private List<LatLng> prevLatLongList = new ArrayList<>();
+    private float[] mRotationMatrix = new float[16];
+    private float mDeclination;
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mSensorManager != null) {
+            Log.i("AzimuthBearing", "onResume: registered");
+//            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+//            mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(this, orientationMeter, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
+        mDeclination = Float.parseFloat(Prefs.getString(AUtils.Declination, null));
+
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        orientationMeter = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
         Bundle bundle = getIntent().getExtras();
         oldLat = Double.parseDouble(bundle.getString("lat"));
@@ -179,7 +208,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
     private void updateCameraBearing(GoogleMap googleMap, float bearing) {
         if (googleMap == null) return;
         CameraPosition camPos = CameraPosition
@@ -187,7 +215,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         googleMap.getCameraPosition() // current Camera
                 )
                 .bearing(bearing)
-                .tilt(0)
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(camPos));
     }
@@ -234,5 +261,71 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+            SensorManager.getRotationMatrixFromVector(
+                    mRotationMatrix, sensorEvent.values);
+            float[] orientation = new float[3];
+            SensorManager.getOrientation(mRotationMatrix, orientation);
+            float bearing = (float) Math.toDegrees(orientation[0]);
+
+            updateCameraBearing(mMap, bearing + mDeclination);
+
+            if (bearing < 0) {
+
+                if (bearing < -30) {
+                    Log.i("BEARING_MAP", "onSensorChanged: " + bearing);
+                    updateCameraBearing(mMap, bearing + mDeclination);
+                }
+            } else {
+                if (bearing > 30) {
+                    Log.i("BEARING_MAP", "onSensorChanged: " + bearing);
+
+                    updateCameraBearing(mMap, bearing + mDeclination);
+                }
+            }
+        }
+
+        //  float compassBearingRelativeToTrueNorth = Math.round(sensorEvent.values[0]);
+//        updateCameraBearing(mMap, compassBearingRelativeToTrueNorth);
+//
+//        Toast.makeText(this, "" + compassBearingRelativeToTrueNorth, Toast.LENGTH_SHORT).show();
+//        Log.i("AzimuthBearing", "onSensorChanged: " + compassBearingRelativeToTrueNorth);
+
+//        float[] mGravity = null;
+//        float[] mGeomagnetic = null;
+//        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+//            mGravity = sensorEvent.values;
+//        if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
+//            mGeomagnetic = sensorEvent.values;
+//
+//        if (mGravity != null && mGeomagnetic != null) {
+//            float[] R = new float[9];
+//            float[] I = new float[9];
+//            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+//            if (success) {
+//                float[] orientation = new float[3];
+//                SensorManager.getOrientation(R, orientation);
+//                Float azimut = orientation[0]; // orientation contains: azimut, pitch and roll
+//
+//                int i = 360;
+//                float azimuthInDegress = (float) (Math.toDegrees(azimut)+360)%i;
+//                updateCameraBearing(mMap, azimuthInDegress);
+//
+//                Toast.makeText(this, "" + azimuthInDegress, Toast.LENGTH_SHORT).show();
+//                Log.i("AzimuthBearing", "onSensorChanged: "+azimut);
+//            }
+//        }
+
+    }
+
+    //
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }

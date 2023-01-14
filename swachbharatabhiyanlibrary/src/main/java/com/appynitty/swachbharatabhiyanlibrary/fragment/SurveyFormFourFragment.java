@@ -47,15 +47,14 @@ public class SurveyFormFourFragment extends Fragment {
 
     private CheckBox cbAmazonS,cbFlifkartS,cbNaykkaS,cbTataCliqS,cbSnapS, cbOtherShopping;
     private static  ArrayList<String> shoppingArray = new ArrayList<>();
+    private String strAmazon,strFlifkart,strNayka,strTataCliq,strSnapdeal,strOtherShop;
 
     private CheckBox cbBhimP,cbPaytmP,cbPhonPaP,cbGooglePeP,cbPersonalBP,cbOtherP;
     private static  ArrayList<String> paymentArray = new ArrayList<>();
+    private String strBhimP,strPaytmP,strPhonePeP,strGooglePeP,strPersonalBP,strOtherP;
 
     private String socialList,shoppingList,paymentList;
     String regex = "\\[|\\]";
-    private List<String> selectedSocialMediaList = new ArrayList<>();
-    private List<String> selectedShoppingList = new ArrayList<>();
-    private List<String> selectedPaymentList = new ArrayList<>();
     String[] separatedSocialMedia,separatedShopping,separatedPaymentApp;
 
 
@@ -123,9 +122,7 @@ public class SurveyFormFourFragment extends Fragment {
         if (socialMedia != null && !socialMedia.equals("")){
             separatedSocialMedia = socialMedia.split(",");
             Log.e(TAG, "socialMedia: "+separatedSocialMedia );
-            selectedSocialMediaList.clear();
             for (int k =0 ; k<separatedSocialMedia.length; k++){
-                selectedSocialMediaList.add(separatedSocialMedia.toString());
                 String twit = separatedSocialMedia[k];
                 Log.i("social", "socialDataAPI: "+twit);
                 String inst = separatedSocialMedia[k];
@@ -159,20 +156,81 @@ public class SurveyFormFourFragment extends Fragment {
 
             }
         }
-        String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
-        String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");
-    }
 
-    /*private ArrayList<String> getCheckBoxData(){
-        ArrayList<String> checkedBox = new ArrayList<>();
-        for (int a = 0; a < layout.getChildCount(); a++) {
-            checkBox = (CheckBox) layout.getChildAt(a);
-            if (checkBox.isChecked()) {
-                checkedBox.add(checkBox.getText().toString());
+        String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
+        if (shopping != null && !shopping.equals("")){
+            separatedShopping = shopping.split(",");
+            Log.e(TAG, "socialMedia: "+separatedShopping );
+
+            for (int m =0 ; m<separatedShopping.length; m++){
+
+                String flif = separatedShopping[m];
+                Log.i("social", "shoppingDataAPI: "+flif);
+                String snapDeal = separatedShopping[m];
+                Log.i("social", "shoppingDataAPI: "+snapDeal);
+                String tata = separatedShopping[m];
+                Log.i("social", "shoppingDataAPI: "+tata);
+                String amz = separatedShopping[m];
+                Log.i("social", "shoppingDataAPI: "+amz);
+                String nayka = separatedShopping[m];
+                Log.i("social", "shoppingDataAPI: "+nayka);
+                String other = separatedShopping[m];
+                Log.i("social", "shoppingDataAPI: "+other);
+
+                if (strAmazon.equals(amz)){
+                    cbAmazonS.setChecked(true);
+                }else if (strSnapdeal.equals(snapDeal)){
+                    cbSnapS.setChecked(true);
+                }else if (strFlifkart.equals(flif)){
+                    cbFlifkartS.setChecked(true);
+                }else if (strNayka.equals(nayka)){
+                    cbNaykkaS.setChecked(true);
+                }else if (strTataCliq.equals(tata)){
+                    cbTataCliqS.setChecked(true);
+                }else if (strOtherShop.equals(other)){
+                    cbOtherShopping.setChecked(true);
+                }
             }
         }
-        return checkedBox;
-    }*/
+
+
+        String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");
+        if (paymentApp != null && !paymentApp.equals("")){
+            separatedPaymentApp = paymentApp.split(",");
+            Log.e(TAG, "socialMedia: "+separatedPaymentApp );
+
+            for (int n =0 ; n<separatedPaymentApp.length; n++){
+
+                String pytm = separatedPaymentApp[n];
+                Log.i("social", "paymentDataAPI: "+pytm);
+                String phnPay = separatedPaymentApp[n];
+                Log.i("social", "paymentDataAPI: "+phnPay);
+                String pb = separatedPaymentApp[n];
+                Log.i("social", "paymentDataAPI: "+pb);
+                String gPay = separatedPaymentApp[n];
+                Log.i("social", "paymentDataAPI: "+gPay);
+                String bhm = separatedPaymentApp[n];
+                Log.i("social", "paymentDataAPI: "+bhm);
+                String othr = separatedPaymentApp[n];
+                Log.i("social", "paymentDataAPI: "+othr);
+
+                if (strBhimP.equals(bhm)){
+                    cbBhimP.setChecked(true);
+                }else if (strPaytmP.equals(pytm)){
+                    cbPaytmP.setChecked(true);
+                }else if (strPhonePeP.equals(phnPay)){
+                    cbPhonPaP.setChecked(true);
+                }else if (strGooglePeP.equals(gPay)){
+                    cbGooglePeP.setChecked(true);
+                }else if (strPersonalBP.equals(pb)){
+                    cbPersonalBP.setChecked(true);
+                }else if (strOtherP.equals(othr)){
+                    cbOtherP.setChecked(true);
+                }
+            }
+        }
+
+    }
 
     private void setOnClick() {
         //Vote
@@ -353,7 +411,7 @@ public class SurveyFormFourFragment extends Fragment {
             }
         });
 //shopping
-        String strAmazon = getResStringLanguage(R.string.str_amazon, "en");
+        strAmazon = getResStringLanguage(R.string.str_amazon, "en");
         cbAmazonS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -374,7 +432,7 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strFlifkart = getResStringLanguage(R.string.str_flipkart, "en");
+        strFlifkart = getResStringLanguage(R.string.str_flipkart, "en");
         cbFlifkartS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -395,7 +453,8 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strNayka = getResStringLanguage(R.string.str_nykka, "en");
+
+         strNayka = getResStringLanguage(R.string.str_nykka, "en");
         cbNaykkaS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -416,7 +475,8 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strTataCliq = getResStringLanguage(R.string.str_tata_cliq, "en");
+
+        strTataCliq = getResStringLanguage(R.string.str_tata_cliq, "en");
         cbTataCliqS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -437,7 +497,8 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strSnapdeal = getResStringLanguage(R.string.str_snapdeal, "en");
+
+        strSnapdeal = getResStringLanguage(R.string.str_snapdeal, "en");
         cbSnapS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -458,7 +519,8 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strOtherShop = getResStringLanguage(R.string.str_other, "en");
+
+        strOtherShop = getResStringLanguage(R.string.str_other, "en");
         cbOtherShopping.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -480,7 +542,8 @@ public class SurveyFormFourFragment extends Fragment {
             }
         });
 //Payment Mode
-        String strBhimP = getResStringLanguage(R.string.str_bhim, "en");
+
+        strBhimP = getResStringLanguage(R.string.str_bhim, "en");
         cbBhimP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -502,7 +565,7 @@ public class SurveyFormFourFragment extends Fragment {
             }
         });
 
-        String strPaytmP = getResStringLanguage(R.string.str_paytm, "en");
+         strPaytmP = getResStringLanguage(R.string.str_paytm, "en");
         cbPaytmP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -523,7 +586,8 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strPhonePeP = getResStringLanguage(R.string.str_phonepe, "en");
+
+         strPhonePeP = getResStringLanguage(R.string.str_phonepe, "en");
         cbPhonPaP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -544,7 +608,8 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strGooglePeP = getResStringLanguage(R.string.str_google_pay, "en");
+
+         strGooglePeP = getResStringLanguage(R.string.str_google_pay, "en");
         cbGooglePeP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -565,7 +630,8 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strPersonalBP = getResStringLanguage(R.string.str_personal_banking, "en");
+
+         strPersonalBP = getResStringLanguage(R.string.str_personal_banking, "en");
         cbPersonalBP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -586,7 +652,8 @@ public class SurveyFormFourFragment extends Fragment {
                 }
             }
         });
-        String strOtherP = getResStringLanguage(R.string.str_other, "en");
+
+         strOtherP = getResStringLanguage(R.string.str_other, "en");
         cbOtherP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

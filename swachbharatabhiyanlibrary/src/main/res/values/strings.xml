@@ -276,8 +276,8 @@
     <string name="str_srv_wlc_sub_title">Tell us about your details.\n This process take about\n 2-3 minutes to complete</string>
     <string name="btn_str_let_s_go">Let\'s Go</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="sur_heading_name">Your Name</string>
-    <string name="sur_hint_enter_name">Enter Your Name</string>
+    <string name="sur_heading_name">First Name</string>
+    <string name="sur_hint_enter_name">Enter Your First Name</string>
     <string name="str_heading_mobile_number">Your Mobile Number</string>
     <string name="str_hint_mobile_number">Enter Your Mobile Number</string>
     <string name="str_heading_age">Age: </string>
@@ -371,6 +371,10 @@
     <string name="btn_back">Back</string>
     <string name="btn_next">Next</string>
     <string name="str_survey_ncompleted">Survey\nCompleted</string>
+    <string name="str_heading_middle_name">Middle Name</string>
+    <string name="str_hint_enter_your_middle_name">Enter Your Middle Name</string>
+    <string name="str_heading_last_name">Last Name</string>
+    <string name="str_hint_enter_your_last_name">Enter Your Last Name</string>
 
 
     <!--    STRING ARRAY FOR MONTHS-->

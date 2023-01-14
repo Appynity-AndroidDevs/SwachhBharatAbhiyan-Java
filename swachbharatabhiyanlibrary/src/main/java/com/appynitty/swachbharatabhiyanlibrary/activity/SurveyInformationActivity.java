@@ -839,9 +839,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String surFName = Prefs.getString(AUtils.PREFS.SUR_FIRST_NAME,"");
         String surMName = Prefs.getString(AUtils.PREFS.SUR_MIDDLE_NAME,"");
         String surLName = Prefs.getString(AUtils.PREFS.SUR_LAST_NAME,"");
-        String fullName = surFName+" "+surMName+" "+surLName ;
-        Log.d(TAG, "Full name is : "+fullName);
-        Prefs.putString(AUtils.PREFS.SUR_FULL_NAME,fullName);
         String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
         String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
         String bMonth = Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"");

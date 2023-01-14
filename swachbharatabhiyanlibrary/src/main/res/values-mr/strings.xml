@@ -234,8 +234,8 @@
     <string name="str_srv_welcome">स्वागत आहे</string>
     <string name="str_srv_wlc_sub_title">आम्हाला तुमच्या तपशीलांबद्दल सांगा.\n ही प्रक्रिया पूर्ण होण्यासाठी सुमारे 2-3 मिनिटे लागतात</string>
     <string name="btn_str_let_s_go">Let\'s Go</string>
-    <string name="sur_heading_name">तुमचे नाव</string>
-    <string name="sur_hint_enter_name">आपले नांव लिहा</string>
+    <string name="sur_heading_name">पहिले नाव</string>
+    <string name="sur_hint_enter_name">आपले पहिले नाव प्रविष्ट करा</string>
     <string name="str_heading_mobile_number">आपला भ्रमणध्वनी क्रमांक</string>
     <string name="str_hint_mobile_number">तुमचा भ्रमणध्वनी क्रमांक टाका</string>
     <string name="str_heading_age">वय: </string>
@@ -329,6 +329,10 @@
     <string name="btn_back">मागे</string>
     <string name="btn_next">पुढे</string>
     <string name="str_survey_ncompleted">सर्वेक्षण \nपूर्ण झाले</string>
+    <string name="str_heading_middle_name">मधले नाव</string>
+    <string name="str_hint_enter_your_middle_name">आपले मधले नाव प्रविष्ट करा</string>
+    <string name="str_heading_last_name">आडनाव</string>
+    <string name="str_hint_enter_your_last_name">आपले आडनाव प्रविष्ट करा</string>
 
 
 </resources>

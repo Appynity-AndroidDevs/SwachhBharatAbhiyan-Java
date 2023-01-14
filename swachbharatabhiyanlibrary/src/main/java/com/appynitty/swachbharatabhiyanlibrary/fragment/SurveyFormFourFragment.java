@@ -56,6 +56,7 @@ public class SurveyFormFourFragment extends Fragment {
     private List<String> selectedSocialMediaList = new ArrayList<>();
     private List<String> selectedShoppingList = new ArrayList<>();
     private List<String> selectedPaymentList = new ArrayList<>();
+    String[] separatedSocialMedia,separatedShopping,separatedPaymentApp;
 
 
 
@@ -120,14 +121,43 @@ public class SurveyFormFourFragment extends Fragment {
         txtNumVote.setText(totalVote);
         String socialMedia = Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,"");
         if (socialMedia != null && !socialMedia.equals("")){
-            String[] separatedSocialMedia = socialMedia.split(",");
-            String twit = separatedSocialMedia[0];
-            String inst = separatedSocialMedia[1];
-            String fb = separatedSocialMedia[2];
-            String whats = separatedSocialMedia[3];
-            String link = separatedSocialMedia[4];
-            String snap = separatedSocialMedia[5];
-            String other = separatedSocialMedia[6];
+            separatedSocialMedia = socialMedia.split(",");
+            Log.e(TAG, "socialMedia: "+separatedSocialMedia );
+            selectedSocialMediaList.clear();
+            for (int k =0 ; k<separatedSocialMedia.length; k++){
+                selectedSocialMediaList.add(separatedSocialMedia.toString());
+                String twit = separatedSocialMedia[k];
+                Log.i("social", "socialDataAPI: "+twit);
+                String inst = separatedSocialMedia[k];
+                Log.i("social", "socialDataAPI: "+inst);
+                String fb = separatedSocialMedia[k];
+                Log.i("social", "socialDataAPI: "+fb);
+                String whats = separatedSocialMedia[k];
+                Log.i("social", "socialDataAPI: "+whats);
+                String link = separatedSocialMedia[k];
+                Log.i("social", "socialDataAPI: "+link);
+                String snap = separatedSocialMedia[k];
+                Log.i("social", "socialDataAPI: "+snap);
+                String other = separatedSocialMedia[k];
+                Log.i("social", "socialDataAPI: "+other);
+
+                if (strFaceBook.equals(fb)){
+                    cbFbS.setChecked(true);
+                }else if (strInstagram.equals(inst)){
+                    cbInstagram.setChecked(true);
+                }else if (strLinkedIn.equals(link)){
+                    cbLinkedIn.setChecked(true);
+                }else if (strTwitter.equals(twit)){
+                    cbTwitSocial.setChecked(true);
+                }else if (strWhatsApp.equals(whats)){
+                    cbWhatsapp.setChecked(true);
+                }else if (strSnapChat.equals(snap)){
+                    cbSnapChat.setChecked(true);
+                }else if (strOtherSocial.equals(other)){
+                    cbOtherS.setChecked(true);
+                }
+
+            }
         }
         String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
         String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");
@@ -179,6 +209,8 @@ public class SurveyFormFourFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
+
+
                   //  socialMArray.add(cbFbS.getText().toString());
                     socialMArray.add(strFaceBook);
                     String socialMode = socialMArray.toString().trim().replaceAll("\\s","");

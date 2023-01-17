@@ -226,7 +226,7 @@ public class QRcodeScannerDumpSuperActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onGarbagePopUpDismissed(String houseID, int garbageType, @Nullable String comment) {
+    public void onGarbagePopUpDismissed(String houseID, int garbageType, @Nullable String comment, boolean isDryChecked , boolean isWetChecked , boolean isSanitaryChecked , boolean isDomesticHazardousChecked) {
         if (garbageType != -1) {
             gcType = "1";
             startSubmitQRAsyncTask(houseID, garbageType, gcType, comment);

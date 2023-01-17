@@ -273,4 +273,12 @@
 
 
 
+    <string name="dry">Dry</string>
+    <string name="wet">Wet</string>
+    <string name="sanitary">Sanitary</string>
+    <string name="domestic_hazardous">Domestic Hazardous</string>
+
+
+
+
 </resources>

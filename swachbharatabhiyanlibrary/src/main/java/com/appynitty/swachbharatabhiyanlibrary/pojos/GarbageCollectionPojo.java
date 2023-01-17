@@ -26,7 +26,42 @@ public class GarbageCollectionPojo {
     private double distance;
 
     private String gcType;
+    private int Dry = 0;
+    private int Wet = 0;
+    private int Sanitary = 0;
+    private int DomesticHazaedous = 0;
 
+    public int getDry() {
+        return Dry;
+    }
+
+    public void setDry(int dry) {
+        Dry = dry;
+    }
+
+    public int getWet() {
+        return Wet;
+    }
+
+    public void setWet(int wet) {
+        Wet = wet;
+    }
+
+    public int getSanitary() {
+        return Sanitary;
+    }
+
+    public void setSanitary(int sanitary) {
+        Sanitary = sanitary;
+    }
+
+    public int getDomesticHazaedous() {
+        return DomesticHazaedous;
+    }
+
+    public void setDomesticHazaedous(int domesticHazaedous) {
+        DomesticHazaedous = domesticHazaedous;
+    }
 
     public String getGpBeforImageTime() {
         return gpBeforImageTime;

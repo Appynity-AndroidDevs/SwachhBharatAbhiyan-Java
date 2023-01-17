@@ -231,4 +231,11 @@
     <string name="syncing_is_on">समक्रमण चालू आहे</string>
 
 
+
+    <string name="dry">सुका</string>
+    <string name="wet">ओला</string>
+    <string name="sanitary">सॅनिटरी</string>
+    <string name="domestic_hazardous">घरगुती धोकादायक</string>
+
+
 </resources>

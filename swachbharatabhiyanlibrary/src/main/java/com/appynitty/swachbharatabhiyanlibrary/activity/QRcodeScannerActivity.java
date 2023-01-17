@@ -231,10 +231,10 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
     }
 
     @Override
-    public void onGarbagePopUpDismissed(String houseID, int garbageType, @Nullable String comment) {
+    public void onGarbagePopUpDismissed(String houseID, int garbageType, @Nullable String comment, boolean isDryChecked, boolean isWetChecked, boolean isSanitaryChecked, boolean isDomesticHazardousChecked) {
         if (garbageType != -1) {
             gcType = "1";
-            startSubmitQRAsyncTask(houseID, garbageType, gcType, comment);
+            startSubmitQRAsyncTask(houseID, garbageType, gcType, comment, isDryChecked, isWetChecked, isSanitaryChecked, isDomesticHazardousChecked);
         } else {
             restartPreview();
         }
@@ -1038,6 +1038,29 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
 //        }
     }
 
+
+    private void startSubmitQRAsyncTask(final String houseNo, @Nullable final int garbageType, @Nullable final String gcType, @Nullable final String comment, boolean isDryChecked, boolean isWetChecked, boolean isSanitaryChecked, boolean isDomesticHazardousChecked) {
+
+        stopCamera();
+        setGarbageCollectionPojo(houseNo, garbageType, gcType, comment);
+//        if(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext)) {
+//            mAdapter.submitQR(garbageCollectionPojo);
+//        }
+//        else {
+        //   Log.d(TAG, "startSubmitQRAsyncTask: " + new Gson().toJson(garbageCollectionPojo));
+        if (isDryChecked)
+            garbageCollectionPojo.setDry(1);
+        if (isWetChecked)
+            garbageCollectionPojo.setWet(1);
+        if (isSanitaryChecked)
+            garbageCollectionPojo.setSanitary(1);
+        if (isDomesticHazardousChecked)
+            garbageCollectionPojo.setDomesticHazaedous(1);
+
+        insertToDB(garbageCollectionPojo);
+//        }
+    }
+
     private void startSubmitQRAsyncTask(HashMap<String, String> map) {
 
         stopCamera();
@@ -1278,6 +1301,11 @@ public class QRcodeScannerActivity extends AppCompatActivity implements GarbageT
         entity.setDistance(String.valueOf(garbageCollectionPojo.getDistance()));
 
         entity.setIsOffline(AUtils.isInternetAvailable() && AUtils.isConnectedFast(mContext));
+
+        entity.setDry(garbageCollectionPojo.getDry());
+        entity.setWet(garbageCollectionPojo.getWet());
+        entity.setSanitary(garbageCollectionPojo.getSanitary());
+        entity.setDomesticHazaedous(garbageCollectionPojo.getDomesticHazaedous());
 
         if (isActivityData) {
 //            entity.setAfterImage(imagePojo.getAfterImage());

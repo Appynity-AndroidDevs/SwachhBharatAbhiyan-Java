@@ -200,19 +200,19 @@ public class SyncOfflineAdapterClass {
 
                     }
                     if (Integer.parseInt(result.getID()) != 0) {
-
-                        //    AUtils.warning(mContext , mContext.getResources().getString(R.string.please_wait));
-                        int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());
-                        if (deleteCount == 0) {
-                            offset = String.valueOf(Integer.parseInt(offset) + 1);
-                        }
-                        for (int i = 0; i < syncOfflineList.size(); i++) {
-                            if (syncOfflineList.get(i).getOfflineID().equals(result.getID())) {
-                                syncOfflineList.remove(i);
-                                break;
+                        if (!result.getMessage().contains("wrong")) {
+                            //    AUtils.warning(mContext , mContext.getResources().getString(R.string.please_wait));
+                            int deleteCount = syncOfflineRepository.deleteSyncTableData(result.getID());
+                            if (deleteCount == 0) {
+                                offset = String.valueOf(Integer.parseInt(offset) + 1);
+                            }
+                            for (int i = 0; i < syncOfflineList.size(); i++) {
+                                if (syncOfflineList.get(i).getOfflineID().equals(result.getID())) {
+                                    syncOfflineList.remove(i);
+                                    break;
+                                }
                             }
                         }
-
                     }
                 }
             }

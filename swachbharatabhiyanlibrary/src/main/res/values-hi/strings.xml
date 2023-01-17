@@ -205,4 +205,11 @@
     <string name="sync_again">फिर से सिंक करें</string>
     <string name="syncing_is_on">सिंकिंग चालू है</string>
 
+
+    <string name="dry">सूखा</string>
+    <string name="wet">गीला</string>
+    <string name="sanitary">सॅनिटरी</string>
+    <string name="domestic_hazardous">घरेलू खतरनाक</string>
+
+
 </resources>

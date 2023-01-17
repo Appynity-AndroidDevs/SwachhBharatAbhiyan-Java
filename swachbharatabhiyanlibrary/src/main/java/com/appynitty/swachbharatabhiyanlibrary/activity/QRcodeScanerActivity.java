@@ -228,7 +228,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements ZBarScann
     }
 
     @Override
-    public void onGarbagePopUpDismissed(String houseID, int garbageType, @Nullable String comment) {
+    public void onGarbagePopUpDismissed(String houseID, int garbageType, @Nullable String comment, boolean isDryChecked , boolean isWetChecked , boolean isSanitaryChecked , boolean isDomesticHazardousChecked) {
         if (garbageType != -1) {
             gcType = "1";
             startSubmitQRAsyncTask(houseID, garbageType, gcType, comment);

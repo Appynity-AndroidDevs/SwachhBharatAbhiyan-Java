@@ -233,6 +233,11 @@ public class SyncOfflineRepository {
         offlinePojo.setDistance(pojo.getDistance());
         offlinePojo.setIsOffline(pojo.getIsOffline());
 
+        offlinePojo.setDry(pojo.getDry());
+        offlinePojo.setWet(pojo.getWet());
+        offlinePojo.setSanitary(pojo.getSanitary());
+        offlinePojo.setDomesticHazaedous(pojo.getDomesticHazaedous());
+
         Type typeNew = new TypeToken<SyncOfflinePojo>() {
         }.getType();
         String mData = new Gson().toJson(offlinePojo, typeNew);
@@ -275,7 +280,7 @@ public class SyncOfflineRepository {
         List<SyncOfflineEntity> mList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = AUtils.sqlDBInstance(mContext);
         String sql = "select * from " + SYNC_OFFLINE_TABLE + " order by " + COLUMN_DATE + " limit " + DATA_LIMIT + " offset " + offset;
-       // String sql = "select * from " + SYNC_OFFLINE_TABLE + " order by " + COLUMN_DATE +  " offset " + offset;
+        // String sql = "select * from " + SYNC_OFFLINE_TABLE + " order by " + COLUMN_DATE +  " offset " + offset;
         Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
 
         if (cursor.moveToFirst() && cursor.getColumnCount() > 0) {

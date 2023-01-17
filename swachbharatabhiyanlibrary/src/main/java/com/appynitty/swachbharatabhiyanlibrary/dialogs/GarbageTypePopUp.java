@@ -46,8 +46,8 @@ public class GarbageTypePopUp extends Dialog {
 
     private boolean isSubmit = false;
     private ConstraintLayout checkBoxGroupConstraintL;
-    private CheckBox dryCheckBox , wetCheckBox , sanitaryCheckBox , domesticHazardousCheckBox;
-    private boolean isDryChecked = false , isWetChecked = false , isSanitaryChecked = false , isDomesticHazardousChecked = false;
+    private CheckBox dryCheckBox, wetCheckBox, sanitaryCheckBox, domesticHazardousCheckBox;
+    private boolean isDryChecked = false, isWetChecked = false, isSanitaryChecked = false, isDomesticHazardousChecked = false;
     private RadioGroup mRadioGroup;
 
     public GarbageTypePopUp(Context context, String houseId, GarbageTypePopUp.GarbagePopUpDialogListener listener) {
@@ -77,7 +77,7 @@ public class GarbageTypePopUp extends Dialog {
 
     private void generateID() {
 
-        dryCheckBox  = findViewById(R.id.dryCheckBox);
+        dryCheckBox = findViewById(R.id.dryCheckBox);
         wetCheckBox = findViewById(R.id.wetCheckBox);
         sanitaryCheckBox = findViewById(R.id.sanitaryCheckBox);
         domesticHazardousCheckBox = findViewById(R.id.hazardousCheckBox);
@@ -101,7 +101,7 @@ public class GarbageTypePopUp extends Dialog {
         dryCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    isDryChecked = b;
+                isDryChecked = b;
             }
         });
         wetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -175,16 +175,17 @@ public class GarbageTypePopUp extends Dialog {
     private void onSubmitClick() {
         mComment = txtComent.getText().toString();
         if (mGarbageType != -1) {
-            this.dismiss();
-
-            if (!isDryChecked || !isWetChecked || !isSanitaryChecked || !isDomesticHazardousChecked){
-
-                AUtils.warning(mContext, mContext.getResources().getString(R.string.garbage_error));
-            }else{
+            if (mGarbageType == 1) {
+                if (isDryChecked || isWetChecked || isSanitaryChecked || isDomesticHazardousChecked) {
+                    isSubmit = true;
+                    this.dismiss();
+                } else {
+                    AUtils.warning(mContext, mContext.getResources().getString(R.string.garbage_error));
+                }
+            } else {
                 isSubmit = true;
-
+                this.dismiss();
             }
-
         } else {
             AUtils.warning(mContext, mContext.getResources().getString(R.string.garbage_error));
         }
@@ -197,7 +198,7 @@ public class GarbageTypePopUp extends Dialog {
         if (isSubmit) {
             if (!AUtils.isNull(Prefs.getString(AUtils.LAT, null)) && !Prefs.getString(AUtils.LAT, null).equals("")) {
 
-                mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment , isDryChecked , isWetChecked , isSanitaryChecked , isDomesticHazardousChecked);
+                mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment, isDryChecked, isWetChecked, isSanitaryChecked, isDomesticHazardousChecked);
 
             } else {
 
@@ -220,7 +221,7 @@ public class GarbageTypePopUp extends Dialog {
                                     @Override
                                     public void run() {
                                         mProgressDialog.dismiss();
-                                        mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment, isDryChecked , isWetChecked , isSanitaryChecked , isDomesticHazardousChecked);
+                                        mListener.onGarbagePopUpDismissed(mHouseId, mGarbageType, mComment, isDryChecked, isWetChecked, isSanitaryChecked, isDomesticHazardousChecked);
                                     }
                                 });
 
@@ -234,12 +235,12 @@ public class GarbageTypePopUp extends Dialog {
             }
 
         } else {
-            mListener.onGarbagePopUpDismissed(mHouseId, -1, mComment, isDryChecked , isWetChecked , isSanitaryChecked , isDomesticHazardousChecked);
+            mListener.onGarbagePopUpDismissed(mHouseId, -1, mComment, isDryChecked, isWetChecked, isSanitaryChecked, isDomesticHazardousChecked);
         }
     }
 
     public interface GarbagePopUpDialogListener {
-        void onGarbagePopUpDismissed(String houseID, int garbageType, @Nullable String comment , boolean isDryChecked , boolean isWetChecked , boolean isSanitaryChecked , boolean isDomesticHazardousChecked);
+        void onGarbagePopUpDismissed(String houseID, int garbageType, @Nullable String comment, boolean isDryChecked, boolean isWetChecked, boolean isSanitaryChecked, boolean isDomesticHazardousChecked);
     }
 
 }

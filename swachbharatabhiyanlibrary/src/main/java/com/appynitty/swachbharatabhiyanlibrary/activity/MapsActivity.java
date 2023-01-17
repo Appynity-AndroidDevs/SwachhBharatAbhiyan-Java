@@ -57,8 +57,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Button btnConfirmLocation;
     Polyline polyline;
     private SensorManager mSensorManager;
-    private Sensor accelerometer;
-    private Sensor magnetometer;
     private Sensor orientationMeter;
 
     public static final int PATTERN_DASH_LENGTH_PX = 20;
@@ -71,17 +69,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private List<LatLng> prevLatLongList = new ArrayList<>();
     private float[] mRotationMatrix = new float[16];
     private float mDeclination;
+    private float lastBearingAngle = 0;
 
 
     @Override
     protected void onResume() {
         super.onResume();
-
+//
         if (mSensorManager != null) {
-            Log.i("AzimuthBearing", "onResume: registered");
-//            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
-//            mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
-            mSensorManager.registerListener(this, orientationMeter, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
+            mSensorManager.registerListener(this, orientationMeter, SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM);
         }
 
     }
@@ -92,10 +88,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setContentView(R.layout.activity_maps);
         mDeclination = Float.parseFloat(Prefs.getString(AUtils.Declination, null));
-
+//
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+//        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         orientationMeter = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
         Bundle bundle = getIntent().getExtras();
@@ -165,7 +161,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mMap.addMarker(new MarkerOptions().position(prevLatLongList.get(i)).title(locationArrayList.get(i).getReferenceId()).icon(BitmapFromVector(getApplicationContext(), R.drawable.icn_house)));
 
                 // below line is use to zoom our camera on map.
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(20.0f));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(19.0f));
 
                 // below line is use to move our camera to the specific location.
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(prevLatLongList.get(i)));
@@ -176,8 +172,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         LatLng currentLocation = new LatLng(oldLat, oldLong);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 20.0f));
-        updateCameraBearing(mMap, bearing);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 19.0f));
+        //   updateCameraBearing(mMap, bearing);
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
@@ -198,7 +194,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if (calcDistance(midLatLng) > DISTANCE_LIMIT) {
                     polyline.remove();
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 20.0f));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 19.0f));
                     String text = getString(R.string.distance_warning, DISTANCE_LIMIT);
                     AUtils.info(MapsActivity.this, text);
                 }
@@ -214,6 +210,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .builder(
                         googleMap.getCameraPosition() // current Camera
                 )
+                .tilt(0)
                 .bearing(bearing)
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(camPos));
@@ -273,59 +270,89 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             SensorManager.getOrientation(mRotationMatrix, orientation);
             float bearing = (float) Math.toDegrees(orientation[0]);
 
-            updateCameraBearing(mMap, bearing + mDeclination);
 
             if (bearing < 0) {
+                if (bearing < -25) {
 
-                if (bearing < -30) {
+                    if (lastBearingAngle == 0) {
+                        updateCameraBearing(mMap, bearing);
+                        lastBearingAngle = bearing;
+                    } else {
+
+                        if (Math.abs(Math.abs(lastBearingAngle) - Math.abs(bearing)) > 10) {
+                            updateCameraBearing(mMap, bearing);
+                            lastBearingAngle = bearing;
+                        }
+
+                    }
                     Log.i("BEARING_MAP", "onSensorChanged: " + bearing);
-                    updateCameraBearing(mMap, bearing + mDeclination);
                 }
             } else {
-                if (bearing > 30) {
+                if (bearing > 25) {
+                    if (lastBearingAngle == 0) {
+                        updateCameraBearing(mMap, bearing);
+                        lastBearingAngle = bearing;
+                    } else {
+                        if (Math.abs(Math.abs(lastBearingAngle) - Math.abs(bearing)) > 10) {
+                            updateCameraBearing(mMap, bearing);
+                            lastBearingAngle = bearing;
+                        }
+                    }
+
                     Log.i("BEARING_MAP", "onSensorChanged: " + bearing);
 
-                    updateCameraBearing(mMap, bearing + mDeclination);
                 }
             }
-        }
-
-        //  float compassBearingRelativeToTrueNorth = Math.round(sensorEvent.values[0]);
-//        updateCameraBearing(mMap, compassBearingRelativeToTrueNorth);
 //
-//        Toast.makeText(this, "" + compassBearingRelativeToTrueNorth, Toast.LENGTH_SHORT).show();
-//        Log.i("AzimuthBearing", "onSensorChanged: " + compassBearingRelativeToTrueNorth);
-
-//        float[] mGravity = null;
-//        float[] mGeomagnetic = null;
-//        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-//            mGravity = sensorEvent.values;
-//        if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
-//            mGeomagnetic = sensorEvent.values;
-//
-//        if (mGravity != null && mGeomagnetic != null) {
-//            float[] R = new float[9];
-//            float[] I = new float[9];
-//            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-//            if (success) {
-//                float[] orientation = new float[3];
-//                SensorManager.getOrientation(R, orientation);
-//                Float azimut = orientation[0]; // orientation contains: azimut, pitch and roll
-//
-//                int i = 360;
-//                float azimuthInDegress = (float) (Math.toDegrees(azimut)+360)%i;
-//                updateCameraBearing(mMap, azimuthInDegress);
-//
-//                Toast.makeText(this, "" + azimuthInDegress, Toast.LENGTH_SHORT).show();
-//                Log.i("AzimuthBearing", "onSensorChanged: "+azimut);
+//            if (bearing > 20){
+//                updateCameraBearing(mMap , mAngle);
 //            }
-//        }
-
+        }
+//
+//        //  float compassBearingRelativeToTrueNorth = Math.round(sensorEvent.values[0]);
+////        updateCameraBearing(mMap, compassBearingRelativeToTrueNorth);
+////
+////        Toast.makeText(this, "" + compassBearingRelativeToTrueNorth, Toast.LENGTH_SHORT).show();
+////        Log.i("AzimuthBearing", "onSensorChanged: " + compassBearingRelativeToTrueNorth);
+//
+////        float[] mGravity = null;
+////        float[] mGeomagnetic = null;
+////        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+////            mGravity = sensorEvent.values;
+////        if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
+////            mGeomagnetic = sensorEvent.values;
+////
+////        if (mGravity != null && mGeomagnetic != null) {
+////            float[] R = new float[9];
+////            float[] I = new float[9];
+////            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+////            if (success) {
+////                float[] orientation = new float[3];
+////                SensorManager.getOrientation(R, orientation);
+////                Float azimut = orientation[0]; // orientation contains: azimut, pitch and roll
+////
+////                int i = 360;
+////                float azimuthInDegress = (float) (Math.toDegrees(azimut)+360)%i;
+////                updateCameraBearing(mMap, azimuthInDegress);
+////
+////                Toast.makeText(this, "" + azimuthInDegress, Toast.LENGTH_SHORT).show();
+////                Log.i("AzimuthBearing", "onSensorChanged: "+azimut);
+////            }
+////        }
+//
     }
 
     //
+    //
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mSensorManager.unregisterListener(this);
 
     }
 }

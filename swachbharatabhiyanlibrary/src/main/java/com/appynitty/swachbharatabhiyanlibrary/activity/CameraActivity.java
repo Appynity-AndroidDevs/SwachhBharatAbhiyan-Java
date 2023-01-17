@@ -283,7 +283,7 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onClosed(@NonNull CameraCaptureSession session) {
                     super.onClosed(session);
-                    stopBackgroundThread();
+                    //  stopBackgroundThread();
 
                 }
             }, null);
@@ -464,13 +464,15 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void stopBackgroundThread() {
-        mBackgroundThread.quitSafely();
-        try {
-            mBackgroundThread.join();
-            mBackgroundThread = null;
-            mBackgroundHandler = null;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (mBackgroundThread != null) {
+            mBackgroundThread.quitSafely();
+            try {
+                mBackgroundThread.join();
+                mBackgroundThread = null;
+                mBackgroundHandler = null;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -145,7 +145,6 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initComponents();
 
-
     }
 
 //set format

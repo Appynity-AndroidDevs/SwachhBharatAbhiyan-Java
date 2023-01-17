@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         //    Prefs.putString(AUtils.APP_ID, "3104");
         //   Prefs.putString(AUtils.APP_ID, "3126");
+      //     Prefs.putString(AUtils.APP_ID, "3146"); // sindewahi test
 
 //        Prefs.putString(AUtils.APP_ID, "3124"); // nagbhid
         //   Prefs.putString(AUtils.APP_ID, "3128"); // chimur
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 //           Prefs.putString(AUtils.APP_ID, "3041");
 //        Prefs.putString(AUtils.APP_ID, "1003");
 //        Prefs.putInt(AUtils.VERSION_CODE, BuildConfig.VERSION_CODE);
+
         Prefs.putInt(AUtils.VERSION_CODE, BuildConfig.VERSION_CODE);
 //        initLanguageList();
 

@@ -229,6 +229,7 @@
     <string name="please_sync_again">कृपया पुन्हा सिंक करा</string>
     <string name="sync_again">पुन्हा सिंक करां</string>
     <string name="syncing_is_on">समक्रमण चालू आहे</string>
+    <string name="scan_again" >कृपया पुन्हा स्कॅन करा</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +28,9 @@ import androidx.core.content.ContextCompat;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LatLong;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,6 +46,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.CancellationToken;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnTokenCanceledListener;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
@@ -70,7 +78,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private float[] mRotationMatrix = new float[16];
     private float mDeclination;
     private float lastBearingAngle = 0;
-
+    private FusedLocationProviderClient fusedLocationClient;
+    private LatLng currentLocation;
+    private View transparentView;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onResume() {
@@ -82,11 +93,63 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
+                    @NonNull
+                    @Override
+                    public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+
+                        return null;
+                    }
+
+                    @Override
+                    public boolean isCancellationRequested() {
+                        return false;
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+
+                        AUtils.success(MapsActivity.this, " " + location.getAccuracy());
+
+                        if (location.getAccuracy() < 20) {
+                            currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                            transparentView.setVisibility(View.GONE);
+                            mProgressBar.setVisibility(View.GONE);
+
+                            if (mapFragment != null) {
+                                mapFragment.getMapAsync(MapsActivity.this);
+                            }
+
+                            bearing = location.getBearing();
+                        } else {
+                            AUtils.warning(MapsActivity.this, getResources().getString(R.string.scan_again));
+                            finish();
+                        }
+
+
+                    }
+                });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
+
+        mProgressBar = findViewById(R.id.mapsProgressBar);
+        transparentView = findViewById(R.id.transparentWhiteBgMaps);
+        transparentView.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+        getLastLocation();
+
+
         mDeclination = Float.parseFloat(Prefs.getString(AUtils.Declination, null));
 //
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -97,7 +160,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bundle bundle = getIntent().getExtras();
         oldLat = Double.parseDouble(bundle.getString("lat"));
         oldLong = Double.parseDouble(bundle.getString("lon"));
-        bearing = Float.parseFloat(Prefs.getString(AUtils.BEARING, null));
         locationArrayList = bundle.getParcelableArrayList("marked_lat_long");
 
         if (locationArrayList != null && !locationArrayList.isEmpty()) {
@@ -110,8 +172,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
         btnConfirmLocation = findViewById(R.id.btnOk);
         btnConfirmLocation.setOnClickListener(v -> {
@@ -170,10 +230,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
-
-        LatLng currentLocation = new LatLng(oldLat, oldLong);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 19.0f));
-        //   updateCameraBearing(mMap, bearing);
+        updateCameraBearing(mMap, bearing);
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {

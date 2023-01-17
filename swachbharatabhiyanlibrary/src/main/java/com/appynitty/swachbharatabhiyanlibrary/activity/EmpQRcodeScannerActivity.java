@@ -432,15 +432,17 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> mapsActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                scannerView.pause();
-                mLat = result.getData().getStringExtra("newLat");
-                mLon = result.getData().getStringExtra("newLong");
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    scannerView.pause();
+                    mLat = result.getData().getStringExtra("newLat");
+                    mLon = result.getData().getStringExtra("newLong");
 //                isNewConstruction = result.getData().getIntExtra("isNewConstruction", 0);
-                Log.e(TAG, "onActivityResult: newLat: " + mLat + ", newLong: " + mLon);
-                handleResult(scannerView.getStatusView().getText().toString());
+                    Log.e(TAG, "onActivityResult: newLat: " + mLat + ", newLong: " + mLon);
+                    handleResult(scannerView.getStatusView().getText().toString());
 //                        doSomeOperations(str);
-            }
+                }
+
         }
     });
 

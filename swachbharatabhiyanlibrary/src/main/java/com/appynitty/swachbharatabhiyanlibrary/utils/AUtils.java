@@ -394,6 +394,53 @@ public class AUtils extends CommonUtils {
         String SUR_MEMBER_OF_DIVYANG = "memberDivyang";
         String SUR_CREATED_USER_ID = "createUserId";
         String SUR_UPDATED_USER_ID = "updateUserId";
+
+        /****
+         * Update survey data store
+         * */
+        String SUR_REFERENCE_ID_U = "ReferanceIdU";
+        String SUR_FULL_NAME_U = "fullNameU";
+        String SUR_FIRST_NAME_U = "firstNameU";
+        String SUR_MIDDLE_NAME_U = "middleNameU";
+        String SUR_LAST_NAME_U = "lastNameU";
+        String SUR_MOBILE_U = "mobileNumberU";
+        String SUR_GENDER_U = "genderU";
+        String SUR_BLOOD_GROUP_U = "bloodGroupU";
+        String SUR_QUALIFICATION_U = "qualificationU";
+        String SUR_OCCUPATION_U = "occupationU";
+        String SUR_MARITAL_STATUS_U = "maritalStatusU";
+        String SUR_AGE_U = "ageU";
+        String SUR_BIRTHDAY_DATE_U = "dateOfBirthU";
+        String SUR_BIRTH_YEAR_U = "birthYearU";
+        String SUR_BIRTH_MONTH_U = "birthMonthU";
+        String SUR_BIRTH_DAY_U = "birthDayU";
+        String SUR_MARRIAGE_DATE_U = "marriageDateU";
+        String SUR_MARRIAGE_YEAR_U = "marriageYearU";
+        String SUR_MARRIAGE_MONTH_U = "marriageMonthU";
+        String SUR_MARRIAGE_DAY_U = "marriageDayU";
+        String SUR_LIVING_STATUS_U = "livingStatusU";
+        String SUR_TOTAL_ADULT_U = "totalAdultsU";
+        String SUR_TOTAL_CHILDREN_U = "totalChildrenU";
+        String SUR_TOTAL_CITIZEN_U = "totalSrCitizenU";
+        String SUR_TOTAL_MEMBER_U = "totalMemberU";
+        String SUR_WILLING_START_U = "willingStartU";
+        String SUR_RESOURCE_AVAILABLE_U = "resourcesAvailableU";
+        String SUR_MEMBER_JOB_OTHER_CITY_U = "memberJobOtherCityU";
+        String SUR_NUM_OF_VEHICLE_U = "noOfVehicleU";
+        String SUR_TWO_WHEELER_QTY_U = "twoWheelerQtyU";
+        String SUR_FOUR_WHEELER_QTY_U = "fourWheelerQtyU";
+        String SUR_NUM_OF_PEOPLE_VOTE_U = "noPeopleVoteU";
+        String SUR_SOCIAL_MEDIA_U = "socialMediaU";
+        String SUR_ONLINE_SHOPPING_U = "onlineShoppingU";
+        String SUR_PAYMENT_MODE_U = "paymentModePreferU";
+        String SUR_ONLINE_PAY_APP_U = "onlinePayAppU";
+        String SUR_INSURANCE_U = "insuranceU";
+        String SUR_UNDER_INSURANCE_U = "underInsurerU";
+        String SUR_AYUSHMAN_BENE_U = "ayushmanBeneficiaryU";
+        String SUR_BOOSTER_SHOT_U = "boosterShotU";
+        String SUR_MEMBER_OF_DIVYANG_U = "memberDivyangU";
+        String SUR_CREATED_USER_ID_U = "createUserIdU";
+        String SUR_UPDATED_USER_ID_U = "updateUserIdU";
     }
 
 

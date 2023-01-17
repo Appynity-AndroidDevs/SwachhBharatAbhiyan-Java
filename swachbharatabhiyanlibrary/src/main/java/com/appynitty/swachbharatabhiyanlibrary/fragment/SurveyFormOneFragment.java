@@ -250,9 +250,9 @@ public class SurveyFormOneFragment extends Fragment {
 
     private void setFillData() {
         String surFirstName = Prefs.getString(AUtils.PREFS.SUR_FIRST_NAME,"");
-        edtName.setText(surFirstName);
+        edtName.setText(surFirstName.trim().replace(" ",""));
         String surMiddleName = Prefs.getString(AUtils.PREFS.SUR_MIDDLE_NAME,"");
-        edtMName.setText(surMiddleName);
+        edtMName.setText(surMiddleName.trim().replace(" ",""));
         String surLastName = Prefs.getString(AUtils.PREFS.SUR_LAST_NAME,"");
         edtName.setText(surLastName);
         String surFullName = surFirstName+" "+surMiddleName+" "+surLastName;

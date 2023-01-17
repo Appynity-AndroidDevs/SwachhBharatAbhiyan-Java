@@ -131,7 +131,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
         setOnClick();
     }
     private void setData() {
-        String surFullName = Prefs.getString(AUtils.PREFS.SUR_FULL_NAME,"");
+        String surFName = Prefs.getString(AUtils.PREFS.SUR_FIRST_NAME,"");
+        String surMName = Prefs.getString(AUtils.PREFS.SUR_MIDDLE_NAME,"");
+        String surLName = Prefs.getString(AUtils.PREFS.SUR_LAST_NAME,"");
+        String surFullName =surFName+" "+surMName+" "+surLName;
+        Prefs.putString(AUtils.PREFS.SUR_FULL_NAME,surFullName);
         Log.d(TAG, "surName: "+surFullName);
         String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
         Log.d(TAG, "surMobile: "+surMobile);
@@ -544,7 +548,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                             getApiName = getSurveyDetailsPojo.get(i).getName();
                             Log.i("social", "getApiSurvey: " + getApiName);
 
-                            String[] separatedFullName = getApiName.split(" ");
+                            String[] separatedFullName = getApiName.split("\\s+");
                             String firstName = separatedFullName[0];
                             String middleName = separatedFullName[1];
                             String  lastName = separatedFullName[2];
@@ -839,6 +843,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String surFName = Prefs.getString(AUtils.PREFS.SUR_FIRST_NAME,"");
         String surMName = Prefs.getString(AUtils.PREFS.SUR_MIDDLE_NAME,"");
         String surLName = Prefs.getString(AUtils.PREFS.SUR_LAST_NAME,"");
+        String surFullName = Prefs.getString(AUtils.PREFS.SUR_FULL_NAME,"");
+
         String surMobile = Prefs.getString(AUtils.PREFS.SUR_MOBILE,"");
         String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
         String bMonth = Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"");

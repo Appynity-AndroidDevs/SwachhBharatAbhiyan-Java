@@ -60,6 +60,7 @@ public class GIS_LocationService extends LifecycleService {
     private List<HouseLocationEntity> mAllHouses;
     String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
     private Location lastLocation;
+    private String mHardware;
 
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
@@ -69,19 +70,13 @@ public class GIS_LocationService extends LifecycleService {
                 Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
                 Toast.makeText(GIS_LocationService.this, "new location received with Accuracy: " + location.getAccuracy() + " , Speed: " + location.getSpeed() + " & Provider: " + location.getProvider(), Toast.LENGTH_SHORT).show();
 
-                if (location.hasAccuracy() && location.getAccuracy() <= 12 && location.getSpeed() > 0F) {
-                    insertToDB(location);
-                    /*if (lastLocation == null) {
+                if (mHardware.equals("qcom")) {
+                    if (location.hasAccuracy() && location.getAccuracy() <= 12)
                         insertToDB(location);
-                    } else {
-                        double dist = lastLocation.distanceTo(location);
-                        if (dist <= 11) {
-                            insertToDB(location);
-                        }
-                    }*/
-
+                } else {
+                    if (location.hasAccuracy() && location.getAccuracy() <= 12 && location.getSpeed() > 0.0)
+                        insertToDB(location);
                 }
-
             }
 
         }
@@ -131,7 +126,12 @@ public class GIS_LocationService extends LifecycleService {
     }
 
     protected LocationRequest createLocationRequest() {
-        return new LocationRequest.Builder(0).setMinUpdateDistanceMeters(10F).setWaitForAccurateLocation(true).setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
+
+        return new LocationRequest.Builder(1000)
+                .setIntervalMillis(0)
+                .setMinUpdateDistanceMeters(10F)
+//                .setWaitForAccurateLocation(true)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY).build();
     }
 
     @Override
@@ -153,6 +153,29 @@ public class GIS_LocationService extends LifecycleService {
             return;
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        locationRequest = createLocationRequest();
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                Location location = locationResult.getLastLocation();
+                if (location != null) {
+                    Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
+                    Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & speed: " + location.getSpeed(), Toast.LENGTH_SHORT).show();
+
+                    if (location.hasAccuracy() && location.getAccuracy() <= 10) {
+                        Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
+
+                        insertToDB(location);
+                    }
+
+                }
+
+            }
+        };
+
         final Criteria criteria = new Criteria();
 
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -172,8 +195,10 @@ public class GIS_LocationService extends LifecycleService {
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             if (Build.HARDWARE.contains("mt")) {
-                locationManager.requestLocationUpdates(fusedProvider, 0, 12F, locationListenerGPS);
+                mHardware = "mt";
+                startLocationUpdates();
             } else if (Build.HARDWARE.contains("qcom")) {
+                mHardware = "qcom";
                 locationManager.requestLocationUpdates(gpsProvider, 0, 12F, locationListenerGPS);
             } else {
                 locationManager.requestLocationUpdates(fusedProvider, 0, 12F, locationListenerGPS);
@@ -183,28 +208,7 @@ public class GIS_LocationService extends LifecycleService {
         }
 
         //        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        locationRequest = createLocationRequest();
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                Location location = locationResult.getLastLocation();
-                if (location != null) {
-                    Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
-                    Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & speed: " + location.getSpeed(), Toast.LENGTH_SHORT).show();
-
-                    if (location.hasAccuracy() && location.getAccuracy() <= 12) {
-                        Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
-
-                        insertToDB(location);
-                    }
-
-                }
-
-            }
-        };
 //        startLocationUpdates();
 
         mLocationRepository.getAllLocations().observe(GIS_LocationService.this, locationEntities -> {
@@ -348,7 +352,7 @@ public class GIS_LocationService extends LifecycleService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        fusedLocationClient.removeLocationUpdates(locationCallback);
+        fusedLocationClient.removeLocationUpdates(locationCallback);
         locationManager.removeUpdates(locationListenerGPS);
         Log.e(TAG, "onDestroy: service done!");
     }

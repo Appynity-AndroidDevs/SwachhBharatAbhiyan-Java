@@ -97,6 +97,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         headerReferenceId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
+        viewPager.setUserInputEnabled(true);
         txtHouseId = findViewById(R.id.txt_house_id);
         txtHouseId.setText(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
         loader = findViewById(R.id.progress_bar);

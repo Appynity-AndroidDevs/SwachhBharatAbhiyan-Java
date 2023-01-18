@@ -367,7 +367,7 @@ public class SurveyFormThreeFragment extends Fragment {
             public void onClick(View view) {
                 Log.d("src", "Decreasing value...");
 
-                if (m >=0) {
+                if (m > 0) {
                     m = m - 1;
                     fourWheel = String.valueOf(m);
                     txtNumFourWheel.setText(fourWheel);

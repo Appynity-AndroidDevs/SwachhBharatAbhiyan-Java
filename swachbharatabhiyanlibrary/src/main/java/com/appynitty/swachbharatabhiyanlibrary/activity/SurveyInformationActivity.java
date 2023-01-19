@@ -97,7 +97,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         headerReferenceId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
-        viewPager.setUserInputEnabled(true);
+        viewPager.setUserInputEnabled(false);
         txtHouseId = findViewById(R.id.txt_house_id);
         txtHouseId.setText(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
         loader = findViewById(R.id.progress_bar);
@@ -232,6 +232,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                         }
                     } else if (fragPosition == 4){
                         if ( isValidFragFive()) {
+                            viewPager.setUserInputEnabled(true);
                             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
                             setData();
                         }
@@ -371,6 +372,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 }else  {
                     btnNext.setVisibility(View.GONE);
                     btnDone.setVisibility(View.VISIBLE);
+                    viewPager.setUserInputEnabled(false);
                     /*if (apiReferenceId == null){
                         btnUpdate.setVisibility(View.GONE);
                         btnDone.setVisibility(View.VISIBLE);

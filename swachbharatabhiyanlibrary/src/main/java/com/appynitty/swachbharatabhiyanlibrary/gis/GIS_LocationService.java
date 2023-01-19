@@ -162,8 +162,12 @@ public class GIS_LocationService extends LifecycleService {
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
                 if (location != null) {
+                    float speedAccuracy = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        speedAccuracy = location.getSpeedAccuracyMetersPerSecond();
+                    }
                     Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
-                    Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & speed: " + location.getSpeed(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & speedAccuracy: " + speedAccuracy, Toast.LENGTH_SHORT).show();
 
                     if (location.hasAccuracy() && location.getAccuracy() <= 10) {
                         Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();

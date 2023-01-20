@@ -36,6 +36,7 @@ import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,7 +60,6 @@ public class GIS_LocationService extends LifecycleService {
     private List<LocationEntity> mAllLocations = new ArrayList<>();
     private List<HouseLocationEntity> mAllHouses;
     String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
-    private Location lastLocation;
     private String mHardware;
 
     LocationListener locationListenerGPS = new LocationListener() {
@@ -99,7 +99,6 @@ public class GIS_LocationService extends LifecycleService {
 
     private void insertToDB(Location location) {
         Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
-        lastLocation = location;
         LocationEntity locEntity = new LocationEntity();
         locEntity.setLineElement(location.getLongitude() + " " + location.getLatitude());
         locEntity.setLat(location.getLatitude());
@@ -208,10 +207,6 @@ public class GIS_LocationService extends LifecycleService {
             Toast.makeText(this, "Please turn on the GPS!", Toast.LENGTH_SHORT).show();
         }
 
-        //        Log.e(TAG, "onCreate: userDetailPojo: " + userDetailPojo.toString());
-
-//        startLocationUpdates();
-
         mLocationRepository.getAllLocations().observe(GIS_LocationService.this, locationEntities -> {
             mAllLocations.clear();
             mAllLocations = locationEntities;
@@ -231,7 +226,7 @@ public class GIS_LocationService extends LifecycleService {
                     public void onResponse(@NonNull Call<GISResponseDTO> call, @NonNull Response<GISResponseDTO> response) {
 
                         if (response.isSuccessful()) {
-                            if (response.body().getStatus().equals("Success")) {
+                            if (Objects.requireNonNull(response.body()).getStatus().equals("Success")) {
                                 mHousePointRepo.deleteHouse(houseEntity.getHouseId());
                             }
                         }
@@ -276,13 +271,6 @@ public class GIS_LocationService extends LifecycleService {
                 List<GISRequestDTO> gisRequestDTOList = new ArrayList<>();
                 gisRequestDTOList.add(gisRequestDTO);
                 Log.e(TAG, "houseMappingTrail body: " + gisRequestDTOList.get(0).toString());
-
-                /*if (Prefs.contains(AUtils.GIS_END_TS)) {
-                    if (!AUtils.isNullString(Prefs.getString(AUtils.GIS_END_TS, null))
-                            || !Prefs.getString(AUtils.GIS_END_TS, null).isEmpty())
-                        gisRequest.setEndTs(Prefs.getString(AUtils.GIS_END_TS, null));
-                    Prefs.remove(AUtils.GIS_END_TS);
-                }*/
 
                 GISWebService service = NetworkConnection.getInstance().create(GISWebService.class);
 

@@ -70,12 +70,12 @@ public class GIS_LocationService extends LifecycleService {
                 Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
                 Toast.makeText(GIS_LocationService.this, "new location received with Accuracy: " + location.getAccuracy() + " , Speed: " + location.getSpeed() + " & Provider: " + location.getProvider(), Toast.LENGTH_SHORT).show();
 
-                if (mHardware.equals("qcom")) {
-                    if (location.hasAccuracy() && location.getAccuracy() <= 12)
-                        insertToDB(location);
-                } else {
-                    if (location.hasAccuracy() && location.getAccuracy() <= 12 && location.getSpeed() > 0.0)
-                        insertToDB(location);
+                if (mHardware.equals("qcom") && location.getAccuracy() <= 12) {
+                    insertToDB(location);
+                } else if (mHardware.equals("mt") && location.getAccuracy() <= 12 && location.getSpeed() > 0) {
+                    insertToDB(location);
+                } else if (location.getAccuracy() <= 12) {
+                    insertToDB(location);
                 }
             }
 
@@ -162,12 +162,8 @@ public class GIS_LocationService extends LifecycleService {
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
                 if (location != null) {
-                    float speedAccuracy = 0;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        speedAccuracy = location.getSpeedAccuracyMetersPerSecond();
-                    }
                     Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
-                    Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy() + " & speedAccuracy: " + speedAccuracy, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GIS_LocationService.this, "new location received with accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
 
                     if (location.hasAccuracy() && location.getAccuracy() <= 10) {
                         Toast.makeText(GIS_LocationService.this, "Inserting- lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", Accuracy: " + location.getAccuracy(), Toast.LENGTH_SHORT).show();
@@ -200,7 +196,8 @@ public class GIS_LocationService extends LifecycleService {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             if (Build.HARDWARE.contains("mt")) {
                 mHardware = "mt";
-                startLocationUpdates();
+                locationManager.requestLocationUpdates(fusedProvider, 0, 12F, locationListenerGPS);
+//                startLocationUpdates();
             } else if (Build.HARDWARE.contains("qcom")) {
                 mHardware = "qcom";
                 locationManager.requestLocationUpdates(gpsProvider, 0, 12F, locationListenerGPS);

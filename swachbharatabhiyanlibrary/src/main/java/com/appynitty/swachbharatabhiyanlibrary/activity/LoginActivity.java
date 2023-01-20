@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.LoginAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.PopUpDialog;
+import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.login.viewmodel.LoginViewModel;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginDetailsPojo;
@@ -38,6 +41,8 @@ import com.riaylibrary.utils.LocaleHelper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Richali Pradhan Gupte on 24-10-2018.
@@ -205,7 +210,6 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
     protected void registerEvents() {
 
-
         loginViewModel.getLoginDetailsSuccessLiveData().observe(LoginActivity.this, new Observer<LoginDetailsPojo>() {
             @Override
             public void onChanged(LoginDetailsPojo loginDetailsPojo) {
@@ -266,6 +270,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
             }
         });
+
         /*EtEmpType.setOnClickListener(new View.OnClickListener() {     //Swapnil
             @Override
             public void onClick(View v) {
@@ -388,7 +393,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         if (validateForm()) {
             getFormData();
 //
-            Log.d(TAG, "onLogin: " + loginPojo);
+            Log.d(TAG, "onLogin: "+loginPojo);
 //            final Executor executor = Executors.newSingleThreadExecutor();
 //            executor.execute(new Runnable() {
 //                @Override
@@ -402,7 +407,6 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 //                            public void run() {
             findViewById(R.id.loginProgressBar).setVisibility(View.VISIBLE);
             loginViewModel.loginUser(loginPojo);
-
 
 //                            }
 //                        });

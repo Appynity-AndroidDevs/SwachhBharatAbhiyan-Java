@@ -408,12 +408,19 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
                             mapsActivityResultLauncher.launch(intent);
 
                         } else {
+
                             Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
                             intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
                             intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
                             mapsActivityResultLauncher.launch(intent);
+
                         }
 
+                    } else {
+                        Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
+                        intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+                        intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+                        mapsActivityResultLauncher.launch(intent);
                     }
                 }
 
@@ -433,15 +440,15 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         @Override
         public void onActivityResult(ActivityResult result) {
 
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    scannerView.pause();
-                    mLat = result.getData().getStringExtra("newLat");
-                    mLon = result.getData().getStringExtra("newLong");
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                scannerView.pause();
+                mLat = result.getData().getStringExtra("newLat");
+                mLon = result.getData().getStringExtra("newLong");
 //                isNewConstruction = result.getData().getIntExtra("isNewConstruction", 0);
-                    Log.e(TAG, "onActivityResult: newLat: " + mLat + ", newLong: " + mLon);
-                    handleResult(scannerView.getStatusView().getText().toString());
+                Log.e(TAG, "onActivityResult: newLat: " + mLat + ", newLong: " + mLon);
+                handleResult(scannerView.getStatusView().getText().toString());
 //                        doSomeOperations(str);
-                }
+            }
 
         }
     });

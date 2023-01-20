@@ -1,7 +1,6 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,8 +28,6 @@ import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LatLong;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -46,9 +43,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.CancellationToken;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.OnTokenCanceledListener;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
@@ -58,7 +52,7 @@ import java.util.List;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener {
 
     private static final String TAG = "MapsActivity";
-    public static final int DISTANCE_LIMIT = 50;
+    public static final int DISTANCE_LIMIT = 100;
     private GoogleMap mMap;
     private Double oldLat, newLat, oldLong, newLong;
     private float bearing;
@@ -78,10 +72,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private float[] mRotationMatrix = new float[16];
     private float mDeclination;
     private float lastBearingAngle = 0;
-    private FusedLocationProviderClient fusedLocationClient;
     private LatLng currentLocation;
     private View transparentView;
     private ProgressBar mProgressBar;
+    private FusedLocationProviderClient fusedLocationClient;
+
 
     @Override
     protected void onResume() {
@@ -93,49 +88,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    @SuppressLint("MissingPermission")
-    private void getLastLocation() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
-                    @NonNull
-                    @Override
-                    public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
-
-                        return null;
-                    }
-
-                    @Override
-                    public boolean isCancellationRequested() {
-                        return false;
-                    }
-                })
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-
-                        AUtils.success(MapsActivity.this, " " + location.getAccuracy());
-
-                        if (location.getAccuracy() < 20) {
-                            currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                            transparentView.setVisibility(View.GONE);
-                            mProgressBar.setVisibility(View.GONE);
-
-                            if (mapFragment != null) {
-                                mapFragment.getMapAsync(MapsActivity.this);
-                            }
-
-                            bearing = location.getBearing();
-                        } else {
-                            AUtils.warning(MapsActivity.this, getResources().getString(R.string.scan_again));
-                            finish();
-                        }
-
-
-                    }
-                });
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +99,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         transparentView = findViewById(R.id.transparentWhiteBgMaps);
         transparentView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
-        getLastLocation();
-
+        //   getLastLocation();
 
         mDeclination = Float.parseFloat(Prefs.getString(AUtils.Declination, null));
 //
@@ -170,6 +121,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 prevLatLongList.add(currentLocation);
 
             }
+        }
+
+
+        currentLocation = new LatLng(oldLat, oldLong);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        transparentView.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(MapsActivity.this);
         }
 
 
@@ -231,36 +192,77 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 19.0f));
-        updateCameraBearing(mMap, bearing);
+        //  updateCameraBearing(mMap, bearing);
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-            @Override
-            public void onCameraIdle() {
+        mMap.setOnCameraIdleListener(() -> {
 
-                btnConfirmLocation.setVisibility(View.VISIBLE);
-                LatLng midLatLng = mMap.getCameraPosition().target;
-                Log.e(TAG, "onCameraIdle: lat: " + midLatLng.latitude + ", lon: " + midLatLng.longitude);
-                newLat = midLatLng.latitude;
-                newLong = midLatLng.longitude;
+            btnConfirmLocation.setVisibility(View.VISIBLE);
+            LatLng midLatLng = mMap.getCameraPosition().target;
+            Log.e(TAG, "onCameraIdle: lat: " + midLatLng.latitude + ", lon: " + midLatLng.longitude);
+            newLat = midLatLng.latitude;
+            newLong = midLatLng.longitude;
 
-                if (polyline != null) polyline.remove();
+            if (polyline != null) polyline.remove();
 
-                PolylineOptions options = new PolylineOptions().pattern(PATTERN_POLYGON_ALPHA).color(Color.RED).width(15);
+            PolylineOptions options = new PolylineOptions().pattern(PATTERN_POLYGON_ALPHA).color(Color.RED).width(15);
 
-                polyline = googleMap.addPolyline(options.add(new LatLng(oldLat, oldLong), midLatLng));
+            polyline = googleMap.addPolyline(options.add(new LatLng(oldLat, oldLong), midLatLng));
 
-                if (calcDistance(midLatLng) > DISTANCE_LIMIT) {
-                    polyline.remove();
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 19.0f));
-                    String text = getString(R.string.distance_warning, DISTANCE_LIMIT);
-                    AUtils.info(MapsActivity.this, text);
-                }
-
+            if (calcDistance(midLatLng) > DISTANCE_LIMIT) {
+                polyline.remove();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 19.0f));
+                String text = getString(R.string.distance_warning, DISTANCE_LIMIT);
+                AUtils.info(MapsActivity.this, text);
             }
+
         });
 
     }
+
+//    @SuppressLint("MissingPermission")
+//    private void getLastLocation() {
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//
+//        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
+//                    @NonNull
+//                    @Override
+//                    public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+//
+//                        return null;
+//                    }
+//
+//                    @Override
+//                    public boolean isCancellationRequested() {
+//                        return false;
+//                    }
+//                })
+//                .addOnSuccessListener(new OnSuccessListener<Location>() {
+//                    @Override
+//                    public void onSuccess(Location location) {
+//
+//                        AUtils.success(MapsActivity.this, " " + location.getAccuracy());
+//
+//                        if (location.getAccuracy() < 20) {
+//                            currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+//                        //    currentLocation = new LatLng(NULL , NULL);
+//                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+//                            transparentView.setVisibility(View.GONE);
+//                            mProgressBar.setVisibility(View.GONE);
+//
+//                            if (mapFragment != null) {
+//                                mapFragment.getMapAsync(MapsActivity.this);
+//                            }
+//                            bearing = location.getBearing();
+//                        } else {
+//                            AUtils.warning(MapsActivity.this, getResources().getString(R.string.scan_again));
+//                            finish();
+//                        }
+//
+//
+//                    }
+//                });
+//    }
 
     private void updateCameraBearing(GoogleMap googleMap, float bearing) {
         if (googleMap == null) return;
@@ -361,43 +363,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 }
             }
-//
-//            if (bearing > 20){
-//                updateCameraBearing(mMap , mAngle);
-//            }
         }
-//
-//        //  float compassBearingRelativeToTrueNorth = Math.round(sensorEvent.values[0]);
-////        updateCameraBearing(mMap, compassBearingRelativeToTrueNorth);
-////
-////        Toast.makeText(this, "" + compassBearingRelativeToTrueNorth, Toast.LENGTH_SHORT).show();
-////        Log.i("AzimuthBearing", "onSensorChanged: " + compassBearingRelativeToTrueNorth);
-//
-////        float[] mGravity = null;
-////        float[] mGeomagnetic = null;
-////        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-////            mGravity = sensorEvent.values;
-////        if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
-////            mGeomagnetic = sensorEvent.values;
-////
-////        if (mGravity != null && mGeomagnetic != null) {
-////            float[] R = new float[9];
-////            float[] I = new float[9];
-////            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-////            if (success) {
-////                float[] orientation = new float[3];
-////                SensorManager.getOrientation(R, orientation);
-////                Float azimut = orientation[0]; // orientation contains: azimut, pitch and roll
-////
-////                int i = 360;
-////                float azimuthInDegress = (float) (Math.toDegrees(azimut)+360)%i;
-////                updateCameraBearing(mMap, azimuthInDegress);
-////
-////                Toast.makeText(this, "" + azimuthInDegress, Toast.LENGTH_SHORT).show();
-////                Log.i("AzimuthBearing", "onSensorChanged: "+azimut);
-////            }
-////        }
-//
     }
 
     //

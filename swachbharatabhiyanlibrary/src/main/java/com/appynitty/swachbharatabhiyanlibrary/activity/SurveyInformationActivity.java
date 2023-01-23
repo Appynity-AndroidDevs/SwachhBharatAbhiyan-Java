@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -41,7 +42,10 @@ import com.appynitty.swachbharatabhiyanlibrary.viewmodels.SurveyDetailsVM;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -128,7 +132,17 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
 
-        getSurveyApi();
+        if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+
+            if (AUtils.isConnectedFast(getApplicationContext())) {
+                getSurveyApi();
+            }else {
+                AUtils.warning(SurveyInformationActivity.this, getResources().getString(R.string.slow_internet));
+            }
+        }else {
+           //startActivity(new Intent(context,NoInternetActivity.class));
+            AUtils.warning(SurveyInformationActivity.this, getResources().getString(R.string.no_internet_error));
+        }
         setOnClick();
     }
     private void setData() {
@@ -142,6 +156,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
         Log.d(TAG, "surMobile: "+surMobile);
         String surBirthdayDate = Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,"");
         Log.d(TAG, "surBirthdayDate: "+surBirthdayDate);
+        int myAge = getAge(surBirthdayDate);
+        String meriAge = String.valueOf(myAge);
+        Log.d(TAG, "myAge is: "+meriAge);
         String surAge = Prefs.getString(AUtils.PREFS.SUR_AGE,"");
         Log.d(TAG, "surAge: "+surAge);
         String surGender = Prefs.getString(AUtils.PREFS.SUR_GENDER,"");
@@ -852,6 +869,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
         String bMonth = Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"");
         String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
+
         String age = Prefs.getString(AUtils.PREFS.SUR_AGE,"");
         String mGender = Prefs.getString(AUtils.PREFS.SUR_GENDER,"");
         String bloodGroup = Prefs.getString(AUtils.PREFS.SUR_BLOOD_GROUP,"");
@@ -1075,5 +1093,34 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }
         return loadFragment(fragment);
     }*/
+    private int getAge(String dobString){
 
+        Date date = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            date = sdf.parse(dobString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(date == null) return 0;
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.setTime(date);
+
+        int year = dob.get(Calendar.YEAR);
+        int month = dob.get(Calendar.MONTH);
+        int day = dob.get(Calendar.DAY_OF_MONTH);
+
+        dob.set(year, month+1, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+        return age;
+    }
 }

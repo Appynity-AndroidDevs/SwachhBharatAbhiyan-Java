@@ -266,6 +266,7 @@ public class SurveyFormOneFragment extends Fragment {
         atxtMonth.setText(bMonth);
         String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
         atxtYear.setText(bYear);
+
         String age = Prefs.getString(AUtils.PREFS.SUR_AGE,"");
         txtAge.setText(age);
         String mGender = Prefs.getString(AUtils.PREFS.SUR_GENDER,"");

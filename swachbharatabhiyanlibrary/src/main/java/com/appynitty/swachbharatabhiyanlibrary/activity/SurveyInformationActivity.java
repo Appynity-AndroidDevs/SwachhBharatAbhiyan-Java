@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.SurPagerAdapter;
+import com.appynitty.swachbharatabhiyanlibrary.entity.OfflineSurvey;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFiveFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormFourFragment;
 import com.appynitty.swachbharatabhiyanlibrary.fragment.SurveyFormOneFragment;
@@ -36,8 +37,10 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.GetApiResponseModel;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.OfflineSurveyRepo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.OfflineSurveyVM;
 import com.appynitty.swachbharatabhiyanlibrary.viewmodels.SurveyDetailsVM;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
@@ -88,6 +91,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private int fragPosition = 0;
     private Bundle bundle;
     private GetApiResponseModel apiResponseModel;
+    private OfflineSurveyVM offlineSurveyVM;
+    List<OfflineSurvey> offlineSurveyList;
+    List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
+    private OfflineSurveyRepo offlineSurveyRepo;
 
 
     @Override
@@ -98,6 +105,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
     }
     private void init(){
         context = this;
+        offlineSurveyList = new ArrayList<>();
+        surveyDetailsRequestPojoList = new ArrayList<>();
         headerReferenceId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
@@ -131,6 +140,22 @@ public class SurveyInformationActivity extends AppCompatActivity {
         loader.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
+
+
+        offlineSurveyVM = new ViewModelProvider(this).get(OfflineSurveyVM.class);
+        offlineSurveyVM.init();
+        offlineSurveyVM.getAllSurveyLiveData().observe(this, new Observer<List<OfflineSurvey>>() {
+            @Override
+            public void onChanged(List<OfflineSurvey> offlineSurveys) {
+                if (offlineSurveys.size() > 0){
+
+                    for (int i= 0; i< offlineSurveys.size(); i++){
+                        Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj().toString() );
+                    }
+                }
+            }
+        });
+        //setOfflineSurveyIds();
 
         if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
 
@@ -1122,5 +1147,21 @@ public class SurveyInformationActivity extends AppCompatActivity {
             age--;
         }
         return age;
+    }
+
+
+    private void setOfflineSurveyIds() {
+        offlineSurveyList = offlineSurveyRepo.getOfflineSurveyList();
+        if (offlineSurveyList != null){
+            if (offlineSurveyList.size() > 0) {
+                for (OfflineSurvey offlineSurvey : offlineSurveyList) {
+                    /* offlineSurvey.getSurveyRequestObj().set;*/
+                    offlineSurveyVM.update(offlineSurvey);
+                }
+                for (int i = 0; i < offlineSurveyList.size(); i++) {
+                    surveyDetailsRequestPojoList.add(offlineSurveyList.get(i).getSurveyRequestObj());
+                }
+            }
+        }
     }
 }

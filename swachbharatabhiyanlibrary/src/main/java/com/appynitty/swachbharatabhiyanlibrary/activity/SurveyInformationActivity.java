@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.SurfaceControl;
@@ -51,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SurveyInformationActivity extends AppCompatActivity {
 
@@ -95,6 +99,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     List<OfflineSurvey> offlineSurveyList;
     List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
     private OfflineSurveyRepo offlineSurveyRepo;
+    private TextView txtNoConnection;
 
 
     @Override
@@ -110,6 +115,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         headerReferenceId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
+        txtNoConnection = findViewById(R.id.txt_no_connection);
+        txtNoConnection.setVisibility(View.GONE);
         viewPager.setUserInputEnabled(false);
         txtHouseId = findViewById(R.id.txt_house_id);
         txtHouseId.setText(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
@@ -155,11 +162,12 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 }
             }
         });
-        //setOfflineSurveyIds();
+       // setOfflineSurveyIds();
 
         if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
 
             if (AUtils.isConnectedFast(getApplicationContext())) {
+                txtNoConnection.setVisibility(View.GONE);
                 getSurveyApi();
             }else {
                 AUtils.warning(SurveyInformationActivity.this, getResources().getString(R.string.slow_internet));
@@ -167,6 +175,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else {
            //startActivity(new Intent(context,NoInternetActivity.class));
             AUtils.warning(SurveyInformationActivity.this, getResources().getString(R.string.no_internet_error));
+            txtNoConnection.setVisibility(View.VISIBLE);
+            pagerAdapter = new SurPagerAdapter(getSupportFragmentManager(),getLifecycle(),null);
+            viewPager.setAdapter(pagerAdapter);
+            dotsIndicator.attachTo(viewPager);
         }
         setOnClick();
     }
@@ -1155,13 +1167,46 @@ public class SurveyInformationActivity extends AppCompatActivity {
         if (offlineSurveyList != null){
             if (offlineSurveyList.size() > 0) {
                 for (OfflineSurvey offlineSurvey : offlineSurveyList) {
-                    /* offlineSurvey.getSurveyRequestObj().set;*/
+                     offlineSurvey.getSurveyRequestObj().setReferanceId(String.valueOf(offlineSurvey.getId()));
                     offlineSurveyVM.update(offlineSurvey);
                 }
                 for (int i = 0; i < offlineSurveyList.size(); i++) {
                     surveyDetailsRequestPojoList.add(offlineSurveyList.get(i).getSurveyRequestObj());
                 }
+                sendOfflineSurvey(surveyDetailsRequestPojoList);
             }
         }
     }
+
+    public void sendOfflineSurvey(List<SurveyDetailsRequestPojo> listOffSurvey) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                surveyDetailsRepo.offlineAddSurveyDetails(listOffSurvey, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
+                    @Override
+                    public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
+                        
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                });
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
+    }
+
+
 }

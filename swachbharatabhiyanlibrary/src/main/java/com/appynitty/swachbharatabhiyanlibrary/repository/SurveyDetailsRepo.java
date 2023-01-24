@@ -123,10 +123,43 @@ public class SurveyDetailsRepo {
         });
     }
 
+    public void offlineAddSurveyDetails(List<SurveyDetailsRequestPojo> requestPojo, IOfflineSurveyDetailsResponse iOfflineSurveyDetailsResponse){
+
+        SurveyDetailsWebService surveyDetailsWebService = Connection.createService(SurveyDetailsWebService.class, AUtils.SURVEY_SERVER_URL);
+        Call<List<SurveyDetailsResponsePojo>> detailsResultPojoCall = surveyDetailsWebService.saveSurveyDetails(AUtils.CONTENT_TYPE, appId, requestPojo);
+
+        detailsResultPojoCall.enqueue(new Callback<List<SurveyDetailsResponsePojo>>() {
+            @Override
+            public void onResponse(Call<List<SurveyDetailsResponsePojo>> call, Response<List<SurveyDetailsResponsePojo>> response) {
+                Log.e(TAG, "onResponse: " + response.body().toString());
+                if (response.code() == 200) {
+                    iOfflineSurveyDetailsResponse.onResponse(response.body());
+                    Log.e(TAG, "onResponse: " + response.body());
+                }else if (response.code() == 500){
+                    iOfflineSurveyDetailsResponse.onResponse(response.body());
+                    Log.e(TAG, "onResponse: " + response.body());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<SurveyDetailsResponsePojo>> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                iOfflineSurveyDetailsResponse.onFailure(t);
+            }
+        });
+    }
+
 
 
     public interface ISurveyDetailsResponse {
         void onResponse(List<SurveyDetailsResponsePojo>  surveyDetailsResponse);
+
+        void onFailure(Throwable t);
+    }
+
+    public interface IOfflineSurveyDetailsResponse {
+        void onResponse(List<SurveyDetailsResponsePojo>  offlineSurveyDetailsResponse);
 
         void onFailure(Throwable t);
     }

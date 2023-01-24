@@ -37,13 +37,26 @@
             android:text="@string/title_survey_info"/>
 
     </RelativeLayout>
+    <TextView
+        android:id="@+id/txt_no_connection"
+        android:layout_below="@id/rl_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_30_dp"
+        android:background="@color/colorWhite"
+        android:textColor="@color/colorOFFDutyRed"
+        android:gravity="center"
+        android:textSize="@dimen/dim_20_sp"
+        android:visibility="gone"
+        android:layout_marginVertical="@dimen/dim_10_dp"
+        android:fontFamily="@font/font_bold"
+        android:text="No Internet Connection"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginHorizontal="@dimen/dim_10_dp"
-        android:layout_below="@id/rl_toolbar">
+        android:layout_below="@id/txt_no_connection">
 
         <RelativeLayout
             android:id="@+id/viewPagerIndicator"
@@ -168,6 +181,7 @@
                 android:shadowColor="@color/colorGray"
                 android:layout_gravity="center"
                 android:visibility="gone"/>
+
 
         </RelativeLayout>
 

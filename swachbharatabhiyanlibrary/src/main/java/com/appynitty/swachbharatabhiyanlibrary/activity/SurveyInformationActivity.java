@@ -118,8 +118,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         txtNoConnection = findViewById(R.id.txt_no_connection);
         txtNoConnection.setVisibility(View.GONE);
         viewPager.setUserInputEnabled(false);
-        txtHouseId = findViewById(R.id.txt_house_id);
-        txtHouseId.setText(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
+        txtHouseId = findViewById(R.id.txt_house_id_num);
+        txtHouseId.setText(String.format("( %s )", Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID, "")));
         loader = findViewById(R.id.progress_bar);
         dotsIndicator = findViewById(R.id.dots_indicator);
         surveyFormFiveFragment = new SurveyFormFiveFragment();
@@ -1185,11 +1185,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-
                 surveyDetailsRepo.offlineAddSurveyDetails(listOffSurvey, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
                     @Override
                     public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
-                        
+
                     }
 
                     @Override
@@ -1208,5 +1207,17 @@ public class SurveyInformationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (AUtils.isInternetAvailable()) {
+            txtNoConnection.setVisibility(View.GONE);
+        } else {
+            txtNoConnection.setVisibility(View.VISIBLE);
+            pagerAdapter = new SurPagerAdapter(getSupportFragmentManager(),getLifecycle(),null);
+            viewPager.setAdapter(pagerAdapter);
+            dotsIndicator.attachTo(viewPager);
 
+        }
+    }
 }

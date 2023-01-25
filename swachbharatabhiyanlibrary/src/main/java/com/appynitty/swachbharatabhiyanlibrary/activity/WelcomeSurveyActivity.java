@@ -50,4 +50,15 @@ public class WelcomeSurveyActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (AUtils.isInternetAvailable()) {
+            AUtils.hideSnackBar();
+        } else {
+            AUtils.showSnackBar(findViewById(R.id.parent));
+
+        }
+    }
 }

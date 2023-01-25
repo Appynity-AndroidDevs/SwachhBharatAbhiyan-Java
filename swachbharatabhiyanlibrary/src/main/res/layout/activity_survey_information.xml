@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_survey"
@@ -20,7 +21,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_back"
             app:tint="@color/white"
-            android:layout_marginHorizontal="@dimen/dim_5_dp"
+            android:layout_marginStart="@dimen/dim_5_dp"
             android:padding="@dimen/dim_8_dp"/>
 
         <TextView
@@ -33,8 +34,21 @@
             android:gravity="center"
             android:fontFamily="@font/font_medium"
             android:textColor="@color/white"
-            android:textSize="@dimen/dim_18_sp"
+            android:textSize="18sp"
             android:text="@string/title_survey_info"/>
+        <TextView
+            android:id="@+id/txt_house_id_num"
+            android:layout_below="@+id/txt_house_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/img_survey_back"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:fontFamily="@font/font_medium"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_14_sp"
+            android:text="House Id"/>
 
     </RelativeLayout>
     <TextView
@@ -42,14 +56,15 @@
         android:layout_below="@id/rl_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim_30_dp"
-        android:background="@color/colorWhite"
-        android:textColor="@color/colorOFFDutyRed"
+        android:background="@color/black_alpha_5"
+        android:textColor="@color/yellow"
         android:gravity="center"
-        android:textSize="@dimen/dim_20_sp"
-        android:visibility="gone"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
         android:layout_marginVertical="@dimen/dim_10_dp"
         android:fontFamily="@font/font_bold"
-        android:text="No Internet Connection"/>
+        android:text="@string/no_internet_error"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

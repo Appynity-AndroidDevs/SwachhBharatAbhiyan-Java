@@ -67,8 +67,8 @@ public class SurveyDetailsRepo {
         requestPojo.setAyushmanBeneficiary(Prefs.getString(AUtils.PREFS.SUR_AYUSHMAN_BENE,""));
         requestPojo.setBoosterShot(Prefs.getString(AUtils.PREFS.SUR_BOOSTER_SHOT,""));
         requestPojo.setMemberDivyang(Prefs.getString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG,""));
-        requestPojo.setCreateUserId("1");
-        requestPojo.setUpdateUserId("1");
+        requestPojo.setCreateUserId(Prefs.getString(AUtils.PREFS.USER_ID,""));
+        requestPojo.setUpdateUserId(Prefs.getString(AUtils.PREFS.USER_ID,""));
 
 
         SurveyDetailsWebService surveyDetailsWebService = Connection.createService(SurveyDetailsWebService.class, AUtils.SURVEY_SERVER_URL);

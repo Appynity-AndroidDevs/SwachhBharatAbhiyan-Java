@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -15,14 +16,14 @@ import retrofit2.http.DELETE;
 
 @Dao
 public abstract class SurveyDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(OfflineSurvey survey);
     @Update
     public abstract void update(OfflineSurvey survey);
     @Delete
     public abstract void delete(OfflineSurvey survey);
 
-    @Query("DELETE FROM offline_survey_table WHERE id = :surveyId")
+    @Query("DELETE FROM offline_survey_table WHERE houseId = :surveyId")
     public abstract void deleteById(int surveyId);
 
     @Query("DELETE FROM offline_survey_table")
@@ -34,6 +35,6 @@ public abstract class SurveyDao {
     @Query("SELECT * FROM offline_survey_table")
     public abstract List<OfflineSurvey> getAllSurveyList();
 
-    @Query("SELECT COUNT(id) FROM offline_survey_table")
+    @Query("SELECT COUNT(houseId) FROM offline_survey_table")
     public abstract int getCount();
 }

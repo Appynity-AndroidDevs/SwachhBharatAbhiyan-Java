@@ -1,5 +1,6 @@
 package com.appynitty.swachbharatabhiyanlibrary.repository;
 
+import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -12,19 +13,20 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import java.util.List;
 
 public class OfflineSurveyRepo {
+    AppDataBase appDataBase;
     SurveyDao surveyDao;
     LiveData<List<OfflineSurvey>> allSurvey;
-    List<OfflineSurvey> offlineSurveyList;
+    /*List<OfflineSurvey> offlineSurveyList;*/
 
-    public OfflineSurveyRepo() {
-        AppDataBase db = AppDataBase.getInstance(AUtils.mainApplicationConstant);
-        surveyDao = db.surveyDao();
+    public OfflineSurveyRepo(Application application) {
+        appDataBase = AppDataBase.getAppRoomDataBase(application.getApplicationContext());
+        surveyDao = appDataBase.surveyDao();
         allSurvey = surveyDao.getAllSurvey();
-        offlineSurveyList = surveyDao.getAllSurveyList();
+        /*offlineSurveyList = surveyDao.getAllSurveyList();*/
     }
 
-    public void insertSurvey(OfflineSurvey offlineSurvey) {
-        new InsertSurveyAsyncTask(surveyDao).execute(offlineSurvey);
+    public void insertSurvey(OfflineSurvey offlineSurvey){
+        AppDataBase.databaseWriteExecutor.execute(() -> surveyDao.insert(offlineSurvey));
     }
 
     public void updateSurvey(OfflineSurvey offlineSurvey) {
@@ -45,9 +47,7 @@ public class OfflineSurveyRepo {
         return allSurvey;
     }
 
-    public List<OfflineSurvey> getOfflineSurveyList() {
-        return offlineSurveyList;
-    }
+
 
 
     private static class InsertSurveyAsyncTask extends AsyncTask<OfflineSurvey, Void, Void> {

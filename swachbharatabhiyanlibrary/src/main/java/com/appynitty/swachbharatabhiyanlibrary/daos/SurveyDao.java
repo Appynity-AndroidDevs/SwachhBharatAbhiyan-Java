@@ -24,7 +24,7 @@ public abstract class SurveyDao {
     public abstract void delete(OfflineSurvey survey);
 
     @Query("DELETE FROM offline_survey_table WHERE houseId = :surveyId")
-    public abstract void deleteById(int surveyId);
+    public abstract void deleteById(String surveyId);
 
     @Query("DELETE FROM offline_survey_table")
     public abstract void deleteAllSurvey();

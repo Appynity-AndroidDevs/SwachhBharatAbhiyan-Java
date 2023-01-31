@@ -36,6 +36,7 @@ public class DaysPickerDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         Calendar cal = Calendar.getInstance();
+        
 
         View dialog = inflater.inflate(R.layout.days_picker_dialog, null);
         final NumberPicker dayPicker = (NumberPicker) dialog.findViewById(R.id.picker_day);

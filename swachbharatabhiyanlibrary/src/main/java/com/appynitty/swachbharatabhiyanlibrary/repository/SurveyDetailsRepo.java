@@ -131,15 +131,16 @@ public class SurveyDetailsRepo {
         detailsResultPojoCall.enqueue(new Callback<List<SurveyDetailsResponsePojo>>() {
             @Override
             public void onResponse(Call<List<SurveyDetailsResponsePojo>> call, Response<List<SurveyDetailsResponsePojo>> response) {
-                Log.e(TAG, "onResponse: " + response.body().toString());
-                if (response.code() == 200) {
-                    iOfflineSurveyDetailsResponse.onResponse(response.body());
-                    Log.e(TAG, "onResponse: " + response.body());
-                }else if (response.code() == 500){
-                    iOfflineSurveyDetailsResponse.onResponse(response.body());
-                    Log.e(TAG, "onResponse: " + response.body());
+                if (response.body() != null){
+                    Log.e(TAG, "onResponse: " + response.body().toString());
+                    if (response.code() == 200) {
+                        iOfflineSurveyDetailsResponse.onResponse(response.body());
+                        Log.e(TAG, "onResponse: " + response.body());
+                    }else if (response.code() == 500){
+                        iOfflineSurveyDetailsResponse.onResponse(response.body());
+                        Log.e(TAG, "onResponse: " + response.body());
+                    }
                 }
-
             }
 
             @Override

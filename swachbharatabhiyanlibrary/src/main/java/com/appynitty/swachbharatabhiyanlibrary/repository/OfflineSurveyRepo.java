@@ -36,14 +36,14 @@ public class OfflineSurveyRepo {
     public void deleteSurvey(OfflineSurvey offlineSurvey) {
         new DeleteSurveyAsyncTask(surveyDao).execute(offlineSurvey);
     }
-    public void deleteSurveyById(int mId) {
-        surveyDao.deleteById(mId);
+    public void deleteSurveyById(String houseId) {
+        surveyDao.deleteById(houseId);
     }
     public void deleteAllSurvey() {
         new DeleteAllSurveyAsyncTask(surveyDao).execute();
     }
 
-    public LiveData<List<OfflineSurvey>> getAllSurvey() {
+    public LiveData<List<OfflineSurvey>> getAllOfflineSurvey() {
         return allSurvey;
     }
 

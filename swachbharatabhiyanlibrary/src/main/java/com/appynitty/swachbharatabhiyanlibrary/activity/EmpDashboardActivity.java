@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,13 +42,19 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
+import com.appynitty.swachbharatabhiyanlibrary.entity.OfflineSurvey;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.OfflineSurveyRepo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.OfflineSurveyVM;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -61,6 +68,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
@@ -104,6 +112,13 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
     private boolean isFromAttendanceChecked = false;
 
+    //offline survey
+    private OfflineSurveyVM offlineSurveyVM;
+    private List<OfflineSurvey> surveyList;
+    private SurveyDetailsRepo surveyDetailsRepo;
+    private OfflineSurveyRepo offlineSurveyRepo;
+    private List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -117,6 +132,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // removeSurveyData();
+        surveyDetailsRepo = new SurveyDetailsRepo();
         initComponents();
     }
 
@@ -307,6 +323,9 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         mContext = EmpDashboardActivity.this;
         AUtils.currentContextConstant = mContext;
         checkIsFromLogin();
+        offlineSurveyRepo = new OfflineSurveyRepo(getApplication());
+        surveyDetailsRequestPojoList = new ArrayList<>();
+        surveyList = new ArrayList<>();
         progressBar = findViewById(R.id.empProgress_layout);
         rProgress = findViewById(R.id.progress_cir_bar);
         mCheckAttendanceAdapter = new EmpCheckAttendanceAdapterClass();
@@ -328,6 +347,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         profilePic = findViewById(R.id.user_profile_pic);
 
         initToolBar();
+        offlineSurvey();
     }
 
     private void initToolBar() {
@@ -936,6 +956,69 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onPause() {
         super.onPause();
         getIntent().removeExtra(AUtils.isFromLogin);
+    }
+
+
+    private void offlineSurvey(){
+        offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
+        offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
+            if (offlineSurveys != null && !offlineSurveys.isEmpty()){
+
+                for (int i=0; i<offlineSurveys.size(); i++){
+                    Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
+                    surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
+                    sendOfflineSurvey();
+                   // offlineSurveyVM.insert(offlineSurveys.get(i));
+                }
+                if (offlineSurveys.size() > 0) {
+                    for (OfflineSurvey offlineSurvey : offlineSurveys) {
+                        offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
+                        offlineSurveyVM.update(offlineSurvey);
+                    }
+                    /*for (int j = 0; j < offlineSurveys.size(); j++) {
+                        surveyDetailsRequestPojoList.add(offlineSurveys.get(j).getSurveyRequestObj());
+                        sendOfflineSurvey(surveyDetailsRequestPojoList);
+                    }*/
+                }
+            }
+        });
+    }
+    public void sendOfflineSurvey() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("Rahul_test", "run: "+surveyDetailsRequestPojoList);
+                surveyDetailsRepo.offlineAddSurveyDetails(surveyDetailsRequestPojoList, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
+                    @Override
+                    public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
+                        Log.e(TAG, "offline data send: " + offlineSurveyDetailsResponse);
+                        String houseId;
+                        for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
+                            if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
+                                offlineSurveyRepo.deleteSurveyById(houseId);
+                                Log.e(TAG, "sendOfflineLocations: successfully deleted locationId: " + houseId);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Log.e(TAG, "onFailure: " + t.getMessage());
+                    }
+                });
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
     }
 
     private void removeSurveyData(){

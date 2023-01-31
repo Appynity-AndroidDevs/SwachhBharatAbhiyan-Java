@@ -149,6 +149,28 @@ public class SurveyInformationActivity extends AppCompatActivity {
         btnBack.setVisibility(View.GONE);
         btnNext.setVisibility(View.VISIBLE);
 
+        /*offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
+        offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
+            if (offlineSurveys != null && !offlineSurveys.isEmpty()){
+
+                for (int i=0; i<offlineSurveys.size(); i++){
+                    Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
+                   // offlineSurveyVM.insert(offlineSurveys.get(i));
+                }
+
+                *//*if (offlineSurveys.size() > 0) {
+                    for (OfflineSurvey offlineSurvey : offlineSurveys) {
+                        offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
+                        offlineSurveyVM.update(offlineSurvey);
+                    }
+                    for (int i = 0; i < offlineSurveys.size(); i++) {
+                        surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
+                    }
+                    sendOfflineSurvey(surveyDetailsRequestPojoList);
+                }*//*
+            }
+        });*/
+
         if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
 
             if (AUtils.isConnectedFast(getApplicationContext())) {
@@ -350,10 +372,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     for (int i=0; i<offlineSurveys.size(); i++){
                         Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
                         offlineSurveyVM.insert(offlineSurveys.get(i));
-                        /*if (AUtils.isInternetAvailable()) {
-                            txtNoConnection.setVisibility(View.GONE);
-                            sendOfflineSurvey(offlineSurveys.get(i).getSurveyRequestObj());
-                        }*/
                     }
                 }
             });
@@ -1098,6 +1116,21 @@ public class SurveyInformationActivity extends AppCompatActivity {
         return age;
     }
 
+    /*private void setOfflineSurveyIds() {
+        offlineSurveyList = (List<OfflineSurvey>) offlineSurveyRepo.getAllOfflineSurvey();
+        if (offlineSurveyList.size() > 0) {
+            for (OfflineSurvey offlineSurvey : offlineSurveyList) {
+                offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
+                offlineSurveyVM.update(offlineSurvey);
+            }
+            for (int i = 0; i < offlineSurveyList.size(); i++) {
+                surveyDetailsRequestPojoList.add(offlineSurveyList.get(i).getSurveyRequestObj());
+            }
+            sendOfflineSurvey(surveyDetailsRequestPojoList);
+        }
+
+    }*/
+
 
     public void sendOfflineSurvey(List<SurveyDetailsRequestPojo> listOffSurvey) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -1109,12 +1142,20 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 surveyDetailsRepo.offlineAddSurveyDetails(listOffSurvey, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
                     @Override
                     public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
-
+                        Log.e(TAG, "offline data send: " + offlineSurveyDetailsResponse);
+                        String houseId;
+                        for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
+                            if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                                houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
+                                offlineSurveyRepo.deleteSurveyById(houseId);
+                                Log.e(TAG, "sendOfflineLocations: successfully deleted locationId: " + houseId);
+                            }
+                        }
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
-
+                        Log.e(TAG, "onFailure: " + t.getMessage());
                     }
                 });
 

@@ -30,10 +30,6 @@ public class OfflineSurvey implements Serializable {
         this.surveyRequestObj = surveyRequestObj;
     }
 
-    /*@Ignore
-    public OfflineSurvey(long id) {
-        this.id = id;
-    }*/
     @Ignore
     public OfflineSurvey(String houseId) {
         this.houseId = houseId;

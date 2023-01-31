@@ -21,7 +21,8 @@ public class OfflineSurveyVM extends AndroidViewModel {
     public OfflineSurveyVM(@NonNull Application application) {
         super(application);
         offlineSurveyRepo = new OfflineSurveyRepo(application);
-        allSurveyLiveData = offlineSurveyRepo.getAllSurvey();
+        allSurveyLiveData = offlineSurveyRepo.getAllOfflineSurvey();
+
     }
 
 

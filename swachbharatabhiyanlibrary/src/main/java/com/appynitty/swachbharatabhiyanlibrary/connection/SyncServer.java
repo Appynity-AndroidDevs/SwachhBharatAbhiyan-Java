@@ -74,7 +74,7 @@ public class SyncServer {
              * nagpur used only empType "N". and in login activity empType field hide. Url change 253. appId change 3068
              * */
             LoginWebService service = Connection.createService(LoginWebService.class, AUtils.SERVER_URL);
-            resultPojo = service.saveLoginDetails("", Prefs.getString(AUtils.APP_ID, "")
+            resultPojo = service.saveLoginDetails(auth_token, Prefs.getString(AUtils.APP_ID, "")
                     , AUtils.CONTENT_TYPE, loginPojo.getEmpType()/* "N"*/,
                     loginPojo).execute().body();
 

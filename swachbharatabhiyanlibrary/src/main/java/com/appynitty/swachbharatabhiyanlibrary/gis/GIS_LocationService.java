@@ -70,10 +70,12 @@ public class GIS_LocationService extends LifecycleService {
                 Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
                 Toast.makeText(GIS_LocationService.this, "new location received with Accuracy: " + location.getAccuracy() + " , Speed: " + location.getSpeed() + " & Provider: " + location.getProvider(), Toast.LENGTH_SHORT).show();
 
-                if (mHardware.equals("qcom") && location.getAccuracy() <= 12) {
-                    insertToDB(location);
-                } else if (mHardware.equals("mt") && location.getAccuracy() <= 12 && location.getSpeed() > 0) {
-                    insertToDB(location);
+                if (mHardware.equals("qcom")) {
+                    if (location.getAccuracy() <= 12)
+                        insertToDB(location);
+                } else if (mHardware.equals("mt")) {
+                    if (location.getAccuracy() <= 12 && location.getSpeed() > 0)
+                        insertToDB(location);
                 } else if (location.getAccuracy() <= 12) {
                     insertToDB(location);
                 }

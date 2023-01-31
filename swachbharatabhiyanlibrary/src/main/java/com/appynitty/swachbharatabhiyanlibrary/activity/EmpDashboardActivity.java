@@ -347,7 +347,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         profilePic = findViewById(R.id.user_profile_pic);
 
         initToolBar();
-        //offlineSurvey();
+        offlineSurvey();
     }
 
     private void initToolBar() {

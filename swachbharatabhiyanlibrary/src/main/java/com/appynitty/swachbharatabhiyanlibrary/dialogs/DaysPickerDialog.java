@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -36,7 +37,9 @@ public class DaysPickerDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         Calendar cal = Calendar.getInstance();
-        
+       /* int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        Log.i("Rahul", "onCreateDialog: "+daysInMonth);*/
+
 
         View dialog = inflater.inflate(R.layout.days_picker_dialog, null);
         final NumberPicker dayPicker = (NumberPicker) dialog.findViewById(R.id.picker_day);

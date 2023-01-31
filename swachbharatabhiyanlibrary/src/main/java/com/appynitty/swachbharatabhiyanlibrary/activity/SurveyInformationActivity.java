@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SurveyInformationActivity extends AppCompatActivity {
 
@@ -101,6 +104,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
     List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
     private OfflineSurveyRepo offlineSurveyRepo;
     private TextView txtNoConnection;
+    private static final String DATE_PATTERN =
+            "(0?[1-9]|1[012]) [/.-] (0?[1-9]|[12][0-9]|3[01]) [/.-] ((19|20)\\d\\d)";
+    private Matcher matcher;
 
 
     @Override
@@ -200,6 +206,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         Log.d(TAG, "surMobile: "+surMobile);
         String surBirthdayDate = Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,"");
         Log.d(TAG, "surBirthdayDate: "+surBirthdayDate);
+        matcher = Pattern.compile(DATE_PATTERN).matcher(surBirthdayDate);
         int myAge = getAge(surBirthdayDate);
         String meriAge = String.valueOf(myAge);
         Log.d(TAG, "myAge is: "+meriAge);
@@ -517,6 +524,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                                                 startActivity(new Intent(context, SurveyCompletActivity.class));
                                             }
                                             if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+
                                                 if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
                                                     AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
                                                 } else {
@@ -861,6 +869,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String bDay = Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"");
         String bMonth = Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"");
         String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
+        String surBirthdayDate = Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,"");
 
         String age = Prefs.getString(AUtils.PREFS.SUR_AGE,"");
         String mGender = Prefs.getString(AUtils.PREFS.SUR_GENDER,"");
@@ -904,13 +913,151 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (bYear.equalsIgnoreCase("2021")){
             AUtils.warning(context,"Please select your valid birthday Year");
             return false;
-        }else if (mGender.isEmpty()){
+        }else if (!isValidMonthOfDays(bMonth)){
+            return false;
+        } else if (mGender.isEmpty()){
             AUtils.warning(context,"Please check your gender");
             return false;
         }else if (bloodGroup.isEmpty()){
             AUtils.warning(context,"Please select your blood group");
             return false;
         }
+        return true;
+    }
+    public boolean isValidMonthOfDays( String month) {
+        int bDay = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
+        int bMonth = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,""));
+        int bYear = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
+        String  monthValue ;
+        int number_Of_DaysInMonth = 0;
+
+        switch (month) {
+            case "01":
+                monthValue = "01";
+                number_Of_DaysInMonth = 31;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of January");
+                }else {
+                    AUtils.warning(context, "Invalid date of January");
+                    return false;
+                }
+                break;
+            case "02":
+                monthValue = "02";
+                if ((bYear % 400 == 0) || ((bYear % 4 == 0) && (bYear % 100 != 0))) {
+                    number_Of_DaysInMonth = 29;
+                } else {
+                    number_Of_DaysInMonth = 28;
+                }
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of February");
+                }else {
+                    AUtils.warning(context, "Invalid date of February");
+                    return false;
+                }
+                break;
+            case "03":
+                monthValue = "03";
+                number_Of_DaysInMonth = 31;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of March");
+                }else {
+                    AUtils.warning(context, "Invalid date of March");
+                    return false;
+                }
+                break;
+            case "04":
+                monthValue = "04";
+                number_Of_DaysInMonth = 30;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of April");
+                }else {
+                    AUtils.warning(context, "Invalid date of April");
+                    return false;
+                }
+                break;
+            case "05":
+                monthValue = "05";
+                number_Of_DaysInMonth = 31;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of May");
+                }else {
+                    AUtils.warning(context, "Invalid date of May");
+                    return false;
+                }
+                break;
+            case "06":
+                monthValue = "06";
+                number_Of_DaysInMonth = 30;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of June");
+                }else {
+                    AUtils.warning(context, "Invalid date of June");
+                    return false;
+                }
+                break;
+            case "07":
+                monthValue = "07";
+                number_Of_DaysInMonth = 31;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of July");
+                }else {
+                    AUtils.warning(context, "Invalid date of July");
+                    return false;
+                }
+                break;
+            case "08":
+                monthValue = "08";
+                number_Of_DaysInMonth = 31;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of August");
+                }else {
+                    AUtils.warning(context, "Invalid date of August");
+                    return false;
+                }
+                break;
+            case "09":
+                monthValue = "09";
+                number_Of_DaysInMonth = 30;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of September");
+                }else {
+                    AUtils.warning(context, "Invalid date of September");
+                    return false;
+                }
+                break;
+            case "10":
+                monthValue = "10";
+                number_Of_DaysInMonth = 31;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of October");
+                }else {
+                    AUtils.warning(context, "Invalid date of October");
+                    return false;
+                }
+                break;
+            case "11":
+                monthValue = "11";
+                number_Of_DaysInMonth = 30;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of November");
+                }else {
+                    AUtils.warning(context, "Invalid date of November");
+                    return false;
+                }
+                break;
+            case "12":
+                monthValue = "12";
+                number_Of_DaysInMonth = 31;
+                if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
+                    AUtils.info(context, "Valid date of December");
+                }else {
+                    AUtils.warning(context, "Invalid date of December");
+                    return false;
+                }
+                break;
+        }
+
         return true;
     }
     private boolean isValidFragTwo(){

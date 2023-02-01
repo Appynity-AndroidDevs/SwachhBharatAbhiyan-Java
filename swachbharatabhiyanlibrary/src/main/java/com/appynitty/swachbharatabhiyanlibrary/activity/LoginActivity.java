@@ -19,8 +19,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
     private static final String TAG = "LoginActivity";
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
+    private static final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 42;
     private Context mContext = null;
 
     private AutoCompleteTextView EtEmpType;
@@ -75,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,12 +141,14 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     private void initComponents() {
         generateId();
         registerEvents();
         initData();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     protected void generateId() {
 
         getPermission();
@@ -494,6 +500,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         loginPojo.setImiNo(deviceId);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     private void getPermission() {
 
         if (ActivityCompat.checkSelfPermission(LoginActivity.this,
@@ -564,6 +571,15 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
                 }
             }
         }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            ActivityCompat.requestPermissions(this,
+                   new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
+                    MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
+        }
+
     }
 
     private void onLanguageTypeDialogClose(Object listItemSelected) {

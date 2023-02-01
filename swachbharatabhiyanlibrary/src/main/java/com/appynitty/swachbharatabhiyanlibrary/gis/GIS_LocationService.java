@@ -8,8 +8,13 @@ import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -48,7 +53,7 @@ import retrofit2.Response;
  * Created by Swapnil Lanjewar on 23-Nov-2022
  */
 
-public class GIS_LocationService extends LifecycleService {
+public class GIS_LocationService extends LifecycleService implements SensorEventListener {
     private static final String TAG = "GIS_LocationService";
     FusedLocationProviderClient fusedLocationClient;
     LocationManager locationManager;
@@ -62,6 +67,26 @@ public class GIS_LocationService extends LifecycleService {
     String auth_token = "Bearer " + Prefs.getString(AUtils.BEARER_TOKEN, null);
     private String mHardware;
 
+    //sensor stuff
+    private SensorManager sensorMan;
+    private Sensor accelerometer, stepCounterSensor, stepDetectorSensor;
+
+    private float[] mGravity;
+    private double mAccel;
+    private double mAccelCurrent;
+    private double mAccelLast;
+
+    private boolean sensorRegistered = false;
+    // onSensorChanged
+
+    private int hitCount = 0;
+    private double hitSum = 0;
+    private double hitResult = 0;
+    private boolean isWalking = false;
+    private List<String> stepList = new ArrayList<>();
+    private final int SAMPLE_SIZE = 50; // change this sample size as you want, higher is more precise but slow measure.
+    private final double THRESHOLD = 0.2; // change this threshold as you want, higher is more spike movement
+
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -70,7 +95,7 @@ public class GIS_LocationService extends LifecycleService {
                 Log.e(TAG, "onLocationResult: lat: " + location.getLatitude() + ", lon: " + location.getLongitude() + ", accuracy: " + location.getAccuracy());
                 Toast.makeText(GIS_LocationService.this, "new location received with Accuracy: " + location.getAccuracy() + " , Speed: " + location.getSpeed() + " & Provider: " + location.getProvider(), Toast.LENGTH_SHORT).show();
 
-                if (mHardware.equals("qcom")) {
+                /*if (mHardware.equals("qcom")) {
                     if (location.getAccuracy() <= 12)
                         insertToDB(location);
                 } else if (mHardware.equals("mt")) {
@@ -78,6 +103,16 @@ public class GIS_LocationService extends LifecycleService {
                         insertToDB(location);
                 } else if (location.getAccuracy() <= 12) {
                     insertToDB(location);
+                }*/
+
+                if (location.getAccuracy() <= 12) {
+                    if (stepList.size() > 1) {
+                        if (isWalking) {
+                            stepList.clear();
+                            isWalking = false;
+                            insertToDB(location);
+                        }
+                    }
                 }
             }
 
@@ -141,6 +176,27 @@ public class GIS_LocationService extends LifecycleService {
         mLocationRepository = new LocationRepository(getApplication());
         mHousePointRepo = new HousePointRepo(getApplication());
         new Notification();
+
+        sensorMan = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        stepCounterSensor = sensorMan.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        stepDetectorSensor = sensorMan.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        mAccel = 0.00f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
+
+        sensorMan.registerListener(this, accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorRegistered = true;
+
+
+        if (stepCounterSensor == null) {
+            Toast.makeText(this, "No step sensor detected on this device", Toast.LENGTH_SHORT).show();
+        } else {
+            sensorMan.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_FASTEST);
+            sensorMan.registerListener(this, stepDetectorSensor, SensorManager.SENSOR_DELAY_FASTEST);
+        }
+
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -352,6 +408,55 @@ public class GIS_LocationService extends LifecycleService {
     public IBinder onBind(@NonNull Intent intent) {
         super.onBind(intent);
         return null;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (sensorEvent != null) {
+
+            if (sensorEvent.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                Log.i(TAG, "onSensorChanged: " + sensorEvent.values[0]);
+                stepList.add(String.valueOf(sensorEvent.values[0]));
+            }
+
+            if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                mGravity = sensorEvent.values.clone();
+                // Shake detection
+                double x = mGravity[0];
+                double y = mGravity[1];
+                double z = mGravity[2];
+                mAccelLast = mAccelCurrent;
+                mAccelCurrent = Math.sqrt(x * x + y * y + z * z);
+                double delta = mAccelCurrent - mAccelLast;
+                mAccel = mAccel * 0.9f + delta;
+
+                if (hitCount <= SAMPLE_SIZE) {
+                    hitCount++;
+                    hitSum += Math.abs(mAccel);
+                } else {
+                    hitResult = hitSum / SAMPLE_SIZE;
+
+                    Log.d(TAG, String.valueOf(hitResult));
+
+                    if (hitResult > THRESHOLD) {
+                        Log.d(TAG, "Walking");
+                        isWalking = true;
+                    } else {
+                        Log.d(TAG, "Stop Walking");
+                        isWalking = false;
+                    }
+
+                    hitCount = 0;
+                    hitSum = 0;
+                    hitResult = 0;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 
     private class TtSendLocations extends TimerTask {

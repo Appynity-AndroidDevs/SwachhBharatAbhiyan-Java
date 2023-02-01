@@ -23,8 +23,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
+import com.appynitty.swachbharatabhiyanlibrary.houseOnMap.dao.EmpHouseOnMapDao;
+import com.appynitty.swachbharatabhiyanlibrary.houseOnMap.db.HouseScanifyDb;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.HouseOnMapPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LatLong;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -52,7 +57,7 @@ import java.util.List;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener {
 
     private static final String TAG = "MapsActivity";
-    public static final int DISTANCE_LIMIT = 100;
+    public static final int DISTANCE_LIMIT = 500;
     private GoogleMap mMap;
     private Double oldLat, newLat, oldLong, newLong;
     private float bearing;
@@ -76,7 +81,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private View transparentView;
     private ProgressBar mProgressBar;
     private FusedLocationProviderClient fusedLocationClient;
-
+    private EmpHouseOnMapDao empHouseOnMapDao;
+    LiveData<List<HouseOnMapPojo>> observable;
 
     @Override
     protected void onResume() {
@@ -94,6 +100,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
+
+        empHouseOnMapDao = HouseScanifyDb.getmInstance(getApplication()).empHouseOnMapDao();
 
         mProgressBar = findViewById(R.id.mapsProgressBar);
         transparentView = findViewById(R.id.transparentWhiteBgMaps);
@@ -121,6 +129,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 prevLatLongList.add(currentLocation);
 
             }
+        } else {
+            getHouseOnMapFromRoom();
         }
 
 
@@ -145,9 +155,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+
         mMap = googleMap;
+
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -175,20 +188,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         if (!prevLatLongList.isEmpty()) {
-
             for (int i = 0; i < prevLatLongList.size(); i++) {
-
                 // below line is use to add marker to each location of our array list.
                 mMap.addMarker(new MarkerOptions().position(prevLatLongList.get(i)).title(locationArrayList.get(i).getReferenceId()).icon(BitmapFromVector(getApplicationContext(), R.drawable.icn_house)));
-
-                // below line is use to zoom our camera on map.
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(19.0f));
-
-                // below line is use to move our camera to the specific location.
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(prevLatLongList.get(i)));
-
             }
-
         }
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 19.0f));
@@ -366,8 +369,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    //
-    //
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
@@ -377,6 +379,47 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onDestroy();
 
         mSensorManager.unregisterListener(this);
+        if (observable != null) {
+            observable.removeObservers(this);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (observable != null) {
+            observable.removeObservers(this);
+        }
+    }
+
+    private void getHouseOnMapFromRoom() {
+
+        locationArrayList = new ArrayList<>();
+        observable = empHouseOnMapDao.getAllHouseOnMapData();
+        observable.observe(this, new Observer<List<HouseOnMapPojo>>() {
+            @Override
+            public void onChanged(List<HouseOnMapPojo> houseOnMapPojos) {
+
+                if (!houseOnMapPojos.isEmpty()) {
+                    for (int i = 0; i < houseOnMapPojos.size(); i++) {
+
+                        LatLong latLong = new LatLong(houseOnMapPojos.get(i).getLatitude(), houseOnMapPojos.get(i).getLongitude(), houseOnMapPojos.get(i).getRefferenceId());
+                        locationArrayList.add(latLong);
+
+                        LatLng currentLocation = new LatLng(Double.parseDouble(latLong.getLatitude()), Double.parseDouble(latLong.getLongitude()));
+                        prevLatLongList.add(currentLocation);
+                    }
+
+                    if (!prevLatLongList.isEmpty()) {
+                        for (int i = 0; i < prevLatLongList.size(); i++) {
+                            // below line is use to add marker to each location of our array list.
+                            mMap.addMarker(new MarkerOptions().position(prevLatLongList.get(i)).title(locationArrayList.get(i).getReferenceId()).icon(BitmapFromVector(getApplicationContext(), R.drawable.icn_house)));
+                        }
+                    }
+                }
+            }
+        });
 
     }
 }

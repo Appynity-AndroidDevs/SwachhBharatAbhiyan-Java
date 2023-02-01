@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/bb1cd1f32e768efa1a6b59598f7344e9/transformed/jetified-curved_bottom_navigation-0.6.5/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/bb1cd1f32e768efa1a6b59598f7344e9/transformed/jetified-curved_bottom_navigation-0.6.5/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/bb1cd1f32e768efa1a6b59598f7344e9/transformed/jetified-curved_bottom_navigation-0.6.5/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1fa05f280eb60edb28063b359578768a/transformed/jetified-curved_bottom_navigation-0.6.5/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1fa05f280eb60edb28063b359578768a/transformed/jetified-curved_bottom_navigation-0.6.5/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1fa05f280eb60edb28063b359578768a/transformed/jetified-curved_bottom_navigation-0.6.5/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

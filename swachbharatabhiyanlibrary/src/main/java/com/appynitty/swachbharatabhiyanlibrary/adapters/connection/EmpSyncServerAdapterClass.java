@@ -50,8 +50,7 @@ public class EmpSyncServerAdapterClass {
         this.empSyncOfflineListener = empSyncOfflineListener;
     }
 
-    public void
-    syncServer() {
+    public void syncServer() {
 
         offlineCount = empSyncServerRepository.getOfflineCount();
 
@@ -133,6 +132,8 @@ public class EmpSyncServerAdapterClass {
             pojo.setOfflineID(String.valueOf(entity.getIndex_id()));
             locationPojoList.add(pojo);
         }
+        Log.d(TAG, "getDatabaseList: "+locationPojoList);
+
     }
 
     private void onResponseReceived(List<OfflineGcResultPojo> results) {

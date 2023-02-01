@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8457417cd1d437193926891599b05aa6/transformed/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8457417cd1d437193926891599b05aa6/transformed/jetified-retrofitconnectionlibrary-release/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8457417cd1d437193926891599b05aa6/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/920871c0431d0f3b37eda10ebec6f830/transformed/jetified-retrofitconnectionlibrary-release/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/920871c0431d0f3b37eda10ebec6f830/transformed/jetified-retrofitconnectionlibrary-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/920871c0431d0f3b37eda10ebec6f830/transformed/jetified-retrofitconnectionlibrary-release/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,21 +1,30 @@
 package com.appynitty.swachbharatabhiyanlibrary.pojos;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+
+@Entity(tableName = "house_on_map_table")
 public class HouseOnMapPojo {
 
+    @NonNull
+    @PrimaryKey(autoGenerate = false)
     private String RefferenceId;
     @SerializedName("Lat")
     private String latitude;
     @SerializedName("Long")
     private String longitude;
 
-    public HouseOnMapPojo(String refferenceId, String latitude, String longitude) {
-        RefferenceId = refferenceId;
+    public HouseOnMapPojo(@NonNull String RefferenceId, String latitude, String longitude) {
+        this.RefferenceId = RefferenceId;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
+    @NonNull
     public String getRefferenceId() {
         return RefferenceId;
     }

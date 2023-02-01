@@ -48,12 +48,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.appynitty.retrofitconnectionlibrary.connection.Connection;
 import com.appynitty.retrofitconnectionlibrary.pojos.ResultPojo;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpQrLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.ChooseActionPopUp;
+import com.appynitty.swachbharatabhiyanlibrary.houseOnMap.dao.EmpHouseOnMapDao;
+import com.appynitty.swachbharatabhiyanlibrary.houseOnMap.db.HouseScanifyDb;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.HouseOnMapPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LatLong;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
@@ -130,6 +134,7 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
     private ArrayList<Integer> mSelectedIndices;
     private boolean isFlashOn;
     private ArrayList<LatLong> locationArrayList = new ArrayList<>();
+    private EmpHouseOnMapDao empHouseOnMapDao;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -283,6 +288,9 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
         }
     }
 
+    //todo : do this in map activity
+
+
     private void initComponents() {
         generateId();
         registerEvents();
@@ -292,6 +300,9 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     protected void generateId() {
         setContentView(R.layout.emp_activity_qrcode_scanner);
+
+        empHouseOnMapDao = HouseScanifyDb.getmInstance(getApplication()).empHouseOnMapDao();
+
         toolbar = findViewById(R.id.toolbar);
         mHouse_id = "";
         mLat = "";
@@ -359,15 +370,16 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             scannerView.setStatusText(result.getText());
             beepManager.playBeepSoundAndVibrate();
 
-            if (AUtils.isInternetAvailable()) {
+            //   if (AUtils.isInternetAvailable()) {
 
-                openMapsActivityForResult();
-            } else {
-
-                mLat = Prefs.getString(AUtils.LAT, null);
-                mLon = Prefs.getString(AUtils.LONG, null);
-                handleResult(result.toString());
-            }
+            openMapsActivityForResult();
+            //  }
+//            else {
+//
+//                mLat = Prefs.getString(AUtils.LAT, null);
+//                mLon = Prefs.getString(AUtils.LONG, null);
+//                handleResult(result.toString());
+//            }
 
 //
         }
@@ -379,60 +391,84 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     public void openMapsActivityForResult() {
 
-        if (AUtils.isInternetAvailable()) {
 
-            HouseOnMapHistoryService service = Connection.createService(HouseOnMapHistoryService.class, AUtils.SERVER_URL);
-            Call<List<HouseOnMapPojo>> houseOnMapHistoryCall = service.getHouseOnMapHistory(Prefs.getString(AUtils.APP_ID, null),
-                    Prefs.getString(AUtils.PREFS.USER_ID, null), AUtils.getLocalDate());
+        HouseOnMapHistoryService service = Connection.createService(HouseOnMapHistoryService.class, AUtils.SERVER_URL);
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                Call<List<HouseOnMapPojo>> houseOnMapHistoryCall = service.getHouseOnMapHistory(Prefs.getString(AUtils.APP_ID, null),
+                        Prefs.getString(AUtils.PREFS.USER_ID, null), AUtils.getLocalDate());
 
 
-            houseOnMapHistoryCall.enqueue(new Callback<List<HouseOnMapPojo>>() {
-                @Override
-                public void onResponse(Call<List<HouseOnMapPojo>> call, Response<List<HouseOnMapPojo>> response) {
-                    if (response.body() != null) {
+                houseOnMapHistoryCall.enqueue(new Callback<List<HouseOnMapPojo>>() {
+                    @Override
+                    public void onResponse(Call<List<HouseOnMapPojo>> call, Response<List<HouseOnMapPojo>> response) {
 
-                        if (!response.body().isEmpty()) {
+                        new Handler().post(new Runnable() {
 
-                            for (int i = 0; i < response.body().size(); i++) {
+                            @Override
+                            public void run() {
 
-                                LatLong latLong = new LatLong(response.body().get(i).getLatitude(), response.body().get(i).getLongitude(), response.body().get(i).getRefferenceId());
-                                locationArrayList.add(latLong);
+                                if (response.body() != null) {
+
+                                    if (!response.body().isEmpty()) {
+
+                                        for (int i = 0; i < response.body().size(); i++) {
+
+                                            LatLong latLong = new LatLong(response.body().get(i).getLatitude(), response.body().get(i).getLongitude(), response.body().get(i).getRefferenceId());
+                                            locationArrayList.add(latLong);
+
+                                        }
+
+                                        Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
+                                        intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+                                        intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+                                        intent.putParcelableArrayListExtra("marked_lat_long", locationArrayList);
+
+                                        mapsActivityResultLauncher.launch(intent);
+
+                                    } else {
+
+                                        Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
+                                        intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+                                        intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+                                        mapsActivityResultLauncher.launch(intent);
+
+                                    }
+
+                                } else {
+                                    Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
+                                    intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+                                    intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+                                    mapsActivityResultLauncher.launch(intent);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<HouseOnMapPojo>> call, Throwable t) {
+
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
+                                intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
+                                intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
+                                mapsActivityResultLauncher.launch(intent);
 
                             }
+                        });
 
-                            Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
-                            intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
-                            intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
-                            intent.putParcelableArrayListExtra("marked_lat_long", locationArrayList);
 
-                            mapsActivityResultLauncher.launch(intent);
-
-                        } else {
-
-                            Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
-                            intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
-                            intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
-                            mapsActivityResultLauncher.launch(intent);
-
-                        }
-
-                    } else {
-                        Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
-                        intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
-                        intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
-                        mapsActivityResultLauncher.launch(intent);
                     }
-                }
+                });
 
-                @Override
-                public void onFailure(Call<List<HouseOnMapPojo>> call, Throwable t) {
-                    Intent intent = new Intent(EmpQRcodeScannerActivity.this, MapsActivity.class);
-                    intent.putExtra("lat", Prefs.getString(AUtils.LAT, null));
-                    intent.putExtra("lon", Prefs.getString(AUtils.LONG, null));
-                    mapsActivityResultLauncher.launch(intent);
-                }
-            });
-        }
+            }
+        });
 
     }
 
@@ -811,6 +847,17 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
             qrLocationPojo.setGcType(getGCType(id));
             qrLocationPojo.setDate(AUtils.getServerDateTime());
             qrLocationPojo.setQRCodeImage("data:image/jpeg;base64," + encodedImage);
+
+
+            //inserting local house on map data
+            HouseOnMapPojo houseOnMapPojo = new HouseOnMapPojo(id, mLat, mLon);
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    empHouseOnMapDao.insertHouseOnMap(houseOnMapPojo);
+                }
+            });
+
 
             //SANATH : Checking lat before saving ( if lat is null or empty string )
             // Prefs.putString(AUtils.LAT, null);

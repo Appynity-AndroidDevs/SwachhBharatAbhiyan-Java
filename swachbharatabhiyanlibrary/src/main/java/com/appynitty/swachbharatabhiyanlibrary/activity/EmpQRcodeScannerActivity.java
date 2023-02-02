@@ -391,12 +391,11 @@ public class EmpQRcodeScannerActivity extends AppCompatActivity {
 
     public void openMapsActivityForResult() {
 
-
-        HouseOnMapHistoryService service = Connection.createService(HouseOnMapHistoryService.class, AUtils.SERVER_URL);
-
         executor.execute(new Runnable() {
             @Override
             public void run() {
+
+                HouseOnMapHistoryService service = Connection.createService(HouseOnMapHistoryService.class, AUtils.SERVER_URL);
 
                 Call<List<HouseOnMapPojo>> houseOnMapHistoryCall = service.getHouseOnMapHistory(Prefs.getString(AUtils.APP_ID, null),
                         Prefs.getString(AUtils.PREFS.USER_ID, null), AUtils.getLocalDate());

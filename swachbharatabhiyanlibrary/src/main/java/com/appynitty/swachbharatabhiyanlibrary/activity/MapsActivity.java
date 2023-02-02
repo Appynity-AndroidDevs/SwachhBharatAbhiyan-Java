@@ -223,49 +223,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-//    @SuppressLint("MissingPermission")
-//    private void getLastLocation() {
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//
-//        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
-//                    @NonNull
-//                    @Override
-//                    public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
-//
-//                        return null;
-//                    }
-//
-//                    @Override
-//                    public boolean isCancellationRequested() {
-//                        return false;
-//                    }
-//                })
-//                .addOnSuccessListener(new OnSuccessListener<Location>() {
-//                    @Override
-//                    public void onSuccess(Location location) {
-//
-//                        AUtils.success(MapsActivity.this, " " + location.getAccuracy());
-//
-//                        if (location.getAccuracy() < 20) {
-//                            currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-//                        //    currentLocation = new LatLng(NULL , NULL);
-//                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-//                            transparentView.setVisibility(View.GONE);
-//                            mProgressBar.setVisibility(View.GONE);
-//
-//                            if (mapFragment != null) {
-//                                mapFragment.getMapAsync(MapsActivity.this);
-//                            }
-//                            bearing = location.getBearing();
-//                        } else {
-//                            AUtils.warning(MapsActivity.this, getResources().getString(R.string.scan_again));
-//                            finish();
-//                        }
-//
-//
-//                    }
-//                });
-//    }
 
     private void updateCameraBearing(GoogleMap googleMap, float bearing) {
         if (googleMap == null) return;

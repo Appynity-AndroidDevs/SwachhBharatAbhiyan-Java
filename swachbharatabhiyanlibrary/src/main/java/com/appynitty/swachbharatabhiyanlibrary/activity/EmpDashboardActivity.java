@@ -41,10 +41,13 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
+import com.appynitty.swachbharatabhiyanlibrary.houseOnMap.dao.EmpHouseOnMapDao;
+import com.appynitty.swachbharatabhiyanlibrary.houseOnMap.db.HouseScanifyDb;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
@@ -58,6 +61,7 @@ import com.riaylibrary.utils.LocaleHelper;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -117,6 +121,34 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initComponents();
+        checkIsAfterDate();
+    }
+
+    private void checkIsAfterDate() {
+
+        String inDate = AUtils.getInPunchDate();
+        String currentDate = AUtils.getServerDate();
+
+        if (!inDate.equals(currentDate)) {
+            isFromAttendanceChecked = true;
+
+            EmpHouseOnMapDao empHouseOnMapDao = HouseScanifyDb.getmInstance(getApplication()).empHouseOnMapDao();
+            EmpSyncServerRepository empSyncServerRepository = new EmpSyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
+            ;
+
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    int offlineCount = empSyncServerRepository.getOfflineCount();
+                    if (offlineCount == 0) {
+                        empHouseOnMapDao.deleteAllHouseOnMap();
+                    }
+
+                }
+            });
+
+        }
     }
 
     @Override
@@ -840,6 +872,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 //        }
 
         AUtils.setIsOnduty(true);
+        AUtils.setInPunchDate(Calendar.getInstance());
     }
 
     private void onOutPunchSuccess() {

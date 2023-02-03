@@ -944,7 +944,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 break;
             case "02":
                 monthValue = "02";
-                if ((bYear % 400 == 0) || ((bYear % 4 == 0) && (bYear % 100 != 0))) {
+                if (((bYear % 4 == 0) && (bYear % 100 != 0)) || (bYear % 400 == 0)) {
                     number_Of_DaysInMonth = 29;
                 } else {
                     number_Of_DaysInMonth = 28;
@@ -1075,9 +1075,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (maritalStatus.trim().isEmpty()){
             AUtils.warning(context,"Please select your marital status");
             return false;
-        }/*else if (!isValidMonthOfDaysMarriage(mMonth)){
+        }else if (maritalStatus.equals("Married") && !isMarriageValidation()){
             return false;
-        }*/ else if (maritalStatus.equals("Married") && !isMarriageValidation()){
+        }else if (!isValidMonthOfDaysMarriage(mMonth)){
             return false;
         }else if (living.trim().isEmpty()){
             AUtils.warning(context,"Please select living status");
@@ -1135,7 +1135,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 break;
             case "02":
                 monthValue = "02";
-                if ((mYear % 400 == 0) || ((mYear % 4 == 0) && (mYear % 100 != 0))) {
+                if (((mYear % 4 == 0) && (mYear % 100 != 0)) || (mYear % 400 == 0)) {
                     number_Of_DaysInMonth = 29;
                 } else {
                     number_Of_DaysInMonth = 28;
@@ -1468,4 +1468,5 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
         }
     }
+
 }

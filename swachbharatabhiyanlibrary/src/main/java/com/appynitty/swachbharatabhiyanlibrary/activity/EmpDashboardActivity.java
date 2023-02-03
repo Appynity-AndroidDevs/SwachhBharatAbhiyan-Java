@@ -66,6 +66,7 @@ import com.riaylibrary.utils.LocaleHelper;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -132,6 +133,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // removeSurveyData();
+        
         surveyDetailsRepo = new SurveyDetailsRepo();
         initComponents();
     }
@@ -990,6 +992,24 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         executor.execute(new Runnable() {
             @Override
             public void run() {
+                /*runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = surveyDetailsRequestPojoList.size() - 1; i >= 0; i--) {
+                            {
+                               synchronized (this){
+                                   try {
+                                       surveyDetailsRequestPojoList.get(i).wait();
+                                       Log.i("Rahul_test", "run: "+surveyDetailsRequestPojoList);
+                                   } catch (InterruptedException e) {
+                                       e.printStackTrace();
+                                   }
+                               }
+                            }
+                        }
+                    }
+                });*/
+
                 Log.i("Rahul_test", "run: "+surveyDetailsRequestPojoList);
                 surveyDetailsRepo.offlineAddSurveyDetails(surveyDetailsRequestPojoList, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
                     @Override
@@ -1063,4 +1083,5 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         Prefs.remove(AUtils.PREFS.SUR_CREATED_USER_ID);
         Prefs.remove(AUtils.PREFS.SUR_UPDATED_USER_ID);
     }
+
 }

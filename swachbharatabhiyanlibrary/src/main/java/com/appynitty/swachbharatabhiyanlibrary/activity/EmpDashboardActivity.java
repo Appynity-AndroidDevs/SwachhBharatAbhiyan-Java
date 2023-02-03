@@ -133,7 +133,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // removeSurveyData();
-        
+
         surveyDetailsRepo = new SurveyDetailsRepo();
         initComponents();
     }
@@ -349,7 +349,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         profilePic = findViewById(R.id.user_profile_pic);
 
         initToolBar();
-        offlineSurvey();
+        //offlineSurvey();
     }
 
     private void initToolBar() {
@@ -998,12 +998,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
                         for (int i = surveyDetailsRequestPojoList.size() - 1; i >= 0; i--) {
                             {
                                synchronized (this){
-                                   try {
-                                       surveyDetailsRequestPojoList.get(i).wait();
-                                       Log.i("Rahul_test", "run: "+surveyDetailsRequestPojoList);
-                                   } catch (InterruptedException e) {
-                                       e.printStackTrace();
-                                   }
+                                   Log.i("Rahul_test", "run: "+surveyDetailsRequestPojoList.get(i));
                                }
                             }
                         }

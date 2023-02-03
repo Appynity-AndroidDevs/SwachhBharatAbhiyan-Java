@@ -1077,7 +1077,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             return false;
         }else if (maritalStatus.equals("Married") && !isMarriageValidation()){
             return false;
-        }else if (!isValidMonthOfDaysMarriage(mMonth)){
+        }else if (maritalStatus.equals("Married") && !isValidMonthOfDaysMarriage(mMonth)){
             return false;
         }else if (living.trim().isEmpty()){
             AUtils.warning(context,"Please select living status");

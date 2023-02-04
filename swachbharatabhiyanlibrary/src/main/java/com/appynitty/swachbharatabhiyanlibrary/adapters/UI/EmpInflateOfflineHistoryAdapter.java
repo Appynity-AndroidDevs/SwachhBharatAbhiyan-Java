@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.adapters.UI;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpOfflineCollectionCount;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.List;
 
@@ -59,6 +61,7 @@ public class EmpInflateOfflineHistoryAdapter extends ArrayAdapter<EmpOfflineColl
         TextView dyCollectionCount = v.findViewById(R.id.dy_collection);
         TextView lwcCollectionCount = v.findViewById(R.id.lwc_collection);
         TextView ssCollectionCount = v.findViewById(R.id.ss_collection);
+        TextView surveyCollectionCount = v.findViewById(R.id.survey_collection);
 
         // get the item using the  position param
         EmpOfflineCollectionCount item = items_list.get(position);
@@ -67,6 +70,10 @@ public class EmpInflateOfflineHistoryAdapter extends ArrayAdapter<EmpOfflineColl
         dyCollectionCount.setText(item.getDumpYardCount());
         lwcCollectionCount.setText(item.getLiquidWasteCount());
         ssCollectionCount.setText(item.getStreetSweepCount());
+        String surveyCount = Prefs.getString(AUtils.OFFLINE_SURVEY_COUNT,"0");
+        surveyCollectionCount.setText(surveyCount);
+        Log.i("Rahul", "history offline survey count: "+surveyCount);
+        //surveyCollectionCount.setText(item.getSurveyCount());
         day.setText(AUtils.extractDate(item.getDate()));
         month.setText(AUtils.extractMonth(item.getDate()));
 

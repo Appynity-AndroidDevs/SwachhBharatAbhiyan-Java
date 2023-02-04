@@ -133,8 +133,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // removeSurveyData();
-
-        surveyDetailsRepo = new SurveyDetailsRepo();
         initComponents();
     }
 
@@ -316,6 +314,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         generateId();
         registerEvents();
         initData();
+        surveyDetailsRepo = new SurveyDetailsRepo();
     }
 
     private void generateId() {

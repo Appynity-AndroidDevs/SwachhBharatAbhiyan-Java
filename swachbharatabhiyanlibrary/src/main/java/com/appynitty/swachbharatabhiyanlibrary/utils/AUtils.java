@@ -310,6 +310,7 @@ public class AUtils extends CommonUtils {
     public static final String SUR_CREATED_USER_ID = "createUserId";
     public static final String SUR_UPDATED_USER_ID = "updateUserId";
     public static final String GET_API_REFERENCE_ID = "apiReferenceId";
+    public static final String OFFLINE_SURVEY_COUNT = "offlineSurveyCount";
 
     /***********/
     public static boolean isIsOnduty() {       // important function to get the status of the employee's duty

@@ -3,6 +3,8 @@ package com.appynitty.swachbharatabhiyanlibrary.activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,16 +16,23 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.EmpInflateOfflineHistoryAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpSyncServerAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.entity.EmpSyncServerEntity;
+import com.appynitty.swachbharatabhiyanlibrary.entity.OfflineSurvey;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpOfflineCollectionCount;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
+import com.appynitty.swachbharatabhiyanlibrary.repository.OfflineSurveyRepo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.OfflineSurveyVM;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -34,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -59,6 +69,14 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     EmpInflateOfflineHistoryAdapter historyAdapter;
     List<EmpOfflineCollectionCount> countList;
     private TextView remainingCountTv;
+    //survey
+    private int surveyCount;
+    private OfflineSurveyVM offlineSurveyVM;
+    private List<OfflineSurvey> surveyList;
+    private SurveyDetailsRepo surveyDetailsRepo;
+    private OfflineSurveyRepo offlineSurveyRepo;
+    private List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
+    String surveyHouseId;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -80,6 +98,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         generateId();
         registerEvents();
         initData();
+
     }
 
     private void generateId() {
@@ -103,17 +122,24 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         View view = AUtils.getUploadingAlertDialog(mContext);
         alertDialog.setView(view);
         remainingCountTv = view.findViewById(R.id.remaining_count_tv);
-
+        //survey
+        surveyDetailsRepo = new SurveyDetailsRepo();
+        offlineSurveyRepo = new OfflineSurveyRepo(getApplication());
+        surveyDetailsRequestPojoList = new ArrayList<>();
+        surveyList = new ArrayList<>();
 
         empSyncServerRepository = new EmpSyncServerRepository(AUtils.mainApplicationConstant.getApplicationContext());
         locationPojoList = new ArrayList<>();
         gson = new Gson();
         countList = new ArrayList<>();
 
+
         houseCount = 0;
         dyCount = 0;
         ssCount = 0;
         lwcCount = 0;
+        surveyCount =0;
+        offlineSurvey();
 
     }
 
@@ -158,6 +184,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     String.valueOf(houseCount),
                     String.valueOf(dyCount),
                     String.valueOf(ssCount),
+                    String.valueOf(surveyCount),
                     String.valueOf(lwcCount), locationPojoList.get(0).getDate())
             );
         }
@@ -178,7 +205,6 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     uploadToServer();
                     showDialogWithCount();
                 }
-
 
             }
         });
@@ -357,7 +383,18 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
                     gridOfflineData.setAdapter(historyAdapter);
 
-                } else if (Integer.parseInt(countList.get(0).getLiquidWasteCount()) > 0) {
+                } else if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
+
+                    gridOfflineData.setVisibility(View.VISIBLE);
+                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                    }
+
+                    layoutNoOfflineData.setVisibility(View.GONE);
+                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                    gridOfflineData.setAdapter(historyAdapter);
+
+                }else if (Integer.parseInt(countList.get(0).getLiquidWasteCount()) > 0) {
 
                     gridOfflineData.setVisibility(View.VISIBLE);
                     if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
@@ -452,6 +489,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         dyCount = 0;
         ssCount = 0;
         lwcCount = 0;
+        surveyCount =0;
     }
 
     @Override
@@ -462,6 +500,73 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void offlineSurvey(){
+        clearCount();
+        offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
+        offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
+            if (offlineSurveys != null && !offlineSurveys.isEmpty()){
+                for (int i=0; i<offlineSurveys.size(); i++){
+                    Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
+                    surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
+                    surveyHouseId = offlineSurveys.get(i).getHouseId();
+                    //surveyCount = Integer.parseInt(surveyHouseId);
+                    if (surveyHouseId.substring(0, 2).matches("^[HhPp]+$")) {
+                        surveyCount++;
+                        Log.i("rahul", "offlineSurvey count: "+surveyCount);
+                        Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
+                    }
+                }
+                /*if (offlineSurveys.size() > 0) {
+                    for (OfflineSurvey offlineSurvey : offlineSurveys) {
+                        offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
+                        offlineSurveyVM.update(offlineSurvey);
+                    }
+                }*/
+
+                if (AUtils.isInternetAvailable()){
+                    checkNetwork(offlineSurveys);
+                }
+            }
+        });
+    }
+
+    private void checkNetwork(List<OfflineSurvey> offlineSurveys){
+        sendOfflineSurvey();
+        if (offlineSurveys.size() > 0) {
+            for (OfflineSurvey offlineSurvey : offlineSurveys) {
+                offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
+                offlineSurveyVM.update(offlineSurvey);
+            }
+        }else {
+            clearCount();
+        }
+    }
+
+    public void sendOfflineSurvey() {
+        Log.i("Rahul_test", "run: "+surveyDetailsRequestPojoList);
+        surveyDetailsRepo.offlineAddSurveyDetails(surveyDetailsRequestPojoList, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
+            @Override
+            public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
+                Log.e(TAG, "offline data send: " + offlineSurveyDetailsResponse);
+                String houseId;
+                for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
+                    if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                        houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
+                        offlineSurveyRepo.deleteSurveyById(houseId);
+                        Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
+                        Log.e(TAG, "sendOfflineLocations: successfully deleted locationId: " + houseId);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+
     }
 
 }

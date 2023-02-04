@@ -11,16 +11,25 @@ public class EmpOfflineCollectionCount {
     String dumpYardCount;
     String streetSweepCount;
     String liquidWasteCount;
+    String surveyCount;
     String date;
 
-    public EmpOfflineCollectionCount(String houseCount, String dumpYardCount, String streetSweepCount, String liquidWasteCount, String date) {
+    public EmpOfflineCollectionCount(String houseCount, String dumpYardCount, String streetSweepCount, String liquidWasteCount,String surveyCount, String date) {
         this.houseCount = houseCount;
         this.dumpYardCount = dumpYardCount;
         this.streetSweepCount = streetSweepCount;
         this.liquidWasteCount = liquidWasteCount;
+        this.surveyCount = surveyCount;
         this.date = date;
     }
 
+    public String getSurveyCount() {
+        return surveyCount;
+    }
+
+    public void setSurveyCount(String surveyCount) {
+        this.surveyCount = surveyCount;
+    }
 
     public String getHouseCount() {
         return houseCount;

@@ -375,6 +375,7 @@
     <string name="str_hint_enter_your_middle_name">Enter Your Middle Name</string>
     <string name="str_heading_last_name">Last Name</string>
     <string name="str_hint_enter_your_last_name">Enter Your Last Name</string>
+    <string name="survey_collection_lbl">Survey Collection</string>
 
 
     <!--    STRING ARRAY FOR MONTHS-->

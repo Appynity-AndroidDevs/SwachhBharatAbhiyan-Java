@@ -333,6 +333,7 @@
     <string name="str_hint_enter_your_middle_name">आपले मधले नाव प्रविष्ट करा</string>
     <string name="str_heading_last_name">आडनाव</string>
     <string name="str_hint_enter_your_last_name">आपले आडनाव प्रविष्ट करा</string>
+    <string name="survey_collection_lbl">Survey Collection</string>
 
 
 </resources>

@@ -308,5 +308,6 @@
     <string name="str_hint_enter_your_middle_name">अपना मध्य नाम दर्ज करें</string>
     <string name="str_heading_last_name">उपनाम</string>
     <string name="str_hint_enter_your_last_name">अपना अंतिम नाम दर्ज करें</string>
+    <string name="survey_collection_lbl">Survey Collection</string>
 
 </resources>

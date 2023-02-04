@@ -375,11 +375,12 @@ public class SurveyInformationActivity extends AppCompatActivity {
             offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
             offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
                 if (offlineSurveys != null && !offlineSurveys.isEmpty()){
-
-                    for (int i=0; i<offlineSurveys.size(); i++){
+                    Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
+                    offlineSurveyVM.insert(offlineSurveys.get(0));
+                   /* for (int i=0; i<offlineSurveys.size(); i++){
                         Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
                         offlineSurveyVM.insert(offlineSurveys.get(i));
-                    }
+                    }*/
                 }
             });
             btnDone.setOnClickListener(new View.OnClickListener() {

@@ -49,6 +49,7 @@ public class EmpInflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.Wo
             viewHolder.lwCollection = view.findViewById(R.id.lwc_collection);
             viewHolder.ssCollection = view.findViewById(R.id.ss_collection);
             viewHolder.dyCollection = view.findViewById(R.id.dy_collection);
+            viewHolder.surveyCollection = view.findViewById(R.id.survey_collection);
             view.setTag(viewHolder);
 
         } else {
@@ -65,6 +66,7 @@ public class EmpInflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.Wo
             holder.lwCollection.setText(workHistoryPojo.getLiquidCollection());
             holder.ssCollection.setText(workHistoryPojo.getStreetCollection());
             holder.dyCollection.setText(workHistoryPojo.getDumpYardCollection());
+            holder.surveyCollection.setText(workHistoryPojo.getSurveyCollection());
         }
 
         return view;
@@ -79,6 +81,7 @@ public class EmpInflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.Wo
         private TextView dyCollection;
         private TextView lwCollection;
         private TextView ssCollection;
+        private TextView surveyCollection;
     }
 
 

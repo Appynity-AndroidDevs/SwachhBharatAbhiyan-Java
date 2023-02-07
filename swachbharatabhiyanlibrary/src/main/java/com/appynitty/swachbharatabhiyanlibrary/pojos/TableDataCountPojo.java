@@ -14,6 +14,15 @@ public class TableDataCountPojo {
 
         private String DumpYardCollection;
         private String DumpYardPlantCollection; // added by rahul
+        private String surveyCollection; // added by rahul
+
+        public String getSurveyCollection() {
+            return surveyCollection;
+        }
+
+        public void setSurveyCollection(String surveyCollection) {
+            this.surveyCollection = surveyCollection;
+        }
 
         public String getDumpYardPlantCollection() {
             return DumpYardPlantCollection;
@@ -80,6 +89,7 @@ public class TableDataCountPojo {
                     + ", DumpYardCollection='" + DumpYardCollection + '\''
                     + ", LiquidCollection='" + LiquidCollection + '\''
                     + ", StreetCollection='" + StreetCollection + '\''
+                    + ", surveyCollection='" + surveyCollection + '\''
                     + ", DumpYardPlantCollection='" + DumpYardPlantCollection + '\''
                     + '}';
         }

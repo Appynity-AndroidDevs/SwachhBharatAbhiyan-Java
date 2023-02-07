@@ -28,6 +28,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpOfflineCollectionCount;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.QrLocationPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.TableDataCountPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.EmpSyncServerRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.OfflineSurveyRepo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
@@ -139,6 +140,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         ssCount = 0;
         lwcCount = 0;
         surveyCount =0;
+
         offlineSurvey();
 
     }
@@ -175,16 +177,18 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     ssCount++;
                 }
             }
+
             Log.e(TAG, "House count: " + houseCount
                     + ", dyCount: " + dyCount
                     + ", ssCount: " + ssCount
+                    + ", surveyCount: " + surveyCount
                     + ", lwcCount: " + lwcCount);
 
             countList.add(new EmpOfflineCollectionCount(
                     String.valueOf(houseCount),
                     String.valueOf(dyCount),
                     String.valueOf(ssCount),
-                    String.valueOf(surveyCount),
+                    String.valueOf(""),
                     String.valueOf(lwcCount), locationPojoList.get(0).getDate())
             );
         }
@@ -383,17 +387,6 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
                     gridOfflineData.setAdapter(historyAdapter);
 
-                } else if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
-
-                    gridOfflineData.setVisibility(View.VISIBLE);
-                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-                        btnSyncOfflineData.setVisibility(View.VISIBLE);
-                    }
-
-                    layoutNoOfflineData.setVisibility(View.GONE);
-                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
-                    gridOfflineData.setAdapter(historyAdapter);
-
                 }else if (Integer.parseInt(countList.get(0).getLiquidWasteCount()) > 0) {
 
                     gridOfflineData.setVisibility(View.VISIBLE);
@@ -508,7 +501,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
             if (offlineSurveys != null && !offlineSurveys.isEmpty()){
 
-                Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
+                /*Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
                 surveyDetailsRequestPojoList.add(offlineSurveys.get(0).getSurveyRequestObj());
                 surveyHouseId = offlineSurveys.get(0).getHouseId();
                 //surveyCount = Integer.parseInt(surveyHouseId);
@@ -517,8 +510,40 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     Log.i("rahul", "offlineSurvey count: "+surveyCount);
                     Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
                 }
+                countList.clear();
+                countList.add(new EmpOfflineCollectionCount(String.valueOf(""),String.valueOf(""),String.valueOf(""),
+                        String.valueOf(""),String.valueOf(surveyCount),String.valueOf("")));
 
-                /*for (int i=0; i<offlineSurveys.size(); i++){
+               // Log.i(TAG, "countList is: "+countList.get(0).getSurveyCount());
+
+                TableDataCountPojo.WorkHistory entity = new TableDataCountPojo().new WorkHistory();
+                entity.setSurveyCollection(String.valueOf(surveyCount));
+                Log.i(TAG, "Rahul offlineSurvey: "+entity);
+
+                if (offlineSurveys.size() > 0) {
+                    if (countList.size() > 0) {
+                        Log.i(TAG, "countList is: "+countList.size());
+                        if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
+                            gridOfflineData.setVisibility(View.VISIBLE);
+                            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                                btnSyncOfflineData.setVisibility(View.VISIBLE);
+                            }
+
+                            layoutNoOfflineData.setVisibility(View.GONE);
+                            historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                            gridOfflineData.setAdapter(historyAdapter);
+
+                        }else {
+                            gridOfflineData.setVisibility(View.GONE);
+                            btnSyncOfflineData.setVisibility(View.GONE);
+                            layoutNoOfflineData.setVisibility(View.VISIBLE);
+                            if (alertDialog.isShowing())
+                                alertDialog.dismiss();
+                        }
+                    }
+                }*/
+
+                for (int i=0; i<offlineSurveys.size(); i++){
                     Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
                     surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
                     surveyHouseId = offlineSurveys.get(i).getHouseId();
@@ -527,8 +552,41 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                         surveyCount++;
                         Log.i("rahul", "offlineSurvey count: "+surveyCount);
                         Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
+
                     }
-                }*/
+                    countList.clear();
+                    countList.add(new EmpOfflineCollectionCount(String.valueOf(""),String.valueOf(""),String.valueOf(""),
+                            String.valueOf(""),String.valueOf(surveyCount),String.valueOf(AUtils.getServerDateTime())));
+
+                   // Log.i(TAG, "countList is: "+countList.get(i).getSurveyCount());
+
+                    TableDataCountPojo.WorkHistory entity = new TableDataCountPojo().new WorkHistory();
+                    entity.setSurveyCollection(String.valueOf(surveyCount));
+                    Log.i(TAG, "Rahul offlineSurvey: "+entity);
+
+                    if (offlineSurveys.size() > 0) {
+                        if (countList.size() > 0) {
+                            Log.i(TAG, "countList is: "+countList.size());
+                            if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
+                                gridOfflineData.setVisibility(View.VISIBLE);
+                                if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                                    btnSyncOfflineData.setVisibility(View.VISIBLE);
+                                }
+
+                                layoutNoOfflineData.setVisibility(View.GONE);
+                                historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                                gridOfflineData.setAdapter(historyAdapter);
+
+                            }else {
+                                gridOfflineData.setVisibility(View.GONE);
+                                btnSyncOfflineData.setVisibility(View.GONE);
+                                layoutNoOfflineData.setVisibility(View.VISIBLE);
+                                if (alertDialog.isShowing())
+                                    alertDialog.dismiss();
+                            }
+                        }
+                    }
+                }   
 
 
                 /*if (offlineSurveys.size() > 0) {

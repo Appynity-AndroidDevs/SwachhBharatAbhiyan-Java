@@ -70,10 +70,10 @@ public class EmpInflateOfflineHistoryAdapter extends ArrayAdapter<EmpOfflineColl
         dyCollectionCount.setText(item.getDumpYardCount());
         lwcCollectionCount.setText(item.getLiquidWasteCount());
         ssCollectionCount.setText(item.getStreetSweepCount());
-        String surveyCount = Prefs.getString(AUtils.OFFLINE_SURVEY_COUNT,"0");
-        surveyCollectionCount.setText(surveyCount);
-        Log.i("Rahul", "history offline survey count: "+surveyCount);
-        //surveyCollectionCount.setText(item.getSurveyCount());
+        /*String surveyCount = Prefs.getString(AUtils.OFFLINE_SURVEY_COUNT,"0");
+        surveyCollectionCount.setText(surveyCount);*/
+        Log.i("Rahul", "history offline survey count: "+item.getSurveyCount());
+        surveyCollectionCount.setText(item.getSurveyCount());
         day.setText(AUtils.extractDate(item.getDate()));
         month.setText(AUtils.extractMonth(item.getDate()));
 

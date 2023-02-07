@@ -389,12 +389,15 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     if (fragPosition == 4){
                         if ( isValidFragFive()) {
                             setData();
-                            saveOfflineData();
-                            if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                AUtils.success(context,"Data saved offline" );
+
+                            if (isSavedDataOfflineOrNot()){
+                                saveOfflineData();
+                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                    AUtils.success(context,"Data saved offline" );
+                                }
+                                startActivity(new Intent(context, SurveyCompletActivity.class));
+                                Prefs.remove(AUtils.GET_API_REFERENCE_ID);
                             }
-                            startActivity(new Intent(context, SurveyCompletActivity.class));
-                            Prefs.remove(AUtils.GET_API_REFERENCE_ID);
                         }
                     }
                 }
@@ -1429,13 +1432,13 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 surveyDetailsRepo.offlineAddSurveyDetails(listOffSurvey, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
                     @Override
                     public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
-                        Log.e(TAG, "offline data send: " + offlineSurveyDetailsResponse);
+                        Log.e(TAG, "offlineAddSurveyDetails offline data send: " + offlineSurveyDetailsResponse);
                         String houseId;
                         for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
                             if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_SUCCESS)) {
                                 houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
                                 offlineSurveyRepo.deleteSurveyById(houseId);
-                                Log.e(TAG, "sendOfflineLocations: successfully deleted locationId: " + houseId);
+                                Log.e(TAG, "offlineSurveyDetails: successfully deleted surveyHouseId: " + houseId);
                             }
                         }
                     }
@@ -1468,6 +1471,33 @@ public class SurveyInformationActivity extends AppCompatActivity {
             dotsIndicator.attachTo(viewPager);
 
         }
+    }
+
+    private boolean isSavedDataOfflineOrNot(){
+        //String normalBirthDate = AUtils.getApiSurveyResponseDateConvertToLocal(getApiDob);
+        String surBirthdayDate = Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,"");
+        Log.i("social", "offline submit time birthday date check: " + surBirthdayDate);
+        String[] separatedB = surBirthdayDate.split("-");
+        String yyyyB = separatedB[0];
+        String mmB = separatedB[1];
+        String  ddB = separatedB[2];
+        String surMarriageDate = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DATE,"");
+        Log.i("social", "offline submit time Marriage date check: " + surBirthdayDate);
+        String[] separatedM = surBirthdayDate.split("-");
+        String yyyyM = separatedM[0];
+        String mmM = separatedM[1];
+        String  ddM = separatedM[2];
+        String maritalStatus = Prefs.getString(AUtils.PREFS.SUR_MARITAL_STATUS,"");
+
+        if (!isValidMonthOfDays(mmB)){
+            AUtils.warning(context,"Please Re-Enter birthday Date then Submit");
+            return false;
+        }else if (maritalStatus.equals("Married") && !isValidMonthOfDaysMarriage(mmM)){
+            AUtils.warning(context,"Please Re-Enter marriage Date then Submit");
+            return false;
+        }
+
+        return true;
     }
 
 }

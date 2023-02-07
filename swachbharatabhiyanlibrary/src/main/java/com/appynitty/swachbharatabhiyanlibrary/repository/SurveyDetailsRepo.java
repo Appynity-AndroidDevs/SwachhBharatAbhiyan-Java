@@ -132,13 +132,13 @@ public class SurveyDetailsRepo {
             @Override
             public void onResponse(Call<List<SurveyDetailsResponsePojo>> call, Response<List<SurveyDetailsResponsePojo>> response) {
                 if (response.body() != null){
-                    Log.e(TAG, "onResponse: " + response.body().toString());
+                    Log.e(TAG, "offlineAddSurveyDetails onResponse: " + response.body().toString());
                     if (response.code() == 200) {
                         iOfflineSurveyDetailsResponse.onResponse(response.body());
-                        Log.e(TAG, "onResponse: " + response.body());
+                        Log.e(TAG, "offlineAddSurveyDetails onResponse: " + response.body());
                     }else if (response.code() == 500){
                         iOfflineSurveyDetailsResponse.onResponse(response.body());
-                        Log.e(TAG, "onResponse: " + response.body());
+                        Log.e(TAG, "offlineAddSurveyDetails onResponse: " + response.body());
                     }
                 }
             }

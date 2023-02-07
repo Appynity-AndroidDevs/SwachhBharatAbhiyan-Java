@@ -1650,5 +1650,22 @@ public class AUtils extends CommonUtils {
     }
 
 
+    public static void removeDuplicatesListOfValue(List<?> list)
+    {
+        int count = list.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            for (int j = i + 1; j < count; j++)
+            {
+                if (list.get(i).equals(list.get(j)))
+                {
+                    list.remove(j--);
+                    count--;
+                }
+            }
+        }
+    }
+
 }
 

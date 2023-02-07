@@ -507,7 +507,18 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
         offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
             if (offlineSurveys != null && !offlineSurveys.isEmpty()){
-                for (int i=0; i<offlineSurveys.size(); i++){
+
+                Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
+                surveyDetailsRequestPojoList.add(offlineSurveys.get(0).getSurveyRequestObj());
+                surveyHouseId = offlineSurveys.get(0).getHouseId();
+                //surveyCount = Integer.parseInt(surveyHouseId);
+                if (surveyHouseId.substring(0, 2).matches("^[HhPp]+$")) {
+                    surveyCount++;
+                    Log.i("rahul", "offlineSurvey count: "+surveyCount);
+                    Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
+                }
+
+                /*for (int i=0; i<offlineSurveys.size(); i++){
                     Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
                     surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
                     surveyHouseId = offlineSurveys.get(i).getHouseId();
@@ -517,7 +528,9 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                         Log.i("rahul", "offlineSurvey count: "+surveyCount);
                         Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
                     }
-                }
+                }*/
+
+
                 /*if (offlineSurveys.size() > 0) {
                     for (OfflineSurvey offlineSurvey : offlineSurveys) {
                         offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
@@ -545,20 +558,49 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     public void sendOfflineSurvey() {
-        Log.i("Rahul_test", "run: "+surveyDetailsRequestPojoList);
+        Log.i("Rahul_test", "offlineAddSurveyDetails : "+surveyDetailsRequestPojoList);
         surveyDetailsRepo.offlineAddSurveyDetails(surveyDetailsRequestPojoList, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
             @Override
             public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
-                Log.e(TAG, "offline data send: " + offlineSurveyDetailsResponse);
+                Log.e(TAG, "offlineAddSurveyDetails offline data send: " + offlineSurveyDetailsResponse);
                 String houseId;
-                for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
+                /*Handler handler = new Handler();
+                Runnable r = new Runnable() {
+                    public void run() {
+                        String houseId;
+                        if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                            houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
+                            offlineSurveyRepo.deleteSurveyById(houseId);
+                            Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
+                            Log.e(TAG, "sendOfflineLocations: successfully deleted surveyHouseId: " + houseId);
+                        }else if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                            houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
+                            Log.e(TAG, "sendOfflineLocations: This surveyHouseId is error, please check date: " + houseId);
+                        }
+                    }
+                };*/
+
+                if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                    houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
+                    offlineSurveyRepo.deleteSurveyById(houseId);
+                    Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
+                    Log.e(TAG, "sendOfflineLocations: successfully deleted surveyHouseId: " + houseId);
+                }else if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                    houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
+                    Log.e(TAG, "sendOfflineLocations: This surveyHouseId is error, please check date: " + houseId);
+                }
+
+                /*for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
                     if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_SUCCESS)) {
                         houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
                         offlineSurveyRepo.deleteSurveyById(houseId);
                         Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
-                        Log.e(TAG, "sendOfflineLocations: successfully deleted locationId: " + houseId);
+                        Log.e(TAG, "sendOfflineLocations: successfully deleted surveyHouseId: " + houseId);
+                    }else if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_ERROR)) {
+                        houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
+                        Log.e(TAG, "sendOfflineLocations: This surveyHouseId is error, please check date: " + houseId);
                     }
-                }
+                }*/
             }
 
             @Override

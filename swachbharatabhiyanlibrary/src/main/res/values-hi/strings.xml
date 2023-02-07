@@ -19,6 +19,7 @@
     <string name="cancel_txt">रद्द करें</string>
     <string name="done_txt">पूरा कर लिया है</string>
     <string name="dump_yard_id_txt">डंप यार्ड आईडी:</string>
+    <string name="survey_house_id_txt">सर्वेक्षण हाउस आईडी :</string>
     <string name="dump_yard_vehicle_id_txt">वाहन आईडी :</string>
     <string name="dump_yard_txt">डंप यार्ड ट्रिप</string>
     <string name="dy_area_validation">कृपया मान्य क्षेत्र और डंप यार्ड का चयन करें।</string>
@@ -308,6 +309,6 @@
     <string name="str_hint_enter_your_middle_name">अपना मध्य नाम दर्ज करें</string>
     <string name="str_heading_last_name">उपनाम</string>
     <string name="str_hint_enter_your_last_name">अपना अंतिम नाम दर्ज करें</string>
-    <string name="survey_collection_lbl">Survey Collection</string>
+    <string name="survey_collection_lbl">सर्वेक्षण संग्रह</string>
 
 </resources>

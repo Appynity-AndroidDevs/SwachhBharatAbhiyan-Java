@@ -65,6 +65,7 @@
     <string name="house_id_txt">घर आयडी :</string>
     <string name="point_id_txt">पॉइंट आयडी :</string>
     <string name="dump_yard_id_txt">डंप यार्ड आयडी :</string>
+    <string name="survey_house_id_txt">सर्वेक्षण घर आयडी :</string>
     <string name="dump_yard_vehicle_id_txt">वाहन आईडी :</string>
 
     <string name="vehicle_number_txt">वाहन नंबर :</string>
@@ -333,7 +334,7 @@
     <string name="str_hint_enter_your_middle_name">आपले मधले नाव प्रविष्ट करा</string>
     <string name="str_heading_last_name">आडनाव</string>
     <string name="str_hint_enter_your_last_name">आपले आडनाव प्रविष्ट करा</string>
-    <string name="survey_collection_lbl">Survey Collection</string>
+    <string name="survey_collection_lbl">सर्वेक्षण संकलन</string>
 
 
 </resources>

@@ -197,7 +197,7 @@
                     android:layout_below="@id/survey_collection_lbl"
                     android:text="@string/hyphen"
                     android:visibility="visible"
-                    android:textColor="@color/colorPinkLight"
+                    android:textColor="@color/colorBlackGray"
                     android:textSize="@dimen/dim_17_sp" />
 
             </RelativeLayout>

@@ -42,6 +42,9 @@ public class OfflineSurveyRepo {
     public void deleteAllSurvey() {
         new DeleteAllSurveyAsyncTask(surveyDao).execute();
     }
+    public void getSurveyRow(){
+        new GetCountSurveyAsyncTask(surveyDao).execute();
+    }
 
     public LiveData<List<OfflineSurvey>> getAllOfflineSurvey() {
         return allSurvey;
@@ -101,6 +104,20 @@ public class OfflineSurveyRepo {
         @Override
         protected Void doInBackground(OfflineSurvey... offlineSurveys) {
             surveyDao.deleteAllSurvey();
+            return null;
+        }
+    }
+
+    private static class GetCountSurveyAsyncTask extends AsyncTask<OfflineSurvey, Void, Void> {
+        private SurveyDao surveyDao;
+
+        public GetCountSurveyAsyncTask(SurveyDao surveyDao) {
+            this.surveyDao = surveyDao;
+        }
+
+        @Override
+        protected Void doInBackground(OfflineSurvey... offlineSurveys) {
+            surveyDao.getCount();
             return null;
         }
     }

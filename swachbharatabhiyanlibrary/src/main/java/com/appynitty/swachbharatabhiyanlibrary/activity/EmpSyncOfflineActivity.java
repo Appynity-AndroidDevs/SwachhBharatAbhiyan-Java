@@ -80,7 +80,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             super.attachBaseContext(LocaleHelper.onAttach(newBase));
         } else {
             super.attachBaseContext(newBase);
@@ -583,6 +583,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                 if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
                     houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
                     offlineSurveyRepo.deleteSurveyById(houseId);
+                    //offlineSurveyRepo.deleteAllSurvey();
                     Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
                     Log.e(TAG, "sendOfflineLocations: successfully deleted surveyHouseId: " + houseId);
                 }else if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {

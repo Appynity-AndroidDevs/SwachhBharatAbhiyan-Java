@@ -5,8 +5,8 @@
         <shape android:shape="rectangle">
             <stroke
                 android:width="4dp"
-                android:color="@color/colorOrange" />
-            <solid android:color="@color/colorOrange"/>
+                android:color="@color/colorBlackGray" />
+            <solid android:color="@color/black"/>
             <corners android:radius="360dp" />
             <padding
 

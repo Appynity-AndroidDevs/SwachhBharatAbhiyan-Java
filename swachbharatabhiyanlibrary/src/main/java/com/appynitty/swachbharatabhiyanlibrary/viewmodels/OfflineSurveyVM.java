@@ -41,6 +41,10 @@ public class OfflineSurveyVM extends AndroidViewModel {
     public void deleteAllSurvey() {
         offlineSurveyRepo.deleteAllSurvey();
     }
+    public void countAllSurvey() {
+        offlineSurveyRepo.getSurveyRow();
+    }
+
 
     public LiveData<List<OfflineSurvey>> getAllSurveyLiveData() {
         return allSurveyLiveData;

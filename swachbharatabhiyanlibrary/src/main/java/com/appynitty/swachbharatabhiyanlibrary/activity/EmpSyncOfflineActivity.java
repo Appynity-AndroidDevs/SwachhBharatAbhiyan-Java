@@ -547,6 +547,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
                     surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
                     surveyHouseId = offlineSurveys.get(i).getHouseId();
+                    countList.clear();
                     //surveyCount = Integer.parseInt(surveyHouseId);
                     if (surveyHouseId.substring(0, 2).matches("^[HhPp]+$")) {
                         surveyCount++;
@@ -577,16 +578,10 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                                 historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
                                 gridOfflineData.setAdapter(historyAdapter);
 
-                            }else {
-                                gridOfflineData.setVisibility(View.GONE);
-                                btnSyncOfflineData.setVisibility(View.GONE);
-                                layoutNoOfflineData.setVisibility(View.VISIBLE);
-                                if (alertDialog.isShowing())
-                                    alertDialog.dismiss();
                             }
                         }
                     }
-                }   
+                }
 
 
                 /*if (offlineSurveys.size() > 0) {
@@ -630,10 +625,10 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                             houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
                             offlineSurveyRepo.deleteSurveyById(houseId);
                             Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
-                            Log.e(TAG, "sendOfflineLocations: successfully deleted surveyHouseId: " + houseId);
+                            Log.e(TAG, "sendOfflineSurvey: successfully deleted surveyHouseId: " + houseId);
                         }else if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
                             houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
-                            Log.e(TAG, "sendOfflineLocations: This surveyHouseId is error, please check date: " + houseId);
+                            Log.e(TAG, "sendOfflineSurvey: This surveyHouseId is error, please check date: " + houseId);
                         }
                     }
                 };*/
@@ -643,10 +638,10 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     offlineSurveyRepo.deleteSurveyById(houseId);
                     //offlineSurveyRepo.deleteAllSurvey();
                     Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
-                    Log.e(TAG, "sendOfflineLocations: successfully deleted surveyHouseId: " + houseId);
+                    Log.e(TAG, "sendOfflineSurvey: successfully deleted surveyHouseId: " + houseId);
                 }else if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
                     houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
-                    Log.e(TAG, "sendOfflineLocations: This surveyHouseId is error, please check date: " + houseId);
+                    Log.e(TAG, "sendOfflineSurvey: This surveyHouseId is error, please check date: " + houseId);
                 }
 
                 /*for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
@@ -654,10 +649,10 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                         houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
                         offlineSurveyRepo.deleteSurveyById(houseId);
                         Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
-                        Log.e(TAG, "sendOfflineLocations: successfully deleted surveyHouseId: " + houseId);
+                        Log.e(TAG, "sendOfflineSurvey: successfully deleted surveyHouseId: " + houseId);
                     }else if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_ERROR)) {
                         houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
-                        Log.e(TAG, "sendOfflineLocations: This surveyHouseId is error, please check date: " + houseId);
+                        Log.e(TAG, "sendOfflineSurvey: This surveyHouseId is error, please check date: " + houseId);
                     }
                 }*/
             }

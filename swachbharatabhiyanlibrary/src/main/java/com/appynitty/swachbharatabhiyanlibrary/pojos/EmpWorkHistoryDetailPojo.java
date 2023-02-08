@@ -17,6 +17,31 @@ public class EmpWorkHistoryDetailPojo {
     private String StreetNo;
 
     private String PointNo;
+    private String SurveyNo;
+
+    public String getLiquidNo() {
+        return LiquidNo;
+    }
+
+    public void setLiquidNo(String liquidNo) {
+        LiquidNo = liquidNo;
+    }
+
+    public String getStreetNo() {
+        return StreetNo;
+    }
+
+    public void setStreetNo(String streetNo) {
+        StreetNo = streetNo;
+    }
+
+    public String getSurveyNo() {
+        return SurveyNo;
+    }
+
+    public void setSurveyNo(String surveyNo) {
+        SurveyNo = surveyNo;
+    }
 
     public String getTime() {
         return time;
@@ -89,6 +114,7 @@ public class EmpWorkHistoryDetailPojo {
                 ", Date='" + Date + '\'' +
                 ", type='" + type + '\'' +
                 ", HouseNo='" + HouseNo + '\'' +
+                ", SurveyNo='" + SurveyNo + '\'' +
                 ", DumpYardNo='" + DumpYardNo + '\'' +
                 ", PointNo='" + PointNo + '\'' +
                 '}';

@@ -88,7 +88,7 @@ public class EmpInflateHistoryDetailsAdapter extends ArrayAdapter<EmpWorkHistory
             }else if (workHistoryDetailPojo.getType().equals("11")) {
                 holder.time.setBackgroundResource(R.drawable.rounded_black_button);
                 holder.time.setPadding(0, 0, 0, 0);
-                holder.id.setText(String.format("%s %s", context.getResources().getString(R.string.survey_house_id_txt), workHistoryDetailPojo.getDumpYardNo()));
+                holder.id.setText(String.format("%s %s", context.getResources().getString(R.string.survey_house_id_txt), workHistoryDetailPojo.getSurveyNo()));
             }
 
 //            holder.time.setText(workHistoryDetailPojo.getTime());

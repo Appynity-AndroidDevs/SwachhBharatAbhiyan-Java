@@ -78,6 +78,8 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     private OfflineSurveyRepo offlineSurveyRepo;
     private List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
     String surveyHouseId;
+    String syncSurveyCount = "0";
+    String finalSyncSurveyCount = "0";
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -110,7 +112,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.title_activity_sync_offline);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
+        offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
         layoutNoOfflineData = findViewById(R.id.show_error_offline_data);
         btnSyncOfflineData = findViewById(R.id.btn_sync_data);
         //   uploadDialog = findViewById(R.id.upload_progressBar);
@@ -497,103 +499,140 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
 
     private void offlineSurvey(){
         clearCount();
-        offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
+
         offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
             if (offlineSurveys != null && !offlineSurveys.isEmpty()){
 
-                /*Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
-                surveyDetailsRequestPojoList.add(offlineSurveys.get(0).getSurveyRequestObj());
-                surveyHouseId = offlineSurveys.get(0).getHouseId();
-                //surveyCount = Integer.parseInt(surveyHouseId);
-                if (surveyHouseId.substring(0, 2).matches("^[HhPp]+$")) {
-                    surveyCount++;
-                    Log.i("rahul", "offlineSurvey count: "+surveyCount);
-                    Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
-                }
-                countList.clear();
-                countList.add(new EmpOfflineCollectionCount(String.valueOf(""),String.valueOf(""),String.valueOf(""),
-                        String.valueOf(""),String.valueOf(surveyCount),String.valueOf("")));
-
-               // Log.i(TAG, "countList is: "+countList.get(0).getSurveyCount());
-
-                TableDataCountPojo.WorkHistory entity = new TableDataCountPojo().new WorkHistory();
-                entity.setSurveyCollection(String.valueOf(surveyCount));
-                Log.i(TAG, "Rahul offlineSurvey: "+entity);
-
-                if (offlineSurveys.size() > 0) {
-                    if (countList.size() > 0) {
-                        Log.i(TAG, "countList is: "+countList.size());
-                        if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
-                            gridOfflineData.setVisibility(View.VISIBLE);
-                            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-                                btnSyncOfflineData.setVisibility(View.VISIBLE);
-                            }
-
-                            layoutNoOfflineData.setVisibility(View.GONE);
-                            historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
-                            gridOfflineData.setAdapter(historyAdapter);
-
-                        }else {
-                            gridOfflineData.setVisibility(View.GONE);
-                            btnSyncOfflineData.setVisibility(View.GONE);
-                            layoutNoOfflineData.setVisibility(View.VISIBLE);
-                            if (alertDialog.isShowing())
-                                alertDialog.dismiss();
-                        }
-                    }
-                }*/
 
                 for (int i=0; i<offlineSurveys.size(); i++){
-                    Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
-                    surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
-                    surveyHouseId = offlineSurveys.get(i).getHouseId();
-                    countList.clear();
-                    //surveyCount = Integer.parseInt(surveyHouseId);
-                    if (surveyHouseId.substring(0, 2).matches("^[HhPp]+$")) {
-                        surveyCount++;
-                        Log.i("rahul", "offlineSurvey count: "+surveyCount);
-                        Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
+                        countList.clear();
+                        Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
+                        surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
+                        surveyHouseId = offlineSurveys.get(i).getHouseId();
+                        //surveyCount = Integer.parseInt(surveyHouseId);
+                        if (surveyHouseId.substring(0, 2).matches("^[HhPp]+$")) {
+                            surveyCount++;
+                            Log.i("rahul", "offlineSurvey count: "+surveyCount);
+                            syncSurveyCount = String.valueOf(surveyCount);
+                            Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
 
-                    }
-                    countList.clear();
-                    countList.add(new EmpOfflineCollectionCount(String.valueOf(""),String.valueOf(""),String.valueOf(""),
-                            String.valueOf(""),String.valueOf(surveyCount),String.valueOf(AUtils.getServerDateTime())));
+                        }
 
-                   // Log.i(TAG, "countList is: "+countList.get(i).getSurveyCount());
+                        countList.add(new EmpOfflineCollectionCount(String.valueOf(""),String.valueOf(""),String.valueOf(""),
+                                String.valueOf(""),String.valueOf(surveyCount),String.valueOf(AUtils.getServerDateTime())));
 
-                    TableDataCountPojo.WorkHistory entity = new TableDataCountPojo().new WorkHistory();
-                    entity.setSurveyCollection(String.valueOf(surveyCount));
-                    Log.i(TAG, "Rahul offlineSurvey: "+entity);
+                        TableDataCountPojo.WorkHistory entity = new TableDataCountPojo().new WorkHistory();
+                        entity.setSurveyCollection(String.valueOf(surveyCount));
+                        Log.i(TAG, "Rahul offlineSurvey: "+entity);
 
-                    if (offlineSurveys.size() > 0) {
-                        if (countList.size() > 0) {
-                            Log.i(TAG, "countList is: "+countList.size());
-                            if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
-                                gridOfflineData.setVisibility(View.VISIBLE);
-                                if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-                                    btnSyncOfflineData.setVisibility(View.VISIBLE);
+                    if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+
+                        executor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                final boolean[] isSyncing = {true};
+
+                                while (isSyncing[0]) {
+
+                                    syncSurveyCount = String.valueOf(empSyncServerRepository.getOfflineCount());
+                                    if (Integer.parseInt(syncSurveyCount) == 0) {
+                                        syncSurveyCount = "0";
+                                        finalSyncSurveyCount = "0";
+                                    }
+                                    Log.i(TAG, "run: " + syncSurveyCount);
+
+
+                                    if (!Objects.equals(finalSyncSurveyCount, syncSurveyCount)) {
+
+                                        String finalSyncCount1 = syncSurveyCount;
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                StringBuffer stringBuffer = new StringBuffer();
+                                                stringBuffer.append(finalSyncCount1);
+                                                stringBuffer.append(" ");
+                                                stringBuffer.append(getResources().getString(R.string.remaining));
+                                                remainingCountTv.setText(stringBuffer);
+                                                if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                                                    isSyncing[0] = false;
+
+                                                }
+                                                if (empSyncServerRepository.getOfflineCount() == 0) {
+                                                    isSyncing[0] = false;
+                                                }
+                                                inflateData();
+                                            }
+                                        });
+                                    } else if (Integer.parseInt(finalSyncSurveyCount) == 0 && Integer.parseInt(syncSurveyCount) == 0) {
+//
+//                            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+//                                Log.i(TAG, "run: if " + finalSyncCount + "  " + syncCount);
+//                                isSyncing[0] = false;
+//
+//                            }
+                                        if (empSyncServerRepository.getOfflineCount() == 0) {
+                                            Log.i(TAG, "run: this if" + "  " + syncSurveyCount);
+                                            isSyncing[0] = false;
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Log.i(TAG, "run: " + "count");
+                                                    inflateData();
+
+                                                }
+                                            });
+                                        }
+
+
+                                    }
+                                    finalSyncSurveyCount = syncSurveyCount;
+
                                 }
 
-                                layoutNoOfflineData.setVisibility(View.GONE);
-                                historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
-                                gridOfflineData.setAdapter(historyAdapter);
+                            }
+                        });
+                    } else {
+                        if (offlineSurveys.size() > 0) {
+                            if (countList.size() > 0) {
+                                Log.i(TAG, "countList is: "+countList.size());
+                                if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
+                                    gridOfflineData.setVisibility(View.VISIBLE);
+                                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                                    }
 
+                                    layoutNoOfflineData.setVisibility(View.GONE);
+                                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                                    gridOfflineData.setAdapter(historyAdapter);
+
+                                }
                             }
                         }
+
                     }
+
+                        /*if (offlineSurveys.size() > 0) {
+                            if (countList.size() > 0) {
+                                Log.i(TAG, "countList is: "+countList.size());
+                                if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
+                                    gridOfflineData.setVisibility(View.VISIBLE);
+                                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                                    }
+
+                                    layoutNoOfflineData.setVisibility(View.GONE);
+                                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
+                                    gridOfflineData.setAdapter(historyAdapter);
+
+                                }
+                            }
+                        }*/
                 }
 
-
-                /*if (offlineSurveys.size() > 0) {
-                    for (OfflineSurvey offlineSurvey : offlineSurveys) {
-                        offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
-                        offlineSurveyVM.update(offlineSurvey);
+                    if (AUtils.isInternetAvailable()){
+                        checkNetwork(offlineSurveys);
                     }
-                }*/
-
-                if (AUtils.isInternetAvailable()){
-                    checkNetwork(offlineSurveys);
-                }
             }
         });
     }
@@ -617,26 +656,10 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
             public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
                 Log.e(TAG, "offlineAddSurveyDetails offline data send: " + offlineSurveyDetailsResponse);
                 String houseId;
-                /*Handler handler = new Handler();
-                Runnable r = new Runnable() {
-                    public void run() {
-                        String houseId;
-                        if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                            houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
-                            offlineSurveyRepo.deleteSurveyById(houseId);
-                            Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
-                            Log.e(TAG, "sendOfflineSurvey: successfully deleted surveyHouseId: " + houseId);
-                        }else if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
-                            houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
-                            Log.e(TAG, "sendOfflineSurvey: This surveyHouseId is error, please check date: " + houseId);
-                        }
-                    }
-                };*/
 
                 if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
                     houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
                     offlineSurveyRepo.deleteSurveyById(houseId);
-                    //offlineSurveyRepo.deleteAllSurvey();
                     Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
                     Log.e(TAG, "sendOfflineSurvey: successfully deleted surveyHouseId: " + houseId);
                 }else if (offlineSurveyDetailsResponse.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
@@ -662,6 +685,86 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure: " + t.getMessage());
             }
         });
+
+    }
+
+    private void showDialogWithSurveyCount() {
+
+        if (!alertDialog.isShowing())
+            alertDialog.show();
+        else
+            alertDialog.hide();
+
+        if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    final boolean[] isSyncing = {true};
+
+                    while (isSyncing[0]) {
+
+                        syncSurveyCount = String.valueOf(empSyncServerRepository.getOfflineCount());
+                        if (Integer.parseInt(syncSurveyCount) == 0) {
+                            syncSurveyCount = "0";
+                            finalSyncSurveyCount = "0";
+                        }
+                        Log.i(TAG, "run: " + syncSurveyCount);
+
+
+                        if (!Objects.equals(finalSyncSurveyCount, syncSurveyCount)) {
+
+                            String finalSyncCount1 = syncSurveyCount;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    StringBuffer stringBuffer = new StringBuffer();
+                                    stringBuffer.append(finalSyncCount1);
+                                    stringBuffer.append(" ");
+                                    stringBuffer.append(getResources().getString(R.string.remaining));
+                                    remainingCountTv.setText(stringBuffer);
+                                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+                                        isSyncing[0] = false;
+
+                                    }
+                                    if (empSyncServerRepository.getOfflineCount() == 0) {
+                                        isSyncing[0] = false;
+                                    }
+                                    inflateData();
+                                }
+                            });
+                        } else if (Integer.parseInt(finalSyncSurveyCount) == 0 && Integer.parseInt(syncSurveyCount) == 0) {
+//
+//                            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
+//                                Log.i(TAG, "run: if " + finalSyncCount + "  " + syncCount);
+//                                isSyncing[0] = false;
+//
+//                            }
+                            if (empSyncServerRepository.getOfflineCount() == 0) {
+                                Log.i(TAG, "run: this if" + "  " + syncSurveyCount);
+                                isSyncing[0] = false;
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.i(TAG, "run: " + "count");
+                                        inflateData();
+
+                                    }
+                                });
+                            }
+
+
+                        }
+                        finalSyncSurveyCount = syncSurveyCount;
+
+                    }
+
+                }
+            });
+        } else {
+
+        }
 
     }
 

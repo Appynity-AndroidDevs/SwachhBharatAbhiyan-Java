@@ -100,6 +100,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
     private Bundle bundle;
     private GetApiResponseModel apiResponseModel;
     private OfflineSurveyVM offlineSurveyVM;
+    private OfflineSurvey offlineSurvey;
     List<OfflineSurvey> offlineSurveyList;
     List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
     private OfflineSurveyRepo offlineSurveyRepo;
@@ -119,6 +120,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         context = this;
         offlineSurveyList = new ArrayList<>();
         surveyDetailsRequestPojoList = new ArrayList<>();
+        surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+        offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
         headerReferenceId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
         frameLayout = findViewById(R.id.container_frame_layout);
         viewPager = findViewById(R.id.view_pager);
@@ -176,6 +179,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 }*//*
             }
         });*/
+        offLiveData();
 
         if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
 
@@ -317,6 +321,52 @@ public class SurveyInformationActivity extends AppCompatActivity {
             }
         });
 
+
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+            @Override
+            public void onPageSelected(int position) {
+                Log.i("Rahul", "PageChange: "+position);
+                fragPosition = position;
+                if(position==0) {
+                   // loadFragment(surveyFormOneFragment);
+                    btnBack.setVisibility(View.GONE);
+                }else  {
+                    btnBack.setVisibility(View.VISIBLE);
+                }
+                if(position < Objects.requireNonNull(viewPager.getAdapter()).getItemCount() -1 ) {
+                    btnNext.setVisibility(View.VISIBLE);
+                    btnDone.setVisibility(View.GONE);
+                    /*if (headerReferenceId.equals(Prefs.getString(AUtils.GET_API_REFERENCE_ID,""))){
+                        btnUpdate.setVisibility(View.VISIBLE);
+                        btnDone.setVisibility(View.GONE);
+                    }*/
+                }else  {
+                    btnNext.setVisibility(View.GONE);
+                    btnDone.setVisibility(View.VISIBLE);
+                    viewPager.setUserInputEnabled(false);
+                    /*if (apiReferenceId == null){
+                        btnUpdate.setVisibility(View.GONE);
+                        btnDone.setVisibility(View.VISIBLE);
+                    }else {
+                        btnDone.setVisibility(View.GONE);
+                        btnUpdate.setVisibility(View.VISIBLE);
+                    }*/
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
+    }
+
+    private void offLiveData(){
+        Log.i("offline_data_rahul", "check data first: ");
         if (AUtils.isInternetAvailable()) {
             txtNoConnection.setVisibility(View.GONE);
             btnDone.setOnClickListener(new View.OnClickListener() {
@@ -327,7 +377,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
 
                         if ( isValidFragFive()) {
                             setData();
-                            surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);
+                           /* surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) context).get(SurveyDetailsVM.class);*/
                             surveyDetailsVM.surveyFormApi();
                             surveyDetailsVM.SaveSurveyDetailsMutableLiveData().observe((LifecycleOwner) context, new Observer<List<SurveyDetailsResponsePojo>>() {
                                 @Override
@@ -372,79 +422,50 @@ public class SurveyInformationActivity extends AppCompatActivity {
             });
         }else {
             txtNoConnection.setVisibility(View.VISIBLE);
-            offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
+            /*offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
             offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
                 if (offlineSurveys != null && !offlineSurveys.isEmpty()){
                     Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
+                    *//* Log.i("offline_data_rahul", "check data: "+offlineSurveys.size());*//*
                     offlineSurveyVM.insert(offlineSurveys.get(0));
-                   /* for (int i=0; i<offlineSurveys.size(); i++){
+
+                   *//* for (int i=0; i<offlineSurveys.size(); i++){
                         Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
                         offlineSurveyVM.insert(offlineSurveys.get(i));
-                    }*/
+                    }*//*
                 }
-            });
+            });*/
+
             btnDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (fragPosition == 4){
                         if ( isValidFragFive()) {
-                            setData();
-
                             if (isSavedDataOfflineOrNot()){
+                                setData();
                                 saveOfflineData();
-                                if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                    AUtils.success(context,"Data saved offline" );
-                                }
-                                startActivity(new Intent(context, SurveyCompletActivity.class));
-                                Prefs.remove(AUtils.GET_API_REFERENCE_ID);
+
+                                offlineSurveyVM.getAllSurveyLiveData().observe((LifecycleOwner) context, offlineSurveys -> {
+                                    if (offlineSurveys != null && !offlineSurveys.isEmpty()){
+                                        Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
+                                        /* Log.i("offline_data_rahul", "check data: "+offlineSurveys.size());*/
+                                        offlineSurveyVM.insert(offlineSurveys.get(0));
+                                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                                            AUtils.success(context,"Data saved offline" );
+                                        }
+                                        startActivity(new Intent(context, SurveyCompletActivity.class));
+                                        Prefs.remove(AUtils.GET_API_REFERENCE_ID);
+
+                                    }
+                                });
                             }
                         }
                     }
                 }
             });
         }
-
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-            }
-            @Override
-            public void onPageSelected(int position) {
-                Log.i("Rahul", "PageChange: "+position);
-                fragPosition = position;
-                if(position==0) {
-                   // loadFragment(surveyFormOneFragment);
-                    btnBack.setVisibility(View.GONE);
-                }else  {
-                    btnBack.setVisibility(View.VISIBLE);
-                }
-                if(position < Objects.requireNonNull(viewPager.getAdapter()).getItemCount() -1 ) {
-                    btnNext.setVisibility(View.VISIBLE);
-                    btnDone.setVisibility(View.GONE);
-                    /*if (headerReferenceId.equals(Prefs.getString(AUtils.GET_API_REFERENCE_ID,""))){
-                        btnUpdate.setVisibility(View.VISIBLE);
-                        btnDone.setVisibility(View.GONE);
-                    }*/
-                }else  {
-                    btnNext.setVisibility(View.GONE);
-                    btnDone.setVisibility(View.VISIBLE);
-                    viewPager.setUserInputEnabled(false);
-                    /*if (apiReferenceId == null){
-                        btnUpdate.setVisibility(View.GONE);
-                        btnDone.setVisibility(View.VISIBLE);
-                    }else {
-                        btnDone.setVisibility(View.GONE);
-                        btnUpdate.setVisibility(View.VISIBLE);
-                    }*/
-                }
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                super.onPageScrollStateChanged(state);
-            }
-        });
     }
+
     private void saveOfflineData(){
         SurveyDetailsRequestPojo requestPojo = new SurveyDetailsRequestPojo();
         requestPojo.setReferanceId(Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,""));
@@ -484,8 +505,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         requestPojo.setCreateUserId(Prefs.getString(AUtils.PREFS.USER_ID,""));
         requestPojo.setUpdateUserId(Prefs.getString(AUtils.PREFS.USER_ID,""));
         String houseId = Prefs.getString(AUtils.PREFS.SUR_REFERENCE_ID,"");
+        Log.i("offline_data_rahul", "saveOfflineData: "+houseId+","+requestPojo);
 
-        OfflineSurvey offlineSurvey = new OfflineSurvey(houseId,requestPojo);
+        offlineSurvey = new OfflineSurvey(houseId,requestPojo);
+        Log.i("offline_data_rahul", "offlineSurvey: "+offlineSurvey);
         offlineSurveyVM.insert(offlineSurvey);
 
        // sendOfflineSurvey((List<SurveyDetailsRequestPojo>) offlineSurvey);
@@ -1406,7 +1429,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         return age;
     }
 
-    /*private void setOfflineSurveyIds() {
+   /* *//*private void setOfflineSurveyIds() {
         offlineSurveyList = (List<OfflineSurvey>) offlineSurveyRepo.getAllOfflineSurvey();
         if (offlineSurveyList.size() > 0) {
             for (OfflineSurvey offlineSurvey : offlineSurveyList) {
@@ -1419,7 +1442,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             sendOfflineSurvey(surveyDetailsRequestPojoList);
         }
 
-    }*/
+    }*//*
 
 
     public void sendOfflineSurvey(List<SurveyDetailsRequestPojo> listOffSurvey) {
@@ -1457,7 +1480,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 });
             }
         });
-    }
+    }*/
 
     @Override
     protected void onPostResume() {

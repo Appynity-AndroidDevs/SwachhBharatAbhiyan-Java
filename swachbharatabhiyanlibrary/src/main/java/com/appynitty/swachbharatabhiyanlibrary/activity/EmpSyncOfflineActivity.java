@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +17,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.EmpInflateOfflineHistoryAdapter;
@@ -34,6 +38,7 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.OfflineSurveyRepo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.viewmodels.OfflineSurveyVM;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.SurveyDetailsVM;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -58,7 +63,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
 
     private Context mContext;
     private LinearLayout layoutNoOfflineData;
-    private Button btnSyncOfflineData;
+    private Button btnSyncOfflineData,btnSurveyOffline;
     //  CardView uploadDialog;
     private GridView gridOfflineData;
 
@@ -80,6 +85,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     String surveyHouseId;
     String syncSurveyCount = "0";
     String finalSyncSurveyCount = "0";
+    private SurveyDetailsVM surveyDetailsVM;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -111,10 +117,14 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_sync_offline);
         setSupportActionBar(toolbar);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) mContext).get(SurveyDetailsVM.class);
         offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
         layoutNoOfflineData = findViewById(R.id.show_error_offline_data);
         btnSyncOfflineData = findViewById(R.id.btn_sync_data);
+        btnSurveyOffline = findViewById(R.id.btn_sync_data_survey);
+        btnSurveyOffline.setVisibility(View.GONE);
         //   uploadDialog = findViewById(R.id.upload_progressBar);
         gridOfflineData = findViewById(R.id.grid_offline_data);
 
@@ -148,7 +158,6 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     private List<EmpOfflineCollectionCount> getDatabaseList() {
-
 
         List<EmpSyncServerEntity> entityList = empSyncServerRepository.getAllEmpSyncServerEntity();
         locationPojoList.clear();
@@ -201,10 +210,20 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
 
     private void registerEvents() {
 
+        btnSurveyOffline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AUtils.isInternetAvailable()){
+                    sendSurveyVmOffline();
+                }else {
+                    AUtils.warning(mContext,"Please check your internet connection");
+                }
+            }
+        });
+
         btnSyncOfflineData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
 
@@ -498,24 +517,30 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     private void offlineSurvey(){
+        Log.i("checkList", "offlineSurveyRahul: ");
         clearCount();
 
         offlineSurveyVM.getAllSurveyLiveData().observe(this, offlineSurveys -> {
             if (offlineSurveys != null && !offlineSurveys.isEmpty()){
-
-
+                surveyDetailsRequestPojoList.add(offlineSurveys.get(0).getSurveyRequestObj());
+                Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
+                Log.i("TAG", "offline survey list check: "+offlineSurveys.get(0).getSurveyRequestObj());
                 for (int i=0; i<offlineSurveys.size(); i++){
                         countList.clear();
-                        Log.e(TAG, "offline survey list: "+offlineSurveys.get(i).getSurveyRequestObj());
-                        surveyDetailsRequestPojoList.add(offlineSurveys.get(i).getSurveyRequestObj());
+
                         surveyHouseId = offlineSurveys.get(i).getHouseId();
+                        if (!surveyHouseId.isEmpty()){
+                            btnSyncOfflineData.setVisibility(View.GONE);
+                            btnSurveyOffline.setVisibility(View.VISIBLE);
+                        }else {
+                            layoutNoOfflineData.setVisibility(View.VISIBLE);
+                        }
                         //surveyCount = Integer.parseInt(surveyHouseId);
                         if (surveyHouseId.substring(0, 2).matches("^[HhPp]+$")) {
                             surveyCount++;
                             Log.i("rahul", "offlineSurvey count: "+surveyCount);
                             syncSurveyCount = String.valueOf(surveyCount);
                             Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
-
                         }
 
                         countList.add(new EmpOfflineCollectionCount(String.valueOf(""),String.valueOf(""),String.valueOf(""),
@@ -565,12 +590,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                                             }
                                         });
                                     } else if (Integer.parseInt(finalSyncSurveyCount) == 0 && Integer.parseInt(syncSurveyCount) == 0) {
-//
-//                            if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-//                                Log.i(TAG, "run: if " + finalSyncCount + "  " + syncCount);
-//                                isSyncing[0] = false;
-//
-//                            }
+
                                         if (empSyncServerRepository.getOfflineCount() == 0) {
                                             Log.i(TAG, "run: this if" + "  " + syncSurveyCount);
                                             isSyncing[0] = false;
@@ -583,11 +603,8 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                                                 }
                                             });
                                         }
-
-
                                     }
                                     finalSyncSurveyCount = syncSurveyCount;
-
                                 }
 
                             }
@@ -599,7 +616,8 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                                 if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
                                     gridOfflineData.setVisibility(View.VISIBLE);
                                     if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-                                        btnSyncOfflineData.setVisibility(View.VISIBLE);
+                                        btnSyncOfflineData.setVisibility(View.GONE);
+                                        btnSurveyOffline.setVisibility(View.VISIBLE);
                                     }
 
                                     layoutNoOfflineData.setVisibility(View.GONE);
@@ -608,28 +626,17 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
 
                                 }
                             }
+                        }else {
+                            gridOfflineData.setVisibility(View.GONE);
+                            btnSyncOfflineData.setVisibility(View.GONE);
+                            btnSurveyOffline.setVisibility(View.GONE);
+                            layoutNoOfflineData.setVisibility(View.VISIBLE);
+                            if (alertDialog.isShowing())
+                                alertDialog.dismiss();
                         }
 
                     }
-
-                        /*if (offlineSurveys.size() > 0) {
-                            if (countList.size() > 0) {
-                                Log.i(TAG, "countList is: "+countList.size());
-                                if (Integer.parseInt(countList.get(0).getSurveyCount()) > 0) {
-                                    gridOfflineData.setVisibility(View.VISIBLE);
-                                    if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-                                        btnSyncOfflineData.setVisibility(View.VISIBLE);
-                                    }
-
-                                    layoutNoOfflineData.setVisibility(View.GONE);
-                                    historyAdapter = new EmpInflateOfflineHistoryAdapter(mContext, R.layout.layout_history_card, countList);
-                                    gridOfflineData.setAdapter(historyAdapter);
-
-                                }
-                            }
-                        }*/
                 }
-
                     if (AUtils.isInternetAvailable()){
                         checkNetwork(offlineSurveys);
                     }
@@ -638,7 +645,9 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
     }
 
     private void checkNetwork(List<OfflineSurvey> offlineSurveys){
-        sendOfflineSurvey();
+       // sendOfflineSurvey();
+       // sendSurveyVmOffline();
+
         if (offlineSurveys.size() > 0) {
             for (OfflineSurvey offlineSurvey : offlineSurveys) {
                 offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
@@ -649,7 +658,40 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         }
     }
 
-    public void sendOfflineSurvey() {
+    private void sendSurveyVmOffline(){
+        Log.i("Rahul_test", "offlineAddSurveyDetails : "+surveyDetailsRequestPojoList);
+        surveyDetailsVM.surveyOfflineFormApi(surveyDetailsRequestPojoList);
+        surveyDetailsVM.OfflineSurveyDetailsMutableLiveData().observe((LifecycleOwner) mContext, new Observer<List<SurveyDetailsResponsePojo>>() {
+            @Override
+            public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
+                Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
+                String houseId;
+                if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                   houseId = surveyDetailsResponsePojos.get(0).getHouseId();
+                    offlineSurveyRepo.deleteSurveyById(houseId);
+                    Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
+                    Log.e(TAG, "sendOfflineSurvey: successfully deleted surveyHouseId: " + houseId);
+                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                        AUtils.success(mContext, surveyDetailsResponsePojos.get(0).getMessageMar());
+                    } else {
+                        AUtils.success(mContext, surveyDetailsResponsePojos.get(0).getMessage());
+                    }
+                }else if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                    houseId = surveyDetailsResponsePojos.get(0).getHouseId();
+                    Log.e(TAG, "sendOfflineSurvey: This surveyHouseId is error, please check date: " + houseId);
+                    if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                        AUtils.error(mContext, surveyDetailsResponsePojos.get(0).getMessageMar());
+                    } else {
+                        AUtils.error(mContext, surveyDetailsResponsePojos.get(0).getMessage());
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    /*public void sendOfflineSurvey() {
         Log.i("Rahul_test", "offlineAddSurveyDetails : "+surveyDetailsRequestPojoList);
         surveyDetailsRepo.offlineAddSurveyDetails(surveyDetailsRequestPojoList, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
             @Override
@@ -666,18 +708,6 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                     houseId = offlineSurveyDetailsResponse.get(0).getHouseId();
                     Log.e(TAG, "sendOfflineSurvey: This surveyHouseId is error, please check date: " + houseId);
                 }
-
-                /*for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
-                    if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                        houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
-                        offlineSurveyRepo.deleteSurveyById(houseId);
-                        Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
-                        Log.e(TAG, "sendOfflineSurvey: successfully deleted surveyHouseId: " + houseId);
-                    }else if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_ERROR)) {
-                        houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
-                        Log.e(TAG, "sendOfflineSurvey: This surveyHouseId is error, please check date: " + houseId);
-                    }
-                }*/
             }
 
             @Override
@@ -686,7 +716,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
     private void showDialogWithSurveyCount() {
 

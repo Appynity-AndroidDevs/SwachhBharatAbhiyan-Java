@@ -123,10 +123,10 @@ public class SurveyDetailsRepo {
         });
     }
 
-    public void offlineAddSurveyDetails(List<SurveyDetailsRequestPojo> requestPojo, IOfflineSurveyDetailsResponse iOfflineSurveyDetailsResponse){
-
+    public void offlineAddSurveyDetails(List<SurveyDetailsRequestPojo> requestPojoOffline, IOfflineSurveyDetailsResponse iOfflineSurveyDetailsResponse){
+        Log.i("repoViewModel", "offlineAddSurveyDetails: "+requestPojoOffline);
         SurveyDetailsWebService surveyDetailsWebService = Connection.createService(SurveyDetailsWebService.class, AUtils.SURVEY_SERVER_URL);
-        Call<List<SurveyDetailsResponsePojo>> detailsResultPojoCall = surveyDetailsWebService.saveSurveyDetails(AUtils.CONTENT_TYPE, appId, requestPojo);
+        Call<List<SurveyDetailsResponsePojo>> detailsResultPojoCall = surveyDetailsWebService.saveSurveyDetails(AUtils.CONTENT_TYPE, appId, requestPojoOffline);
 
         detailsResultPojoCall.enqueue(new Callback<List<SurveyDetailsResponsePojo>>() {
             @Override

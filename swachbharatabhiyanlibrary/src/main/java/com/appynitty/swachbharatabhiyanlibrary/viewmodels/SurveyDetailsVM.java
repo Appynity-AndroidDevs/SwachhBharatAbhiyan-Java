@@ -1,5 +1,6 @@
 package com.appynitty.swachbharatabhiyanlibrary.viewmodels;
 
+import android.app.Application;
 import android.util.Log;
 import android.view.View;
 
@@ -8,20 +9,20 @@ import androidx.lifecycle.ViewModel;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.GetSurveyResponsePojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
-
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class SurveyDetailsVM extends ViewModel {
     private static final String TAG = "SurveyDetailsVM";
     SurveyDetailsRepo surveyDetailsRepo = SurveyDetailsRepo.getInstance();
     private final MutableLiveData<List<SurveyDetailsResponsePojo>> surveyDetailsMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<SurveyDetailsResponsePojo>> surveyDetailsOfflineMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<GetSurveyResponsePojo>> getSurveyMutableLiveData = new MutableLiveData<>();
+
     private final MutableLiveData<Throwable> surveyDetailsError = new MutableLiveData<>();
     private final MutableLiveData<Integer> progressStatusLiveData = new MutableLiveData<>();
 
@@ -66,6 +67,29 @@ public class SurveyDetailsVM extends ViewModel {
         });
     }
 
+    public void surveyOfflineFormApi(List<SurveyDetailsRequestPojo> requestPojoOffline){
+        progressStatusLiveData.setValue(View.VISIBLE);
+        Log.i("repoViewModel", "surveyOfflineFormApi: "+requestPojoOffline.size());
+        //requestPojoOffline = new ArrayList<>();
+
+        surveyDetailsRepo.offlineAddSurveyDetails(requestPojoOffline, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
+            @Override
+            public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
+                progressStatusLiveData.setValue(View.GONE);
+                Log.e(TAG, "onResponse: " + offlineSurveyDetailsResponse.get(0).getMessage());
+                surveyDetailsOfflineMutableLiveData.setValue(offlineSurveyDetailsResponse);
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                progressStatusLiveData.setValue(View.GONE);
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                surveyDetailsError.setValue(t);
+            }
+        });
+    }
+
 
     public void getSurveyResponseApi(){
         progressStatusLiveData.setValue(View.VISIBLE);
@@ -98,6 +122,9 @@ public class SurveyDetailsVM extends ViewModel {
 
     public MutableLiveData<List<SurveyDetailsResponsePojo>> SaveSurveyDetailsMutableLiveData() {
         return surveyDetailsMutableLiveData;
+    }
+    public MutableLiveData<List<SurveyDetailsResponsePojo>> OfflineSurveyDetailsMutableLiveData() {
+        return surveyDetailsOfflineMutableLiveData;
     }
 
     public MutableLiveData<List<GetSurveyResponsePojo>> getSurveyMutableLiveData() {

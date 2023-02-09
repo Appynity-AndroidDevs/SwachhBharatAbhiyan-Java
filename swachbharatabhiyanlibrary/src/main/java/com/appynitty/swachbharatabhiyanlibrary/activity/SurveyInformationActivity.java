@@ -391,12 +391,11 @@ public class SurveyInformationActivity extends AppCompatActivity {
                                         }
                                         startActivity(new Intent(context, SurveyCompletActivity.class));
                                         Prefs.remove(AUtils.GET_API_REFERENCE_ID);
-                                    }
-                                    if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
+                                    }else if (surveyDetailsResponsePojos.get(0).getStatus().matches(AUtils.STATUS_ERROR)) {
                                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
-                                            AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessageMar());
+                                            AUtils.error(context, surveyDetailsResponsePojos.get(0).getMessageMar());
                                         } else {
-                                            AUtils.success(context, surveyDetailsResponsePojos.get(0).getMessage());
+                                            AUtils.error(context, surveyDetailsResponsePojos.get(0).getMessage());
                                         }
                                     }
                                 }
@@ -449,7 +448,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                                     if (offlineSurveys != null && !offlineSurveys.isEmpty()){
                                         Log.e(TAG, "offline survey list: "+offlineSurveys.get(0).getSurveyRequestObj());
                                         /* Log.i("offline_data_rahul", "check data: "+offlineSurveys.size());*/
-                                        offlineSurveyVM.insert(offlineSurveys.get(0));
+                                      //  offlineSurveyVM.insert(offlineSurveys.get(0));
                                         if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
                                             AUtils.success(context,"Data saved offline" );
                                         }
@@ -510,9 +509,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
         offlineSurvey = new OfflineSurvey(houseId,requestPojo);
         Log.i("offline_data_rahul", "offlineSurvey: "+offlineSurvey);
         offlineSurveyVM.insert(offlineSurvey);
-
-       // sendOfflineSurvey((List<SurveyDetailsRequestPojo>) offlineSurvey);
-       // sendOfflineSurvey((Collections.singleton(offlineSurvey));
 
     }
 

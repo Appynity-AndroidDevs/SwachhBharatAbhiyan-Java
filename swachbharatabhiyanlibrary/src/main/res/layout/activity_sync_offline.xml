@@ -74,6 +74,20 @@
         android:layout_marginBottom="@dimen/dim_10_dp"
         android:background="@drawable/rounded_primary_button"
         android:text="@string/title_activity_sync_offline"
+        android:visibility="visible"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dim_20_sp" />
+    <Button
+        android:id="@+id/btn_sync_data_survey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/dim_20_dp"
+        android:layout_marginEnd="@dimen/dim_20_dp"
+        android:layout_marginBottom="@dimen/dim_10_dp"
+        android:background="@drawable/rounded_primary_button"
+        android:text="@string/title_activity_sync_offline"
+        android:visibility="gone"
         android:textColor="@android:color/white"
         android:textSize="@dimen/dim_20_sp" />
 

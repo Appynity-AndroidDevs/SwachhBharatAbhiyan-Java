@@ -42,19 +42,13 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
-import com.appynitty.swachbharatabhiyanlibrary.entity.OfflineSurvey;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
-import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
-import com.appynitty.swachbharatabhiyanlibrary.repository.OfflineSurveyRepo;
-import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
-import com.appynitty.swachbharatabhiyanlibrary.viewmodels.OfflineSurveyVM;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -113,12 +107,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 
     private boolean isFromAttendanceChecked = false;
 
-    //offline survey
-    private OfflineSurveyVM offlineSurveyVM;
-    private List<OfflineSurvey> surveyList;
-    private SurveyDetailsRepo surveyDetailsRepo;
-    private OfflineSurveyRepo offlineSurveyRepo;
-    private List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -313,7 +302,6 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         generateId();
         registerEvents();
         initData();
-        surveyDetailsRepo = new SurveyDetailsRepo();
     }
 
     private void generateId() {
@@ -323,9 +311,7 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         mContext = EmpDashboardActivity.this;
         AUtils.currentContextConstant = mContext;
         checkIsFromLogin();
-        offlineSurveyRepo = new OfflineSurveyRepo(getApplication());
-        surveyDetailsRequestPojoList = new ArrayList<>();
-        surveyList = new ArrayList<>();
+
         progressBar = findViewById(R.id.empProgress_layout);
         rProgress = findViewById(R.id.progress_cir_bar);
         mCheckAttendanceAdapter = new EmpCheckAttendanceAdapterClass();

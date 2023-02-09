@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -216,7 +217,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                 if (AUtils.isInternetAvailable()){
                     sendSurveyVmOffline();
                 }else {
-                    AUtils.warning(mContext,"Please check your internet connection");
+                    AUtils.warning(mContext,getResources().getString(R.string.no_internet_error));
                 }
             }
         });
@@ -224,17 +225,12 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
         btnSyncOfflineData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (!Prefs.getBoolean(AUtils.isSyncingOn, false)) {
-
                     uploadToServer();
                     showDialogWithCount();
                 }
-
             }
         });
-
-
     }
 
 
@@ -539,15 +535,16 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
                         if (surveyHouseId.substring(0, 2).matches("^[HhPp]+$")) {
                             surveyCount++;
                             Log.i("rahul", "offlineSurvey count: "+surveyCount);
-                            syncSurveyCount = String.valueOf(surveyCount);
+                          //  syncSurveyCount = String.valueOf(surveyCount);
+                            syncSurveyCount = String.valueOf(offlineSurveyRepo.getOfflineCount());
                             Prefs.putString(AUtils.OFFLINE_SURVEY_COUNT, String.valueOf(surveyCount));
                         }
 
                         countList.add(new EmpOfflineCollectionCount(String.valueOf(""),String.valueOf(""),String.valueOf(""),
-                                String.valueOf(""),String.valueOf(surveyCount),String.valueOf(AUtils.getServerDateTime())));
+                                String.valueOf(""),String.valueOf(syncSurveyCount),String.valueOf(AUtils.getServerDateTime())));
 
                         TableDataCountPojo.WorkHistory entity = new TableDataCountPojo().new WorkHistory();
-                        entity.setSurveyCollection(String.valueOf(surveyCount));
+                        entity.setSurveyCollection(String.valueOf(syncSurveyCount));
                         Log.i(TAG, "Rahul offlineSurvey: "+entity);
 
                     if (Prefs.getBoolean(AUtils.isSyncingOn, false)) {

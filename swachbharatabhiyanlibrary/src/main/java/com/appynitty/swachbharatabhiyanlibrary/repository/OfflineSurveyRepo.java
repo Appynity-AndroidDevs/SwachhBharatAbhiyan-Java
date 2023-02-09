@@ -1,6 +1,7 @@
 package com.appynitty.swachbharatabhiyanlibrary.repository;
 
 import android.app.Application;
+import android.database.Cursor;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -44,6 +45,11 @@ public class OfflineSurveyRepo {
     }
     public void getSurveyRow(){
         new GetCountSurveyAsyncTask(surveyDao).execute();
+    }
+    public int getOfflineCount() {
+        int count1;
+        count1 = surveyDao.getCount();
+        return count1;
     }
 
     public LiveData<List<OfflineSurvey>> getAllOfflineSurvey() {

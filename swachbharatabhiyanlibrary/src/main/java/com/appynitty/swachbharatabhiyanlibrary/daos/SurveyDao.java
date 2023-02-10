@@ -2,6 +2,7 @@ package com.appynitty.swachbharatabhiyanlibrary.daos;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.DatabaseView;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -37,4 +38,7 @@ public abstract class SurveyDao {
 
     @Query("SELECT COUNT(houseId) FROM offline_survey_table")
     public abstract int getCount();
+
+    @Query("SELECT * FROM OFFLINE_SURVEY_TABLE ORDER BY houseId DESC LIMIT :limit")
+    public abstract LiveData<List<OfflineSurvey>> getLimitList(int limit);
 }

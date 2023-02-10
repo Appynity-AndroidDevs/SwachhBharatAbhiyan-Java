@@ -216,6 +216,7 @@ public class EmpSyncOfflineActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (AUtils.isInternetAvailable()){
                     sendSurveyVmOffline();
+                    finish();
                 }else {
                     AUtils.warning(mContext,getResources().getString(R.string.no_internet_error));
                 }

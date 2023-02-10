@@ -16,12 +16,14 @@ import java.util.List;
 public class OfflineSurveyVM extends AndroidViewModel {
     private OfflineSurveyRepo offlineSurveyRepo;
     private LiveData<List<OfflineSurvey>> allSurveyLiveData;
+    private LiveData<List<OfflineSurvey>> surveyByLimitLiveData;
     private MutableLiveData<Integer> offlineSurveyCount = new MutableLiveData<>();
 
     public OfflineSurveyVM(@NonNull Application application) {
         super(application);
         offlineSurveyRepo = new OfflineSurveyRepo(application);
         allSurveyLiveData = offlineSurveyRepo.getAllOfflineSurvey();
+        surveyByLimitLiveData = offlineSurveyRepo.getOfflineSurveyByLimit();
 
     }
 
@@ -48,6 +50,9 @@ public class OfflineSurveyVM extends AndroidViewModel {
 
     public LiveData<List<OfflineSurvey>> getAllSurveyLiveData() {
         return allSurveyLiveData;
+    }
+    public LiveData<List<OfflineSurvey>> getSurveyByLimit10LiveData() {
+        return surveyByLimitLiveData;
     }
 
     public MutableLiveData<Integer> getOfflineSurveyCount() {

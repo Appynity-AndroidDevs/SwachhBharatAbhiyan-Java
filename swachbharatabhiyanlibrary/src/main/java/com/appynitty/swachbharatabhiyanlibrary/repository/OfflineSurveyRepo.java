@@ -17,12 +17,14 @@ public class OfflineSurveyRepo {
     AppDataBase appDataBase;
     SurveyDao surveyDao;
     LiveData<List<OfflineSurvey>> allSurvey;
-    /*List<OfflineSurvey> offlineSurveyList;*/
+    LiveData<List<OfflineSurvey>> getSurveyByLimit;
+    int limit = 10;
 
     public OfflineSurveyRepo(Application application) {
         appDataBase = AppDataBase.getAppRoomDataBase(application.getApplicationContext());
         surveyDao = appDataBase.surveyDao();
         allSurvey = surveyDao.getAllSurvey();
+        getSurveyByLimit = surveyDao.getLimitList(limit);
         /*offlineSurveyList = surveyDao.getAllSurveyList();*/
     }
 
@@ -54,6 +56,10 @@ public class OfflineSurveyRepo {
 
     public LiveData<List<OfflineSurvey>> getAllOfflineSurvey() {
         return allSurvey;
+    }
+
+    public LiveData<List<OfflineSurvey>> getOfflineSurveyByLimit() {
+        return getSurveyByLimit;
     }
 
 

@@ -40,6 +40,10 @@ public class OfflineSurveyVM extends AndroidViewModel {
         offlineSurveyRepo.deleteSurvey(offlineSurvey);
     }
 
+    public void deleteByLimit(){
+        offlineSurveyRepo.getOfflineSurveyByLimit();
+    }
+
     public void deleteAllSurvey() {
         offlineSurveyRepo.deleteAllSurvey();
     }

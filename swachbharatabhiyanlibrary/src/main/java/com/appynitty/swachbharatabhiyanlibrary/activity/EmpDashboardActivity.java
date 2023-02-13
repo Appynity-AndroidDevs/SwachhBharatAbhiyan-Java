@@ -28,7 +28,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,13 +45,20 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.EmpUserDetail
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.ShareLocationAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.EmpPopUpDialog;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.IdCardDialog;
+import com.appynitty.swachbharatabhiyanlibrary.entity.OfflineSurvey;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
+import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsResponsePojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.UserDetailPojo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.OfflineSurveyRepo;
+import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.OfflineSurveyVM;
+import com.appynitty.swachbharatabhiyanlibrary.viewmodels.SurveyDetailsVM;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -106,6 +116,18 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
 //    private LocalityAdapterClass mLocalityAdapter;
 
     private boolean isFromAttendanceChecked = false;
+
+    //survey
+    private int surveyCount;
+    private OfflineSurveyVM offlineSurveyVM;
+    private List<OfflineSurvey> surveyList;
+    private SurveyDetailsRepo surveyDetailsRepo;
+    private OfflineSurveyRepo offlineSurveyRepo;
+    private List<SurveyDetailsRequestPojo> surveyDetailsRequestPojoList;
+    String surveyHouseId;
+    String syncSurveyCount = "0";
+    String finalSyncSurveyCount = "0";
+    private SurveyDetailsVM surveyDetailsVM;
 
 
 
@@ -324,6 +346,13 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         menuGridView = findViewById(R.id.menu_grid);
         menuGridView.setLayoutManager(new GridLayoutManager(mContext, 2));
 
+        surveyDetailsVM = new ViewModelProvider((ViewModelStoreOwner) mContext).get(SurveyDetailsVM.class);
+        offlineSurveyVM = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(OfflineSurveyVM.class);
+        surveyDetailsRepo = new SurveyDetailsRepo();
+        offlineSurveyRepo = new OfflineSurveyRepo(getApplication());
+        surveyDetailsRequestPojoList = new ArrayList<>();
+        surveyList = new ArrayList<>();
+
         toolbar = findViewById(R.id.toolbar);
         attendanceStatus = findViewById(R.id.user_attendance_status);
         vehicleStatus = findViewById(R.id.user_vehicle_type);
@@ -333,7 +362,8 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
         profilePic = findViewById(R.id.user_profile_pic);
 
         initToolBar();
-        //offlineSurvey();
+        setOfflineSurveyIds();
+
     }
 
     private void initToolBar() {
@@ -942,6 +972,57 @@ public class EmpDashboardActivity extends AppCompatActivity implements EmpPopUpD
     protected void onPause() {
         super.onPause();
         getIntent().removeExtra(AUtils.isFromLogin);
+    }
+
+    private void setOfflineSurveyIds() {
+        surveyList = offlineSurveyRepo.getOfflineTotalSurveyList();
+        if (surveyList.size() > 0) {
+            for (OfflineSurvey offlineSurvey : surveyList) {
+                offlineSurvey.getSurveyRequestObj().getReferanceId();
+                offlineSurveyVM.update(offlineSurvey);
+            }
+            for (int i=0; i<surveyList.size(); i++){
+                surveyDetailsRequestPojoList.add(surveyList.get(i).getSurveyRequestObj());
+            }
+            sendSurveyVmOffline();
+        }
+
+    }
+
+    private void sendSurveyVmOffline(){
+        Log.i("Rahul_test", "offlineAddSurveyDetails : "+surveyDetailsRequestPojoList);
+        surveyDetailsVM.surveyOfflineFormApi(surveyDetailsRequestPojoList);
+        surveyDetailsVM.OfflineSurveyDetailsMutableLiveData().observe((LifecycleOwner) mContext, new Observer<List<SurveyDetailsResponsePojo>>() {
+            @Override
+            public void onChanged(List<SurveyDetailsResponsePojo> surveyDetailsResponsePojos) {
+                Log.e(TAG, "SurveyLiveData: " + surveyDetailsResponsePojos.toString());
+                String houseId;
+
+                for (int i=0; i<surveyDetailsResponsePojos.size(); i++){
+                    if (surveyDetailsResponsePojos.get(i).getStatus().matches(AUtils.STATUS_SUCCESS)) {
+                        houseId = surveyDetailsResponsePojos.get(i).getHouseId();
+                        offlineSurveyRepo.deleteSurveyById(houseId);
+                        Prefs.remove(AUtils.OFFLINE_SURVEY_COUNT);
+                        Log.e(TAG, "sendOfflineSurvey: successfully deleted surveyHouseId: " + houseId);
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.success(mContext, surveyDetailsResponsePojos.get(i).getMessageMar());
+                        } else {
+                            AUtils.success(mContext, surveyDetailsResponsePojos.get(i).getMessage());
+                        }
+                    }else if (surveyDetailsResponsePojos.get(i).getStatus().matches(AUtils.STATUS_ERROR)) {
+                        houseId = surveyDetailsResponsePojos.get(i).getHouseId();
+                        Log.e(TAG, "sendOfflineSurvey: This surveyHouseId is error, please check date: " + houseId);
+                        if (Prefs.getString(AUtils.LANGUAGE_NAME, AUtils.DEFAULT_LANGUAGE_ID).equals(AUtils.LanguageConstants.MARATHI)) {
+                            AUtils.error(mContext, surveyDetailsResponsePojos.get(i).getMessageMar());
+                        } else {
+                            AUtils.error(mContext, surveyDetailsResponsePojos.get(i).getMessage());
+                        }
+                    }
+                }
+
+            }
+        });
+
     }
 
 }

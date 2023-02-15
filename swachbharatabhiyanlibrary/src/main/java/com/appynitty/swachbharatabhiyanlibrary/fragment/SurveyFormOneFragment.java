@@ -483,16 +483,16 @@ public class SurveyFormOneFragment extends Fragment {
     }
 
     private void rightAge(){
-        int bitDay = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
-        int bitMonth = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,""));
-        int bitYear = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
+        int bitDay = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"0"));
+        int bitMonth = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"0"));
+        int bitYear = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"0"));
         if (bitDay!=0 && bitMonth !=0 && bitYear !=0){
             int niceAge = AUtils.getPerfectAge(bitYear,bitMonth,bitDay);
             Log.e(TAG, "perfect Age Cal: "+niceAge);
             Prefs.putString(AUtils.PREFS.SUR_AGE, String.valueOf(niceAge));
             txtAge.setText(niceAge+"");
         }else {
-            Toast.makeText(context, "Please select year and wait", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please select day, month, year and then calculate", Toast.LENGTH_SHORT).show();
         }
     }
 

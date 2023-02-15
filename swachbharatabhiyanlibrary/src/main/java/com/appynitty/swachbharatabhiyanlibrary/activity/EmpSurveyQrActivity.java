@@ -492,7 +492,7 @@ public class EmpSurveyQrActivity extends AppCompatActivity {
         Log.e(TAG, "submitQRcode: " + houseid);
         mHouse_id = houseid;
         if (validSubmitId(houseid.toLowerCase())) {
-
+            Prefs.putString(AUtils.PREFS.SUR_REFERENCE_ID,mHouse_id);
         } else {
             AUtils.warning(EmpSurveyQrActivity.this, mContext.getResources().getString(R.string.qr_error));
             restartPreview();
@@ -501,10 +501,60 @@ public class EmpSurveyQrActivity extends AppCompatActivity {
 
     private Boolean validSubmitId(String id) {
 
-        Log.e(TAG, "validSubmitId: " + id);
-        return id.substring(0, 2).matches("^[HhPp]+$") || id.matches("gpsba[0-9]+$")
-                || id.matches("lwsba[0-9]+$") || id.matches("sssba[0-9]+$")
-                || id.matches("dysba[0-9]+$");
+        /*Log.e(TAG, "validSubmitId: " + id);
+        return id.substring(0, 2).matches("^[HhPp]+$");*/
+        if (id.substring(0, 2).matches("^[HhPp]+$")) {
+           return true;
+        } else if (id.substring(0, 2).matches("^[GgPp]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            return false;
+        } else if (id.substring(0, 2).matches("^[DdYy]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            return false;
+        }else if (id.substring(0, 2).matches("^[HhTtTtPpSs]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            return false;
+        }else if (id.substring(0, 2).matches("^[SsSs]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            return false;
+        }else if (id.substring(0, 2).matches("^[LlWw]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            return false;
+        }
+            return true;
+
+    }
+
+    private Boolean surveyCheckHouseId(String id) {
+
+        /*Log.e(TAG, "validSubmitId: " + id);
+        return id.substring(0, 2).matches("^[HhPp]+$");*/
+        if (id.substring(0, 2).matches("^[HhPp]+$")) {
+            AUtils.success(mContext,"This is survey house id: "+id);
+            Prefs.putString(AUtils.PREFS.SUR_REFERENCE_ID,id);
+            return true;
+        } else if (id.substring(0, 2).matches("^[GgPp]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            finish();
+            return false;
+        } else if (id.substring(0, 2).matches("^[DdYy]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            finish();
+            return false;
+        }else if (id.substring(0, 2).matches("^[HhTtTtPpSs]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            finish();
+            return false;
+        }else if (id.substring(0, 2).matches("^[SsSs]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            finish();
+            return false;
+        }else if (id.substring(0, 2).matches("^[LlWw]+$")) {
+            AUtils.warning(mContext,"This is not survey house id");
+            finish();
+            return false;
+        }
+        return true;
 
     }
 
@@ -577,10 +627,11 @@ public class EmpSurveyQrActivity extends AppCompatActivity {
     public void handleResult(BarcodeResult result) {
         Log.e(TAG, "handleResult: " + result.getText());
         mHouse_id = result.getText();
-        Prefs.putString(AUtils.PREFS.SUR_REFERENCE_ID,mHouse_id);
-        Log.i("Social", "barcode reader: "+mHouse_id);
-
-        scanQrViewOnClick();
+        if (surveyCheckHouseId(mHouse_id)){
+            Prefs.putString(AUtils.PREFS.SUR_REFERENCE_ID,mHouse_id);
+            Log.i("Social", "barcode reader: "+mHouse_id);
+            scanQrViewOnClick();
+        }
     }
 
     private void startPreview() {

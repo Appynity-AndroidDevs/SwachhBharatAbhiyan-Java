@@ -64,6 +64,7 @@ public class WelcomeSurveyActivity extends AppCompatActivity {
     }
 
     private void removeSurveyData(){
+
         Prefs.remove(AUtils.PREFS.SUR_FULL_NAME);
         Prefs.remove(AUtils.PREFS.SUR_FIRST_NAME);
         Prefs.remove(AUtils.PREFS.SUR_MIDDLE_NAME);

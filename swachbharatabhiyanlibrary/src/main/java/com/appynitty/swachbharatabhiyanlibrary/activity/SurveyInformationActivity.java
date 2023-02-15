@@ -1121,19 +1121,19 @@ public class SurveyInformationActivity extends AppCompatActivity {
         int mirYear = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,"0"));
 
         int marriageAge = 0;
-        /*try {
+        try {
             String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
             String maYear = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,"");
             marriageAge = Integer.parseInt(maYear) - Integer.parseInt(bYear);
         } catch (NumberFormatException e) {
             // The format was incorrect
-        }*/
+        }
 
-        if (mirDay!=0 && mirMonth !=0 && mirYear !=0 && birDay!=0 && birMonth !=0 && birYear !=0){
+        /*if (mirDay!=0 && mirMonth !=0 && mirYear !=0 && birDay!=0 && birMonth !=0 && birYear !=0){
              marriageAge = AUtils.getPerfectMarriageOfYear(birYear,birMonth,birDay,mirYear,mirMonth,mirDay);
             Log.e(TAG, "perfect marriage of year Cal: "+marriageAge);
 
-        }
+        }*/
 
          if (mDay.trim().isEmpty()){
             AUtils.warning(context,"Please select your marriage date");

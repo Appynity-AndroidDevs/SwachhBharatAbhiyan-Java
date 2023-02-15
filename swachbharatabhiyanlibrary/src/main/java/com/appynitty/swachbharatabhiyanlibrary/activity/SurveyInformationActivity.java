@@ -1276,7 +1276,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
     }
     private boolean isValidFragThree(){
         String totalMember = Prefs.getString(AUtils.PREFS.SUR_TOTAL_MEMBER,"0");
-        int allMember = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_TOTAL_MEMBER,"0"));
         String adult = Prefs.getString(AUtils.PREFS.SUR_TOTAL_ADULT,"");
         String children = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CHILDREN,"");
         String citizen = Prefs.getString(AUtils.PREFS.SUR_TOTAL_CITIZEN,"");
@@ -1296,13 +1295,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (citizen.trim().isEmpty()){
             AUtils.warning(context,"Please add total Senior Citizen");
             return false;
-        }else*/ if (totalMember.trim().isEmpty() && !totalMember.equals("0")){
+        }else*/ if ( totalMember.equals("0")){
             AUtils.warning(context,"Please add total member");
             return false;
-        }/*else if (allMember > 0){
-            AUtils.warning(context,"Please add total member at least one");
-            return false;
-        } */ else if (willingStart.trim().isEmpty()){
+        }else if (willingStart.trim().isEmpty()){
             AUtils.warning(context,"Please select yes/no type question");
             return false;
         }else if (resourceA.trim().isEmpty()){
@@ -1321,7 +1317,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         return true;
     }
     private boolean isValidFragFour(){
-        String totalVote = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,"");
+        String totalVote = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,"0");
         String socialMedia = Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,"");
         String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
         String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");

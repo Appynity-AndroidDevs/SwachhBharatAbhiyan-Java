@@ -113,6 +113,7 @@ public class SurveyFormFourFragment extends Fragment {
 
         setOnClick();
         setFillData();
+        removeDuplicateValueOfList();
     }
 
     private void setFillData() {
@@ -704,5 +705,21 @@ public class SurveyFormFourFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    private void removeDuplicateValueOfList(){
+        List<String> socialValue = new ArrayList<String>();
+        socialValue.add(Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,""));
+        for (int i = 1; i<socialValue.size(); i++) {
+            String a1 = socialValue.get(i);
+            String a2 = socialValue.get(i-1);
+            if (a1.equals(a2)) {
+                socialValue.remove(a1);
+                String socialMode = socialValue.toString().trim().replaceAll("\\s","");
+                String socialList = socialMode.replaceAll(regex,"");
+                Log.i("Social", "socialValueRemoveDuplicate: "+socialList);
+                Prefs.putString(AUtils.PREFS.SUR_SOCIAL_MEDIA_REMOVE_DUPLICATE,socialList);
+            }
+        }
     }
 }

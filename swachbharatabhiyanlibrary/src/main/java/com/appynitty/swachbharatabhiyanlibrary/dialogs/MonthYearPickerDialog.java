@@ -47,7 +47,7 @@ public class MonthYearPickerDialog extends DialogFragment {
         int year = cal.get(Calendar.YEAR);
         yearPicker.setVisibility(View.VISIBLE);
         yearPicker.setMinValue(1900);
-        yearPicker.setMaxValue(2024);
+        yearPicker.setMaxValue(year);
         yearPicker.setWrapSelectorWheel(true);
         yearPicker.setValue(year);
 

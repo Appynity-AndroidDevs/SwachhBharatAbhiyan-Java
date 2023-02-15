@@ -882,6 +882,8 @@ public class SurveyInformationActivity extends AppCompatActivity {
         });
     }
     private boolean isValidFragOne(){
+        Calendar cal = Calendar.getInstance();
+        String year = String.valueOf(cal.get(java.util.Calendar.YEAR));
 
         String surFName = Prefs.getString(AUtils.PREFS.SUR_FIRST_NAME,"");
         String surMName = Prefs.getString(AUtils.PREFS.SUR_MIDDLE_NAME,"");
@@ -924,16 +926,25 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (age.trim().isEmpty()){
             AUtils.warning(context,"Please calculate your age");
             return false;
-        }else if (bYear.equalsIgnoreCase("2023")){
-            AUtils.warning(context,"Please select your valid birthday Year");
-            return false;
-        }else if (bYear.equalsIgnoreCase("2024")){
+        }else if (bYear.equals(year)){
             AUtils.warning(context,"Please select your valid birthday Year");
             return false;
         }else if (bYear.equalsIgnoreCase("2022")){
             AUtils.warning(context,"Please select your valid birthday Year");
             return false;
         }else if (bYear.equalsIgnoreCase("2021")){
+            AUtils.warning(context,"Please select your valid birthday Year");
+            return false;
+        }else if (bYear.equalsIgnoreCase("2020")){
+            AUtils.warning(context,"Please select your valid birthday Year");
+            return false;
+        }else if (bYear.equalsIgnoreCase("2019")){
+            AUtils.warning(context,"Please select your valid birthday Year");
+            return false;
+        }else if (bYear.equalsIgnoreCase("2018")){
+            AUtils.warning(context,"Please select your valid birthday Year");
+            return false;
+        }else if (bYear.equalsIgnoreCase("2017")){
             AUtils.warning(context,"Please select your valid birthday Year");
             return false;
         }else if (!isValidMonthOfDays(bMonth)){
@@ -1340,7 +1351,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         if (totalVote.trim().isEmpty()){
             AUtils.warning(context,"Please add total vote member");
             return false;
-        }else if (socialMedia.trim().isEmpty()){
+        }/*else if (socialMedia.trim().isEmpty()){
             AUtils.warning(context,"Please select your used social media app");
             return false;
         }else if (shopping.trim().isEmpty()){
@@ -1349,7 +1360,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }else if (paymentApp.trim().isEmpty()){
             AUtils.warning(context,"Please select your used payment mode app");
             return false;
-        }
+        }*/
         return true;
     }
     private boolean isValidFragFive(){
@@ -1359,13 +1370,13 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String booster = Prefs.getString(AUtils.PREFS.SUR_BOOSTER_SHOT,"");
         String divyang = Prefs.getString(AUtils.PREFS.SUR_MEMBER_OF_DIVYANG,"");
 
-        if (insurance.trim().isEmpty()){
+        /*if (insurance.trim().isEmpty()){
             AUtils.warning(context,"Please select your insurance");
             return false;
         }else if (insuredType.trim().isEmpty()){
             AUtils.warning(context,"Please select your insurance type");
             return false;
-        }else if (ayushman.trim().isEmpty()){
+        }else*/ if (ayushman.trim().isEmpty()){
             AUtils.warning(context,"Please select yes/no type question");
             return false;
         }else if (booster.trim().isEmpty()){

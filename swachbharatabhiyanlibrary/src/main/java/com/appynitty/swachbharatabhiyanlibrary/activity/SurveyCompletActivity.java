@@ -65,6 +65,7 @@ public class SurveyCompletActivity extends AppCompatActivity {
         Prefs.remove(AUtils.PREFS.SUR_FOUR_WHEELER_QTY);
         Prefs.remove(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE);
         Prefs.remove(AUtils.PREFS.SUR_SOCIAL_MEDIA);
+        Prefs.remove(AUtils.PREFS.SUR_SOCIAL_MEDIA_REMOVE_DUPLICATE);
         Prefs.remove(AUtils.PREFS.SUR_ONLINE_SHOPPING);
         Prefs.remove(AUtils.PREFS.SUR_PAYMENT_MODE);
         Prefs.remove(AUtils.PREFS.SUR_ONLINE_PAY_APP);

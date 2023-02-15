@@ -393,9 +393,12 @@ public class AUtils extends CommonUtils {
         String SUR_FOUR_WHEELER_QTY = "fourWheelerQty";
         String SUR_NUM_OF_PEOPLE_VOTE = "noPeopleVote";
         String SUR_SOCIAL_MEDIA = "socialMedia";
+        String SUR_SOCIAL_MEDIA_REMOVE_DUPLICATE = "socialMediaRemove";
         String SUR_ONLINE_SHOPPING = "onlineShopping";
+        String SUR_ONLINE_SHOPPING_REMOVE_DUPLICATE = "onlineShoppingRemove";
         String SUR_PAYMENT_MODE = "paymentModePrefer";
         String SUR_ONLINE_PAY_APP = "onlinePayApp";
+        String SUR_ONLINE_PAY_APP_REMOVE_DUPLICATE = "onlinePayAppRemove";
         String SUR_INSURANCE = "insurance";
         String SUR_UNDER_INSURANCE = "underInsurer";
         String SUR_AYUSHMAN_BENE = "ayushmanBeneficiary";

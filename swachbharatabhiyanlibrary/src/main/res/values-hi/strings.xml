@@ -310,5 +310,32 @@
     <string name="str_heading_last_name">उपनाम</string>
     <string name="str_hint_enter_your_last_name">अपना अंतिम नाम दर्ज करें</string>
     <string name="survey_collection_lbl">सर्वेक्षण संग्रह</string>
+    <string name="err_str_first_name">Please enter your first name</string>
+    <string name="err_str_middle_name">Please enter your middle name</string>
+    <string name="err_str_last_name">Please enter your last name</string>
+    <string name="err_str_mobile_num">Please enter your mobile number</string>
+    <string name="err_str_valid_mobile_num">Please enter your valid mobile number</string>
+    <string name="err_str_select_birth_day">Please select your birthday day</string>
+    <string name="err_str_select_birth_month">Please select your birthday Month</string>
+    <string name="err_str_select_birth_year">Please select your birthday Year</string>
+    <string name="err_str_cal_age">Please calculate your age</string>
+    <string name="err_str_select_valid_birth_year">Please select your valid birthday Year</string>
+    <string name="err_str_gender_check">Please check your gender</string>
+    <string name="err_str_select_blood_group">Please select your blood group</string>
+    <string name="err_str_valid_jan">Valid date of January</string>
+    <string name="err_str_in_valid_jan">Invalid date of January</string>
+    <string name="err_str_valid_feb">Valid date of February</string>
+    <string name="err_str_in_valid_feb">Invalid date of February</string>
+    <string name="err_str_valid_mar">Valid date of March</string>
+    <string name="err_str_in_valid_mar">Invalid date of March</string>
+    <string name="err_str_valid_april">Valid date of April</string>
+    <string name="err_str_in_valid_april">Invalid date of April</string>
+    <string name="err_str_valid_may">Valid date of May</string>
+    <string name="err_str_in_valid_may">Invalid date of May</string>
+    <string name="err_str_valid_june">Valid date of June</string>
+    <string name="err_str_in_valid_june">Invalid date of June</string>
+    <string name="err_str_valid_july">Valid date of July</string>
+    <string name="err_str_in_valid_july">Invalid date of July</string>
+    <string name="err_str_valid_agust">Valid date of August</string>
 
 </resources>

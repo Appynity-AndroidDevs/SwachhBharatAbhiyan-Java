@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
@@ -31,6 +32,7 @@ public class SurveyFormThreeFragment extends Fragment {
     private ImageView imgMinusSCitizen,imgPlusSCitizen;
     private ImageView imgMinusTwoWheel,imgPlusTwoWheel;
     private ImageView imgMinusFourWheel,imgPlusFourWheel;
+    private LinearLayout liAvailable;
 
     private TextView txtNumAdult;
     private TextView txtNumChild;
@@ -127,6 +129,9 @@ public class SurveyFormThreeFragment extends Fragment {
         chkArrayBusinessType[1] = cbBusinessTypeNo;
         chkArrayBusinessType[1].setOnClickListener(mListenerBusinessType);
 //Available
+
+        liAvailable = view.findViewById(R.id.li_business_available);
+        liAvailable.setVisibility(View.GONE);
         cbLandA = view.findViewById(R.id.cb_land_available);
         land = getResStringLanguage(R.string.str_land,"en");
         cbShopA = view.findViewById(R.id.cb_shop_available);
@@ -419,12 +424,14 @@ public class SurveyFormThreeFragment extends Fragment {
                     if (checkedId == R.id.cb_business_yes){
                         cbValueBusinessType = yes;
                         Log.i("Social", "onClick: "+cbValueBusinessType);
+                        liAvailable.setVisibility(View.VISIBLE);
                         // Prefs.putString(AUtils.PREFS.SUR_WILLING_START,cbValueBusinessType);
 
                     }else if (checkedId == R.id.cb_business_no){
                         cbValueBusinessType = no;
                         Log.i("Social", "onClick: "+cbValueBusinessType);
                         // Prefs.putString(AUtils.PREFS.SUR_WILLING_START,cbValueBusinessType);
+                        liAvailable.setVisibility(View.GONE);
                     }
                     Prefs.putString(AUtils.PREFS.SUR_WILLING_START,String.valueOf(false));
                     current.setChecked(true);

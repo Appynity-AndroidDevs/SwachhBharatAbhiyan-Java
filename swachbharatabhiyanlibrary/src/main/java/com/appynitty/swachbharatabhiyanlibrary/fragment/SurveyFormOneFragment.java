@@ -35,6 +35,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.dialogs.DaysPickerDialog;
@@ -61,7 +62,7 @@ public class SurveyFormOneFragment extends Fragment {
     private MonthYearPickerDialog monthYearPickerDialog;
     private MonthPickerDialog monthPickerDialog;
     private DaysPickerDialog daysPickerDialog;
-    private TextView txtAge;
+    private TextView txtAge, txtBtnCalAge;
     private String birthDayDate;
     private String birthDay, birthMonth, birthYear;
 
@@ -156,6 +157,7 @@ public class SurveyFormOneFragment extends Fragment {
         edtMName = view.findViewById(R.id.edt_middle_name);
         edtLName = view.findViewById(R.id.edt_last_name);
         edtMobile = view.findViewById(R.id.edt_phone_call);
+        txtBtnCalAge = view.findViewById(R.id.txt_cal_age);
 
         atxtMonth = view.findViewById(R.id.auto_month);
         atxtDay = view.findViewById(R.id.auto_day);
@@ -301,6 +303,12 @@ public class SurveyFormOneFragment extends Fragment {
 
 
     private void setOnClick() {
+        txtBtnCalAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rightAge();
+            }
+        });
         edtName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -449,8 +457,8 @@ public class SurveyFormOneFragment extends Fragment {
                         atxtYear.setText(birthYear);
                         birthDayDate = "0" +birthDay + "-" + "0" + birthMonth + "-" + birthYear;
                         Log.d("Rahul", "date_of_birth: " + birthDayDate);
-                        myAge(birthYear);
                         Prefs.putString(AUtils.PREFS.SUR_BIRTH_YEAR, birthYear);
+                        myAge(birthYear);
                         Log.i("Social", "birth year: "+Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
                         Prefs.putString(AUtils.PREFS.SUR_BIRTHDAY_DATE,Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"")+ "-" +Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
                         Log.i("Social", "date of birth: "+Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,""));
@@ -470,11 +478,22 @@ public class SurveyFormOneFragment extends Fragment {
         Calendar today = getInstance();
         int currentYear = today.get(YEAR);
         int age = currentYear - Integer.parseInt(birthYear);
-        Prefs.putString(AUtils.PREFS.SUR_AGE, String.valueOf(age));
-        Log.d("TAG", "My Age is: "+age);
-        Log.i("Social", "My Age is: "+Prefs.getString(AUtils.PREFS.SUR_AGE,""));
-        //txtAge.setText(age);
-        txtAge.setText(Prefs.getString(AUtils.PREFS.SUR_AGE,""));
+        Log.e(TAG, "only year wise age: "+age);
+
+    }
+
+    private void rightAge(){
+        int bitDay = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,""));
+        int bitMonth = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,""));
+        int bitYear = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,""));
+        if (bitDay!=0 && bitMonth !=0 && bitYear !=0){
+            int niceAge = AUtils.getPerfectAge(bitYear,bitMonth,bitDay);
+            Log.e(TAG, "perfect Age Cal: "+niceAge);
+            Prefs.putString(AUtils.PREFS.SUR_AGE, String.valueOf(niceAge));
+            txtAge.setText(niceAge+"");
+        }else {
+            Toast.makeText(context, "Please select year and wait", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private View.OnClickListener mListenerGender = new View.OnClickListener() {
@@ -516,6 +535,7 @@ public class SurveyFormOneFragment extends Fragment {
         @Override
         public void onClick(View v) {
             final int checkedId = v.getId();
+
             for (int i = 0; i < chkArrayBloodGroup.length; i++) {
                 final CheckBox current = chkArrayBloodGroup[i];
                 if (current.getId() == checkedId) {

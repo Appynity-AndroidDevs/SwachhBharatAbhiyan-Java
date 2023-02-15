@@ -1698,5 +1698,38 @@ public class AUtils extends CommonUtils {
         return ageInteger;
     }
 
+    public static int getPerfectMarriageOfYear(int Byear, int Bmonth, int Bdate, int Myear, int Mmonth, int Mdate) {
+
+        Calendar dobCalendar = Calendar.getInstance();
+        Calendar marriageCalendar = Calendar.getInstance();
+
+        dobCalendar.set(Calendar.YEAR, Byear);
+        dobCalendar.set(Calendar.MONTH, Bmonth);
+        dobCalendar.set(Calendar.DATE, Bdate);
+
+        marriageCalendar.set(Calendar.YEAR, Myear);
+        marriageCalendar.set(Calendar.MONTH, Mmonth);
+        marriageCalendar.set(Calendar.DATE, Mdate);
+
+        int ageInteger = 0;
+
+        ageInteger = marriageCalendar.get(Calendar.YEAR) - dobCalendar.get(Calendar.YEAR);
+
+        if (marriageCalendar.get(Calendar.MONTH) == dobCalendar.get(Calendar.MONTH)) {
+
+            if (marriageCalendar.get(Calendar.DAY_OF_MONTH) < dobCalendar.get(Calendar.DAY_OF_MONTH)) {
+
+                ageInteger = ageInteger - 1;
+            }
+
+        } else if (marriageCalendar.get(Calendar.MONTH) < dobCalendar.get(Calendar.MONTH)) {
+
+            ageInteger = ageInteger - 1;
+
+        }
+
+        return ageInteger;
+    }
+
 }
 

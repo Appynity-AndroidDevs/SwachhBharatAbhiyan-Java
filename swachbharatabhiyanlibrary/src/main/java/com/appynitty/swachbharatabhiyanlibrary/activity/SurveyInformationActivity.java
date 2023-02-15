@@ -1112,13 +1112,27 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String mDay = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"");
         String mMonth = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"");
         String mYear = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,"");
+
+        int birDay = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_DAY,"0"));
+        int birMonth = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_MONTH,"0"));
+        int birYear = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"0"));
+        int mirDay = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_DAY,"0"));
+        int mirMonth = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"0"));
+        int mirYear = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,"0"));
+
         int marriageAge = 0;
-        try {
+        /*try {
             String bYear = Prefs.getString(AUtils.PREFS.SUR_BIRTH_YEAR,"");
             String maYear = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_YEAR,"");
             marriageAge = Integer.parseInt(maYear) - Integer.parseInt(bYear);
         } catch (NumberFormatException e) {
             // The format was incorrect
+        }*/
+
+        if (mirDay!=0 && mirMonth !=0 && mirYear !=0 && birDay!=0 && birMonth !=0 && birYear !=0){
+             marriageAge = AUtils.getPerfectMarriageOfYear(birYear,birMonth,birDay,mirYear,mirMonth,mirDay);
+            Log.e(TAG, "perfect marriage of year Cal: "+marriageAge);
+
         }
 
          if (mDay.trim().isEmpty()){
@@ -1132,6 +1146,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
             return false;
         }else if (!mYear.isEmpty()){
             if (marriageAge < 18){
+                Log.e(TAG, "isMarriageValidation: "+marriageAge+" < "+"18" );
                 AUtils.warning(context,"Your age below 18, please select valid marriage date");
                 return false;
             }

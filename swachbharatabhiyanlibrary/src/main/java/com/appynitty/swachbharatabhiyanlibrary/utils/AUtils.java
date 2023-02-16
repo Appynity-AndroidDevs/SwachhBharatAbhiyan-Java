@@ -1653,7 +1653,10 @@ public class AUtils extends CommonUtils {
         }
     }
 
-
+    /***
+     * Created BY Rahul Rokade
+     * Date : 3 Jan 2023
+     * */
     public static void removeDuplicatesListOfValue(List<?> list)
     {
         int count = list.size();
@@ -1670,7 +1673,10 @@ public class AUtils extends CommonUtils {
             }
         }
     }
-
+    /***
+     * Created BY Rahul Rokade
+     * Date : 3 Jan 2023
+     * */
     public static int getPerfectAge(int year, int month, int date) {
 
         Calendar dobCalendar = Calendar.getInstance();
@@ -1700,7 +1706,10 @@ public class AUtils extends CommonUtils {
 
         return ageInteger;
     }
-
+    /***
+     * Created BY Rahul Rokade
+     * Date : 3 Jan 2023
+     * */
     public static int getPerfectMarriageOfYear(int Byear, int Bmonth, int Bdate, int Myear, int Mmonth, int Mdate) {
 
         Calendar dobCalendar = Calendar.getInstance();

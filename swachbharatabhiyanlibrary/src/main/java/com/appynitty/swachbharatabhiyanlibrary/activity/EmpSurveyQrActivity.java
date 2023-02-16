@@ -82,13 +82,14 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial;
-
+/***
+ * Created BY Rahul Rokade
+ * Date : 3 Jan 2023
+ * */
 public class EmpSurveyQrActivity extends AppCompatActivity {
     private final static String TAG = "EmpSurveyQrActivity";
     final Executor executor = Executors.newSingleThreadExecutor();
-    /**
-     * permission code
-     */
+
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1013;
     private Context mContext;
     private Toolbar toolbar;

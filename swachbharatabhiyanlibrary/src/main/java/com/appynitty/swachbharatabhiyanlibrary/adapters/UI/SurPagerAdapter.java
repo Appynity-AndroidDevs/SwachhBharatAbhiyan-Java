@@ -20,7 +20,10 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.SurveyDetailsRequestPojo;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/***
+ * Created BY Rahul Rokade
+ * Date : 3 Jan 2023
+ * */
 public class SurPagerAdapter extends FragmentStateAdapter {
 
     private Context mContext;

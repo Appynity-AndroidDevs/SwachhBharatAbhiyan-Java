@@ -12,7 +12,10 @@ import com.appynitty.swachbharatabhiyanlibrary.entity.OfflineSurvey;
 import com.appynitty.swachbharatabhiyanlibrary.repository.OfflineSurveyRepo;
 
 import java.util.List;
-
+/***
+ * Created BY Rahul Rokade
+ * Date : 3 Jan 2023
+ * */
 public class OfflineSurveyVM extends AndroidViewModel {
     private OfflineSurveyRepo offlineSurveyRepo;
     private LiveData<List<OfflineSurvey>> allSurveyLiveData;

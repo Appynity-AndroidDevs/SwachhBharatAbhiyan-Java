@@ -435,6 +435,7 @@
     <string name="err_str_offline_submite_reenter_birth_day_date">Please Re-Enter birthday Date then Submit</string>
     <string name="err_str_valid_vote_member">In your house senior citizen available, please add vote member</string>
     <string name="err_str_above_age_seven">Please collect survey information above age seven year of old person.</string>
+    <string name="success_offline_data_saved">Data saved offline successfully</string>
 
 
     <!--    STRING ARRAY FOR MONTHS-->

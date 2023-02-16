@@ -11,7 +11,10 @@ import android.os.Looper;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
-
+/***
+ * Created BY Rahul Rokade
+ * Date : 3 Jan 2023
+ * */
 public class SurveyCompletActivity extends AppCompatActivity {
     private Context context;
 

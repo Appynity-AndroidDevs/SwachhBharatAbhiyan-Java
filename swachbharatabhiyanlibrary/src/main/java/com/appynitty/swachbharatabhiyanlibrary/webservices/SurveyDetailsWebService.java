@@ -10,7 +10,10 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-
+/***
+ * Created BY Rahul Rokade
+ * Date : 3 Jan 2023
+ * */
 public interface SurveyDetailsWebService {
     @POST("api/Save/SurveyDetails")
     Call<List<SurveyDetailsResponsePojo>> saveSurveyDetails(@Header("Content-Type") String content_type,

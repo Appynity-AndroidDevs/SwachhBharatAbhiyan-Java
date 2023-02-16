@@ -13,7 +13,10 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/***
+ * Created BY Rahul Rokade
+ * Date : 3 Jan 2023
+ * */
 public class SurveyPagerAdapter extends PagerAdapter {
     private Context mContext;
     LayoutInflater mLayoutInflater;

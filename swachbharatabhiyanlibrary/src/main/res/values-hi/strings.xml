@@ -368,5 +368,6 @@
     <string name="err_str_offline_submite_reenter_birth_day_date">कृपया जन्मदिन की तारीख फिर से दर्ज करें और फिर सबमिट करें</string>
     <string name="err_str_valid_vote_member">आपके घर में वरिष्ठ नागरिक उपलब्ध हैं, कृपया वोट सदस्य जोड़ें</string>
     <string name="err_str_above_age_seven">कृपया सात वर्ष से ऊपर के व्यक्ति से सर्वेक्षण की जानकारी एकत्र करें।</string>
+    <string name="success_offline_data_saved">ऑफ़लाइन डेटा सफलतापूर्वक सहेजा गया।</string>
 
 </resources>

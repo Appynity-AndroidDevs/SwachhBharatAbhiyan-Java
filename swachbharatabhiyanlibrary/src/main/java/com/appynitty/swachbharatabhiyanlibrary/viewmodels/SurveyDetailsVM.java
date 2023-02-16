@@ -15,7 +15,10 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.SurveyDetailsRepo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.pixplicity.easyprefs.library.Prefs;
 import java.util.List;
-
+/***
+ * Created BY Rahul Rokade
+ * Date : 3 Jan 2023
+ * */
 public class SurveyDetailsVM extends ViewModel {
     private static final String TAG = "SurveyDetailsVM";
     SurveyDetailsRepo surveyDetailsRepo = SurveyDetailsRepo.getInstance();

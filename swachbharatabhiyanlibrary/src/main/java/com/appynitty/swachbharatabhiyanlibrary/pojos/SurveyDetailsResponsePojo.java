@@ -1,7 +1,10 @@
 package com.appynitty.swachbharatabhiyanlibrary.pojos;
 
 import com.google.gson.annotations.SerializedName;
-
+/***
+ * Created BY Rahul Rokade
+ * Date : 3 Jan 2023
+ * */
 public class SurveyDetailsResponsePojo {
 
     @SerializedName("ID")

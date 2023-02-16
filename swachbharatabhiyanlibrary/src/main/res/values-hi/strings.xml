@@ -209,7 +209,7 @@
     <string name="title_survey_info">सर्वेक्षण की जानकारी</string>
     <string name="str_srv_welcome">स्वागत है</string>
     <string name="str_srv_wlc_sub_title">हमें अपने विवरण के बारे में बताएं।\n इस प्रक्रिया को पूरा होने में लगभग\n 2-3 मिनट लगते हैं</string>
-    <string name="btn_str_let_s_go">Let\'s Go</string>
+    <string name="btn_str_let_s_go">आगे बढे</string>
     <string name="sur_heading_name">पहला नाम</string>
     <string name="sur_hint_enter_name">अपना पहला नाम दर्ज करें</string>
     <string name="str_heading_mobile_number">आपका मोबाइल नंबर</string>

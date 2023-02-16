@@ -530,7 +530,7 @@ public class EmpSurveyQrActivity extends AppCompatActivity {
         /*Log.e(TAG, "validSubmitId: " + id);
         return id.substring(0, 2).matches("^[HhPp]+$");*/
         if (id.substring(0, 2).matches("^[HhPp]+$")) {
-            AUtils.success(mContext,getResources().getString(R.string.success_survey_house_id)+id);
+            AUtils.success(mContext,getResources().getString(R.string.success_survey_house_id)+" "+id);
             Prefs.putString(AUtils.PREFS.SUR_REFERENCE_ID,id);
             return true;
         } else if (id.substring(0, 2).matches("^[GgPp]+$")) {

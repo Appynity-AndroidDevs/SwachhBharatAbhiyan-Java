@@ -234,7 +234,7 @@
     <string name="title_survey_info">सर्वेक्षण माहिती</string>
     <string name="str_srv_welcome">स्वागत आहे</string>
     <string name="str_srv_wlc_sub_title">आम्हाला तुमच्या तपशीलांबद्दल सांगा.\n ही प्रक्रिया पूर्ण होण्यासाठी सुमारे 2-3 मिनिटे लागतात</string>
-    <string name="btn_str_let_s_go">Let\'s Go</string>
+    <string name="btn_str_let_s_go">चला सामोर</string>
     <string name="sur_heading_name">पहिले नाव</string>
     <string name="sur_hint_enter_name">आपले पहिले नाव प्रविष्ट करा</string>
     <string name="str_heading_mobile_number">आपला भ्रमणध्वनी क्रमांक</string>

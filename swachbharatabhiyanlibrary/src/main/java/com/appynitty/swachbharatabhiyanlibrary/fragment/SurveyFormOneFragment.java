@@ -492,7 +492,7 @@ public class SurveyFormOneFragment extends Fragment {
             Prefs.putString(AUtils.PREFS.SUR_AGE, String.valueOf(niceAge));
             txtAge.setText(niceAge+"");
         }else {
-            Toast.makeText(context, "Please select day, month, year and then calculate", Toast.LENGTH_SHORT).show();
+            AUtils.warning(context,getResources().getString(R.string.err_str_age_calculate));
         }
     }
 

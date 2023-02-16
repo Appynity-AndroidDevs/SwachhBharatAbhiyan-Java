@@ -506,19 +506,19 @@ public class EmpSurveyQrActivity extends AppCompatActivity {
         if (id.substring(0, 2).matches("^[HhPp]+$")) {
            return true;
         } else if (id.substring(0, 2).matches("^[GgPp]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             return false;
         } else if (id.substring(0, 2).matches("^[DdYy]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             return false;
         }else if (id.substring(0, 2).matches("^[HhTtTtPpSs]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             return false;
         }else if (id.substring(0, 2).matches("^[SsSs]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             return false;
         }else if (id.substring(0, 2).matches("^[LlWw]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             return false;
         }
             return true;
@@ -530,27 +530,27 @@ public class EmpSurveyQrActivity extends AppCompatActivity {
         /*Log.e(TAG, "validSubmitId: " + id);
         return id.substring(0, 2).matches("^[HhPp]+$");*/
         if (id.substring(0, 2).matches("^[HhPp]+$")) {
-            AUtils.success(mContext,"This is survey house id: "+id);
+            AUtils.success(mContext,getResources().getString(R.string.success_survey_house_id)+id);
             Prefs.putString(AUtils.PREFS.SUR_REFERENCE_ID,id);
             return true;
         } else if (id.substring(0, 2).matches("^[GgPp]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             finish();
             return false;
         } else if (id.substring(0, 2).matches("^[DdYy]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             finish();
             return false;
         }else if (id.substring(0, 2).matches("^[HhTtTtPpSs]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             finish();
             return false;
         }else if (id.substring(0, 2).matches("^[SsSs]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             finish();
             return false;
         }else if (id.substring(0, 2).matches("^[LlWw]+$")) {
-            AUtils.warning(mContext,"This is not survey house id");
+            AUtils.warning(mContext,getResources().getString(R.string.err_str_not_survey_house_id));
             finish();
             return false;
         }

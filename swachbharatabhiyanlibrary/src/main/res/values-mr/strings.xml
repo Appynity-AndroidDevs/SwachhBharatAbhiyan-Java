@@ -362,6 +362,36 @@
     <string name="err_str_valid_july">Valid date of July</string>
     <string name="err_str_in_valid_july">Invalid date of July</string>
     <string name="err_str_valid_agust">Valid date of August</string>
+    <string name="err_str_in_valid_august">Invalid date of August</string>
+    <string name="err_str_valid_sep">Valid date of September</string>
+    <string name="err_str_in_valid_sep">Invalid date of September</string>
+    <string name="err_str_valid_oct">Valid date of October</string>
+    <string name="err_str_in_valid_oct">Invalid date of October</string>
+    <string name="err_str_valid_nov">Valid date of November</string>
+    <string name="err_str_in_valid_nov">Invalid date of November</string>
+    <string name="err_str_valid_dec">Valid date of December</string>
+    <string name="err_str_in_valid_dec">Invalid date of December</string>
+    <string name="err_str_select_qualification">Please select your qualification</string>
+    <string name="err_str_select_occupation">Please select your occupation</string>
+    <string name="err_str_marital_status">Please select your marital status</string>
+    <string name="err_str_living_status">Please select living status</string>
+    <string name="err_str_select_marriage_day">Please select your marriage day</string>
+    <string name="err_str_select_marriage_month">Please select your marriage Month</string>
+    <string name="err_str_select_marriage_year">Please select your marriage Year</string>
+    <string name="err_str_valid_marriage_date">Your age below 18, please select valid marriage date</string>
+    <string name="err_str_total_member">Please add total member</string>
+    <string name="err_str_select_business_type">Please select your business type</string>
+    <string name="err_str_select_availabe_resources">Please select your resources</string>
+    <string name="err_str_select_yes_no_que">Please select yes/no type question</string>
+    <string name="err_str_add_two_wheeler_vehicle">Please add total two wheeler vehicle</string>
+    <string name="err_str_total_vote_member">Please add total vote member</string>
+    <string name="err_str_not_survey_house_id">This is not survey house id</string>
+    <string name="success_survey_house_id">"This is survey house id: "</string>
+    <string name="err_str_age_calculate">Please select day, month, year and then calculate</string>
+    <string name="success_survey_alredy_done">Survey Already Done</string>
+    <string name="err_str_offline_submit_reenter_marriage_date">Please Re-Enter marriage Date then Submit</string>
+    <string name="err_str_offline_submite_reenter_birth_day_date">Please Re-Enter birthday Date then Submit</string>
+    <string name="err_str_valid_vote_member">Your side senior citizen available, please add vote member</string>
 
 
 </resources>

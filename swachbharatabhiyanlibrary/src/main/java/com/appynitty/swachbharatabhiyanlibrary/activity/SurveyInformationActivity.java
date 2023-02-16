@@ -798,7 +798,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                             if (apiReferenceId != null){
                                 Prefs.putString(AUtils.GET_API_REFERENCE_ID, apiReferenceId);
                                 if (headerReferenceId.equals(apiReferenceId)){
-                                    Toast.makeText(context, "Survey Already Done", Toast.LENGTH_SHORT).show();
+                                    AUtils.success(context,getResources().getString(R.string.success_survey_alredy_done));
                                     Log.i("social", "getApiSurvey: " + "property "+apiReferenceId+" survey form already filled");
                                     Log.d(TAG, "apiResponseModel: ", apiResponseModel);
                                     pagerAdapter = new SurPagerAdapter(getSupportFragmentManager(),getLifecycle(),apiResponseModel);
@@ -970,7 +970,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "01";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
-                    AUtils.info(context, getString(R.string.err_str_valid_jan));
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_jan));
                 }else {
                     AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_jan));
                     return false;
@@ -1046,7 +1046,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
                     AUtils.info(context, getResources().getString(R.string.err_str_valid_agust));
                 }else {
-                    AUtils.warning(context, "Invalid date of August");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_august));
                     return false;
                 }
                 break;
@@ -1054,9 +1054,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "09";
                 number_Of_DaysInMonth = 30;
                 if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of September");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_sep));
                 }else {
-                    AUtils.warning(context, "Invalid date of September");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_sep));
                     return false;
                 }
                 break;
@@ -1064,9 +1064,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "10";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of October");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_oct));
                 }else {
-                    AUtils.warning(context, "Invalid date of October");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_oct));
                     return false;
                 }
                 break;
@@ -1074,9 +1074,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "11";
                 number_Of_DaysInMonth = 30;
                 if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of November");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_nov));
                 }else {
-                    AUtils.warning(context, "Invalid date of November");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_nov));
                     return false;
                 }
                 break;
@@ -1084,9 +1084,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "12";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= bDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of December");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_dec));
                 }else {
-                    AUtils.warning(context, "Invalid date of December");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_dec));
                     return false;
                 }
                 break;
@@ -1101,20 +1101,20 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String mMonth = Prefs.getString(AUtils.PREFS.SUR_MARRIAGE_MONTH,"");
         String living = Prefs.getString(AUtils.PREFS.SUR_LIVING_STATUS,"");
         if (qualification.trim().isEmpty()){
-            AUtils.warning(context,"Please select your qualification");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_qualification));
             return false;
         }else if (occupation.trim().isEmpty()){
-            AUtils.warning(context,"Please select your occupation");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_occupation));
             return false;
         }else if (maritalStatus.trim().isEmpty()){
-            AUtils.warning(context,"Please select your marital status");
+            AUtils.warning(context,getResources().getString(R.string.err_str_marital_status));
             return false;
         }else if (maritalStatus.equals("Married") && !isMarriageValidation()){
             return false;
         }else if (maritalStatus.equals("Married") && !isValidMonthOfDaysMarriage(mMonth)){
             return false;
         }else if (living.trim().isEmpty()){
-            AUtils.warning(context,"Please select living status");
+            AUtils.warning(context,getResources().getString(R.string.err_str_living_status));
             return false;
         }
         return true;
@@ -1147,18 +1147,18 @@ public class SurveyInformationActivity extends AppCompatActivity {
         }*/
 
          if (mDay.trim().isEmpty()){
-            AUtils.warning(context,"Please select your marriage date");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_marriage_day));
             return false;
         }else if (mMonth.trim().isEmpty()){
-            AUtils.warning(context,"Please select your marriage Month");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_marriage_month));
             return false;
         }else if (mYear.trim().isEmpty()){
-            AUtils.warning(context,"Please select your marriage Year");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_marriage_year));
             return false;
         }else if (!mYear.isEmpty()){
             if (marriageAge < 18){
                 Log.e(TAG, "isMarriageValidation: "+marriageAge+" < "+"18" );
-                AUtils.warning(context,"Your age below 18, please select valid marriage date");
+                AUtils.warning(context,getResources().getString(R.string.err_str_valid_marriage_date));
                 return false;
             }
         }
@@ -1176,9 +1176,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "01";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of January");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_jan));
                 }else {
-                    AUtils.warning(context, "Invalid date of January");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_jan));
                     return false;
                 }
                 break;
@@ -1190,9 +1190,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                     number_Of_DaysInMonth = 28;
                 }
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of February");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_feb));
                 }else {
-                    AUtils.warning(context, "Invalid date of February");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_feb));
                     return false;
                 }
                 break;
@@ -1200,9 +1200,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "03";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of March");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_mar));
                 }else {
-                    AUtils.warning(context, "Invalid date of March");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_mar));
                     return false;
                 }
                 break;
@@ -1210,9 +1210,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "04";
                 number_Of_DaysInMonth = 30;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of April");
+                    AUtils.info(context,  getResources().getString(R.string.err_str_valid_april));
                 }else {
-                    AUtils.warning(context, "Invalid date of April");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_april));
                     return false;
                 }
                 break;
@@ -1220,9 +1220,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "05";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of May");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_may));
                 }else {
-                    AUtils.warning(context, "Invalid date of May");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_may));
                     return false;
                 }
                 break;
@@ -1230,9 +1230,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "06";
                 number_Of_DaysInMonth = 30;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of June");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_june));
                 }else {
-                    AUtils.warning(context, "Invalid date of June");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_june));
                     return false;
                 }
                 break;
@@ -1240,9 +1240,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "07";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of July");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_july));
                 }else {
-                    AUtils.warning(context, "Invalid date of July");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_july));
                     return false;
                 }
                 break;
@@ -1250,9 +1250,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "08";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of August");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_agust));
                 }else {
-                    AUtils.warning(context, "Invalid date of August");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_august));
                     return false;
                 }
                 break;
@@ -1260,9 +1260,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "09";
                 number_Of_DaysInMonth = 30;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of September");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_sep));
                 }else {
-                    AUtils.warning(context, "Invalid date of September");
+                    AUtils.warning(context,  getResources().getString(R.string.err_str_in_valid_sep));
                     return false;
                 }
                 break;
@@ -1270,9 +1270,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "10";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of October");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_oct));
                 }else {
-                    AUtils.warning(context, "Invalid date of October");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_oct));
                     return false;
                 }
                 break;
@@ -1280,9 +1280,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "11";
                 number_Of_DaysInMonth = 30;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of November");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_nov));
                 }else {
-                    AUtils.warning(context, "Invalid date of November");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_nov));
                     return false;
                 }
                 break;
@@ -1290,9 +1290,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
                 monthValue = "12";
                 number_Of_DaysInMonth = 31;
                 if (number_Of_DaysInMonth >= mDay && month.equals(monthValue)){
-                    AUtils.info(context, "Valid date of December");
+                    AUtils.info(context, getResources().getString(R.string.err_str_valid_dec));
                 }else {
-                    AUtils.warning(context, "Invalid date of December");
+                    AUtils.warning(context, getResources().getString(R.string.err_str_in_valid_dec));
                     return false;
                 }
                 break;
@@ -1322,19 +1322,19 @@ public class SurveyInformationActivity extends AppCompatActivity {
             AUtils.warning(context,"Please add total Senior Citizen");
             return false;
         }else*/ if ( totalMember.equals("0")){
-            AUtils.warning(context,"Please add total member");
+            AUtils.warning(context,getResources().getString(R.string.err_str_total_member));
             return false;
         }else if (willingStart.trim().isEmpty()){
-            AUtils.warning(context,"Please select yes/no type question");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_yes_no_que));
             return false;
         }else if (willingStart.equals("true") && resourceA.trim().isEmpty()){
-            AUtils.warning(context,"Please select your resources");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_availabe_resources));
             return false;
         }else if (otherCity.trim().isEmpty()){
-            AUtils.warning(context,"Please select yes/no type question");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_yes_no_que));
             return false;
         }else if (twoWheeler.trim().isEmpty()){
-            AUtils.warning(context,"Please add total two wheeler");
+            AUtils.warning(context,getString(R.string.err_str_add_two_wheeler_vehicle));
             return false;
         }/*else if (fourWheeler.trim().isEmpty()){
             AUtils.warning(context,"Please add total four wheeler");
@@ -1343,13 +1343,17 @@ public class SurveyInformationActivity extends AppCompatActivity {
         return true;
     }
     private boolean isValidFragFour(){
+        int citizen = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_TOTAL_CITIZEN,"0"));
         String totalVote = Prefs.getString(AUtils.PREFS.SUR_NUM_OF_PEOPLE_VOTE,"0");
         String socialMedia = Prefs.getString(AUtils.PREFS.SUR_SOCIAL_MEDIA,"");
         String shopping = Prefs.getString(AUtils.PREFS.SUR_ONLINE_SHOPPING,"");
         String paymentApp = Prefs.getString(AUtils.PREFS.SUR_ONLINE_PAY_APP,"");
 
         if (totalVote.trim().isEmpty()){
-            AUtils.warning(context,"Please add total vote member");
+            AUtils.warning(context,getResources().getString(R.string.err_str_total_vote_member));
+            return false;
+        }else if (citizen > 0 && totalVote.equals("0")){
+            AUtils.warning(context,getResources().getString(R.string.err_str_valid_vote_member));
             return false;
         }/*else if (socialMedia.trim().isEmpty()){
             AUtils.warning(context,"Please select your used social media app");
@@ -1377,13 +1381,13 @@ public class SurveyInformationActivity extends AppCompatActivity {
             AUtils.warning(context,"Please select your insurance type");
             return false;
         }else*/ if (ayushman.trim().isEmpty()){
-            AUtils.warning(context,"Please select yes/no type question");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_yes_no_que));
             return false;
         }else if (booster.trim().isEmpty()){
-            AUtils.warning(context,"Please select yes/no type question");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_yes_no_que));
             return false;
         }else if (divyang.trim().isEmpty()){
-            AUtils.warning(context,"Please select yes/no type question");
+            AUtils.warning(context,getResources().getString(R.string.err_str_select_yes_no_que));
             return false;
         }
 
@@ -1454,58 +1458,6 @@ public class SurveyInformationActivity extends AppCompatActivity {
         return age;
     }
 
-   /* *//*private void setOfflineSurveyIds() {
-        offlineSurveyList = (List<OfflineSurvey>) offlineSurveyRepo.getAllOfflineSurvey();
-        if (offlineSurveyList.size() > 0) {
-            for (OfflineSurvey offlineSurvey : offlineSurveyList) {
-                offlineSurvey.getSurveyRequestObj().setReferanceId(offlineSurvey.getHouseId());
-                offlineSurveyVM.update(offlineSurvey);
-            }
-            for (int i = 0; i < offlineSurveyList.size(); i++) {
-                surveyDetailsRequestPojoList.add(offlineSurveyList.get(i).getSurveyRequestObj());
-            }
-            sendOfflineSurvey(surveyDetailsRequestPojoList);
-        }
-
-    }*//*
-
-
-    public void sendOfflineSurvey(List<SurveyDetailsRequestPojo> listOffSurvey) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                surveyDetailsRepo.offlineAddSurveyDetails(listOffSurvey, new SurveyDetailsRepo.IOfflineSurveyDetailsResponse() {
-                    @Override
-                    public void onResponse(List<SurveyDetailsResponsePojo> offlineSurveyDetailsResponse) {
-                        Log.e(TAG, "offlineAddSurveyDetails offline data send: " + offlineSurveyDetailsResponse);
-                        String houseId;
-                        for (int i = 0; i < offlineSurveyDetailsResponse.size(); i++) {
-                            if (offlineSurveyDetailsResponse.get(i).getStatus().matches(AUtils.STATUS_SUCCESS)) {
-                                houseId = offlineSurveyDetailsResponse.get(i).getHouseId();
-                                offlineSurveyRepo.deleteSurveyById(houseId);
-                                Log.e(TAG, "offlineSurveyDetails: successfully deleted surveyHouseId: " + houseId);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        Log.e(TAG, "onFailure: " + t.getMessage());
-                    }
-                });
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                });
-            }
-        });
-    }*/
 
     @Override
     protected void onPostResume() {
@@ -1538,10 +1490,10 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String maritalStatus = Prefs.getString(AUtils.PREFS.SUR_MARITAL_STATUS,"");
 
         if (!isValidMonthOfDays(mmB)){
-            AUtils.warning(context,"Please Re-Enter birthday Date then Submit");
+            AUtils.warning(context,getResources().getString(R.string.err_str_offline_submite_reenter_birth_day_date));
             return false;
         }else if (maritalStatus.equals("Married") && !isValidMonthOfDaysMarriage(mmM)){
-            AUtils.warning(context,"Please Re-Enter marriage Date then Submit");
+            AUtils.warning(context,getResources().getString(R.string.err_str_offline_submit_reenter_marriage_date));
             return false;
         }
 

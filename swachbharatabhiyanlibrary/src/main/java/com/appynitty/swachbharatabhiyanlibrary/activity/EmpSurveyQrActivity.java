@@ -621,6 +621,7 @@ public class EmpSurveyQrActivity extends AppCompatActivity {
 
 
     private void scanQrViewOnClick() {
+        scannerView.setTorchOff();
         startActivity(new Intent(mContext,WelcomeSurveyActivity.class));
     }
 

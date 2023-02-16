@@ -897,6 +897,7 @@ public class SurveyInformationActivity extends AppCompatActivity {
         String surBirthdayDate = Prefs.getString(AUtils.PREFS.SUR_BIRTHDAY_DATE,"");
 
         String age = Prefs.getString(AUtils.PREFS.SUR_AGE,"");
+        int ageValue = Integer.parseInt(Prefs.getString(AUtils.PREFS.SUR_AGE,"0"));
         String mGender = Prefs.getString(AUtils.PREFS.SUR_GENDER,"");
         String bloodGroup = Prefs.getString(AUtils.PREFS.SUR_BLOOD_GROUP,"");
         if (surFName.trim().isEmpty()){
@@ -928,6 +929,9 @@ public class SurveyInformationActivity extends AppCompatActivity {
             return false;
         }else if (bYear.equals(year)){
             AUtils.warning(context,getResources().getString(R.string.err_str_select_valid_birth_year));
+            return false;
+        }else if (ageValue < 7){
+            AUtils.warning(context,getResources().getString(R.string.err_str_above_age_seven));
             return false;
         }else if (bYear.equalsIgnoreCase("2022")){
             AUtils.warning(context,getResources().getString(R.string.err_str_select_valid_birth_year));

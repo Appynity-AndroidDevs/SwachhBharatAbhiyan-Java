@@ -84,6 +84,8 @@
                         android:id="@+id/txt_user_name"
                         style="@style/MyEditTextStyleLight"
                         android:hint="@string/user_name_txt"
+                        android:singleLine="true"
+                        android:digits="abcdefghijklmnopqrstuvwxyz"
                         android:inputType="textCapWords" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -99,6 +101,8 @@
                         android:id="@+id/txt_password"
                         style="@style/MyEditTextStyleLight"
                         android:hint="@string/password_txt"
+                        android:singleLine="true"
+                        android:digits="abcdefghijklmnopqrstuvwxyz"
                         android:inputType="textPassword" />
 
                 </com.google.android.material.textfield.TextInputLayout>

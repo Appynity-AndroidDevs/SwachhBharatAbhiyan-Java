@@ -431,7 +431,7 @@ public class SyncServer {
         try {
 
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
-            areaPojoList = areaHousePointService.fetchCollectionArea(Prefs.getString(AUtils.APP_ID, ""), areaType, Prefs.getString(AUtils.EMP_TYPE, loginPojo.getEmployeeType()))
+            areaPojoList = areaHousePointService.fetchCollectionArea(Prefs.getString(AUtils.APP_ID, ""), areaType, Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, loginPojo.getEmployeeType()))
                     .execute().body();
 
         } catch (Exception e) {
@@ -448,7 +448,7 @@ public class SyncServer {
         try {
             AreaHousePointService areaHousePointService = Connection.createService(AreaHousePointService.class, AUtils.SERVER_URL);
             areaPojoList = areaHousePointService.fetchCollectionAreaHouse(
-                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId, Prefs.getString(AUtils.EMP_TYPE, loginPojo.getEmployeeType()))
+                            Prefs.getString(AUtils.APP_ID, ""), areaType, areaId, Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, loginPojo.getEmployeeType()))
                     .execute().body();
 
         } catch (Exception e) {

@@ -39,7 +39,8 @@ public class CtptEmpAttendanceRepo {
         inPunchBody.setVehicleNumber("1");
         inPunchBody.setVtId("1");
         /*inPunchBody.setReferanceId(refId);*/
-        inPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
+       // inPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
+        inPunchBody.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
 
         if (inPunchBody.getEmpType() != null &&
                 inPunchBody.getUserId() != null &&
@@ -110,7 +111,8 @@ public class CtptEmpAttendanceRepo {
         outPunchBody.setDaDate(AUtils.getLocalDate());
         outPunchBody.setVehicleNumber("1");
         outPunchBody.setVtId("1");
-        outPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
+       // outPunchBody.setEmpType(Prefs.getString(AUtils.EMP_TYPE, null));
+        outPunchBody.setEmpType(Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null));
         /*outPunchBody.setReferanceId(refId);*/
 
         if (outPunchBody.getEmpType() != null &&

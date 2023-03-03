@@ -465,7 +465,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
                     radioSelection = AUtils.RADIO_SELECTED_HP;
 
                     if (!AUtils.isConnectedFast(mContext)) {
-                        AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+                        //AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
                     }
                     mAreaAdapter.fetchAreaList(getAreaType(), true);
                 }
@@ -475,7 +475,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
                     idIpLayout.setHint(getResources().getString(R.string.street_number_hint));
 
                     if (!AUtils.isConnectedFast(mContext)) {
-                        AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+                       // AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
                     }
                     mAreaAdapter.fetchAreaList(getAreaType(), true);
                 }
@@ -494,7 +494,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
                     }
 
                     if (!AUtils.isConnectedFast(mContext)) {
-                        AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+                      //  AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
                     }
                     mAreaAdapter.fetchAreaList(getAreaType(), true);
                 }
@@ -729,7 +729,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
         checkCameraPermission();
 
         if (!AUtils.isConnectedFast(mContext)) {
-            AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
+            //AUtils.warning(mContext, getResources().getString(R.string.slow_internet));
         }
 
         mAreaAdapter.fetchAreaList(getAreaType(), false);
@@ -872,6 +872,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AUtils.success(mContext,getResources().getString(R.string.success_message));
                 dialog.cancel();
             }
         });
@@ -879,6 +880,7 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
+
                 restartPreview();
                 if (responseStatus.equals(AUtils.STATUS_SUCCESS)) {
                     imagePojo = null;
@@ -1437,7 +1439,12 @@ public class QRcodeScanerActivity extends AppCompatActivity implements /*ZBarSca
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.cancel();
+                if (AUtils.isInternetAvailable()){
+                    dialog.cancel();
+                }else {
+                    AUtils.success(mContext,getResources().getString(R.string.data_success_offline));
+                    dialog.cancel();
+                }
 
             }
         });

@@ -122,7 +122,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
     private TextView empId, txtEmpId;
     public boolean isSync = true;
     String vehicleType = null;
-    String empType = Prefs.getString(AUtils.EMP_TYPE, null);
+    String empType = Prefs.getString(AUtils.PREFS.EMPLOYEE_TYPE, null);
     String vehicle_no = null;
     private AttendancePojo attendancePojo = null;
 
@@ -703,7 +703,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                 }
             }
         });
-            if (empType.matches("CT")){
+        if (empType != null) {
+
+            if (empType.matches("CT")) {
 
 
                 fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
@@ -727,7 +729,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         }
                     }
                 });
-            }else {
+            } else {
 
                 fab.addOnMenuItemClickListener(new FabSpeedDial.OnMenuItemClickListener() {
                     @Override
@@ -753,13 +755,14 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                     }
                 });
             }
+        }
 
 
         markAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
+            if (empType != null) {
                 if (empType.matches("D")) {
                     if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
                         ((MyApplication) AUtils.mainApplicationConstant).startLocationTracking();
@@ -783,7 +786,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             }
                         });
                     }
-                } else  if (empType.matches("CT")) {
+                } else if (empType.matches("CT")) {
                     ctptEmpAttendanceVM = new ViewModelProvider(DashboardActivity.this).get(CtptEmpAttendanceVM.class);
 
                     if (!AUtils.isMyServiceRunning(AUtils.mainApplicationConstant, LocationService.class)) {
@@ -796,15 +799,15 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                             @Override
                             public void onResponse(ResultPojo attendanceResponse) {
                                 progressBar.setVisibility(View.GONE);
-                                if (attendanceResponse != null){
-                                    if (attendanceResponse.getStatus().equals(AUtils.STATUS_SUCCESS)){
+                                if (attendanceResponse != null) {
+                                    if (attendanceResponse.getStatus().equals(AUtils.STATUS_SUCCESS)) {
                                         Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
                                         // ctptEmpCheckInMutableLiveData.setValue(attendanceResponse);
 
                                         onInPunchSuccess();
-                                    }else if (attendanceResponse.getStatus().equals(AUtils.STATUS_ERROR)){
+                                    } else if (attendanceResponse.getStatus().equals(AUtils.STATUS_ERROR)) {
                                         onOutPunchSuccess();
-                                        AUtils.info(mContext, getResources().getString(R.string.str_err_fetching_data), 1000*60);
+                                        AUtils.info(mContext, getResources().getString(R.string.str_err_fetching_data), 1000 * 60);
                                     }
 
                                     /*Log.e(TAG, "onResponse: " + attendanceResponse.getMessage());
@@ -816,9 +819,9 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
                                     }*/
 
-                                }else {
-                                     onOutPunchSuccess();
-                                    AUtils.info(mContext, getResources().getString(R.string.str_err_fetching_data), 1000*60);
+                                } else {
+                                    onOutPunchSuccess();
+                                    AUtils.info(mContext, getResources().getString(R.string.str_err_fetching_data), 1000 * 60);
 
                                 }
 
@@ -842,6 +845,7 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
                         });
                     }
                 }
+            }
 
             }//end of onclick
         });
@@ -852,27 +856,34 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AUtils.gpsStatusCheck(mContext);
 
-                if (empType.matches("D")) {
-                    if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
-                        onSwitchStatus(isChecked);
-                    } else {
-                        markAttendance.setChecked(AUtils.isIsOnduty());
+                if (empType != null) {
+                    if (empType.matches("D")) {
+                        if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                            onSwitchStatus(isChecked);
+                        } else {
+                            markAttendance.setChecked(AUtils.isIsOnduty());
+                        }
                     }
                 }
 
-                if (empType.matches("CT")) {
-                    if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
-                        onSwitchStatus(isChecked);
-                    } else {
-                        markAttendance.setChecked(AUtils.isIsOnduty());
+                if (empType != null) {
+
+                    if (empType.matches("CT")) {
+                        if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                            onSwitchStatus(isChecked);
+                        } else {
+                            markAttendance.setChecked(AUtils.isIsOnduty());
+                        }
                     }
                 }
 
-                if (empType.matches("N") || empType.matches("S") || empType.matches("L")){
-                    if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
-                        onSwitchStatus(isChecked);
-                    } else {
-                        markAttendance.setChecked(AUtils.isIsOnduty());
+                if (empType != null) {
+                    if (empType.matches("N") || empType.matches("S") || empType.matches("L")) {
+                        if (AUtils.isInternetAvailable(AUtils.mainApplicationConstant)) {
+                            onSwitchStatus(isChecked);
+                        } else {
+                            markAttendance.setChecked(AUtils.isIsOnduty());
+                        }
                     }
                 }
             }
@@ -958,26 +969,27 @@ public class DashboardActivity extends AppCompatActivity implements PopUpDialog.
 
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
         menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
-*/
-        if (empType.matches("CT")) {
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.string_ctpt_heading), R.drawable.ic_ctpt_toilet_new, CommunityAndPublicToiletActivity.class, true));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
-        }else if (empType.matches("D")){
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerDumpSuperActivity.class, true));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
-        } else if (empType.matches("N") || empType.matches("S") || empType.matches("L")){
+*/      if(empType != null) {
+            if (empType.matches("CT")) {
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.string_ctpt_heading), R.drawable.ic_ctpt_toilet_new, CommunityAndPublicToiletActivity.class, true));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
+            } else if (empType.matches("D")) {
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScannerDumpSuperActivity.class, true));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
+            } else if (empType.matches("N") || empType.matches("S") || empType.matches("L")) {
 
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScanerActivity.class, true));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_qrcode_scanner), R.drawable.ic_qr_code, QRcodeScanerActivity.class, true));
 
-            //shrirampur not added take photo activity
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
-            menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
+                //shrirampur not added take photo activity
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_take_photo), R.drawable.ic_photograph, TakePhotoActivity.class, true));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_history_page), R.drawable.ic_history, HistoryPageActivity.class, false));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_sync_offline), R.drawable.ic_sync, SyncOfflineActivity.class, false));
+                menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_profile_page), R.drawable.ic_id_card, ProfilePageActivity.class, false));
+            }
         }
         if (Prefs.getString(AUtils.APP_ID,"").equalsIgnoreCase("3068")){
             menuPojoList.add(new MenuListPojo(getResources().getString(R.string.title_activity_broadcast_page), R.drawable.ic_broadcast_icon, BroadcastActivity.class, true));

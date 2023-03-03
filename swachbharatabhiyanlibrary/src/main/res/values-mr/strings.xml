@@ -156,6 +156,7 @@
 
     <string name="title_activity_sync_offline">ऑफलाइन समक्रमित करा</string>
     <string name="success_offline_sync">डेटा समक्रमण यशस्वी झाले</string>
+    <string name="data_success_offline">ऑफलाइन डेटा यशस्वीरित्या जोडला गेला.</string>
     <string name="hint_first_sync">प्रथम, कृपया ऑफलाइन डेटा संकालित करा</string>
     <string name="image_add_error">प्रतिमा जोडण्यात अक्षम</string>
 

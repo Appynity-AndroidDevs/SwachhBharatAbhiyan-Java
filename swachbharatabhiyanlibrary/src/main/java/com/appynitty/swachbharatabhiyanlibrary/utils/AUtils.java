@@ -80,7 +80,7 @@ public class AUtils extends CommonUtils {
      * Password : ttest
      * */
    // public static final String SERVER_URL = "http://202.65.157.254:6510/";
-    //public static final String SERVER_URL = "http://202.65.157.254:5049";
+    public static final String SERVER_URL = "http://202.65.157.254:5049";
 
     /***
      * new server api url demo app
@@ -106,7 +106,7 @@ public class AUtils extends CommonUtils {
     public static final String SERVER_URL = "http://202.65.157.253:6561";*/
 
 
-        public static final String SERVER_URL = "https://ictsbm.com:30443";
+       // public static final String SERVER_URL = "https://ictsbm.com:30443";
 
     /***
      * Staging portap

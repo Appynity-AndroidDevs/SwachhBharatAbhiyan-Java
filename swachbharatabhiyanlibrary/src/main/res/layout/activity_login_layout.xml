@@ -85,7 +85,6 @@
                         style="@style/MyEditTextStyleLight"
                         android:hint="@string/user_name_txt"
                         android:singleLine="true"
-                        android:digits="abcdefghijklmnopqrstuvwxyz"
                         android:inputType="textCapWords" />
 
                 </com.google.android.material.textfield.TextInputLayout>

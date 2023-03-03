@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/house_collection"
                     android:layout_marginTop="@dimen/dim_6_dp"
-                    android:text="@string/dump_yard_txt"
+                    android:text="@string/dump_yard_col"
                     android:textColor="@color/colorDefault"
                     android:textSize="@dimen/dim_12_sp" />
 
@@ -119,6 +119,24 @@
                     android:text="@string/hyphen"
                     android:textColor="@color/colorOrange"
                     android:textSize="@dimen/dim_17_sp" />
+                <!--<TextView
+                    android:id="@+id/dy_collection_lbl_col"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/house_collection"
+                    android:layout_marginTop="@dimen/dim_6_dp"
+                    android:text="@string/dump_yard_txt"
+                    android:textColor="@color/colorDefault"
+                    android:textSize="@dimen/dim_12_sp" />
+
+                <TextView
+                    android:id="@+id/dy_collection_col"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dy_collection_lbl"
+                    android:text="@string/hyphen"
+                    android:textColor="@color/colorOrange"
+                    android:textSize="@dimen/dim_17_sp" />-->
 
                 <TextView
                     android:id="@+id/lwc_collection_lbl"
@@ -166,6 +184,7 @@
                     android:layout_marginTop="@dimen/dim_6_dp"
                     android:text="@string/dumpyard_plant_collection"
                     android:textColor="@color/colorDefault"
+                    android:visibility="gone"
                     android:textSize="@dimen/dim_12_sp" />
 
                 <TextView
@@ -174,6 +193,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ds_collection_lbl"
                     android:text="@string/hyphen"
+                    android:visibility="gone"
                     android:textColor="@color/colorPinkLight"
                     android:textSize="@dimen/dim_17_sp" />
                 <TextView
@@ -183,6 +203,7 @@
                     android:layout_below="@id/ds_collection"
                     android:layout_marginTop="@dimen/dim_6_dp"
                     android:text="@string/string_ctpt_collection"
+                    android:visibility="gone"
                     android:textColor="@color/colorDefault"
                     android:textSize="@dimen/dim_12_sp" />
 
@@ -192,6 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ctpt_collection_lbl"
                     android:text="@string/hyphen"
+                    android:visibility="gone"
                     android:textColor="@color/colorPinkLight"
                     android:textSize="@dimen/dim_17_sp" />
 

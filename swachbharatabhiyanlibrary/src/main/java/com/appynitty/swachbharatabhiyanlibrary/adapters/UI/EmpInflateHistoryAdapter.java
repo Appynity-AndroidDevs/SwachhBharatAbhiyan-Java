@@ -49,6 +49,7 @@ public class EmpInflateHistoryAdapter extends ArrayAdapter<TableDataCountPojo.Wo
             viewHolder.lwCollection = view.findViewById(R.id.lwc_collection);
             viewHolder.ssCollection = view.findViewById(R.id.ss_collection);
             viewHolder.dyCollection = view.findViewById(R.id.dy_collection);
+
             view.setTag(viewHolder);
 
         } else {

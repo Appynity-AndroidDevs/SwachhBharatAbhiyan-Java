@@ -80,6 +80,7 @@
     <string name="point_collection_txt">Point Collection</string>
     <string name="house_collection_txt">House Collection</string>
     <string name="dump_yard_txt">Dump Yard Trip</string>
+    <string name="dump_yard_col">Dump Yard Collection</string>
     <string name="house_id_txt">House ID :</string>
     <string name="point_id_txt">Point ID :</string>
     <string name="dump_yard_id_txt">Dump Yard ID :</string>

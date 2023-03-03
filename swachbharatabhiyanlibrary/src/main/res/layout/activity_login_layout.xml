@@ -102,7 +102,6 @@
                         style="@style/MyEditTextStyleLight"
                         android:hint="@string/password_txt"
                         android:singleLine="true"
-                        android:digits="abcdefghijklmnopqrstuvwxyz"
                         android:inputType="textPassword" />
 
                 </com.google.android.material.textfield.TextInputLayout>

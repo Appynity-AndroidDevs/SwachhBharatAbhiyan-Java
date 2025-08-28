@@ -61,5 +61,5 @@ dependencies {
     implementation (name: 'retrofitconnectionlibrary-release', ext: 'aar')
     implementation project(':swachbharatabhiyanlibrary')
 
-    implementation 'com.pixplicity.easyprefs:library:1.9.0'
+    implementation 'com.pixplicity.easyprefs:EasyPrefs:1.10.0'
 }

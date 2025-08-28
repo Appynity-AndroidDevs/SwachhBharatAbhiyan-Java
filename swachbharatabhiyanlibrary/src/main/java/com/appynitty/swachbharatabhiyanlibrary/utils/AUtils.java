@@ -46,7 +46,6 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.Task;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.utils.CommonUtils;
-import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -80,7 +79,8 @@ public class AUtils extends CommonUtils {
      * Password : ttest
      * */
    // public static final String SERVER_URL = "http://202.65.157.254:6510/";
-    public static final String SERVER_URL = "http://202.65.157.254:5049";
+//    public static final String SERVER_URL = "http://202.65.157.254:5049";
+    public static final String SERVER_URL = "https://shrirampurapi.ictsbm.com";
 
     /***
      * new server api url demo app
@@ -795,7 +795,7 @@ public class AUtils extends CommonUtils {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    MDToast.makeText(_context, e.getMessage());
+                  //  MDToast.makeText(_context, e.getMessage());
                 }
             } else {
                 bitmap = MediaStore.Images.Media.getBitmap(_context.getContentResolver(), uri);

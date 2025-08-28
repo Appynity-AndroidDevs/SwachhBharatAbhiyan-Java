@@ -57,7 +57,6 @@ import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.SvgDecoder;
 import com.riaylibrary.custom_component.SvgDrawableTranscoder;
 import com.riaylibrary.custom_component.SvgSoftwareLayerSetter;
-import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,6 +80,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import es.dmoral.toasty.Toasty;
 
 public class CommonUtils {
 
@@ -393,35 +394,35 @@ public class CommonUtils {
     }
 
     public static void warning(Context context, String message) {
-        MDToast.makeText(context, message, MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+        Toasty.warning(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
     public static void warning(Context context, String message, int duration) {
-        MDToast.makeText(context, message, duration, MDToast.TYPE_WARNING).show();
+        Toasty.warning(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
     public static void info(Context context, String message) {
-        MDToast.makeText(context, message, MDToast.LENGTH_SHORT, MDToast.TYPE_INFO).show();
+        Toasty.info(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
     public static void info(Context context, String message, int duration) {
-        MDToast.makeText(context, message, duration, MDToast.TYPE_INFO).show();
+        Toasty.info(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
     public static void error(Context context, String message) {
-        MDToast.makeText(context, message, MDToast.LENGTH_SHORT, MDToast.TYPE_ERROR).show();
+        Toasty.error(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
     public static void error(Context context, String message, int duration) {
-        MDToast.makeText(context, message, duration, MDToast.TYPE_ERROR).show();
+        Toasty.error(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
     public static void success(Context context, String message) {
-        MDToast.makeText(context, message, MDToast.LENGTH_SHORT, MDToast.TYPE_SUCCESS).show();
+        Toasty.success(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
     public static void success(Context context, String message, int duration) {
-        MDToast.makeText(context, message, duration, MDToast.TYPE_SUCCESS).show();
+        Toasty.success(context, message, Toast.LENGTH_SHORT, true).show();
     }
 
     public static boolean isGPSEnable(Context context) {
@@ -1193,11 +1194,12 @@ public class CommonUtils {
 
     public static void showSnackBar(View parent) {
         mSnackbar = Snackbar.make(parent, "", Snackbar.LENGTH_INDEFINITE);
-        Snackbar.SnackbarLayout v = (Snackbar.SnackbarLayout) mSnackbar.getView();
+        @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout v = (Snackbar.SnackbarLayout) mSnackbar.getView();
         View layout = LayoutInflater.from(currentContextConstant).inflate(R.layout.snackbar_custom_layout, null);
         v.addView(layout, 0);
         mSnackbar.show();
     }
+
 
     public static GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> getGenericRequestBuilder
             (Context context, int placeholderImage, int errorImage) {

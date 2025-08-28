@@ -1,0 +1,41 @@
+Index: local.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>## This file must *NOT* be checked into Version Control Systems,\r\n# as it contains information specific to your local configuration.\r\n#\r\n# Location of the SDK. This is only used by Gradle.\r\n# For customization when using a Version Control System, please read the\r\n# header note.\r\n#Mon Oct 17 12:49:00 IST 2022\r\nsdk.dir=C\\:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Android\\\\Sdk\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/local.properties b/local.properties
+--- a/local.properties	(revision b8eb65f3a492af2f5f71550a304535b87ea769ac)
++++ b/local.properties	(date 1756367243419)
+@@ -4,5 +4,5 @@
+ # Location of the SDK. This is only used by Gradle.
+ # For customization when using a Version Control System, please read the
+ # header note.
+-#Mon Oct 17 12:49:00 IST 2022
+-sdk.dir=C\:\\Users\\USER\\AppData\\Local\\Android\\Sdk
++#Thu Aug 28 13:17:23 IST 2025
++sdk.dir=C\:\\Users\\Gaurav\\AppData\\Local\\Android\\Sdk
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"GRADLE\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"11\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n            <option value=\"$PROJECT_DIR$/retrofitconnectionlibrary\" />\r\n            <option value=\"$PROJECT_DIR$/riaylibrary\" />\r\n            <option value=\"$PROJECT_DIR$/swachbharatabhiyanlibrary\" />\r\n          </set>\r\n        </option>\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision b8eb65f3a492af2f5f71550a304535b87ea769ac)
++++ b/.idea/gradle.xml	(date 1756367689899)
+@@ -4,10 +4,9 @@
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+-        <option name="testRunner" value="GRADLE" />
+-        <option name="distributionType" value="DEFAULT_WRAPPED" />
++        <option name="testRunner" value="CHOOSE_PER_TEST" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-        <option name="gradleJvm" value="11" />
++        <option name="gradleJvm" value="corretto-11" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />

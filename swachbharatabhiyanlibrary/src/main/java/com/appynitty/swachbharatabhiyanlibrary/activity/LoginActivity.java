@@ -307,10 +307,10 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
     private boolean validateForm() {
 
 
-        if (EtEmpType.getText().toString().isEmpty()) {
+        /*if (EtEmpType.getText().toString().isEmpty()) {
             AUtils.warning(mContext, mContext.getString(R.string.plz_slct_emp_type));
             return false;
-        }
+        }*/
 
         if (AUtils.isNullString(txtUserName.getText().toString())) {
             AUtils.warning(mContext, mContext.getString(R.string.plz_ent_username));
@@ -338,8 +338,9 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         String password = txtUserPwd.getText().toString().replaceAll("\\s", "");
         loginPojo.setUserLoginId(userName);
         loginPojo.setUserPassword(password);
+        loginPojo.setEmployeeType("CT");
 
-        if (empType.matches(getResources().getString(R.string.household_collection))) {
+        /*if (empType.matches(getResources().getString(R.string.household_collection))) {
             loginPojo.setEmployeeType("N");
 
         } else if (empType.matches(getResources().getString(R.string.street_sweeping))) {
@@ -354,7 +355,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         else if (empType.matches(getResources().getString(R.string.dump_yard_supervisor))) {
             loginPojo.setEmployeeType("D");
 
-        }
+        }*/
 
 //        Log.d("TAG", "Employee Type: " + loginPojo.getEmployeeType());
         Log.d("TAG", "getFormData: " + loginPojo.getUserLoginId());

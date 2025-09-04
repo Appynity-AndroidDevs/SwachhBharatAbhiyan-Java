@@ -198,7 +198,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
     protected void registerEvents() {
 
-        /*EtEmpType.setOnClickListener(new View.OnClickListener() {     //Swapnil
+        EtEmpType.setOnClickListener(new View.OnClickListener() {     //Swapnil
             @Override
             public void onClick(View v) {
 
@@ -221,7 +221,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
                 popup.show(); //showing popup menu
             }
-        }); */ //Swapnil
+        });  //Swapnil
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,8 +339,9 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
         String password = txtUserPwd.getText().toString().replaceAll("\\s", "");
         loginPojo.setUserLoginId(userName);
         loginPojo.setUserPassword(password);
-        loginPojo.setEmployeeType("CT");
+        loginPojo.setEmployeeType("CT"); //comment this when you need to display employee type dropdown
 
+        //When you need to display employee type dropdown, uncomment this if-else block
         /*if (empType.matches(getResources().getString(R.string.household_collection))) {
             loginPojo.setEmployeeType("N");
 

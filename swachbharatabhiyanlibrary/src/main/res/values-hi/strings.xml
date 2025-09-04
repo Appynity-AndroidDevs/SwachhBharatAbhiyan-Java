@@ -55,7 +55,7 @@
     <string name="invalid_qr_error">अमान्य स्कॅनिफाय</string>
     <string name="lodin_success">सफलतापूर्ण प्रवेश!</string>
     <string name="login_error">लॉग इन करने में असमर्थ रहा। बाद में पुन: प्रयास करें!</string>
-    <string name="login_title">लॉग इन</string>
+    <string name="login_title">सीटीपीटी लॉगिन</string>
     <string name="login_txt">लॉग इन</string>
     <string name="logout_confirmation_msg">क्या आप लॉग आउट करना चाहते हैं?</string>
     <string name="logout_confirmation_title">लॉगआउट पुष्टिकरण</string>

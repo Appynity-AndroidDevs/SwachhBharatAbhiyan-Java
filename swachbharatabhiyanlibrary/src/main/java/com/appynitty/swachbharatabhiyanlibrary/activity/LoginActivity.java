@@ -149,11 +149,12 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
 
 
         EtEmpType = findViewById(R.id.et_emp_type);
+        EtEmpType.setText(R.string.ct_pt_cleaning_monitoring_system); //Set default employee type
         /*EtEmpType.clearListSelection();
         EtEmpType.setText("");*/
 
         /*EtEmpType.setText(R.string.household_collection);*/
-        EtEmpType.setOnClickListener(new View.OnClickListener() {
+        /*EtEmpType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -164,9 +165,9 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
                         .inflate(R.menu.emp_types_menu, popup.getMenu());
 
 
-               /* // only nagpur appId 3068 menu
+               *//* // only nagpur appId 3068 menu
                 popup.getMenuInflater()
-                        .inflate(R.menu.emp_types_menu_nagpur, popup.getMenu());*/
+                        .inflate(R.menu.emp_types_menu_nagpur, popup.getMenu());*//*
 
 
 //                popup.getMenu().getItem(2).setChecked(true);
@@ -183,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements PopUpDialog.PopU
                 popup.show(); //showing popup menu
 
             }
-        });
+        });*/
 
 
         txtUserName = findViewById(R.id.txt_user_name);

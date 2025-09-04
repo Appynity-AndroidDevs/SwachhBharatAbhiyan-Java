@@ -38,7 +38,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/login_margin"
                 android:layout_marginTop="@dimen/dim_10_dp"
                 android:layout_marginEnd="@dimen/login_margin"
@@ -51,7 +51,7 @@
                     android:textColor="@color/colorPrimary" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -67,7 +67,7 @@
                     <AutoCompleteTextView
                         android:id="@+id/et_emp_type"
                         style="@style/MyEditTextStyleLight"
-                        android:clickable="true"
+                        android:clickable="false"
                         android:inputType="textNoSuggestions"
                         android:drawableEnd="@drawable/ic_arrow_down"
                         android:focusable="false"
@@ -84,6 +84,7 @@
                     <EditText
                         android:id="@+id/txt_user_name"
                         style="@style/MyEditTextStyleLight"
+                        android:autofillHints=""
                         android:hint="@string/user_name_txt"
                         android:singleLine="true"
                         android:inputType="textCapWords" />
@@ -100,6 +101,7 @@
                     <EditText
                         android:id="@+id/txt_password"
                         style="@style/MyEditTextStyleLight"
+                        android:autofillHints=""
                         android:hint="@string/password_txt"
                         android:singleLine="true"
                         android:inputType="textPassword" />

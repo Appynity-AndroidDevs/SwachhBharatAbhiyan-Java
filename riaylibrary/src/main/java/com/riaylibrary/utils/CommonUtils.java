@@ -53,11 +53,10 @@ import com.bumptech.glide.load.model.StreamEncoder;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.caverock.androidsvg.SVG;
 import com.google.android.material.snackbar.Snackbar;
-import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.SvgDecoder;
 import com.riaylibrary.custom_component.SvgDrawableTranscoder;
 import com.riaylibrary.custom_component.SvgSoftwareLayerSetter;
-import com.valdesekamdem.library.mdtoast.MDToast;
+import com.riaylibrary.utils.dataStrore.Prefs;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,6 +80,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import xyz.hasnat.sweettoast.SweetToast;
 
 public class CommonUtils {
 
@@ -393,35 +394,35 @@ public class CommonUtils {
     }
 
     public static void warning(Context context, String message) {
-        MDToast.makeText(context, message, MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+        SweetToast.warning(context, message, Toast.LENGTH_SHORT);
     }
 
     public static void warning(Context context, String message, int duration) {
-        MDToast.makeText(context, message, duration, MDToast.TYPE_WARNING).show();
+        SweetToast.warning(context, message, duration);
     }
 
     public static void info(Context context, String message) {
-        MDToast.makeText(context, message, MDToast.LENGTH_SHORT, MDToast.TYPE_INFO).show();
+        SweetToast.info(context, message, Toast.LENGTH_SHORT);
     }
 
     public static void info(Context context, String message, int duration) {
-        MDToast.makeText(context, message, duration, MDToast.TYPE_INFO).show();
+        SweetToast.info(context, message, duration);
     }
 
     public static void error(Context context, String message) {
-        MDToast.makeText(context, message, MDToast.LENGTH_SHORT, MDToast.TYPE_ERROR).show();
+        SweetToast.error(context, message, Toast.LENGTH_SHORT);
     }
 
     public static void error(Context context, String message, int duration) {
-        MDToast.makeText(context, message, duration, MDToast.TYPE_ERROR).show();
+        SweetToast.error(context, message, duration);
     }
 
     public static void success(Context context, String message) {
-        MDToast.makeText(context, message, MDToast.LENGTH_SHORT, MDToast.TYPE_SUCCESS).show();
+        SweetToast.success(context, message, Toast.LENGTH_SHORT);
     }
 
     public static void success(Context context, String message, int duration) {
-        MDToast.makeText(context, message, duration, MDToast.TYPE_SUCCESS).show();
+        SweetToast.success(context, message, duration);
     }
 
     public static boolean isGPSEnable(Context context) {

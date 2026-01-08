@@ -14,7 +14,7 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.webservices.PunchWebService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

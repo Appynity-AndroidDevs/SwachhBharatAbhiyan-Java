@@ -9,7 +9,7 @@ import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpInPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.EmpOutPunchPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.EmpMyAsyncTask;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 public class EmpAttendanceAdapterClass {
 

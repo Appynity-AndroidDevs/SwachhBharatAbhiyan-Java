@@ -9,7 +9,7 @@ import com.appynitty.swachbharatabhiyanlibrary.login.network.LoginInterface;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginDetailsPojo;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LoginPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

@@ -10,9 +10,10 @@ import android.text.TextUtils;
 import com.appynitty.swachbharatabhiyanlibrary.entity.UserDailyAttendanceEntity;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.AttendancePojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pixplicity.easyprefs.library.Prefs;
+
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

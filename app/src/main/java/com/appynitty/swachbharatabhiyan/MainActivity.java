@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.appynitty.swachbharatabhiyanlibrary.activity.WelcomeActivity;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.LanguagePojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 import com.riaylibrary.utils.LocaleHelper;
 
 import java.util.ArrayList;

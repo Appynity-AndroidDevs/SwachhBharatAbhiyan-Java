@@ -19,7 +19,7 @@ import androidx.annotation.Nullable;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

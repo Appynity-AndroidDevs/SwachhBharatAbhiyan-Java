@@ -38,7 +38,7 @@ import com.appynitty.swachbharatabhiyanlibrary.webservices.VersionCheckWebServic
 import com.appynitty.swachbharatabhiyanlibrary.webservices.WorkHistoryWebService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 import java.io.File;
 import java.lang.reflect.Type;

@@ -17,7 +17,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.UI.VehicleNumberAdapter;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VehicleNumberAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.VehicleNumberPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 import java.util.ArrayList;
 /******

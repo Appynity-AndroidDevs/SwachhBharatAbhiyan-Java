@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -50,9 +51,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.maps.android.PolyUtil;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 import com.riaylibrary.utils.CommonUtils;
-import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -68,6 +68,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import xyz.hasnat.sweettoast.SweetToast;
 
 public class AUtils extends CommonUtils {
 
@@ -784,7 +786,7 @@ public class AUtils extends CommonUtils {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    MDToast.makeText(_context, e.getMessage());
+                    SweetToast.warning(_context,  e.getMessage(), Toast.LENGTH_SHORT);
                 }
             } else {
                 bitmap = MediaStore.Images.Media.getBitmap(_context.getContentResolver(), uri);

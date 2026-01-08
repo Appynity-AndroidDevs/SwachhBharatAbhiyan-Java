@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.appynitty.swachbharatabhiyanlibrary.utils.MyApplication;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 public class RestarterBroadcastReceiver extends BroadcastReceiver {
     LocationMonitoringService locationMonitoringService;

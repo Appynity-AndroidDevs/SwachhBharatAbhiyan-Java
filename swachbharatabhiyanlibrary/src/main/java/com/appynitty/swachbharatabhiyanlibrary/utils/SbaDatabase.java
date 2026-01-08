@@ -14,7 +14,7 @@ import com.appynitty.swachbharatabhiyanlibrary.repository.SyncOfflineRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncWasteCategoriesRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncWasteManagementRepository;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncWasteSubCategoriesRepository;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 public class SbaDatabase extends SQLiteOpenHelper {
 

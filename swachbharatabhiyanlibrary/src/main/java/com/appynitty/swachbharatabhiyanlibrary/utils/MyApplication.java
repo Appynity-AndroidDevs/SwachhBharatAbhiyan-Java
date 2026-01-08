@@ -15,8 +15,8 @@ import android.util.Log;
 
 import com.appynitty.swachbharatabhiyanlibrary.services.LocationService;
 import com.appynitty.swachbharatabhiyanlibrary.services.NetworkSchedulerService;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 import com.facebook.stetho.Stetho;
-import com.pixplicity.easyprefs.library.Prefs;
 
 public class MyApplication extends Application {
 
@@ -28,12 +28,9 @@ public class MyApplication extends Application {
         super.onCreate();
 
 //        init Easy Prefs lib
-        new Prefs.Builder()
-                .setContext(this)
-                .setMode(ContextWrapper.MODE_PRIVATE)
-                .setPrefsName(getPackageName())
-                .setUseDefaultSharedPreference(true)
-                .build();
+
+        Prefs.init(this);
+        com.riaylibrary.utils.dataStrore.Prefs.init(this);
         Stetho.initializeWithDefaults(this);
 
         AUtils.mainApplicationConstant = this;

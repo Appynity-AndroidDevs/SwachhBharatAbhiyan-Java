@@ -23,7 +23,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.WasteTypeCate
 import com.appynitty.swachbharatabhiyanlibrary.pojos.WasteManagementPojo;
 import com.appynitty.swachbharatabhiyanlibrary.repository.SyncWasteSubCategoriesRepository;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 import com.riaylibrary.custom_component.MyProgressDialog;
 
 import java.util.ArrayList;

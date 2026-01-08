@@ -43,7 +43,7 @@ import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;

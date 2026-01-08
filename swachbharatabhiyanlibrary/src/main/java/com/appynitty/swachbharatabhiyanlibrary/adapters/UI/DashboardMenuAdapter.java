@@ -26,7 +26,7 @@ import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VerifyDataAda
 import com.appynitty.swachbharatabhiyanlibrary.login.InternetWorking;
 import com.appynitty.swachbharatabhiyanlibrary.pojos.MenuListPojo;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 import java.util.List;
 import java.util.concurrent.Executor;

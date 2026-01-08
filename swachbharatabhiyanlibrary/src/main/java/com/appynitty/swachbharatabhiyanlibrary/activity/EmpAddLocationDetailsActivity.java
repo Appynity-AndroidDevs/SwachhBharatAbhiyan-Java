@@ -30,7 +30,6 @@ import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pixplicity.easyprefs.library.Prefs;
 import com.riaylibrary.custom_component.MyProgressDialog;
 import com.riaylibrary.utils.LocaleHelper;
 
@@ -39,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 
 public class EmpAddLocationDetailsActivity extends AppCompatActivity {
 

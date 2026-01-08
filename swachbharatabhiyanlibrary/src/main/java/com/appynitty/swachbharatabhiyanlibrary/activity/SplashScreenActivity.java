@@ -18,7 +18,7 @@ import androidx.core.app.ActivityCompat;
 import com.appynitty.swachbharatabhiyanlibrary.R;
 import com.appynitty.swachbharatabhiyanlibrary.adapters.connection.VersionDetailsAdapterClass;
 import com.appynitty.swachbharatabhiyanlibrary.utils.AUtils;
-import com.pixplicity.easyprefs.library.Prefs;
+import com.appynitty.swachbharatabhiyanlibrary.utils.dataStrore.Prefs;
 import com.riaylibrary.utils.LocaleHelper;
 
 import static com.riaylibrary.utils.CommonUtils.MY_PERMISSIONS_REQUEST_LOCATION;
